@@ -10,6 +10,7 @@ from mmengine.registry import DATA_SAMPLERS as MMENGINE_DATA_SAMPLERS
 from mmengine.registry import DATASETS as MMENGINE_DATASETS
 from mmengine.registry import EVALUATOR as MMENGINE_EVALUATOR
 from mmengine.registry import HOOKS as MMENGINE_HOOKS
+from mmengine.registry import INFERENCERS as MMENGINE_INFERENCERS
 from mmengine.registry import LOG_PROCESSORS as MMENGINE_LOG_PROCESSORS
 from mmengine.registry import LOOPS as MMENGINE_LOOPS
 from mmengine.registry import METRICS as MMENGINE_METRICS
@@ -39,45 +40,82 @@ RUNNER_CONSTRUCTORS = Registry(
 # manage all kinds of loops like `EpochBasedTrainLoop`
 LOOPS = Registry('loop', parent=MMENGINE_LOOPS)
 # manage all kinds of hooks like `CheckpointHook`
-HOOKS = Registry('hook', parent=MMENGINE_HOOKS)
+HOOKS = Registry(
+    'hook', parent=MMENGINE_HOOKS, locations=['mmseg.engine.hooks'])
 
 # manage data-related modules
-DATASETS = Registry('dataset', parent=MMENGINE_DATASETS)
-DATA_SAMPLERS = Registry('data sampler', parent=MMENGINE_DATA_SAMPLERS)
-TRANSFORMS = Registry('transform', parent=MMENGINE_TRANSFORMS)
+DATASETS = Registry(
+    'dataset', parent=MMENGINE_DATASETS, locations=['mmseg.datasets'])
+DATA_SAMPLERS = Registry(
+    'data sampler',
+    parent=MMENGINE_DATA_SAMPLERS,
+    locations=['mmseg.datasets.samplers'])
+TRANSFORMS = Registry(
+    'transform',
+    parent=MMENGINE_TRANSFORMS,
+    locations=['mmseg.datasets.transforms'])
 
 # mangage all kinds of modules inheriting `nn.Module`
-MODELS = Registry('model', parent=MMENGINE_MODELS)
+MODELS = Registry('model', parent=MMENGINE_MODELS, locations=['mmseg.models'])
 # mangage all kinds of model wrappers like 'MMDistributedDataParallel'
-MODEL_WRAPPERS = Registry('model_wrapper', parent=MMENGINE_MODEL_WRAPPERS)
+MODEL_WRAPPERS = Registry(
+    'model_wrapper',
+    parent=MMENGINE_MODEL_WRAPPERS,
+    locations=['mmseg.models'])
 # mangage all kinds of weight initialization modules like `Uniform`
 WEIGHT_INITIALIZERS = Registry(
-    'weight initializer', parent=MMENGINE_WEIGHT_INITIALIZERS)
+    'weight initializer',
+    parent=MMENGINE_WEIGHT_INITIALIZERS,
+    locations=['mmseg.models'])
 
 # mangage all kinds of optimizers like `SGD` and `Adam`
-OPTIMIZERS = Registry('optimizer', parent=MMENGINE_OPTIMIZERS)
+OPTIMIZERS = Registry(
+    'optimizer',
+    parent=MMENGINE_OPTIMIZERS,
+    locations=['mmseg.engine.optimizers'])
 # manage optimizer wrapper
-OPTIM_WRAPPERS = Registry('optim_wrapper', parent=MMENGINE_OPTIM_WRAPPERS)
+OPTIM_WRAPPERS = Registry(
+    'optim_wrapper',
+    parent=MMENGINE_OPTIM_WRAPPERS,
+    locations=['mmseg.engine.optimizers'])
 # manage constructors that customize the optimization hyperparameters.
 OPTIM_WRAPPER_CONSTRUCTORS = Registry(
     'optimizer wrapper constructor',
-    parent=MMENGINE_OPTIM_WRAPPER_CONSTRUCTORS)
+    parent=MMENGINE_OPTIM_WRAPPER_CONSTRUCTORS,
+    locations=['mmseg.engine.optimizers'])
 # mangage all kinds of parameter schedulers like `MultiStepLR`
 PARAM_SCHEDULERS = Registry(
-    'parameter scheduler', parent=MMENGINE_PARAM_SCHEDULERS)
+    'parameter scheduler',
+    parent=MMENGINE_PARAM_SCHEDULERS,
+    locations=['mmseg.engine.schedulers'])
 
 # manage all kinds of metrics
-METRICS = Registry('metric', parent=MMENGINE_METRICS)
+METRICS = Registry(
+    'metric', parent=MMENGINE_METRICS, locations=['mmseg.evaluation'])
 # manage evaluator
-EVALUATOR = Registry('evaluator', parent=MMENGINE_EVALUATOR)
+EVALUATOR = Registry(
+    'evaluator', parent=MMENGINE_EVALUATOR, locations=['mmseg.evaluation'])
 
 # manage task-specific modules like ohem pixel sampler
-TASK_UTILS = Registry('task util', parent=MMENGINE_TASK_UTILS)
+TASK_UTILS = Registry(
+    'task util', parent=MMENGINE_TASK_UTILS, locations=['mmseg.models'])
 
 # manage visualizer
-VISUALIZERS = Registry('visualizer', parent=MMENGINE_VISUALIZERS)
+VISUALIZERS = Registry(
+    'visualizer',
+    parent=MMENGINE_VISUALIZERS,
+    locations=['mmseg.visualization'])
 # manage visualizer backend
-VISBACKENDS = Registry('vis_backend', parent=MMENGINE_VISBACKENDS)
+VISBACKENDS = Registry(
+    'vis_backend',
+    parent=MMENGINE_VISBACKENDS,
+    locations=['mmseg.visualization'])
 
 # manage logprocessor
-LOG_PROCESSORS = Registry('log_processor', parent=MMENGINE_LOG_PROCESSORS)
+LOG_PROCESSORS = Registry(
+    'log_processor',
+    parent=MMENGINE_LOG_PROCESSORS,
+    locations=['mmseg.visualization'])
+
+# manage inferencer
+INFERENCERS = Registry('inferencer', parent=MMENGINE_INFERENCERS)

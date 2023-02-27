@@ -3,15 +3,15 @@ from os.path import dirname, join
 
 import torch
 from mmengine import Config
+from mmengine.registry import init_default_scope
 from mmengine.structures import PixelData
 
 from mmseg.registry import MODELS
 from mmseg.structures import SegDataSample
-from mmseg.utils import register_all_modules
 
 
 def test_maskformer_head():
-    register_all_modules()
+    init_default_scope('mmseg')
     repo_dpath = dirname(dirname(__file__))
     cfg = Config.fromfile(
         join(

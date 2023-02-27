@@ -73,38 +73,36 @@ class BaseSegDataset(BaseDataset):
         ignore_index (int): The label index to be ignored. Default: 255
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
-        backend_args (dict): Arguments to instantiate a file backend.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
             See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
-            for details. Defaults to ``dict(backend='local')``
+            for details. Defaults to None.
             Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
     METAINFO: dict = dict()
 
-    def __init__(
-        self,
-        ann_file: str = '',
-        img_suffix='.jpg',
-        seg_map_suffix='.png',
-        metainfo: Optional[dict] = None,
-        data_root: Optional[str] = None,
-        data_prefix: dict = dict(img_path='', seg_map_path=''),
-        filter_cfg: Optional[dict] = None,
-        indices: Optional[Union[int, Sequence[int]]] = None,
-        serialize_data: bool = True,
-        pipeline: List[Union[dict, Callable]] = [],
-        test_mode: bool = False,
-        lazy_init: bool = False,
-        max_refetch: int = 1000,
-        ignore_index: int = 255,
-        reduce_zero_label: bool = False,
-        backend_args: dict = dict(backend='local')
-    ) -> None:
+    def __init__(self,
+                 ann_file: str = '',
+                 img_suffix='.jpg',
+                 seg_map_suffix='.png',
+                 metainfo: Optional[dict] = None,
+                 data_root: Optional[str] = None,
+                 data_prefix: dict = dict(img_path='', seg_map_path=''),
+                 filter_cfg: Optional[dict] = None,
+                 indices: Optional[Union[int, Sequence[int]]] = None,
+                 serialize_data: bool = True,
+                 pipeline: List[Union[dict, Callable]] = [],
+                 test_mode: bool = False,
+                 lazy_init: bool = False,
+                 max_refetch: int = 1000,
+                 ignore_index: int = 255,
+                 reduce_zero_label: bool = False,
+                 backend_args: Optional[dict] = None) -> None:
 
         self.img_suffix = img_suffix
         self.seg_map_suffix = seg_map_suffix
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
-        self.backend_args = backend_args.copy()
+        self.backend_args = backend_args.copy() if backend_args else None
 
         self.data_root = data_root
         self.data_prefix = copy.copy(data_prefix)
