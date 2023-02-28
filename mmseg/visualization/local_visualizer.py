@@ -25,9 +25,9 @@ class SegLocalVisualizer(Visualizer):
         save_dir (str, optional): Save file dir for all storage backends.
             If it is None, the backend storage will not save any data.
         classes (list, optional): Input classes for result rendering, as the
-            prediction of segmentation model is a segment map with label 
-            indices, `classes` is a list which includes items responding to the 
-            label indices. If classes is not defined, visualizer will take 
+            prediction of segmentation model is a segment map with label
+            indices, `classes` is a list which includes items responding to the
+            label indices. If classes is not defined, visualizer will take
             `cityscapes` classes by default. Defaults to None.
         palette (list, optional): Input palette for result rendering, which is
             a list of color palette responding to the classes. Defaults to None.

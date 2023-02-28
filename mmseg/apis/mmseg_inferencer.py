@@ -38,9 +38,9 @@ class MMSegInferencer(BaseInferencer):
             and model is a model name of metafile, the weights will be loaded
             from metafile. Defaults to None.
         classes (list, optional): Input classes for result rendering, as the
-            prediction of segmentation model is a segment map with label 
-            indices, `classes` is a list which includes items responding to the 
-            label indices. If classes is not defined, visualizer will take 
+            prediction of segmentation model is a segment map with label
+            indices, `classes` is a list which includes items responding to the
+            label indices. If classes is not defined, visualizer will take
             `cityscapes` classes by default. Defaults to None.
         palette (list, optional): Input palette for result rendering, which is
             a list of color palette responding to the classes. Defaults to None.
@@ -287,10 +287,12 @@ class MMSegInferencer(BaseInferencer):
         results_dict['predictions'] = []
         results_dict['visualization'] = []
 
-        for pred, vis in zip(preds, visualization):
+        for i, pred in enumerate(preds):
             pred_data = pred.pred_sem_seg.numpy().data[0]
             results_dict['predictions'].append(pred_data)
-            results_dict['visualization'].append(vis)
+            if visualization is not None:
+                vis = visualization[i]
+                results_dict['visualization'].append(vis)
             if pred_out_dir != '':
                 mmengine.mkdir_or_exist(pred_out_dir)
                 img_name = str(self.num_pred_imgs).zfill(8) + '_pred.png'
@@ -304,8 +306,9 @@ class MMSegInferencer(BaseInferencer):
         else:
             if len(results_dict['predictions']) == 1:
                 results_dict['predictions'] = results_dict['predictions'][0]
-                results_dict['visualization'] = \
-                    results_dict['visualization'][0]
+                if visualization is not None:
+                    results_dict['visualization'] = \
+                        results_dict['visualization'][0]
             return results_dict
 
     def _init_pipeline(self, cfg: ConfigType) -> Compose:

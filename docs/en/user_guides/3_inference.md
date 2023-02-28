@@ -13,16 +13,17 @@ MMSegmentation provides several interfaces for users to easily use pre-trained m
     - [Visualize prediction](#visualize-prediction)
     - [List model](#list-model)
   - [Inference API](#inference-api)
-    - [mmseg.apis.init\_model](#mmsegapisinit_model)
-    - [mmseg.apis.inference\_model](#mmsegapisinference_model)
-    - [mmseg.apis.show\_result\_pyplot](#mmsegapisshow_result_pyplot)
+    - [mmseg.apis.init_model](#mmsegapisinit_model)
+    - [mmseg.apis.inference_model](#mmsegapisinference_model)
+    - [mmseg.apis.show_result_pyplot](#mmsegapisshow_result_pyplot)
+
 ## Inferencer
 
-We provides the most **convenient** way to use the model in MMSegmentation ``MMSegInferencer``. You can get segmentation mask for an image with only 3 lines of code.
+We provides the most **convenient** way to use the model in MMSegmentation `MMSegInferencer`. You can get segmentation mask for an image with only 3 lines of code.
 
 ### Basic Usage
 
-The following example shows how to use ``MMSegInferencer`` to perform inference on a single image.
+The following example shows how to use `MMSegInferencer` to perform inference on a single image.
 
 ```
 >>> from mmseg.apis import MMSegInferencer
@@ -31,6 +32,7 @@ The following example shows how to use ``MMSegInferencer`` to perform inference 
 >>> # Inference
 >>> inferencer('demo/demo.png', show=True)
 ```
+
 The visualization result should look like:
 
 <div align="center">
@@ -44,12 +46,12 @@ Moreover, you can use `MMSegInferencer` to process a list of images:
 >>> images = [image1, image2, ...] # image1 can be a file path or a np.ndarray
 >>> inferencer(images, show=True, wait_time=0.5) # wait_time is delay time, and 0 means forever.
 
-# Or input image dirctory 
+# Or input image directory
 >>> images = $IMAGESDIR
->>> inferencer(images, show=True, wait_time=0.5) 
+>>> inferencer(images, show=True, wait_time=0.5)
 
 # Save visualized rendering color maps and predicted results
-# out_dir is the directory to save the output results, img_out_dir and pred_out_dir are subdirectories out_dir 
+# out_dir is the directory to save the output results, img_out_dir and pred_out_dir are subdirectories out_dir
 # to save visualized rendering color maps and predicted results
 >>> inferencer(images, out_dir='outputs', img_out_dir='vis', pred_out_dir='pred')
 ```
@@ -72,14 +74,14 @@ print(type(result))
 # <class 'mmseg.structures.seg_data_sample.SegDataSample'>
 
 # Input a list of images
-results = inferencer(images) 
+results = inferencer(images)
 # The output is list
 print(type(results['visualization']), results['visualization'][0].shape)
 # <class 'list'> (512, 683, 3)
 print(type(results['predictions']), results['predictions'][0].shape)
 # <class 'list'> (512, 683)
 
-results = inferencer(images, return_datasamples=True) 
+results = inferencer(images, return_datasamples=True)
 # <class 'list'>
 print(type(results[0]))
 # <class 'mmseg.structures.seg_data_sample.SegDataSample'>
@@ -87,36 +89,35 @@ print(type(results[0]))
 
 ### Initialization
 
-`MMSegInferencer` must be initalized from a `model`, which can be a model name or a `Config` even a path of config file. 
-The model names can be found in models' metafile, like one model name of maskformer is `maskformer_r50-d32_8xb2-160k_ade20k-512x512`, and if input model name and the weights of the model will be download automatically. Below are other input parameters: 
+`MMSegInferencer` must be initialized from a `model`, which can be a model name or a `Config` even a path of config file.
+The model names can be found in models' metafile, like one model name of maskformer is `maskformer_r50-d32_8xb2-160k_ade20k-512x512`, and if input model name and the weights of the model will be download automatically. Below are other input parameters:
 
 - weights (str, optional) -  Path to the checkpoint. If it is not specified and model is a model name of metafile, the weights will be loaded
-from metafile. Defaults to None.
-- classes (list, optional) - Input classes for result rendering, as the prediction of segmentation 
-model is a segment map with label indices, `classes` is a list which includes
-items responding to the label indices. If classes is not defined, visualizer will take `cityscapes` classes by default. Defaults to None.
-- palette (list, optional) - Input palette for result rendering, which is a list of color palette 
-responding to the classes. Defaults to None.
+  from metafile. Defaults to None.
+- classes (list, optional) - Input classes for result rendering, as the prediction of segmentation
+  model is a segment map with label indices, `classes` is a list which includes
+  items responding to the label indices. If classes is not defined, visualizer will take `cityscapes` classes by default. Defaults to None.
+- palette (list, optional) - Input palette for result rendering, which is a list of color palette
+  responding to the classes. Defaults to None.
 - dataset_name (str, optional)[Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/a35e1c4232a03503a2d549206ca703d3850d5244/mmseg/utils/class_names.py#L302-L317)
-visulizer will use the meta information of the dataset i.e. classes and palette,
-but the `classes` and `palette` have higher priority. Defaults to None.
+  visulizer will use the meta information of the dataset i.e. classes and palette,
+  but the `classes` and `palette` have higher priority. Defaults to None.
 - device (str, optional) - Device to run inference. If None, the available device will be automatically used. Defaults to None.
 - scope (str, optional) - The scope of the model. Defaults to 'mmseg'.
-
 
 ### Visualize prediction
 
 `MMSegInferencer` supports 4 parameters for visualize prediction, you can use them when call initialized inferencer:
 
 - show (bool) - Whether to display the image in a popup window. Defaults to False.
-- wait_time (float) - The interval of show (s). Defaults to 0. 
+- wait_time (float) - The interval of show (s). Defaults to 0.
 - img_out_dir (str) - Subdirectory of `out_dir`, used to save rendering color segmentation mask, so `out_dir` must be defined
-                if you would like to save predicted mask. Defaults to 'vis'.
+  if you would like to save predicted mask. Defaults to 'vis'.
 - opacity (int, float) - The transparency of segmentation mask. Defaults to 0.8.
 
 The examples of these parameters is in [Basic Usage](#basic-usage)
 
-### List model 
+### List model
 
 There is a very easy to list all model names in MMSegmentation
 
