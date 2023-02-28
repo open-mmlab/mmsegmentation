@@ -44,7 +44,7 @@ We present SegNeXt, a simple convolutional network architecture for semantic seg
 
 Note:
 
-- The keys of our provided pretrained models are different from [original weights](https://cloud.tsinghua.edu.cn/d/c15b25a6745946618462/) released in [original repo](https://github.com/Visual-Attention-Network/SegNeXt), please use them correctly.
+- When we integrated SegNeXt into MMSegmentation, we modified some layers' names to make them more precise and concise without changing the model architecture. Therefore, the keys of pre-trained weights are different from the [original weights](https://cloud.tsinghua.edu.cn/d/c15b25a6745946618462/), but don't worry about these changes. we have converted them and uploaded the checkpoints, you might find URL of pre-trained checkpoints in config files and can use them directly for training.
 
 - The total batch size is 16. We trained for SegNeXt with a single GPU as the performance degrades significantly when using`SyncBN` (mainly in `OverlapPatchEmbed` modules of `MSCAN`) of PyTorch 1.9.
 
