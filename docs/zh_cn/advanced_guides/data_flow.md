@@ -4,11 +4,11 @@
 
 ## 数据流程概述
 
-[Runner](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/design/runner.md) 相当于MMEngine中的“集成器”。它覆盖了框架的所有方面，并肩负着组织和调度几乎所有模块的责任，这意味着各模块之间的数据流也由 `Runner` 控制。 如 [MMEngine 中的 Runner 文档](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html)所示，下图展示了基本的数据流。
+[Runner](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/design/runner.md) 相当于 MMEngine 中的“集成器”。它覆盖了框架的所有方面，并肩负着组织和调度几乎所有模块的责任，这意味着各模块之间的数据流也由 `Runner` 控制。 如 [MMEngine 中的 Runner 文档](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html)所示，下图展示了基本的数据流。
 
 ![Basic dataflow](https://user-images.githubusercontent.com/112053249/199228350-5f80699e-7fd2-4b4c-ac32-0b16b1922c2e.png)
 
-虚线边框、灰色填充形状代表不同的数据格式，而实心框表示模块/方法。由于 MMEngine 的极大灵活性和可扩展性，一些重要的基类可以被继承，并且它们的方法可以被覆写。 上图所示数据流仅适用于当用户没有自定义 `Runner` 中的 `TrainLoop`、`ValLoop` 和 `TestLoop`，并且没有在其自定义模型中覆写 `train_step`、`val_step` 和 `test_step` 方法时。MMSegmentation 中 loop 的默认设置如下：使用`IterBasedTrainLoop` 训练模型，共计 20000 次迭代，并且在每 2000 次迭代后进行一次验证。
+虚线边框、灰色填充形状代表不同的数据格式，而实心框表示模块/方法。由于 MMEngine 极大的灵活性和可扩展性，一些重要的基类可以被继承，并且它们的方法可以被覆写。 上图所示数据流仅适用于当用户没有自定义 `Runner` 中的 `TrainLoop`、`ValLoop` 和 `TestLoop`，并且没有在其自定义模型中覆写 `train_step`、`val_step` 和 `test_step` 方法时。MMSegmentation 中 loop 的默认设置如下：使用`IterBasedTrainLoop` 训练模型，共计 20000 次迭代，并且在每 2000 次迭代后进行一次验证。
 
 ```python
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=2000)
@@ -16,7 +16,7 @@ val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 ```
 
-在上图中，红色线表示 [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#train_step)）*** ，在每次训练迭代中，数据加载器（dataloader）从存储中加载图像并传输到数据预处理器（data preprocessor），数据预处理器会将图像放到特定的设备上，并将数据堆叠到批处理中，之后模型接受批处理数据作为输入，最后将模型的输出发送给优化器（optimizer）。蓝色线表示 [val_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#val_step) 和 [test_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#test_step) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#test_step)）*** 。这两个过程的数据流除了模型输出与 `train_step` 不同外，其余均和 `train_step` 类似。由于在评估时模型参数会被冻结，因此模型的输出将被传递给 [Evaluator](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/evaluation.md#ioumetric) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/evaluation.md#ioumetric)）***
+在上图中，红色线表示 [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#train_step)）*** ，在每次训练迭代中，数据加载器 (dataloader) 从存储中加载图像并传输到数据预处理器 (data preprocessor)，数据预处理器会将图像放到特定的设备上，并将数据堆叠到批处理中，之后模型接受批处理数据作为输入，最后将模型的输出发送给优化器 (optimizer)。蓝色线表示 [val_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#val_step) 和 [test_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#test_step) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#test_step)）*** 。这两个过程的数据流除了模型输出与 `train_step` 不同外，其余均和 `train_step` 类似。由于在评估时模型参数会被冻结，因此模型的输出将被传递给 [Evaluator](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/evaluation.md#ioumetric) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/evaluation.md#ioumetric)）***
 来计算指标。
 
 ## MMSegmentation 中的数据流约定
@@ -39,13 +39,13 @@ dict(
 )
 ```
 
-**注意:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) 是 MMSegmentation 的数据结构接口, 用于连接不同组件。`SegDataSample` 实现了抽象数据元素 `mmengine.structures.BaseDataElement`，更多信息请在[MMEngine](https://github.com/open-mmlab/mmengine)中参阅[SegDataSample文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/structures.html)和[数据元素文档](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html)。
+**注意:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) 是 MMSegmentation 的数据结构接口，用于连接不同组件。`SegDataSample` 实现了抽象数据元素 `mmengine.structures.BaseDataElement`，更多信息请在  [MMEngine](https://github.com/open-mmlab/mmengine) 中参阅 [SegDataSample 文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/structures.html)和[数据元素文档](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html)。
 
 ### 数据预处理器到模型
 
 虽然在[上面的图](https://github.com/open-mmlab/mmsegmentation/edit/dev-1.x/docs/zh_cn/advanced_guides/data_flow.md#%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B%E6%A6%82%E8%BF%B0)中分开绘制了数据预处理器和模型，但数据预处理器是模型的一部分，因此可以在[模型教程](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html)中找到数据预处理器章节。 ***（[中文链接待更新](https://mmsegmentation.readthedocs.io/zh_CN/dev-1.x/advanced_guides/models.html)）***
 
-数据预处理器的返回值是一个包含 `inputs` 和 `data_samples` 的字典，其中 `inputs` 是批处理图像的4D张量，`data_samples` 中添加了一些用于数据预处理的额外元信息。当传递给网络时，字典将被解包为两个值。 以下伪代码展示了数据预处理器的返回值和模型的输入值。
+数据预处理器的返回值是一个包含 `inputs` 和 `data_samples` 的字典，其中 `inputs` 是批处理图像的 4D 张量，`data_samples` 中添加了一些用于数据预处理的额外元信息。当传递给网络时，字典将被解包为两个值。 以下伪代码展示了数据预处理器的返回值和模型的输入值。
 
 ```python
 dict(
@@ -81,7 +81,7 @@ class Network(BaseSegmentor):
 参数:
 
 - seg_logits (Tensor): 解码头前向函数的输出
-- batch_data_samples (List\[:obj:`SegDataSample`\]): seg 数据样本.通常包括如 `metainfo` 和  `gt_sem_seg`等信息
+- batch_data_samples (List\[:obj:`SegDataSample`\]): seg 数据样本，通常包括如 `metainfo` 和  `gt_sem_seg`等信息
 
 返回:
 
