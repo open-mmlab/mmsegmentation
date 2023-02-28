@@ -104,15 +104,15 @@ class TestCitysMetric(TestCase):
             dict(**data, **result)
             for data, result in zip(data_batch, predictions)
         ]
-        iou_metric = CitysMetric(citys_metrics=['cityscapes'])
+        iou_metric = CitysMetric(citys_metrics=['cityscapes'], prefix='tmp')
         iou_metric.process(data_batch, data_samples)
         res = iou_metric.evaluate(6)
         self.assertIsInstance(res, dict)
         # test to_label_id = True
         iou_metric = CitysMetric(
-            citys_metrics=['cityscapes'], to_label_id=True)
+            citys_metrics=['cityscapes'], to_label_id=True, prefix='tmp')
         iou_metric.process(data_batch, data_samples)
         res = iou_metric.evaluate(6)
         self.assertIsInstance(res, dict)
         import shutil
-        shutil.rmtree('.format_cityscapes')
+        shutil.rmtree('tmp')

@@ -48,6 +48,7 @@ class CitysMetric(BaseMetric):
         assert self.metrics[0] == 'cityscapes'
         self.to_label_id = to_label_id
         self.suffix = suffix
+        self.prefix = prefix
 
     def process(self, data_batch: dict, data_samples: Sequence[dict]) -> None:
         """Process one batch of data and data_samples.
@@ -59,7 +60,7 @@ class CitysMetric(BaseMetric):
             data_batch (dict): A batch of data from the dataloader.
             data_samples (Sequence[dict]): A batch of outputs from the model.
         """
-        mkdir_or_exist(self.suffix)
+        mkdir_or_exist(self.prefix)
 
         for data_sample in data_samples:
             pred_label = data_sample['pred_sem_seg']['data'][0].cpu().numpy()
@@ -67,7 +68,7 @@ class CitysMetric(BaseMetric):
             if self.to_label_id:
                 pred_label = self._convert_to_label_id(pred_label)
             basename = osp.splitext(osp.basename(data_sample['img_path']))[0]
-            png_filename = osp.join(self.suffix, f'{basename}.png')
+            png_filename = osp.join(self.prefix, f'{basename}.png')
             output = Image.fromarray(pred_label.astype(np.uint8)).convert('P')
             import cityscapesscripts.helpers.labels as CSLabels
             palette = np.zeros((len(CSLabels.id2label), 3), dtype=np.uint8)
@@ -101,7 +102,7 @@ class CitysMetric(BaseMetric):
             msg = '\n' + msg
         print_log(msg, logger=logger)
 
-        result_dir = self.suffix
+        result_dir = self.prefix
 
         eval_results = dict()
         print_log(f'Evaluating results under {result_dir} ...', logger=logger)
