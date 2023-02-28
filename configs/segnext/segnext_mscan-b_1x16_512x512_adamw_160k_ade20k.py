@@ -1,12 +1,13 @@
 _base_ = './segnext_mscan-t_1x16_512x512_adamw_160k_ade20k.py'
 # model settings
+checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segnext/mscan_b_20230227-3ab7d230.pth'  # noqa
 ham_norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
         embed_dims=[64, 128, 320, 512],
         depths=[3, 3, 12, 3],
-        init_cfg=dict(type='Pretrained', checkpoint='pretrain/mscan_b.pth'),
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
         drop_path_rate=0.1,
         norm_cfg=dict(type='BN', requires_grad=True)),
     decode_head=dict(
