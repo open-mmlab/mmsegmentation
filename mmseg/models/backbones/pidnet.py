@@ -323,7 +323,6 @@ class PIDNet(BaseModule):
                 kernel_size=3,
                 stride=2,
                 padding=1,
-                bias=True,  # TODO remove when training
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg),
             ConvModule(
@@ -332,7 +331,6 @@ class PIDNet(BaseModule):
                 kernel_size=3,
                 stride=2,
                 padding=1,
-                bias=True,  # TODO remove when training
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg)
         ]
