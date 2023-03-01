@@ -39,7 +39,7 @@ dict(
 )
 ```
 
-**注意:** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) 是 MMSegmentation 的数据结构接口，用于连接不同组件。`SegDataSample` 实现了抽象数据元素 `mmengine.structures.BaseDataElement`，更多信息请在  [MMEngine](https://github.com/open-mmlab/mmengine) 中参阅 [SegDataSample 文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/structures.html)和[数据元素文档](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html)。
+**注意：** [SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) 是 MMSegmentation 的数据结构接口，用于连接不同组件。`SegDataSample` 实现了抽象数据元素 `mmengine.structures.BaseDataElement`，更多信息请在  [MMEngine](https://github.com/open-mmlab/mmengine) 中参阅 [SegDataSample 文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/structures.html)和[数据元素文档](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html)。
 
 ### 数据预处理器到模型
 
@@ -61,7 +61,7 @@ class Network(BaseSegmentor):
         pass
 ```
 
-**注意:** 模型的前向传播有 3 种模式,由输入参数 mode 控制，更多信息请参阅[模型教程](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md)）***
+**注意：** 模型的前向传播有 3 种模式,由输入参数 mode 控制，更多信息请参阅[模型教程](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md)）***
 
 ### 模型输出
 
@@ -78,13 +78,13 @@ class Network(BaseSegmentor):
 
 在MMSegmentation中, `decode_head` 的 [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) 方法是用于计算损失的统一接口。
 
-参数:
+参数：
 
 - seg_logits (Tensor): 解码头前向函数的输出
 - batch_data_samples (List\[:obj:`SegDataSample`\]): 分割数据样本，通常包括如 `metainfo` 和  `gt_sem_seg`等信息
 
-返回值:
+返回值：
 
 - dict\[str, Tensor\]: 一个损失组件的字典
 
-**注意:**  `train_step` 将损失传递进 OptimWrapper 以更新模型中的权重, 更多信息请参阅 [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#train_step)）***
+**注意：**  `train_step` 将损失传递进 OptimWrapper 以更新模型中的权重, 更多信息请参阅 [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#train_step)）***
