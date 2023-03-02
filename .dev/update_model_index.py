@@ -194,11 +194,8 @@ def get_model_info(md_file: str, config_dir: str,
 
     if not is_backbone or collection_name not in collection_name_list:
         collection = {
-            'Name':
-            collection_name,
-            'License':
-            'Apache License 2.0'
-            if 'segformer' not in collection_name.lower() else 'MIT License',
+            'Name': collection_name,
+            'License': 'Apache License 2.0',
             'Metadata': {
                 'Training Data': datasets
             },
@@ -206,9 +203,8 @@ def get_model_info(md_file: str, config_dir: str,
                 'Title': paper_name,
                 'URL': paper_url,
             },
-            'README':
-            osp.join('configs',
-                     config_dir.split('/')[-1], 'README.md'),
+            'README': osp.join('configs',
+                               config_dir.split('/')[-1], 'README.md'),
         }
         results = {
             'Collections': [collection],
@@ -269,15 +265,17 @@ if __name__ == '__main__':
     # get md file list
     md_file_list, config_dir_list = get_md_file_list()
     file_modified = False
-    collectoin_name_list: List[str] = get_collection_name_list(md_file_list)
+    collection_name_list: List[str] = get_collection_name_list(md_file_list)
+    # hard code to add 'FPN'
+    collection_name_list.append('FPN')
     # parse md file
     for md_file, config_dir in zip(md_file_list, config_dir_list):
         results, collection_name = get_model_info(md_file, config_dir,
-                                                  collectoin_name_list)
+                                                  collection_name_list)
         filename = osp.join(config_dir, 'metafile.yaml')
         file_modified |= dump_yaml_and_check_difference(results, filename)
         if collection_name != '':
-            collectoin_name_list.append(collection_name)
+            collection_name_list.append(collection_name)
 
     file_modified |= update_model_index(config_dir_list)
     sys.exit(1 if file_modified else 0)

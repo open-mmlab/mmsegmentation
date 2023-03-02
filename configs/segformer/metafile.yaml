@@ -1,6 +1,6 @@
 Collections:
 - Name: Segformer
-  License: MIT License
+  License: Apache License 2.0
   Metadata:
     Training Data:
     - ADE20K
