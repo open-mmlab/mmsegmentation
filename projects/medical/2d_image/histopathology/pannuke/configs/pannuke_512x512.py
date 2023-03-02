@@ -1,4 +1,4 @@
-dataset_type = 'FUSC2021Dataset'
+dataset_type = 'PanNukeDataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
