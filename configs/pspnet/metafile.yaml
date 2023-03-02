@@ -195,7 +195,7 @@ Models:
     URL: https://arxiv.org/abs/1612.01105
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/psp_head.py#L63
 - Name: pspnet_r101-d8_4xb2-amp-80k_cityscapes-512x1024
-  In Collection: PSPNet (FP16)
+  In Collection: PSPNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -207,7 +207,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D8
-    - PSPNet (FP16)
+    - PSPNet
+    - (FP16)
     Memory (GB): 5.34
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes/pspnet_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230919-a0875e5c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes/pspnet_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230919.log.json

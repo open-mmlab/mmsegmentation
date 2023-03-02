@@ -168,7 +168,7 @@ Models:
     URL: https://arxiv.org/abs/1706.05587
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/aspp_head.py#L54
 - Name: deeplabv3_r101-d8_4xb2-amp-80k_cityscapes-512x1024
-  In Collection: DeepLabV3 (FP16)
+  In Collection: DeepLabV3
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -180,7 +180,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D8
-    - DeepLabV3 (FP16)
+    - DeepLabV3
     Memory (GB): 5.75
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-774d9cec.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920.log.json

@@ -1,5 +1,5 @@
 Collections:
-- Name: ICNet (in1k-pre)
+- Name: ICNet
   License: Apache License 2.0
   Metadata:
     Training Data:
@@ -53,7 +53,7 @@ Models:
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
 - Name: icnet_r18-d8-in1k-pre_4xb2-80k_cityscapes-832x832
-  In Collection: ICNet (in1k-pre)
+  In Collection: ICNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -66,7 +66,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-18-D8
-    - ICNet (in1k-pre)
+    - ICNet
+    - (in1k-pre)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354-1cbe3022.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354.log.json
   Paper:
@@ -74,7 +75,7 @@ Models:
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
 - Name: icnet_r18-d8-in1k-pre_4xb2-160k_cityscapes-832x832
-  In Collection: ICNet (in1k-pre)
+  In Collection: ICNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -87,7 +88,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-18-D8
-    - ICNet (in1k-pre)
+    - ICNet
+    - (in1k-pre)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702-619c8ae1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702.log.json
   Paper:
@@ -138,7 +140,7 @@ Models:
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
 - Name: icnet_r50-d8-in1k-pre_4xb2-80k_cityscapes-832x832
-  In Collection: ICNet (in1k-pre)
+  In Collection: ICNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -151,7 +153,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D8
-    - ICNet (in1k-pre)
+    - ICNet
+    - (in1k-pre)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943-1743dc7b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943.log.json
   Paper:
@@ -159,7 +162,7 @@ Models:
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
 - Name: icnet_r50-d8-in1k-pre_4xb2-160k_cityscapes-832x832
-  In Collection: ICNet (in1k-pre)
+  In Collection: ICNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -172,7 +175,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D8
-    - ICNet (in1k-pre)
+    - ICNet
+    - (in1k-pre)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715-ce310aea.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715.log.json
   Paper:
@@ -223,7 +227,7 @@ Models:
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
 - Name: icnet_r101-d8-in1k-pre_4xb2-80k_cityscapes-832x832
-  In Collection: ICNet (in1k-pre)
+  In Collection: ICNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -236,7 +240,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D8
-    - ICNet (in1k-pre)
+    - ICNet
+    - (in1k-pre)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414-7ceb12c5.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414.log.json
   Paper:
@@ -244,7 +249,7 @@ Models:
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
 - Name: icnet_r101-d8-in1k-pre_4xb2-160k_cityscapes-832x832
-  In Collection: ICNet (in1k-pre)
+  In Collection: ICNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -257,7 +262,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D8
-    - ICNet (in1k-pre)
+    - ICNet
+    - (in1k-pre)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612-9484ae8a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612.log.json
   Paper:

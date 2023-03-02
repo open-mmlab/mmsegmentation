@@ -66,7 +66,7 @@ Models:
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
 - Name: resnest_s101-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024
-  In Collection: DeepLabV3+
+  In Collection: DeepLabV3
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -79,7 +79,8 @@ Models:
     Batch Size: 8
     Architecture:
     - S-101-D8
-    - DeepLabV3+
+    - DeepLabV3
+    - ''
     Memory (GB): 13.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json
@@ -154,7 +155,7 @@ Models:
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
 - Name: resnest_s101-d8_deeplabv3plus_4xb4-160k_ade20k-512x512
-  In Collection: DeepLabV3+
+  In Collection: DeepLabV3
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -167,7 +168,8 @@ Models:
     Batch Size: 16
     Architecture:
     - S-101-D8
-    - DeepLabV3+
+    - DeepLabV3
+    - ''
     Memory (GB): 16.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k_20200807_144503-27b26226.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k-20200807_144503.log.json

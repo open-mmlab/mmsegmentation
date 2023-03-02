@@ -17,6 +17,17 @@ import yaml
 MMSEG_ROOT = osp.abspath(osp.join(osp.dirname(__file__), '..'))
 
 
+def get_collection_name_list(md_file_list: List[str]) -> List[str]:
+    """Get the list of collection names."""
+    collection_name_list: List[str] = []
+    for md_file in md_file_list:
+        with open(md_file) as f:
+            lines = f.readlines()
+            collection_name = lines[0].split('#')[1].strip()
+            collection_name_list.append(collection_name)
+    return collection_name_list
+
+
 def get_md_file_list() -> Tuple[List[str], List[str]]:
     """Get the list of md files."""
     md_file_list: List[str] = []
@@ -30,7 +41,8 @@ def get_md_file_list() -> Tuple[List[str], List[str]]:
     return md_file_list, md_dir_list
 
 
-def get_model_info(md_file: str, config_dir: str) -> dict:
+def get_model_info(md_file: str, config_dir: str,
+                   collection_name_list: List[str]) -> Tuple[dict, str]:
     """Get model information from md file."""
     datasets: List[str] = []
     models: List[dict] = []
@@ -39,7 +51,7 @@ def get_model_info(md_file: str, config_dir: str) -> dict:
     paper_url: str = ''
     code_url: str = ''
     is_backbone: bool = False
-    method: str = ''
+    collection_name: str = ''
     with open(md_file) as f:
         lines: List[str] = f.readlines()
         i: int = 0
@@ -123,16 +135,26 @@ def get_model_info(md_file: str, config_dir: str) -> dict:
                     mem = values[mem_idx].split('\\')[0] if values[
                         mem_idx] != '-' and values[mem_idx] != '' else -1
 
-                    method: str = values[keys.index('Method')]
+                    method = values[keys.index('Method')].strip()
+                    # method = [method.strip()] if '+' not in method else [
+                    #     m.strip() for m in method.split('+')
+                    # ]
+                    # split method name:
+                    if '+' in method:
+                        method = [m.strip() for m in method.split('+')]
+                    elif ' ' in method:
+                        method = [m for m in method.split(' ')]
+                    else:
+                        method = [method]
                     backone: str = re.findall(
                         r'[^\s]*', values[keys.index('Backbone')].strip())[0]
-                    archs = [backone, method]
-
+                    archs = [backone] + method
+                    collection_name = method[0]
                     model = {
                         'Name':
                         model_name,
                         'In Collection':
-                        method,
+                        collection_name,
                         'Results': {
                             'Task': 'Semantic Segmentation',
                             'Dataset': current_dataset,
@@ -170,13 +192,13 @@ def get_model_info(md_file: str, config_dir: str) -> dict:
                 i = j
             i += 1
 
-    if not is_backbone:
+    if not is_backbone or collection_name not in collection_name_list:
         collection = {
             'Name':
-            method,
+            collection_name,
             'License':
             'Apache License 2.0'
-            if 'segformer' not in method.lower() else 'MIT License',
+            if 'segformer' not in collection_name.lower() else 'MIT License',
             'Metadata': {
                 'Training Data': datasets
             },
@@ -188,9 +210,12 @@ def get_model_info(md_file: str, config_dir: str) -> dict:
             osp.join('configs',
                      config_dir.split('/')[-1], 'README.md'),
         }
-        results = {'Collections': [collection], 'Models': models}
+        results = {
+            'Collections': [collection],
+            'Models': models
+        }, collection_name
     else:
-        results = {'Models': models}
+        results = {'Models': models}, ''
 
     return results
 
@@ -243,13 +268,17 @@ def update_model_index(config_dir_list: List[str]) -> bool:
 if __name__ == '__main__':
     # get md file list
     md_file_list, config_dir_list = get_md_file_list()
-
     file_modified = False
+    collectoin_name_list: List[str] = get_collection_name_list(md_file_list)
+    print(collectoin_name_list)
     # parse md file
     for md_file, config_dir in zip(md_file_list, config_dir_list):
-        results = get_model_info(md_file, config_dir)
+        results, collection_name = get_model_info(md_file, config_dir,
+                                                  collectoin_name_list)
         filename = osp.join(config_dir, 'metafile.yaml')
         file_modified |= dump_yaml_and_check_difference(results, filename)
+        if collection_name != '':
+            collectoin_name_list.append(collection_name)
 
     file_modified |= update_model_index(config_dir_list)
     sys.exit(1 if file_modified else 0)

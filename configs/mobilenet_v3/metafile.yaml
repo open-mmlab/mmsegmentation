@@ -1,3 +1,13 @@
+Collections:
+- Name: LRASPP
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: Searching for MobileNetV3
+    URL: https://arxiv.org/abs/1905.02244
+  README: configs/mobilenet_v3/README.md
 Models:
 - Name: mobilenet-v3-d8_lraspp_4xb4-320k_cityscapes-512x1024
   In Collection: LRASPP

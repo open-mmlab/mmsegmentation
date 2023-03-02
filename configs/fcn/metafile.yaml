@@ -166,7 +166,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn_r101-d8_4xb2-amp-80k_cityscapes-512x1024
-  In Collection: FCN (FP16)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -178,7 +178,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D8
-    - FCN (FP16)
+    - FCN
+    - (FP16)
     Memory (GB): 5.37
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921-fb13e883.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921.log.json
@@ -383,7 +384,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r50-d16_4xb2-40k_cityscapes-512x1024
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -396,7 +397,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 3.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes_20210305_130133-98d5d1bc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-20210305_130133.log.json
@@ -405,7 +407,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r50-d16_4xb2-80k_cityscapes-512x1024
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -418,7 +420,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes_20210306_115604-133c292f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes-20210306_115604.log.json
   Paper:
@@ -426,7 +429,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r50-d16_4xb2-40k_cityscapes-769x769
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -439,7 +442,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 3.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes_20210305_185744-1aab18ed.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes-20210305_185744.log.json
@@ -448,7 +452,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r50-d16_4xb2-80k_cityscapes-769x769
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -461,7 +465,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes_20210305_200413-109d88eb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes-20210305_200413.log.json
   Paper:
@@ -469,7 +474,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r101-d16_4xb2-40k_cityscapes-512x1024
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -482,7 +487,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 4.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes_20210305_130337-9cf2b450.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes-20210305_130337.log.json
@@ -491,7 +497,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r101-d16_4xb2-80k_cityscapes-512x1024
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -504,7 +510,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes_20210308_102747-cb336445.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes-20210308_102747.log.json
   Paper:
@@ -512,7 +519,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r101-d16_4xb2-40k_cityscapes-769x769
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -525,7 +532,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 5.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes_20210308_102453-60b114e9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes-20210308_102453.log.json
@@ -534,7 +542,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r101-d16_4xb2-80k_cityscapes-769x769
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -547,7 +555,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes_20210306_120016-e33adc4f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes-20210306_120016.log.json
   Paper:
@@ -555,7 +564,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r50b-d16_4xb2-80k_cityscapes-512x1024
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -568,7 +577,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50b-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 3.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes/fcn_d6_r50b-d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_512x1024_80k_cityscapes/fcn_d6_r50b_d16_512x1024_80k_cityscapes-20210311_125550.log.json
@@ -577,7 +587,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r50b-d16_4xb2-80k_cityscapes-769x769
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -590,7 +600,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50b-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 3.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes/fcn_d6_r50b-d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_769x769_80k_cityscapes/fcn_d6_r50b_d16_769x769_80k_cityscapes-20210311_131012.log.json
@@ -599,7 +610,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r101b-d16_4xb2-80k_cityscapes-512x1024
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -612,7 +623,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101b-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 4.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes/fcn_d6_r101b-d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_512x1024_80k_cityscapes/fcn_d6_r101b_d16_512x1024_80k_cityscapes-20210311_144305.log.json
@@ -621,7 +633,7 @@ Models:
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
 - Name: fcn-d6_r101b-d16_4xb2-80k_cityscapes-769x769
-  In Collection: FCN (D6)
+  In Collection: FCN
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -634,7 +646,8 @@ Models:
     Batch Size: 8
     Architecture:
     - R-101b-D16
-    - FCN (D6)
+    - FCN
+    - (D6)
     Memory (GB): 4.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes/fcn_d6_r101b-d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_769x769_80k_cityscapes/fcn_d6_r101b_d16_769x769_80k_cityscapes-20210311_154527.log.json
