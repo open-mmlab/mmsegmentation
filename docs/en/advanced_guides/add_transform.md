@@ -1,37 +1,51 @@
 # Adding New Data Transforms
 
-1. Write a new pipeline in any file, e.g., `my_pipeline.py`. It takes a dict as input and return a dict.
+## Customization data transformation
 
-   ```python
-   from mmseg.datasets import TRANSFORMS
-   @TRANSFORMS.register_module()
-   class MyTransform:
-       def transform(self, results):
-           results['dummy'] = True
-           return results
-   ```
+The customized data transformation must inherited from `BaseTransform` and implement `transform` function.
+Here we use a simple flipping transformation as example:
 
-2. Import the new class.
+```python
+import random
+import mmcv
+from mmcv.transforms import BaseTransform, TRANSFORMS
 
-   ```python
-   from .my_pipeline import MyTransform
-   ```
+@TRANSFORMS.register_module()
+class MyFlip(BaseTransform):
+    def __init__(self, direction: str):
+        super().__init__()
+        self.direction = direction
 
-3. Use it in config files.
+    def transform(self, results: dict) -> dict:
+        img = results['img']
+        results['img'] = mmcv.imflip(img, direction=self.direction)
+        return results
+```
+Moreover, import the new class.
 
-   ```python
-   crop_size = (512, 1024)
-   train_pipeline = [
-       dict(type='LoadImageFromFile'),
-       dict(type='LoadAnnotations'),
-       dict(type='RandomResize',
-            scale=(2048, 1024),
-            ratio_range=(0.5, 2.0),
-            keep_ratio=True),
-       dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
-       dict(type='RandomFlip', flip_ratio=0.5),
-       dict(type='PhotoMetricDistortion'),
-       dict(type='MyTransform'),
-       dict(type='PackSegInputs'),
-   ]
-   ```
+```python
+from .my_pipeline import MyFlip
+```
+
+Thus, we can instantiate a `MyFlip` object and use it to process the data dict.
+
+```python
+import numpy as np
+
+transform = MyFlip(direction='horizontal')
+data_dict = {'img': np.random.rand(224, 224, 3)}
+data_dict = transform(data_dict)
+processed_img = data_dict['img']
+```
+
+Or, we can use `MyFlip` transformation in data pipeline in our config file.
+
+```python
+pipeline = [
+    ...
+    dict(type='MyFlip', direction='horizontal'),
+    ...
+]
+```
+
+Note that if you want to use `MyFlip` in config, you must ensure the file containing `MyFlip` is imported during runtime.
