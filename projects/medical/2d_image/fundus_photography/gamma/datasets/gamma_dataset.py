@@ -3,20 +3,21 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class KvasirSEGAliyunDataset(BaseSegDataset):
-    """KvasirSEGAliyunDataset dataset.
+class GAMMADataset(BaseSegDataset):
+    """GAMMADataset dataset.
 
-    In segmentation map annotation for KvasirSEGAliyunDataset,
-    0 stands for  background,which is included in 2 categories.
+    In segmentation map annotation for GAMMADataset,
+    0 stands for background, which is included in 3 categories.
     ``reduce_zero_label`` is fixed to False. The ``img_suffix``
     is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
+
     Args:
         img_suffix (str): Suffix of images. Default: '.png'
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
         reduce_zero_label (bool): Whether to mark label zero as ignored.
-            Default to False..
+            Default to False.
     """
-    METAINFO = dict(classes=('background', 'polyp'))
+    METAINFO = dict(classes=('background', 'optic disc', 'optic cup'))
 
     def __init__(self,
                  img_suffix='.png',

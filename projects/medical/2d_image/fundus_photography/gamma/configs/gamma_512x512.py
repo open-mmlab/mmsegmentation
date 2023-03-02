@@ -1,4 +1,4 @@
-dataset_type = 'KvasirSEGAliyunDataset'
+dataset_type = 'GAMMADataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
