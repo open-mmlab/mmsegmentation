@@ -1,4 +1,4 @@
-dataset_type = 'PCamDataset'
+dataset_type = 'TwoPMVesselDataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [

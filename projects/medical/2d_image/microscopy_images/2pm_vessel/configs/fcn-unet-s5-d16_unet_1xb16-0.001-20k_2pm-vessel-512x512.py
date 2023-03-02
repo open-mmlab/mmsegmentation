@@ -1,12 +1,12 @@
 _base_ = [
-    'mmseg::_base_/models/fcn_unet_s5-d16.py', './pcam_512x512.py',
+    'mmseg::_base_/models/fcn_unet_s5-d16.py', './2pm-vessel_512x512.py',
     'mmseg::_base_/default_runtime.py',
     'mmseg::_base_/schedules/schedule_20k.py'
 ]
-custom_imports = dict(imports='datasets.pcam_dataset')
+custom_imports = dict(imports='datasets.2pm-vessel_dataset')
 img_scale = (512, 512)
 data_preprocessor = dict(size=img_scale)
-optimizer = dict(lr=0.0001)
+optimizer = dict(lr=0.001)
 optim_wrapper = dict(optimizer=optimizer)
 model = dict(
     data_preprocessor=data_preprocessor,

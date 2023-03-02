@@ -3,10 +3,10 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class PCamDataset(BaseSegDataset):
-    """PCamDataset dataset.
+class TwoPMVesselDataset(BaseSegDataset):
+    """TwoPMVesselDataset dataset.
 
-    In segmentation map annotation for PCamDataset,
+    In segmentation map annotation for TwoPMVesselDataset,
     0 stands for background, which is included in 2 categories.
     ``reduce_zero_label`` is fixed to False. The ``img_suffix``
     is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
@@ -17,7 +17,7 @@ class PCamDataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(classes=('background', 'metastatic tissue'))
+    METAINFO = dict(classes=('background', 'vessel'))
 
     def __init__(self,
                  img_suffix='.png',
