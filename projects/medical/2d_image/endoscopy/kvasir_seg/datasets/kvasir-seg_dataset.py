@@ -3,13 +3,13 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class EndoVis15Dataset(BaseSegDataset):
-    """EndoVis15Dataset dataset.
+class KvasirSEGDataset(BaseSegDataset):
+    """KvasirSEGDataset dataset.
 
-    In segmentation map annotation for EndoVis15Dataset, 0 stands for
-    background, which is included in 2 categories. ``reduce_zero_label``
-    is fixed to False. The ``img_suffix`` is fixed to '.png' and
-    ``seg_map_suffix`` is fixed to '.png'.
+    In segmentation map annotation for KvasirSEGDataset, 0 stands for
+    background, which is included in 2 categories.
+    ``reduce_zero_label`` is fixed to False. The ``img_suffix`` is
+    fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
     Args:
         img_suffix (str): Suffix of images. Default: '.png'
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'

@@ -1,4 +1,4 @@
-dataset_type = 'EndoVis15Dataset'
+dataset_type = 'KvasirSEGDataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [

@@ -5,13 +5,13 @@ import shutil
 from PIL import Image
 from sklearn.model_selection import train_test_split
 
-root_path = 'data/endovis15/'
+root_path = 'data/kvasir-seg/'
 img_suffix = '.png'
 seg_map_suffix = '.png'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
 
-all_imgs = glob.glob('data/endovis15/images/*' + img_suffix)
+all_imgs = glob.glob('data/kvasir-seg/images/*' + img_suffix)
 x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
 
 print(len(x_train), len(x_test))
@@ -28,7 +28,7 @@ for ith, part in enumerate([x_train, x_test]):
         img_save_path = os.path.join(root_path, 'images', part_dir,
                                      basename.split('.')[0] + save_img_suffix)
         shutil.copy(img, img_save_path)
-        mask_path = 'data/endovis15/masks/' + basename
+        mask_path = 'data/kvasir-seg/masks/' + basename
         mask = Image.open(mask_path).convert('L')
         mask_save_path = os.path.join(
             root_path, 'masks', part_dir,
