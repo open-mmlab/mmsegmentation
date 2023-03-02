@@ -95,7 +95,7 @@ There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/dev
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
-To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migration.md).
+To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migration).
 
 ## Benchmark and model zoo
 
