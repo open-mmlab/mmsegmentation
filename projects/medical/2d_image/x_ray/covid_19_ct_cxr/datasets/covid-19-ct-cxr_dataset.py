@@ -3,10 +3,10 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class ChestPenumoMaskDataset(BaseSegDataset):
-    """ChestPenumoMaskDataset dataset.
+class Covid19CXRDataset(BaseSegDataset):
+    """Covid19CXRDataset dataset.
 
-    In segmentation map annotation for ChestPenumoMaskDataset,
+    In segmentation map annotation for Covid19CXRDataset,
     0 stands for background, which is included in 2 categories.
     ``reduce_zero_label`` is fixed to False. The ``img_suffix``
     is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
@@ -17,7 +17,7 @@ class ChestPenumoMaskDataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(classes=('background', 'penumothroax'))
+    METAINFO = dict(classes=('background', 'lung'))
 
     def __init__(self,
                  img_suffix='.png',

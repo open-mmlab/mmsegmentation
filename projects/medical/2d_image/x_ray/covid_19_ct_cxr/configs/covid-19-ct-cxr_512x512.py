@@ -1,4 +1,4 @@
-dataset_type = 'ChestPenumoMaskDataset'
+dataset_type = 'Covid19CXRDataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
