@@ -11,7 +11,7 @@ Collections:
   README: configs/bisenetv1/README.md
 Models:
 - Name: bisenetv1_r18-d32_4xb4-160k_cityscapes-1024x1024
-  In Collection: BiSeNetV1 (No Pretrain)
+  In Collection: BiSeNetV1
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -24,7 +24,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-18-D32
-    - BiSeNetV1 (No Pretrain)
+    - BiSeNetV1
     Memory (GB): 5.69
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes_20210922_172239-c55e78e2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes_20210922_172239.log.json
@@ -55,7 +55,7 @@ Models:
     URL: https://arxiv.org/abs/1808.00897
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
 - Name: bisenetv1_r18-d32-in1k-pre_4xb8-160k_cityscapes-1024x1024
-  In Collection: BiSeNetV1 (4x8)
+  In Collection: BiSeNetV1
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -68,7 +68,7 @@ Models:
     Batch Size: 32
     Architecture:
     - R-18-D32
-    - BiSeNetV1 (4x8)
+    - BiSeNetV1
     Memory (GB): 11.17
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes_20210905_220322-bb8db75f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes_20210905_220322.log.json
@@ -77,7 +77,7 @@ Models:
     URL: https://arxiv.org/abs/1808.00897
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
 - Name: bisenetv1_r50-d32_4xb4-160k_cityscapes-1024x1024
-  In Collection: BiSeNetV1 (No Pretrain)
+  In Collection: BiSeNetV1
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -90,7 +90,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - BiSeNetV1 (No Pretrain)
+    - BiSeNetV1
     Memory (GB): 15.39
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes_20210923_222639-7b28a2a6.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes_20210923_222639.log.json

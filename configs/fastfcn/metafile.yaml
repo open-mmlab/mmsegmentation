@@ -1,5 +1,5 @@
 Collections:
-- Name: FastFCN + EncNet
+- Name: FastFCN-EncNet
   License: Apache License 2.0
   Metadata:
     Training Data:
@@ -11,7 +11,7 @@ Collections:
   README: configs/fastfcn/README.md
 Models:
 - Name: fastfcn_r50-d32_jpu_aspp_4xb2-80k_cityscapes-512x1024
-  In Collection: FastFCN + DeepLabV3
+  In Collection: FastFCN-DeepLabV3
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -24,7 +24,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D32
-    - FastFCN + DeepLabV3
+    - FastFCN-DeepLabV3
     Memory (GB): 5.67
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes_20210928_053722-5d1a2648.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_512x1024_80k_cityscapes_20210928_053722.log.json
@@ -33,7 +33,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_aspp_4xb2-80k_cityscapes-512x1024
-  In Collection: FastFCN + DeepLabV3 (4x4)
+  In Collection: FastFCN-DeepLabV3 (4x4)
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -46,7 +46,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D32
-    - FastFCN + DeepLabV3 (4x4)
+    - FastFCN-DeepLabV3 (4x4)
     Memory (GB): 9.79
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes_20210924_214357-72220849.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_aspp_4x4_512x1024_80k_cityscapes_20210924_214357.log.json
@@ -55,7 +55,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_psp_4xb2-80k_cityscapes-512x1024
-  In Collection: FastFCN + PSPNet
+  In Collection: FastFCN-PSPNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -68,7 +68,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D32
-    - FastFCN + PSPNet
+    - FastFCN-PSPNet
     Memory (GB): 5.67
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes_20210928_053722-57749bed.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_512x1024_80k_cityscapes_20210928_053722.log.json
@@ -77,7 +77,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_psp_4xb2-80k_cityscapes-512x1024
-  In Collection: FastFCN + PSPNet (4x4)
+  In Collection: FastFCN-PSPNet (4x4)
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -90,7 +90,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D32
-    - FastFCN + PSPNet (4x4)
+    - FastFCN-PSPNet (4x4)
     Memory (GB): 9.94
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841-77e87b0a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_psp_4x4_512x1024_80k_cityscapes_20210925_061841.log.json
@@ -99,7 +99,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_enc_4xb2-80k_cityscapes-512x1024
-  In Collection: FastFCN + EncNet
+  In Collection: FastFCN-EncNet
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -112,7 +112,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D32
-    - FastFCN + EncNet
+    - FastFCN-EncNet
     Memory (GB): 8.15
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes_20210928_030036-78da5046.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_512x1024_80k_cityscapes_20210928_030036.log.json
@@ -121,7 +121,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_enc_4xb2-80k_cityscapes-512x1024
-  In Collection: FastFCN + EncNet (4x4)
+  In Collection: FastFCN-EncNet (4x4)
   Results:
     Task: Semantic Segmentation
     Dataset: Cityscapes
@@ -134,7 +134,7 @@ Models:
     Batch Size: 8
     Architecture:
     - R-50-D32
-    - FastFCN + EncNet (4x4)
+    - FastFCN-EncNet (4x4)
     Memory (GB): 15.45
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217-e1eb6dbb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes/fastfcn_r50-d32_jpu_enc_4x4_512x1024_80k_cityscapes_20210926_093217.log.json
@@ -143,7 +143,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_aspp_4xb4-80k_ade20k-512x512
-  In Collection: FastFCN + DeepLabV3
+  In Collection: FastFCN-DeepLabV3
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -156,7 +156,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - FastFCN + DeepLabV3
+    - FastFCN-DeepLabV3
     Memory (GB): 8.46
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k_20211013_190619-3aa40f2d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_80k_ade20k_20211013_190619.log.json
@@ -165,7 +165,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_aspp_4xb4-160k_ade20k-512x512
-  In Collection: FastFCN + DeepLabV3
+  In Collection: FastFCN-DeepLabV3
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -178,7 +178,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - FastFCN + DeepLabV3
+    - FastFCN-DeepLabV3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k_20211008_152246-27036aee.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_aspp_512x512_160k_ade20k_20211008_152246.log.json
   Paper:
@@ -186,7 +186,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_psp_4xb4-80k_ade20k-512x512
-  In Collection: FastFCN + PSPNet
+  In Collection: FastFCN-PSPNet
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -199,7 +199,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - FastFCN + PSPNet
+    - FastFCN-PSPNet
     Memory (GB): 8.02
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k_20210930_225137-993d07c8.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_80k_ade20k_20210930_225137.log.json
@@ -208,7 +208,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_psp_4xb4-160k_ade20k-512x512
-  In Collection: FastFCN + PSPNet
+  In Collection: FastFCN-PSPNet
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -221,7 +221,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - FastFCN + PSPNet
+    - FastFCN-PSPNet
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k_20211008_105455-e8f5a2fd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k/fastfcn_r50-d32_jpu_psp_512x512_160k_ade20k_20211008_105455.log.json
   Paper:
@@ -229,7 +229,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_enc_4xb4-80k_ade20k-512x512
-  In Collection: FastFCN + EncNet
+  In Collection: FastFCN-EncNet
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -242,7 +242,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - FastFCN + EncNet
+    - FastFCN-EncNet
     Memory (GB): 9.67
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k_20210930_225214-65aef6dd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_80k_ade20k_20210930_225214.log.json
@@ -251,7 +251,7 @@ Models:
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
 - Name: fastfcn_r50-d32_jpu_enc_4xb4-160k_ade20k-512x512
-  In Collection: FastFCN + EncNet
+  In Collection: FastFCN-EncNet
   Results:
     Task: Semantic Segmentation
     Dataset: ADE20K
@@ -264,7 +264,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - FastFCN + EncNet
+    - FastFCN-EncNet
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k_20211008_105456-d875ce3c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fastfcn/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k/fastfcn_r50-d32_jpu_enc_512x512_160k_ade20k_20211008_105456.log.json
   Paper:
