@@ -1,6 +1,6 @@
 # 数据流
 
-在本章节中, 我们将介绍 [Runner](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html) 管理的内部模块之间的数据流和数据格式约定。
+在本章节中，我们将介绍 [Runner](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/runner.html) 管理的内部模块之间的数据流和数据格式约定。
 
 ## 数据流概述
 
@@ -26,11 +26,11 @@ test_cfg = dict(type='TestLoop')
 ### 数据加载器到数据预处理器
 
 数据加载器（DataLoader）是 MMEngine 的训练和测试流程中的一个重要组件。
-从概念上讲，它源于 [PyTorch](https://pytorch.org/) 并保持一致。DataLoader 从文件系统加载数据，原始数据通过数据准备流程后被发送给数据预处理器。。
+从概念上讲，它源于 [PyTorch](https://pytorch.org/) 并保持一致。DataLoader 从文件系统加载数据，原始数据通过数据准备流程后被发送给数据预处理器。
 
 MMSegmentation 在 [PackSegInputs](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/transforms/formatting.py#L12) 中定义了默认数据格式， 它是 `train_pipeline` 和 `test_pipeline` 的最后一个组件。有关数据转换 `pipeline` 的更多信息，请参阅[数据转换文档](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/transforms.html)。 ***（[中文链接待更新](https://mmsegmentation.readthedocs.io/zh_CN/dev-1.x/advanced_guides/transforms.html)）***
 
-在没有任何修改的情况下, PackSegInputs 的返回值通常是一个包含 `inputs` 和 `data_samples` 的 `dict`。以下伪代码展示了 mmseg 中数据加载器输出的数据类型，它是从数据集中获取的一批数据样本，数据加载器将它们打包成一个字典列表。`inputs` 是输入进模型的张量列表，`data_samples` 包含了输入图像的 meta information 和相应的 ground truth。
+在没有任何修改的情况下，PackSegInputs 的返回值通常是一个包含 `inputs` 和 `data_samples` 的 `dict`。以下伪代码展示了 mmseg 中数据加载器输出的数据类型，它是从数据集中获取的一批数据样本，数据加载器将它们打包成一个字典列表。`inputs` 是输入进模型的张量列表，`data_samples` 包含了输入图像的 meta information 和相应的 ground truth。
 
 ```python
 dict(
@@ -61,30 +61,30 @@ class Network(BaseSegmentor):
         pass
 ```
 
-**注意：** 模型的前向传播有 3 种模式,由输入参数 mode 控制，更多信息请参阅[模型教程](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md)）***
+**注意：** 模型的前向传播有 3 种模式，由输入参数 mode 控制，更多信息请参阅[模型教程](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md)）***
 
 ### 模型输出
 
 如[模型教程](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#forward) ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#forward)）*** 所提到的 3 种前向传播具有 3 种输出。
-`train_step` 和 `test_step`(或 `val_step`) 分别对应于 `'loss'` 和 `'predict'`。
+`train_step` 和 `test_step`（或 `val_step`）分别对应于 `'loss'` 和 `'predict'`。
 
 在 `test_step` 或 `val_step` 中，推理结果会被传递给 `Evaluator` 。您可以参阅[评估文档](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/evaluation.html)  ***（[中文链接待更新](https://mmsegmentation.readthedocs.io/zh_CN/dev-1.x/advanced_guides/evaluation.html)）*** 来获取更多关于 `Evaluator` 的信息。
 
-在推理后, MMSegmentation中的 [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L15) 会对推理结果进行简单的后处理。神经网络生成的分割logits, 经过 `argmax` 操作后的分割mask和ground truth(如果存在)将被打包到类似 `SegDataSample` 的实例。 [postprocess_result](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L132) 的返回值是是一个 **`SegDataSample`的`List`**。下图显示了这些 `SegDataSample` 实例的关键属性。
+在推理后，MMSegmentation 中的 [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L15) 会对推理结果进行简单的后处理以打包推理结果。神经网络生成的分割 logits，经过 `argmax` 操作后的分割 mask 和 ground truth（如果存在）将被打包到类似 `SegDataSample` 的实例。 [postprocess_result](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/segmentors/base.py#L132) 的返回值是一个 **`SegDataSample`的`List`**。下图显示了这些 `SegDataSample` 实例的关键属性。
 
 ![SegDataSample](https://user-images.githubusercontent.com/15952744/209912225-ab46a8d9-904a-43cb-8bf1-8bec4938ed29.png)
 
-与数据预处理器一致, 损失函数也是模型的一部分, 它是[解码头](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L142)的属性之一。
+与数据预处理器一致，损失函数也是模型的一部分，它是[解码头](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L142)的属性之一。
 
-在MMSegmentation中, `decode_head` 的 [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) 方法是用于计算损失的统一接口。
+在 MMSegmentation 中，`decode_head` 的 [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) 方法是用于计算损失的统一接口。
 
 参数：
 
-- seg_logits (Tensor): 解码头前向函数的输出
-- batch_data_samples (List\[:obj:`SegDataSample`\]): 分割数据样本，通常包括如 `metainfo` 和  `gt_sem_seg`等信息
+- seg_logits (Tensor)：解码头前向函数的输出
+- batch_data_samples (List\[:obj:`SegDataSample`\])：分割数据样本，通常包括如 `metainfo` 和  `gt_sem_seg` 等信息
 
 返回值：
 
-- dict\[str, Tensor\]: 一个损失组件的字典
+- dict\[str, Tensor\]：一个损失组件的字典
 
-**注意：**  `train_step` 将损失传递进 OptimWrapper 以更新模型中的权重, 更多信息请参阅 [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#train_step)）***
+**注意：**  `train_step` 将损失传递进 OptimWrapper 以更新模型中的权重，更多信息请参阅 [train_step](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/models.md#train_step)。 ***（[中文链接待更新](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/models.md#train_step)）***
