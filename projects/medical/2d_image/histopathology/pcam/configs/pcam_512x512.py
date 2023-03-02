@@ -1,4 +1,4 @@
-dataset_type = 'PanNukeDataset'
+dataset_type = 'PCamDataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [

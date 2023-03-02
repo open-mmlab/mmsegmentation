@@ -3,11 +3,11 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class PanNukeDataset(BaseSegDataset):
-    """PanNukeDataset dataset.
+class PCamDataset(BaseSegDataset):
+    """PCamDataset dataset.
 
-    In segmentation map annotation for PanNukeDataset,
-    0 stands for background, which is included in 6 categories.
+    In segmentation map annotation for PCamDataset,
+    0 stands for background, which is included in 2 categories.
     ``reduce_zero_label`` is fixed to False. The ``img_suffix``
     is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
 
@@ -17,9 +17,7 @@ class PanNukeDataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(
-        classes=('background', 'neoplastic', 'non-neoplastic epithelial',
-                 'inflammatory', 'connective', 'dead'))
+    METAINFO = dict(classes=('background', 'metastatic tissue'))
 
     def __init__(self,
                  img_suffix='.png',
