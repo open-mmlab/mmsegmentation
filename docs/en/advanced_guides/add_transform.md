@@ -21,6 +21,7 @@ class MyFlip(BaseTransform):
         results['img'] = mmcv.imflip(img, direction=self.direction)
         return results
 ```
+
 Moreover, import the new class.
 
 ```python

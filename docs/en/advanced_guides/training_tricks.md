@@ -1,4 +1,4 @@
-# [WIP] Training Tricks
+# \[WIP\] Training Tricks
 
 MMSegmentation support following training tricks out of box.
 
