@@ -121,7 +121,7 @@ Models:
     URL: https://arxiv.org/abs/1808.00897
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
 - Name: bisenetv1_r18-d32_4xb4-160k_coco-stuff164k-512x512
-  In Collection: BiSeNetV1 (No Pretrain)
+  In Collection: BiSeNetV1
   Results:
     Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
@@ -134,7 +134,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-18-D32
-    - BiSeNetV1 (No Pretrain)
+    - BiSeNetV1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328-046aa2f2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328.log.json
   Paper:
@@ -164,7 +164,7 @@ Models:
     URL: https://arxiv.org/abs/1808.00897
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
 - Name: bisenetv1_r50-d32_4xb4-160k_coco-stuff164k-512x512
-  In Collection: BiSeNetV1 (No Pretrain)
+  In Collection: BiSeNetV1
   Results:
     Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
@@ -177,7 +177,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-50-D32
-    - BiSeNetV1 (No Pretrain)
+    - BiSeNetV1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616-d2bb0df4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616.log.json
   Paper:
@@ -207,7 +207,7 @@ Models:
     URL: https://arxiv.org/abs/1808.00897
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
 - Name: bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512
-  In Collection: BiSeNetV1 (No Pretrain)
+  In Collection: BiSeNetV1
   Results:
     Task: Semantic Segmentation
     Dataset: COCO-Stuff 164k
@@ -220,7 +220,7 @@ Models:
     Batch Size: 16
     Architecture:
     - R-101-D32
-    - BiSeNetV1 (No Pretrain)
+    - BiSeNetV1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147-c6b32c3b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147.log.json
   Paper:
