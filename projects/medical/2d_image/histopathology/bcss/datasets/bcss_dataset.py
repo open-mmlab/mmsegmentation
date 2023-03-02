@@ -3,21 +3,22 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class RITEDataset(BaseSegDataset):
-    """RITEDataset dataset.
+class BCSSDataset(BaseSegDataset):
+    """BCSSDataset dataset.
 
-    In segmentation map annotation for RITEDataset,
-    0 stands for background, which is included in 2 categories.
-    ``reduce_zero_label`` is fixed to False. The ``img_suffix``
-    is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
-
+    In segmentation map annotation for BCSSDataset, 0 stands for background,
+    which is included in 6 categories. ``reduce_zero_label`` is fixed to
+    False. The ``img_suffix`` is fixed to '.png' and ``seg_map_suffix`` is
+    fixed to '.png'.
     Args:
         img_suffix (str): Suffix of images. Default: '.png'
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
         reduce_zero_label (bool): Whether to mark label zero as ignored.
-            Default to False.
+            Default to False..
     """
-    METAINFO = dict(classes=('background', 'vessel'))
+    METAINFO = dict(
+        classes=('background', 'tumor', 'stroma', 'inflammatory', 'necrosis',
+                 'other'))
 
     def __init__(self,
                  img_suffix='.png',
