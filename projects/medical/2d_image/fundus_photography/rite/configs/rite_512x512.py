@@ -1,4 +1,4 @@
-dataset_type = 'GAMMADataset'
+dataset_type = 'RITEDataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
