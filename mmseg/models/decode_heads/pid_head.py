@@ -91,9 +91,14 @@ class PIDHead(BaseDecodeHead):
             norm_cfg=norm_cfg,
             act_cfg=act_cfg,
             **kwargs)
-        self.i_head = BasePIDHead(in_channels, channels)
-        self.p_head = BasePIDHead(in_channels // 2, channels)
-        self.d_head = BasePIDHead(in_channels // 2, in_channels // 4)
+        self.i_head = BasePIDHead(in_channels, channels, norm_cfg, act_cfg)
+        self.p_head = BasePIDHead(in_channels // 2, channels, norm_cfg,
+                                  act_cfg)
+        self.d_head = BasePIDHead(
+            in_channels // 2,
+            in_channels // 4,
+            norm_cfg,
+        )
         self.p_cls_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
         self.d_cls_seg = nn.Conv2d(in_channels // 4, 1, kernel_size=1)
 
