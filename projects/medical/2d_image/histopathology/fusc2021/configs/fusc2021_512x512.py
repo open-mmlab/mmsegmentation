@@ -1,4 +1,4 @@
-dataset_type = 'BCSSDataset'
+dataset_type = 'FUSC2021Dataset'
 data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
