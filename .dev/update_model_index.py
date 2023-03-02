@@ -140,8 +140,8 @@ def get_model_info(md_file: str, config_dir: str,
                     #     m.strip() for m in method.split('+')
                     # ]
                     # split method name:
-                    if '+' in method:
-                        method = [m.strip() for m in method.split('+')]
+                    if ' + ' in method:
+                        method = [m.strip() for m in method.split(' + ')]
                     elif ' ' in method:
                         method = [m for m in method.split(' ')]
                     else:
@@ -270,7 +270,6 @@ if __name__ == '__main__':
     md_file_list, config_dir_list = get_md_file_list()
     file_modified = False
     collectoin_name_list: List[str] = get_collection_name_list(md_file_list)
-    print(collectoin_name_list)
     # parse md file
     for md_file, config_dir in zip(md_file_list, config_dir_list):
         results, collection_name = get_model_info(md_file, config_dir,

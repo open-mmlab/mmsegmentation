@@ -181,6 +181,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    - (FP16)
     Memory (GB): 5.75
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-774d9cec.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920.log.json
