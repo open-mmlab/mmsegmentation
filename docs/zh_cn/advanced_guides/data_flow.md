@@ -81,7 +81,7 @@ class Network(BaseSegmentor):
 参数：
 
 - seg_logits (Tensor)：解码头前向函数的输出
-- batch_data_samples (List\[:obj:`SegDataSample`\])：分割数据样本，通常包括如 `metainfo` 和  `gt_sem_seg` 等信息
+- batch_data_samples (List\[SegDataSample\])：分割数据样本，通常包括如 `metainfo` 和  `gt_sem_seg` 等信息
 
 返回值：
 
