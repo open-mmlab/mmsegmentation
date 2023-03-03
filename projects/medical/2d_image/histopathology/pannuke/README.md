@@ -10,22 +10,22 @@ Semi automatically generated nuclei instance segmentation and classification dat
 
 ### Statistic Information
 
-| dataset name                                                                             | anatomical region | task type    | modality       | num. classes | train/val/test images | release date | License                                                         |
-| ---------------------------------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ------------ | --------------------------------------------------------------- |
-| [Pannuke](https://academictorrents.com/details/99f2c7b57b95500711e33f2ee4d14c9fd7c7366c) | full_body         | segmentation | histopathology | 6            | 7901/-/-              | 2019         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                                                                             | Anatomical Region | Task Type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ---------------------------------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Pannuke](https://academictorrents.com/details/99f2c7b57b95500711e33f2ee4d14c9fd7c7366c) | full_body         | segmentation | histopathology | 6            | 7901/-/-              | yes/-/-                | 2019         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-| class name                | pixel percentage | Num. images in this category |
-| ------------------------- | ---------------- | ---------------------------- |
-| background                | 83.32            | 7901                         |
-| neoplastic                | 8.64             | 4190                         |
-| non-neoplastic epithelial | 1.77             | 4126                         |
-| inflammatory              | 3.73             | 6137                         |
-| connective                | 0.07             | 232                          |
-| dead                      | 2.47             | 1528                         |
+|        Class Name         | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :-----------------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|        background         |    7901    |   83.32    |    -     |    -     |     -     |     -     |
+|        neoplastic         |    4190    |    8.64    |    -     |    -     |     -     |     -     |
+| non-neoplastic epithelial |    4126    |    1.77    |    -     |    -     |     -     |     -     |
+|       inflammatory        |    6137    |    3.73    |    -     |    -     |     -     |     -     |
+|        connective         |    232     |    0.07    |    -     |    -     |     -     |     -     |
+|           dead            |    1528    |    2.47    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![pannuke](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/histopathology/pannuke/pannuke_dataset.png?raw=true)
+![pannuke](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/pannuke/pannuke_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -47,7 +47,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://academictorrents.com/details/99f2c7b57b95500711e33f2ee4d14c9fd7c7366c) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -61,25 +62,32 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+|        Class Name         | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :-----------------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|        background         |    6320    |   83.38    |   1581   |   83.1   |     -     |     -     |
+|        neoplastic         |    3339    |    8.55    |   851    |   9.0    |     -     |     -     |
+| non-neoplastic epithelial |    3293    |    1.77    |   833    |   1.76   |     -     |     -     |
+|       inflammatory        |    4914    |    3.72    |   1223   |   3.76   |     -     |     -     |
+|        connective         |    170     |    0.06    |    62    |   0.09   |     -     |     -     |
+|           dead            |    1235    |    2.51    |   293    |   2.29   |     -     |     -     |
 
 ### Training commands
 
