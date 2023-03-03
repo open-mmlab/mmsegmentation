@@ -6,24 +6,24 @@ This project support **`2-PM Vessel Dataset`**, and the dataset used in this pro
 
 ### Dataset Overview
 
-An open-source volumetric brain vasculature dataset obtained with two-photon microscopy at Focused Ultrasound Lab, at Sunnybrook Research Institute (affiliated with University of Toronto by Dr. Alison Burgess, Charissa Poon and Marc Santos.
+An open-source volumetric brain vasculature dataset obtained with two-photon microscopy at Focused Ultrasound Lab, at Sunnybrook Research Institute (affiliated with University of Toronto by Dr. Alison Burgess, Charissa Poon and Marc Santos).
 
 The dataset contains a total of 12 volumetric stacks consisting images of mouse brain vasculature and tumor vasculature.
 
 ### Information Statistics
 
-| dataset_name                                                 | anatomical region | task type    | modality          | number of categories | train/val/test image | release date | License                                                       |
-| ------------------------------------------------------------ | ----------------- | ------------ | ----------------- | -------------------- | -------------------- | ------------ | ------------------------------------------------------------- |
-| [2pm_vessel](https://opendatalab.org.cn/2-PM_Vessel_Dataset) | vessel            | segmentation | microscopy_images | 2                    | 216/-/-              | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dataset Name                                                 | Anatomical Region | Task Type    | Modality          | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                       |
+| ------------------------------------------------------------ | ----------------- | ------------ | ----------------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
+| [2pm_vessel](https://opendatalab.org.cn/2-PM_Vessel_Dataset) | vessel            | segmentation | microscopy_images | 2            | 216/-/-               | yes/-/-                | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
-| class_name | Percentage of pixels（%） | Number of pictures in this category |
-| ---------- | ------------------------- | ----------------------------------- |
-| background | 85.78                     | 216                                 |
-| vessel     | 14.22                     | 180                                 |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    216     |   85.78    |    -     |    -     |     -     |     -     |
+|   vessel   |    180     |   14.22    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![2pmv](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/histopathology/2pm_vessel/2pm_vessel_dataset.png?raw=true)
+![2pmv](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/2pm_vessel/2pm_vessel_dataset.png?raw=true)
 
 <!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
 
@@ -47,7 +47,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://opendatalab.org.cn/2-PM_Vessel_Dataset) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -61,25 +62,29 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
+
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    172     |   85.88    |    44    |   85.4   |     -     |     -     |
+|   vessel   |    142     |   14.12    |    38    |   14.6   |     -     |     -     |
 
 ### Training commands
 
