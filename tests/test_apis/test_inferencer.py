@@ -104,12 +104,10 @@ def test_inferencer():
 
     imgs = [img, img]
     infer(imgs)
-    results = infer(imgs, out_dir=tempfile.gettempdir(), draw_pred=True)
+    results = infer(imgs, out_dir=tempfile.gettempdir())
 
     # test results
     assert 'predictions' in results
     assert 'visualization' in results
     assert len(results['predictions']) == 2
-    assert results['predictions'][0].seg_logits.data.shape == torch.Size(
-        (19, 4, 4))
-    assert results['predictions'][0].pred_sem_seg.shape == torch.Size((4, 4))
+    assert results['predictions'][0].shape == (4, 4)
