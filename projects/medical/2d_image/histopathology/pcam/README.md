@@ -10,18 +10,18 @@ PatchCamelyon is an image classification dataset. It consists of 327680 color im
 
 ### Statistic Information
 
-| dataset name                         | anatomical region | task type    | modality       | num. classes | train/val/test images | release date | License                                                       |
-| ------------------------------------ | ----------------- | ------------ | -------------- | ------------ | --------------------- | ------------ | ------------------------------------------------------------- |
-| [Pcam](https://opendatalab.com/PCam) | throax            | segmentation | histopathology | 2            | 327680/-/-            | 2018         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dataset Name                         | Anatomical Region | Task Type    | Modality       | Num. Classes | Train/Val/Test images | Train/Val/Test Labeled | Release Date | License                                                       |
+| ------------------------------------ | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
+| [Pcam](https://opendatalab.com/PCam) | throax            | segmentation | histopathology | 2            | 327680/-/-            | yes/-/-                | 2018         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
-| class name        | pixel percentage | Num. images in this category |
-| ----------------- | ---------------- | ---------------------------- |
-| background        | 63.77            | 214849                       |
-| metastatic tissue | 36.22            | 131832                       |
+|    Class Name     | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :---------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|    background     |   214849   |   63.77    |    -     |    -     |     -     |     -     |
+| metastatic tissue |   131832   |   36.22    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![pcam](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/histopathology/pcam/pcam_dataset.png?raw=true)
+![pcam](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/pcam/pcam_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -43,7 +43,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://opendatalab.com/PCam) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -57,25 +58,28 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+|    Class Name     | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :---------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|    background     |   171948   |   63.82    |  42901   |   63.6   |     -     |     -     |
+| metastatic tissue |   105371   |   36.18    |  26461   |   36.4   |     -     |     -     |
 
 ### Training commands
 
