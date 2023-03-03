@@ -98,8 +98,8 @@ The model names can be found in models' metafile, like one model name of maskfor
   model is a segment map with label indices, `classes` is a list which includes
   items responding to the label indices. If classes is not defined, visualizer will take `cityscapes` classes by default. Defaults to None.
 - palette (list, optional) - Input palette for result rendering, which is a list of color palette
-  responding to the classes. Defaults to None.
-- dataset_name (str, optional)[Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/a35e1c4232a03503a2d549206ca703d3850d5244/mmseg/utils/class_names.py#L302-L317)
+  responding to the classes. If palette is not defined, visualizer will take `cityscapes` palette by default. Defaults to None.
+- dataset_name (str, optional)[Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317)
   visulizer will use the meta information of the dataset i.e. classes and palette,
   but the `classes` and `palette` have higher priority. Defaults to None.
 - device (str, optional) - Device to run inference. If None, the available device will be automatically used. Defaults to None.
