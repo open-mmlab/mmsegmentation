@@ -2,11 +2,11 @@
 import argparse
 import os.path as osp
 
-from mmengine import Config, DictAction
-from mmengine.registry import init_default_scope
+from mmengine.config import Config, DictAction
 from mmengine.utils import ProgressBar
 
 from mmseg.registry import DATASETS, VISUALIZERS
+from mmseg.utils import register_all_modules
 
 
 def parse_args():
@@ -43,29 +43,33 @@ def main():
     if args.cfg_options is not None:
         cfg.merge_from_dict(args.cfg_options)
 
-    # register all modules in mmseg into the registries
-    init_default_scope('mmseg')
+    # register all modules in mmdet into the registries
+    register_all_modules()
 
     dataset = DATASETS.build(cfg.train_dataloader.dataset)
-    cfg.visualizer['save_dir'] = args.output_dir
     visualizer = VISUALIZERS.build(cfg.visualizer)
-    visualizer.dataset_meta = dataset.METAINFO
+    visualizer.dataset_meta = dataset.metainfo
 
     progress_bar = ProgressBar(len(dataset))
     for item in dataset:
         img = item['inputs'].permute(1, 2, 0).numpy()
+        img = img[..., [2, 1, 0]]  # bgr to rgb
         data_sample = item['data_samples'].numpy()
         img_path = osp.basename(item['data_samples'].img_path)
 
-        img = img[..., [2, 1, 0]]  # bgr to rgb
+        out_file = osp.join(
+            args.output_dir,
+            osp.basename(img_path)) if args.output_dir is not None else None
 
         visualizer.add_datasample(
-            osp.basename(img_path),
-            img,
-            data_sample,
-            show=not args.not_show,
-            wait_time=args.show_interval)
-
+            name=osp.basename(img_path),
+            image=img,
+            data_sample=data_sample,
+            draw_gt=True,
+            draw_pred=False,
+            wait_time=args.show_interval,
+            out_file=out_file,
+            show=not args.not_show)
         progress_bar.update()
 
 

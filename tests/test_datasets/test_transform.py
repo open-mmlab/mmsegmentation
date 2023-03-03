@@ -5,6 +5,7 @@ import os.path as osp
 import mmcv
 import numpy as np
 import pytest
+from mmengine.registry import init_default_scope
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
@@ -12,9 +13,8 @@ from mmseg.datasets.transforms import (LoadBiomedicalData,
                                        LoadBiomedicalImageFromFile,
                                        PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
-from mmseg.utils import register_all_modules
 
-register_all_modules()
+init_default_scope('mmseg')
 
 
 def test_resize():
