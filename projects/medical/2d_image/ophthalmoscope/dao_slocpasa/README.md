@@ -10,18 +10,18 @@ This dataset contains 840 images (150 × 150 pixels) from the [Garrioch et al.](
 
 ### Statistic Information
 
-| dataset name                                                            | anatomical region | task type    | modality       | num. classes | train/val/test images | release date | License                                                         |
-| ----------------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ------------ | --------------------------------------------------------------- |
-| [Dao-slocpasa](https://people.duke.edu/~sf59/Chiu_BOE_2013_dataset.htm) | head_and_neck     | segmentation | ophthalmoscope | 2            | 840/-/-               | 2012         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                                                            | Anatomical Region | Task Type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ----------------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Dao-slocpasa](https://people.duke.edu/~sf59/Chiu_BOE_2013_dataset.htm) | head_and_neck     | segmentation | ophthalmoscope | 2            | 840/-/-               | yes/-/-                | 2012         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-| class name     | pixel percentage | Num. images in this category |
-| -------------- | ---------------- | ---------------------------- |
-| background     | 44.47            | 840                          |
-| photoreceptors | 55.53            | 840                          |
+|   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background   |    840     |   44.47    |    -     |    -     |     -     |     -     |
+| photoreceptors |    840     |   55.53    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![daoslocpasa](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/ophthalmoscope/dao_slocpasa/dao_slocpasa_dataset.png?raw=true)
+![daoslocpasa](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/ophthalmoscope/dao_slocpasa/dao_slocpasa_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -43,7 +43,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://people.duke.edu/~sf59/Chiu_BOE_2013_dataset.htm) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -57,25 +58,28 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+|   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background   |    672     |   44.47    |   168    |  44.47   |     -     |     -     |
+| photoreceptors |    672     |   55.53    |   168    |  55.53   |     -     |     -     |
 
 ### Training commands
 
