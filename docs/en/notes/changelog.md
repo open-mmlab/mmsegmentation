@@ -1,5 +1,40 @@
 # Changelog of v1.x
 
+## v1.0.0rc6(03/03/2023)
+
+### Highlights
+
+- Support MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413), [#2658](https://github.com/open-mmlab/mmsegmentation/pull/2658))
+- Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
+
+### Features
+
+- Support auto import modules from registry ([#2481](https://github.com/open-mmlab/mmsegmentation/pull/2481))
+- Replace numpy ascontiguousarray with torch contiguous to speed-up ([#2604](https://github.com/open-mmlab/mmsegmentation/pull/2604))
+- Add browse_dataset.py tool ([#2649](https://github.com/open-mmlab/mmsegmentation/pull/2649))
+
+### Bug fix
+
+- Rename and Fix bug of projects HieraSeg ([#2565](https://github.com/open-mmlab/mmsegmentation/pull/2565))
+- Add out_channels  in `CascadeEncoderDecoder` and update OCRNet and MobileNet v2 results ([#2656](https://github.com/open-mmlab/mmsegmentation/pull/2656))
+
+### Documentation
+
+- Add dataflow documentation of Chinese version ([#2652](https://github.com/open-mmlab/mmsegmentation/pull/2652))
+- Add custmized runtime documentation of English version ([#2533](https://github.com/open-mmlab/mmsegmentation/pull/2533))
+- Add documentation for visualizing feature map using wandb backend ([#2557](https://github.com/open-mmlab/mmsegmentation/pull/2557))
+- Add documentation for benchmark results on NPU (HUAWEI Ascend) ([#2569](https://github.com/open-mmlab/mmsegmentation/pull/2569), [#2596](https://github.com/open-mmlab/mmsegmentation/pull/2596), [#2610](https://github.com/open-mmlab/mmsegmentation/pull/2610))
+- Fix api name error in the migration doc ([#2601](https://github.com/open-mmlab/mmsegmentation/pull/2601))
+- Refine projects documentation ([#2586](https://github.com/open-mmlab/mmsegmentation/pull/2586))
+- Refine MMSegmentation documentation ([#2668](https://github.com/open-mmlab/mmsegmentation/pull/2668), [#2659](https://github.com/open-mmlab/mmsegmentation/pull/2659))
+
+### New Contributors
+
+- @zccjjj made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2548
+- @liuruiqiang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2554
+- @wangjiangben-hw made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2569
+- @jinxianwei made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2557
+
 ## v1.0.0rc5(02/01/2023)
 
 ### Bug fix
