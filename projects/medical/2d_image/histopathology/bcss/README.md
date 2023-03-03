@@ -10,22 +10,22 @@ The BCSS dataset contains over 20,000 segmentation annotations of tissue region
 
 ### Information Statistics
 
-| dataset_name                                        | anatomical region | task type    | modality       | number of categories | train/val/test image | release date | License                                                       |
-| --------------------------------------------------- | ----------------- | ------------ | -------------- | -------------------- | -------------------- | ------------ | ------------------------------------------------------------- |
-| [bcss](https://bcsegmentation.grand-challenge.org/) | throax            | segmentation | histopathology | 6                    | 151/-/-              | 2019         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dataset Name                                        | Anatomical Region | Task Type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                       |
+| --------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
+| [bcss](https://bcsegmentation.grand-challenge.org/) | throax            | segmentation | histopathology | 6            | 151/-/-               | yes/-/-                | 2019         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
-| class_name   | Percentage of pixels（%） | Number of pictures in this category |
-| ------------ | ------------------------- | ----------------------------------- |
-| background   | 21.75                     | 49                                  |
-| tumor        | 31.04                     | 151                                 |
-| stroma       | 28.16                     | 151                                 |
-| inflammatory | 9.44                      | 126                                 |
-| necrosis     | 5.16                      | 91                                  |
-| other        | 4.45                      | 141                                 |
+|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|  background  |     49     |   21.75    |    -     |    -     |     -     |     -     |
+|    tumor     |    151     |   31.04    |    -     |    -     |     -     |     -     |
+|    stroma    |    151     |   28.16    |    -     |    -     |     -     |     -     |
+| inflammatory |    126     |    9.44    |    -     |    -     |     -     |     -     |
+|   necrosis   |     91     |    5.16    |    -     |    -     |     -     |     -     |
+|    other     |    141     |    4.45    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![bcss](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/histopathology/bcss/bcss_dataset.png?raw=true)
+![bcss](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/bcss/bcss_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -47,7 +47,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://bcsegmentation.grand-challenge.org/) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -61,25 +62,32 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|  background  |     40     |   22.13    |    9     |  19.96   |     -     |     -     |
+|    tumor     |    120     |   30.71    |    31    |  32.57   |     -     |     -     |
+|    stroma    |    120     |   27.83    |    31    |  29.67   |     -     |     -     |
+| inflammatory |     98     |    9.7     |    28    |   8.23   |     -     |     -     |
+|   necrosis   |     76     |    5.32    |    15    |   4.44   |     -     |     -     |
+|    other     |    112     |    4.3     |    29    |   5.13   |     -     |     -     |
 
 ### Training commands
 
