@@ -288,6 +288,11 @@ class MMSegInferencer(BaseInferencer):
               If ``return_datasample=False``, it will be the segmentation mask
               with label indice.
         """
+        if return_datasample:
+            if len(preds) == 1:
+                return preds[0]
+            else:
+                return preds
 
         results_dict = {}
 
@@ -308,15 +313,12 @@ class MMSegInferencer(BaseInferencer):
                 output.save(img_path)
             self.num_pred_imgs += 1
 
-        if return_datasample:
-            return preds
-        else:
-            if len(results_dict['predictions']) == 1:
-                results_dict['predictions'] = results_dict['predictions'][0]
-                if visualization is not None:
-                    results_dict['visualization'] = \
-                        results_dict['visualization'][0]
-            return results_dict
+        if len(results_dict['predictions']) == 1:
+            results_dict['predictions'] = results_dict['predictions'][0]
+            if visualization is not None:
+                results_dict['visualization'] = \
+                    results_dict['visualization'][0]
+        return results_dict
 
     def _init_pipeline(self, cfg: ConfigType) -> Compose:
         """Initialize the test pipeline.

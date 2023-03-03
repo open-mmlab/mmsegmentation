@@ -51,7 +51,7 @@ Moreover, you can use `MMSegInferencer` to process a list of images:
 >>> inferencer(images, show=True, wait_time=0.5)
 
 # Save visualized rendering color maps and predicted results
-# out_dir is the directory to save the output results, img_out_dir and pred_out_dir are subdirectories out_dir
+# out_dir is the directory to save the output results, img_out_dir and pred_out_dir are subdirectories of out_dir
 # to save visualized rendering color maps and predicted results
 >>> inferencer(images, out_dir='outputs', img_out_dir='vis', pred_out_dir='pred')
 ```
