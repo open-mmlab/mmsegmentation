@@ -10,18 +10,22 @@ The RITE (Retinal Images vessel Tree Extraction) is a database that enables comp
 
 ### Statistic Information
 
-| dataset name                         | anatomical region | task type    | modality           | num. classes | train/val/test images | release date | License                                                         |
-| ------------------------------------ | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ------------ | --------------------------------------------------------------- |
-| [Rite](https://opendatalab.com/RITE) | head_and_neck     | segmentation | fundus_photography | 2            | 20/-/20               | 2013         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                         | Anatomical Region | Task Type    | Modality           | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ------------------------------------ | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Rite](https://opendatalab.com/RITE) | head_and_neck     | segmentation | fundus_photography | 2            | 20/-/20               | yes/-/yes              | 2013         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-| class name | pixel percentage | Num. images in this category |
-| ---------- | ---------------- | ---------------------------- |
-| background | 91.60            | 40                           |
-| vessel     | 8.40             | 40                           |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |     20     |   91.61    |    -     |    -     |    20     |   91.58   |
+|   vessel   |     20     |    8.39    |    -     |    -     |    20     |   8.42    |
+
+Note:
+
+- `pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
-![rite](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/fundus_photography/rite/rite_dataset.png?raw=true)
+![rite](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/rite/rite_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -43,7 +47,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://opendatalab.com/RITE) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -57,24 +62,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
 
 ### Training commands
