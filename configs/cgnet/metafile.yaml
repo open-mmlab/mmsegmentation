@@ -31,6 +31,7 @@ Models:
     Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
     URL: https://arxiv.org/abs/1811.08201
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
+  Framework: PyTorch
 - Name: cgnet_fcn_4xb8-60k_cityscapes-512x1024
   In Collection: CGNet
   Results:
@@ -53,3 +54,4 @@ Models:
     Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
     URL: https://arxiv.org/abs/1811.08201
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
+  Framework: PyTorch

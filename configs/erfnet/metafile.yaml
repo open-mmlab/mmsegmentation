@@ -31,3 +31,4 @@ Models:
     Title: 'ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation'
     URL: http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/erfnet.py#L321
+  Framework: PyTorch

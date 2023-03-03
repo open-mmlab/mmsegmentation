@@ -31,3 +31,4 @@ Models:
     Title: Fast-SCNN for Semantic Segmentation
     URL: https://arxiv.org/abs/1902.04502
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/fast_scnn.py#L272
+  Framework: PyTorch

@@ -1,6 +1,6 @@
 # ConvNeXt
 
-[A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
+> [A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
 
 ## Introduction
 

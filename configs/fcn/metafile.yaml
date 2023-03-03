@@ -35,6 +35,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb2-40k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -57,6 +58,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb2-40k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -79,6 +81,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb2-40k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -101,6 +104,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r18-d8_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -123,6 +127,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -144,6 +149,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -165,6 +171,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb2-amp-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -187,6 +194,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r18-d8_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -209,6 +217,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -230,6 +239,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -251,6 +261,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r18b-d8_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -273,6 +284,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50b-d8_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -295,6 +307,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101b-d8_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -317,6 +330,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r18b-d8_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -339,6 +353,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50b-d8_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -361,6 +376,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101b-d8_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -383,6 +399,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r50-d16_4xb2-40k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -406,6 +423,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r50-d16_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -428,6 +446,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r50-d16_4xb2-40k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -451,6 +470,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r50-d16_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -473,6 +493,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r101-d16_4xb2-40k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -496,6 +517,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r101-d16_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -518,6 +540,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r101-d16_4xb2-40k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -541,6 +564,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r101-d16_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -563,6 +587,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r50b-d16_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -586,6 +611,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r50b-d16_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -609,6 +635,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r101b-d16_4xb2-80k_cityscapes-512x1024
   In Collection: FCN
   Results:
@@ -632,6 +659,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn-d6_r101b-d16_4xb2-80k_cityscapes-769x769
   In Collection: FCN
   Results:
@@ -655,6 +683,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb4-80k_ade20k-512x512
   In Collection: FCN
   Results:
@@ -677,6 +706,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-80k_ade20k-512x512
   In Collection: FCN
   Results:
@@ -699,6 +729,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb4-160k_ade20k-512x512
   In Collection: FCN
   Results:
@@ -720,6 +751,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-160k_ade20k-512x512
   In Collection: FCN
   Results:
@@ -741,6 +773,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb4-20k_voc12aug-512x512
   In Collection: FCN
   Results:
@@ -763,6 +796,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-20k_voc12aug-512x512
   In Collection: FCN
   Results:
@@ -785,6 +819,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r50-d8_4xb4-40k_voc12aug-512x512
   In Collection: FCN
   Results:
@@ -806,6 +841,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-40k_voc12aug-512x512
   In Collection: FCN
   Results:
@@ -827,6 +863,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-40k_pascal-context-480x480
   In Collection: FCN
   Results:
@@ -848,6 +885,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-80k_pascal-context-480x480
   In Collection: FCN
   Results:
@@ -869,6 +907,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-40k_pascal-context-59-480x480
   In Collection: FCN
   Results:
@@ -890,6 +929,7 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch
 - Name: fcn_r101-d8_4xb4-80k_pascal-context-59-480x480
   In Collection: FCN
   Results:
@@ -911,3 +951,4 @@ Models:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fcn_head.py#L11
+  Framework: PyTorch

@@ -31,6 +31,7 @@ Models:
     Title: Searching for MobileNetV3
     URL: https://arxiv.org/abs/1905.02244
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
+  Framework: PyTorch
 - Name: mobilenet-v3-d8-scratch_lraspp_4xb4-320k_cityscapes-512x1024
   In Collection: LRASPP
   Results:
@@ -53,6 +54,7 @@ Models:
     Title: Searching for MobileNetV3
     URL: https://arxiv.org/abs/1905.02244
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
+  Framework: PyTorch
 - Name: mobilenet-v3-d8-s_lraspp_4xb4-320k_cityscapes-512x1024
   In Collection: LRASPP
   Results:
@@ -75,6 +77,7 @@ Models:
     Title: Searching for MobileNetV3
     URL: https://arxiv.org/abs/1905.02244
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
+  Framework: PyTorch
 - Name: mobilenet-v3-d8-scratch-s_lraspp_4xb4-320k_cityscapes-512x1024
   In Collection: LRASPP
   Results:
@@ -97,3 +100,4 @@ Models:
     Title: Searching for MobileNetV3
     URL: https://arxiv.org/abs/1905.02244
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v3.py#L15
+  Framework: PyTorch

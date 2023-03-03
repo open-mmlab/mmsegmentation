@@ -31,6 +31,7 @@ Models:
     Title: Rethinking BiSeNet For Real-time Semantic Segmentation
     URL: https://arxiv.org/abs/2104.13188
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/stdc.py#L394
+  Framework: PyTorch
 - Name: stdc1_in1k-pre_4xb12-80k_cityscapes-512x1024
   In Collection: STDC
   Results:
@@ -52,6 +53,7 @@ Models:
     Title: Rethinking BiSeNet For Real-time Semantic Segmentation
     URL: https://arxiv.org/abs/2104.13188
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/stdc.py#L394
+  Framework: PyTorch
 - Name: stdc2_4xb12-80k_cityscapes-512x1024
   In Collection: STDC
   Results:
@@ -74,6 +76,7 @@ Models:
     Title: Rethinking BiSeNet For Real-time Semantic Segmentation
     URL: https://arxiv.org/abs/2104.13188
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/stdc.py#L394
+  Framework: PyTorch
 - Name: stdc2_in1k-pre_4xb12-80k_cityscapes-512x1024
   In Collection: STDC
   Results:
@@ -95,3 +98,4 @@ Models:
     Title: Rethinking BiSeNet For Real-time Semantic Segmentation
     URL: https://arxiv.org/abs/2104.13188
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/stdc.py#L394
+  Framework: PyTorch

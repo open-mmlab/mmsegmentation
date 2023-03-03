@@ -1,6 +1,6 @@
 # NonLocal Net
 
-[Non-local Neural Networks](https://arxiv.org/abs/1711.07971)
+> [Non-local Neural Networks](https://arxiv.org/abs/1711.07971)
 
 ## Introduction
 

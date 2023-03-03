@@ -21,6 +21,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_pspnet_4xb2-80k_cityscapes512x1024
   In Collection: PSPNet
   Results:
@@ -43,6 +44,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_deeplabv3_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3
   Results:
@@ -65,6 +67,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -87,6 +90,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_fcn_4xb4-160k_ade20k-512x512
   In Collection: FCN
   Results:
@@ -109,6 +113,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_pspnet_4xb4-160k_ade20k-512x512
   In Collection: PSPNet
   Results:
@@ -131,6 +136,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_deeplabv3_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3
   Results:
@@ -153,6 +159,7 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
 - Name: resnest_s101-d8_deeplabv3plus_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3+
   Results:
@@ -175,3 +182,4 @@ Models:
     Title: 'ResNeSt: Split-Attention Networks'
     URL: https://arxiv.org/abs/2004.08955
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch

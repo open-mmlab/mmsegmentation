@@ -21,6 +21,7 @@ Models:
     Title: A ConvNet for the 2020s
     URL: https://arxiv.org/abs/2201.03545
   Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
 - Name: convnext-small_upernet_8xb2-amp-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -43,6 +44,7 @@ Models:
     Title: A ConvNet for the 2020s
     URL: https://arxiv.org/abs/2201.03545
   Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
 - Name: convnext-base_upernet_8xb2-amp-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -65,6 +67,7 @@ Models:
     Title: A ConvNet for the 2020s
     URL: https://arxiv.org/abs/2201.03545
   Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
 - Name: convnext-base_upernet_8xb2-amp-160k_ade20k-640x640
   In Collection: UPerNet
   Results:
@@ -87,6 +90,7 @@ Models:
     Title: A ConvNet for the 2020s
     URL: https://arxiv.org/abs/2201.03545
   Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
 - Name: convnext-large_upernet_8xb2-amp-160k_ade20k-640x640
   In Collection: UPerNet
   Results:
@@ -109,6 +113,7 @@ Models:
     Title: A ConvNet for the 2020s
     URL: https://arxiv.org/abs/2201.03545
   Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
 - Name: convnext-xlarge_upernet_8xb2-amp-160k_ade20k-640x640
   In Collection: UPerNet
   Results:
@@ -131,3 +136,4 @@ Models:
     Title: A ConvNet for the 2020s
     URL: https://arxiv.org/abs/2201.03545
   Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch

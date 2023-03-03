@@ -1,6 +1,6 @@
 # PSPNet
 
-[Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105)
+> [Pyramid Scene Parsing Network](https://arxiv.org/abs/1612.01105)
 
 ## Introduction
 

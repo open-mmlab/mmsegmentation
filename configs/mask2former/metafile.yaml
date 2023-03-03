@@ -32,6 +32,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_r101_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Results:
@@ -53,6 +54,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-t_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Results:
@@ -74,6 +76,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-s_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Results:
@@ -95,6 +98,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Results:
@@ -116,6 +120,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024
   In Collection: Mask2Former
   Results:
@@ -137,6 +142,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_r50_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Results:
@@ -158,6 +164,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_r101_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Results:
@@ -179,6 +186,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-t_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Results:
@@ -200,6 +208,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-s_8xb2-160k_ade20k-512x512
   In Collection: Mask2Former
   Results:
@@ -221,6 +230,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640
   In Collection: Mask2Former
   Results:
@@ -242,6 +252,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640
   In Collection: Mask2Former
   Results:
@@ -263,6 +274,7 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch
 - Name: mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640
   In Collection: Mask2Former
   Results:
@@ -284,3 +296,4 @@ Models:
     Title: Masked-attention Mask Transformer for Universal Image Segmentation
     URL: https://arxiv.org/abs/2112.01527
   Code: https://github.com/open-mmlab/mmdetection/blob/3.x/mmdet/models/dense_heads/mask2former_head.py
+  Framework: PyTorch

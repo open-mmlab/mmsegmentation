@@ -1,6 +1,6 @@
 # Fast-SCNN
 
-[Fast-SCNN for Semantic Segmentation](https://arxiv.org/abs/1902.04502)
+> [Fast-SCNN for Semantic Segmentation](https://arxiv.org/abs/1902.04502)
 
 ## Introduction
 

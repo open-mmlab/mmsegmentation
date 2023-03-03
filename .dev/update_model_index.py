@@ -62,9 +62,10 @@ def get_model_info(md_file: str, config_dir: str,
                 i += 1
                 continue
             # get paper name and url
-            if re.match(r'\[.*\]+\([a-zA-Z]+://[^\s]*\)', line):
-                paper_name = line.split(']')[0].split('[')[1]
-                paper_url = line.split(')')[0].split('(')[1]
+            if re.match(r'> \[.*\]+\([a-zA-Z]+://[^\s]*\)', line):
+                paper_info = line.split('](')
+                paper_name = paper_info[0][paper_info[0].index('[') + 1:]
+                paper_url = paper_info[1][:len(paper_info[1]) - 1]
 
             # get code info
             if 'Code Snippet' in line:
@@ -150,11 +151,12 @@ def get_model_info(md_file: str, config_dir: str,
                         r'[^\s]*', values[keys.index('Backbone')].strip())[0]
                     archs = [backone] + method
                     collection_name = method[0]
+                    config_path = osp.join('configs',
+                                           config_dir.split('/')[-1],
+                                           config_name)
                     model = {
-                        'Name':
-                        model_name,
-                        'In Collection':
-                        collection_name,
+                        'Name': model_name,
+                        'In Collection': collection_name,
                         'Results': {
                             'Task': 'Semantic Segmentation',
                             'Dataset': current_dataset,
@@ -162,24 +164,20 @@ def get_model_info(md_file: str, config_dir: str,
                                 keys[ss_idx]: float(values[ss_idx])
                             }
                         },
-                        'Config':
-                        osp.join('configs',
-                                 config_dir.split('/')[-1], config_name),
+                        'Config': config_path,
                         'Metadata': {
                             'Training Data': current_dataset,
                             'Batch Size': batch_size,
                             'Architecture': archs
                         },
-                        'Weights':
-                        weight_url,
-                        'Training log':
-                        log_url,
+                        'Weights': weight_url,
+                        'Training log': log_url,
                         'Paper': {
                             'Title': paper_name,
-                            'URL': paper_url,
+                            'URL': paper_url
                         },
-                        'Code':
-                        code_url,
+                        'Code': code_url,
+                        'Framework': 'PyTorch'
                     }
                     if ms_idx != -1 and values[ms_idx] != '-' and values[
                             ms_idx] != '':

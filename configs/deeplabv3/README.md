@@ -1,6 +1,6 @@
 # DeepLabV3
 
-[Rethinking atrous convolution for semantic image segmentation](https://arxiv.org/abs/1706.05587)
+> [Rethinking atrous convolution for semantic image segmentation](https://arxiv.org/abs/1706.05587)
 
 ## Introduction
 

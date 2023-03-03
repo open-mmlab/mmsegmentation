@@ -1,6 +1,6 @@
 # STDC
 
-[Rethinking BiSeNet For Real-time Semantic Segmentation](https://arxiv.org/abs/2104.13188)
+> [Rethinking BiSeNet For Real-time Semantic Segmentation](https://arxiv.org/abs/2104.13188)
 
 ## Introduction
 

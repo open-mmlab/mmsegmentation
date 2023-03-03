@@ -32,6 +32,7 @@ Models:
     Title: Panoptic Feature Pyramid Networks
     URL: https://arxiv.org/abs/1901.02446
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch
 - Name: fpn_r101_4xb2-80k_cityscapes-512x1024
   In Collection: FPN
   Results:
@@ -54,6 +55,7 @@ Models:
     Title: Panoptic Feature Pyramid Networks
     URL: https://arxiv.org/abs/1901.02446
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch
 - Name: fpn_r50_4xb4-160k_ade20k-512x512
   In Collection: FPN
   Results:
@@ -76,6 +78,7 @@ Models:
     Title: Panoptic Feature Pyramid Networks
     URL: https://arxiv.org/abs/1901.02446
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch
 - Name: fpn_r101_4xb4-160k_ade20k-512x512
   In Collection: FPN
   Results:
@@ -98,3 +101,4 @@ Models:
     Title: Panoptic Feature Pyramid Networks
     URL: https://arxiv.org/abs/1901.02446
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch

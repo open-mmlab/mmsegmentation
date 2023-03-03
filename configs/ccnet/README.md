@@ -1,6 +1,6 @@
 # CCNet
 
-[CCNet: Criss-Cross Attention for Semantic Segmentation](https://arxiv.org/abs/1811.11721)
+> [CCNet: Criss-Cross Attention for Semantic Segmentation](https://arxiv.org/abs/1811.11721)
 
 ## Introduction
 

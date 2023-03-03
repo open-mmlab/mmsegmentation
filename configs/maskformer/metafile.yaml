@@ -33,6 +33,7 @@ Models:
       Segmentation'
     URL: https://arxiv.org/abs/2107.06278
   Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch
 - Name: maskformer_r101-d32_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Results:
@@ -55,6 +56,7 @@ Models:
       Segmentation'
     URL: https://arxiv.org/abs/2107.06278
   Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch
 - Name: maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Results:
@@ -77,6 +79,7 @@ Models:
       Segmentation'
     URL: https://arxiv.org/abs/2107.06278
   Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch
 - Name: maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512
   In Collection: MaskFormer
   Results:
@@ -99,3 +102,4 @@ Models:
       Segmentation'
     URL: https://arxiv.org/abs/2107.06278
   Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch

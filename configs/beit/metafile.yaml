@@ -21,6 +21,7 @@ Models:
     Title: 'BEiT: BERT Pre-Training of Image Transformers'
     URL: https://arxiv.org/abs/2106.08254
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/backbones/beit.py#1404
+  Framework: PyTorch
 - Name: beit-large_upernet_8xb1-amp-160k_ade20k-640x640
   In Collection: UPerNet
   Results:
@@ -43,3 +44,4 @@ Models:
     Title: 'BEiT: BERT Pre-Training of Image Transformers'
     URL: https://arxiv.org/abs/2106.08254
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/backbones/beit.py#1404
+  Framework: PyTorch

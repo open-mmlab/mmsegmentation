@@ -36,6 +36,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-40k_drive-64x64
   In Collection: UNet
   Results:
@@ -59,6 +60,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_drive-64x64
   In Collection: UNet
   Results:
@@ -82,6 +84,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-40k_drive-64x64
   In Collection: UNet
   Results:
@@ -105,6 +108,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_drive-64x64
   In Collection: UNet
   Results:
@@ -128,6 +132,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-40k_drive-64x64
   In Collection: UNet
   Results:
@@ -151,6 +156,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_drive-64x64
   In Collection: UNet
   Results:
@@ -174,6 +180,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-40k_stare-128x128
   In Collection: UNet
   Results:
@@ -197,6 +204,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_stare-128x128
   In Collection: UNet
   Results:
@@ -220,6 +228,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-40k_stare-128x128
   In Collection: UNet
   Results:
@@ -243,6 +252,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_stare-128x128
   In Collection: UNet
   Results:
@@ -266,6 +276,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-40k_stare-128x128
   In Collection: UNet
   Results:
@@ -289,6 +300,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_stare-128x128
   In Collection: UNet
   Results:
@@ -312,6 +324,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-40k_chase-db1-128x128
   In Collection: UNet
   Results:
@@ -335,6 +348,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128
   In Collection: UNet
   Results:
@@ -358,6 +372,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-40k_chase-db1-128x128
   In Collection: UNet
   Results:
@@ -381,6 +396,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128
   In Collection: UNet
   Results:
@@ -404,6 +420,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet_s5-d16_deeplabv3_4xb4-40k_chase-db1-128x128
   In Collection: UNet
   Results:
@@ -427,6 +444,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128
   In Collection: UNet
   Results:
@@ -450,6 +468,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-40k_hrf-256x256
   In Collection: UNet
   Results:
@@ -473,6 +492,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256
   In Collection: UNet
   Results:
@@ -496,6 +516,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-40k_hrf-256x256
   In Collection: UNet
   Results:
@@ -519,6 +540,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256
   In Collection: UNet
   Results:
@@ -542,6 +564,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-40k_hrf-256x256
   In Collection: UNet
   Results:
@@ -565,6 +588,7 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
 - Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256
   In Collection: UNet
   Results:
@@ -588,3 +612,4 @@ Models:
     Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
     URL: https://arxiv.org/abs/1505.04597
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch

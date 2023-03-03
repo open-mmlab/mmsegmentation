@@ -32,6 +32,7 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch
 - Name: knet-s3_r50-d8_pspnet_8xb2-adamw-80k_ade20k-512x512
   In Collection: KNet
   Results:
@@ -55,6 +56,7 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch
 - Name: knet-s3_r50-d8_deeplabv3_8xb2-adamw-80k_ade20k-512x512
   In Collection: KNet
   Results:
@@ -78,6 +80,7 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch
 - Name: knet-s3_r50-d8_upernet_8xb2-adamw-80k_ade20k-512x512
   In Collection: KNet
   Results:
@@ -101,6 +104,7 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch
 - Name: knet-s3_swin-t_upernet_8xb2-adamw-80k_ade20k-512x512
   In Collection: KNet
   Results:
@@ -124,6 +128,7 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch
 - Name: knet-s3_swin-l_upernet_8xb2-adamw-80k_ade20k-512x512
   In Collection: KNet
   Results:
@@ -147,6 +152,7 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch
 - Name: knet-s3_swin-l_upernet_8xb2-adamw-80k_ade20k-640x640
   In Collection: KNet
   Results:
@@ -170,3 +176,4 @@ Models:
     Title: 'K-Net: Towards Unified Image Segmentation'
     URL: https://arxiv.org/abs/2106.14855
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/decode_heads/knet_head.py#L392
+  Framework: PyTorch

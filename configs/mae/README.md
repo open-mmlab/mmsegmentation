@@ -1,6 +1,6 @@
 # MAE
 
-[Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377)
+> [Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377)
 
 ## Introduction
 

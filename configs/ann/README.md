@@ -1,6 +1,6 @@
 # ANN
 
-[Asymmetric Non-local Neural Networks for Semantic Segmentation](https://arxiv.org/abs/1908.07678)
+> [Asymmetric Non-local Neural Networks for Semantic Segmentation](https://arxiv.org/abs/1908.07678)
 
 ## Introduction
 

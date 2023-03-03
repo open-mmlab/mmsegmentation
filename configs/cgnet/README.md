@@ -1,6 +1,6 @@
 # CGNet
 
-[CGNet: A Light-weight Context Guided Network for Semantic Segmentation](https://arxiv.org/abs/1811.08201)
+> [CGNet: A Light-weight Context Guided Network for Semantic Segmentation](https://arxiv.org/abs/1811.08201)
 
 ## Introduction
 

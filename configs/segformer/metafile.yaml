@@ -34,6 +34,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b1_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Results:
@@ -57,6 +58,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b2_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Results:
@@ -80,6 +82,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b3_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Results:
@@ -103,6 +106,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b4_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Results:
@@ -126,6 +130,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b5_8xb2-160k_ade20k-512x512
   In Collection: Segformer
   Results:
@@ -149,6 +154,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b5_8xb2-160k_ade20k-640x640
   In Collection: Segformer
   Results:
@@ -172,6 +178,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b0_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Results:
@@ -195,6 +202,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b1_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Results:
@@ -218,6 +226,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b2_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Results:
@@ -241,6 +250,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b3_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Results:
@@ -264,6 +274,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b4_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Results:
@@ -287,6 +298,7 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
 - Name: segformer_mit-b5_8xb1-160k_cityscapes-1024x1024
   In Collection: Segformer
   Results:
@@ -310,3 +322,4 @@ Models:
       Transformers'
     URL: https://arxiv.org/abs/2105.15203
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch

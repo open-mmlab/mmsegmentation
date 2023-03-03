@@ -1,6 +1,6 @@
 # EMANet
 
-[Expectation-Maximization Attention Networks for Semantic Segmentation](https://arxiv.org/abs/1907.13426)
+> [Expectation-Maximization Attention Networks for Semantic Segmentation](https://arxiv.org/abs/1907.13426)
 
 ## Introduction
 

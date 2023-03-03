@@ -31,6 +31,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r18-d8_4xb2-160k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -52,6 +53,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r18-d8-in1k-pre_4xb2-80k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -74,6 +76,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r18-d8-in1k-pre_4xb2-160k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -96,6 +99,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r50-d8_4xb2-80k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -118,6 +122,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r50-d8_4xb2-160k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -139,6 +144,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r50-d8-in1k-pre_4xb2-80k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -161,6 +167,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r50-d8-in1k-pre_4xb2-160k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -183,6 +190,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r101-d8_4xb2-80k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -205,6 +213,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r101-d8_4xb2-160k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -226,6 +235,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r101-d8-in1k-pre_4xb2-80k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -248,6 +258,7 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
 - Name: icnet_r101-d8-in1k-pre_4xb2-160k_cityscapes-832x832
   In Collection: ICNet
   Results:
@@ -270,3 +281,4 @@ Models:
     Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
     URL: https://arxiv.org/abs/1704.08545
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch

@@ -1,6 +1,6 @@
 # ICNet
 
-[ICNet for Real-time Semantic Segmentation on High-resolution Images](https://arxiv.org/abs/1704.08545)
+> [ICNet for Real-time Semantic Segmentation on High-resolution Images](https://arxiv.org/abs/1704.08545)
 
 ## Introduction
 

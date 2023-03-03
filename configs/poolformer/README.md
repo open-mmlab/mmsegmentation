@@ -1,6 +1,6 @@
 # PoolFormer
 
-[MetaFormer is Actually What You Need for Vision](https://arxiv.org/abs/2111.11418)
+> [MetaFormer is Actually What You Need for Vision](https://arxiv.org/abs/2111.11418)
 
 ## Introduction
 

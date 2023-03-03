@@ -21,3 +21,4 @@ Models:
     Title: Masked Autoencoders Are Scalable Vision Learners
     URL: https://arxiv.org/abs/2111.06377
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.24.0/mmseg/models/backbones/mae.py#L46
+  Framework: PyTorch

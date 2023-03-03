@@ -33,6 +33,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_aspp_4xb2-80k_cityscapes-512x1024
   In Collection: FastFCN
   Results:
@@ -56,6 +57,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_psp_4xb2-80k_cityscapes-512x1024
   In Collection: FastFCN
   Results:
@@ -79,6 +81,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_psp_4xb2-80k_cityscapes-512x1024
   In Collection: FastFCN
   Results:
@@ -102,6 +105,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_enc_4xb2-80k_cityscapes-512x1024
   In Collection: FastFCN
   Results:
@@ -125,6 +129,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_enc_4xb2-80k_cityscapes-512x1024
   In Collection: FastFCN
   Results:
@@ -148,6 +153,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_aspp_4xb4-80k_ade20k-512x512
   In Collection: FastFCN
   Results:
@@ -171,6 +177,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_aspp_4xb4-160k_ade20k-512x512
   In Collection: FastFCN
   Results:
@@ -193,6 +200,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_psp_4xb4-80k_ade20k-512x512
   In Collection: FastFCN
   Results:
@@ -216,6 +224,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_psp_4xb4-160k_ade20k-512x512
   In Collection: FastFCN
   Results:
@@ -238,6 +247,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_enc_4xb4-80k_ade20k-512x512
   In Collection: FastFCN
   Results:
@@ -261,6 +271,7 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch
 - Name: fastfcn_r50-d32_jpu_enc_4xb4-160k_ade20k-512x512
   In Collection: FastFCN
   Results:
@@ -283,3 +294,4 @@ Models:
     Title: 'FastFCN: Rethinking Dilated Convolution in the Backbone for Semantic Segmentation'
     URL: https://arxiv.org/abs/1903.11816
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/jpu.py#L12
+  Framework: PyTorch

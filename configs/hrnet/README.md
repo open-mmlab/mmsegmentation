@@ -1,6 +1,6 @@
 # HRNet
 
-[Deep High-Resolution Representation Learning for Human Pose Estimation](https://arxiv.org/abs/1908.07919)
+> [Deep High-Resolution Representation Learning for Human Pose Estimation](https://arxiv.org/abs/1908.07919)
 
 ## Introduction
 

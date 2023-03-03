@@ -1,6 +1,6 @@
 # PointRend
 
-[PointRend: Image Segmentation as Rendering](https://arxiv.org/abs/1912.08193)
+> [PointRend: Image Segmentation as Rendering](https://arxiv.org/abs/1912.08193)
 
 ## Introduction
 

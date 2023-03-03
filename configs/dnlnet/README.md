@@ -1,6 +1,6 @@
 # DNLNet
 
-[Disentangled Non-Local Neural Networks](https://arxiv.org/abs/2006.06668)
+> [Disentangled Non-Local Neural Networks](https://arxiv.org/abs/2006.06668)
 
 ## Introduction
 

@@ -21,6 +21,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -43,6 +44,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -65,6 +67,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-s16_upernet_8xb2-80k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -87,6 +90,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-s16_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -109,6 +113,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-s16_mln_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -131,6 +136,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-s16-ln_mln_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -153,6 +159,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-b16_upernet_8xb2-80k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -175,6 +182,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-b16_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -197,6 +205,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-b16_mln_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -219,6 +228,7 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
 - Name: vit_deit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512
   In Collection: UPerNet
   Results:
@@ -241,3 +251,4 @@ Models:
     Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
     URL: https://arxiv.org/pdf/2010.11929.pdf
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch

@@ -1,6 +1,6 @@
 # EncNet
 
-[Context Encoding for Semantic Segmentation](https://arxiv.org/abs/1803.08904)
+> [Context Encoding for Semantic Segmentation](https://arxiv.org/abs/1803.08904)
 
 ## Introduction
 

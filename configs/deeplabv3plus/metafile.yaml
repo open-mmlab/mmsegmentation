@@ -39,6 +39,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb2-40k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -61,6 +62,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb2-40k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -83,6 +85,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb2-40k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -105,6 +108,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -127,6 +131,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -148,6 +153,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -169,6 +175,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb2-amp-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -191,6 +198,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18-d8_4xb2-80k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -213,6 +221,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb2-80k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -234,6 +243,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb2-80k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -255,6 +265,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: ddeeplabv3plus_r101-d16-mg124_4xb2-40k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -277,6 +288,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d16-mg124_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -299,6 +311,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18b-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -321,6 +334,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50b-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -343,6 +357,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101b-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DeepLabV3+
   Results:
@@ -365,6 +380,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18b-d8_4xb2-80k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -387,6 +403,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50b-d8_4xb2-80k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -409,6 +426,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101b-d8_4xb2-80k_cityscapes-769x769
   In Collection: DeepLabV3+
   Results:
@@ -431,6 +449,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-80k_ade20k-512x512
   In Collection: DeepLabV3+
   Results:
@@ -453,6 +472,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3+
   Results:
@@ -475,6 +495,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3+
   Results:
@@ -496,6 +517,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-160k_ade20k-512x512
   In Collection: DeepLabV3+
   Results:
@@ -517,6 +539,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-20k_voc12aug-512x512
   In Collection: DeepLabV3+
   Results:
@@ -539,6 +562,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-20k_voc12aug-512x512
   In Collection: DeepLabV3+
   Results:
@@ -561,6 +585,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-40k_voc12aug-512x512
   In Collection: DeepLabV3+
   Results:
@@ -582,6 +607,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-40k_voc12aug-512x512
   In Collection: DeepLabV3+
   Results:
@@ -603,6 +629,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-40k_pascal-context-480x480
   In Collection: DeepLabV3+
   Results:
@@ -624,6 +651,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-80k_pascal-context-480x480
   In Collection: DeepLabV3+
   Results:
@@ -645,6 +673,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-40k_pascal-context-59-480x480
   In Collection: DeepLabV3+
   Results:
@@ -666,6 +695,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-80k_pascal-context-59-480x480
   In Collection: DeepLabV3+
   Results:
@@ -687,6 +717,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18-d8_4xb4-80k_loveda-512x512
   In Collection: DeepLabV3+
   Results:
@@ -709,6 +740,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-80k_loveda-512x512
   In Collection: DeepLabV3+
   Results:
@@ -731,6 +763,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-80k_loveda-512x512
   In Collection: DeepLabV3+
   Results:
@@ -753,6 +786,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18-d8_4xb4-80k_potsdam-512x512
   In Collection: DeepLabV3+
   Results:
@@ -775,6 +809,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-80k_potsdam-512x512
   In Collection: DeepLabV3+
   Results:
@@ -797,6 +832,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-80k_potsdam-512x512
   In Collection: DeepLabV3+
   Results:
@@ -819,6 +855,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18-d8_4xb4-80k_vaihingen-512x512
   In Collection: DeepLabV3+
   Results:
@@ -841,6 +878,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-80k_vaihingen-512x512
   In Collection: DeepLabV3+
   Results:
@@ -863,6 +901,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r101-d8_4xb4-80k_vaihingen-512x512
   In Collection: DeepLabV3+
   Results:
@@ -885,6 +924,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896
   In Collection: DeepLabV3+
   Results:
@@ -907,6 +947,7 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
 - Name: deeplabv3plus_r50-d8_4xb4-80k_isaid-896x896
   In Collection: DeepLabV3+
   Results:
@@ -929,3 +970,4 @@ Models:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch

@@ -1,6 +1,6 @@
 # ISANet
 
-[Interlaced Sparse Self-Attention for Semantic Segmentation](https://arxiv.org/abs/1907.12273)
+> [Interlaced Sparse Self-Attention for Semantic Segmentation](https://arxiv.org/abs/1907.12273)
 
 ## Introduction
 

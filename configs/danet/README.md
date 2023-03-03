@@ -1,6 +1,6 @@
 # DANet
 
-[Dual Attention Network for Scene Segmentation](https://arxiv.org/abs/1809.02983)
+> [Dual Attention Network for Scene Segmentation](https://arxiv.org/abs/1809.02983)
 
 ## Introduction
 

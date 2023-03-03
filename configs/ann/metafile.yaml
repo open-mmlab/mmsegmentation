@@ -33,6 +33,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb2-40k_cityscapes-512x1024
   In Collection: ANN
   Results:
@@ -55,6 +56,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb2-40k_cityscapes-769x769
   In Collection: ANN
   Results:
@@ -77,6 +79,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb2-40k_cityscapes-769x769
   In Collection: ANN
   Results:
@@ -99,6 +102,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb2-80k_cityscapes-512x1024
   In Collection: ANN
   Results:
@@ -120,6 +124,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb2-80k_cityscapes-512x1024
   In Collection: ANN
   Results:
@@ -141,6 +146,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb2-80k_cityscapes-769x769
   In Collection: ANN
   Results:
@@ -162,6 +168,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb2-80k_cityscapes-769x769
   In Collection: ANN
   Results:
@@ -183,6 +190,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb4-80k_ade20k-512x512
   In Collection: ANN
   Results:
@@ -205,6 +213,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb4-80k_ade20k-512x512
   In Collection: ANN
   Results:
@@ -227,6 +236,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb4-160k_ade20k-512x512
   In Collection: ANN
   Results:
@@ -248,6 +258,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb4-160k_ade20k-512x512
   In Collection: ANN
   Results:
@@ -269,6 +280,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb4-20k_voc12aug-512x512
   In Collection: ANN
   Results:
@@ -291,6 +303,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb4-20k_voc12aug-512x512
   In Collection: ANN
   Results:
@@ -313,6 +326,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r50-d8_4xb4-40k_voc12aug-512x512
   In Collection: ANN
   Results:
@@ -334,6 +348,7 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
 - Name: ann_r101-d8_4xb4-40k_voc12aug-512x512
   In Collection: ANN
   Results:
@@ -355,3 +370,4 @@ Models:
     Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1908.07678
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch

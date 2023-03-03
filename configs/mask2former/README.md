@@ -1,6 +1,6 @@
 # Mask2Former
 
-[Masked-attention Mask Transformer for Universal Image Segmentation](https://arxiv.org/abs/2112.01527)
+> [Masked-attention Mask Transformer for Universal Image Segmentation](https://arxiv.org/abs/2112.01527)
 
 ## Introduction
 

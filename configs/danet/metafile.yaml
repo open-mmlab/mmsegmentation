@@ -32,6 +32,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb2-40k_cityscapes-512x1024
   In Collection: DANet
   Results:
@@ -53,6 +54,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb2-40k_cityscapes-769x769
   In Collection: DANet
   Results:
@@ -75,6 +77,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb2-40k_cityscapes-769x769
   In Collection: DANet
   Results:
@@ -97,6 +100,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DANet
   Results:
@@ -117,6 +121,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb2-80k_cityscapes-512x1024
   In Collection: DANet
   Results:
@@ -137,6 +142,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb2-80k_cityscapes-769x769
   In Collection: DANet
   Results:
@@ -158,6 +164,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb2-80k_cityscapes-769x769
   In Collection: DANet
   Results:
@@ -179,6 +186,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb4-80k_ade20k-512x512
   In Collection: DANet
   Results:
@@ -201,6 +209,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb4-80k_ade20k-512x512
   In Collection: DANet
   Results:
@@ -223,6 +232,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb4-160k_ade20k-512x512
   In Collection: DANet
   Results:
@@ -244,6 +254,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb4-160k_ade20k-512x512
   In Collection: DANet
   Results:
@@ -265,6 +276,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb4-20k_voc12aug-512x512
   In Collection: DANet
   Results:
@@ -287,6 +299,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb4-20k_voc12aug-512x512
   In Collection: DANet
   Results:
@@ -309,6 +322,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r50-d8_4xb4-40k_voc12aug-512x512
   In Collection: DANet
   Results:
@@ -330,6 +344,7 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch
 - Name: danet_r101-d8_4xb4-40k_voc12aug-512x512
   In Collection: DANet
   Results:
@@ -351,3 +366,4 @@ Models:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/da_head.py#L76
+  Framework: PyTorch

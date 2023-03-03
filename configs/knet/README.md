@@ -1,6 +1,6 @@
 # K-Net
 
-[K-Net: Towards Unified Image Segmentation](https://arxiv.org/abs/2106.14855)
+> [K-Net: Towards Unified Image Segmentation](https://arxiv.org/abs/2106.14855)
 
 ## Introduction
 

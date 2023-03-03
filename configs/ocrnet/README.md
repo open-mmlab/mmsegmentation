@@ -1,6 +1,6 @@
 # OCRNet
 
-[Object-Contextual Representations for Semantic Segmentation](https://arxiv.org/abs/1909.11065)
+> [Object-Contextual Representations for Semantic Segmentation](https://arxiv.org/abs/1909.11065)
 
 ## Introduction
 
