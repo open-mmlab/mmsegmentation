@@ -12,18 +12,18 @@ The 2019 novel coronavirus (COVID-19) presents several unique features [Fang, 20
 
 ### Statistic Information
 
-| dataset name                                                           | anatomical region | task type    | modality | num. classes | train/val/test images | release date | License                                                         |
-| ---------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------ | --------------------- | ------------ | --------------------------------------------------------------- |
-| [Covid-19-ct-cxr](https://github.com/ieee8023/covid-chestxray-dataset) | thorax            | segmentation | x_ray    | 2            | 205/-/714             | 2021         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                                                           | Anatomical Region | Task Type    | Modality | Nnum. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release date | License                                                         |
+| ---------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------- | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Covid-19-ct-cxr](https://github.com/ieee8023/covid-chestxray-dataset) | thorax            | segmentation | x_ray    | 2             | 205/-/714             | yes/-/no               | 2021         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-| class name | pixel percentage | Num. images in this category |
-| ---------- | ---------------- | ---------------------------- |
-| background | 72.84            | 205                          |
-| lung       | 27.16            | 205                          |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    205     |   72.84    |    -     |    -     |     -     |     -     |
+|    lung    |    205     |   27.16    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![cov19ctcxr](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/x_ray/covid_19_ct_cxr/covid_19_ct_cxr_dataset.png?raw=true)
+![cov19ctcxr](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/x_ray/covid_19_ct_cxr/covid_19_ct_cxr_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -45,7 +45,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://github.com/ieee8023/covid-chestxray-dataset) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -59,25 +60,28 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    164     |   72.88    |    41    |  72.69   |     -     |     -     |
+|    lung    |    164     |   27.12    |    41    |  27.31   |     -     |     -     |
 
 ### Training commands
 
