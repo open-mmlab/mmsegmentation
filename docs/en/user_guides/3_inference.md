@@ -56,7 +56,7 @@ Moreover, you can use `MMSegInferencer` to process a list of images:
 >>> inferencer(images, out_dir='outputs', img_out_dir='vis', pred_out_dir='pred')
 ```
 
-There are 2 kinds of inferencer outputs, and one is `dict` type the other is [`SegDataSample`](../advanced_guides/structures.md) type
+There are 2 kinds of inferencer outputs, and one is `dict` type the other is [`SegDataSample`](../advanced_guides/structures.md)(or list of it) type
 
 ```
 result = inferencer('demo/demo.png')
