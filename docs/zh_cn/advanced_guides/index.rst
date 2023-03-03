@@ -19,7 +19,7 @@
 .. toctree::
    :maxdepth: 1
 
-   add_modules.md
+   add_models.md
    add_datasets.md
    add_transforms.md
    add_metrics.md

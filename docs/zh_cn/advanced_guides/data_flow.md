@@ -43,7 +43,7 @@ dict(
 
 ### 数据预处理器到模型
 
-虽然在[上面的图](#数据流概述)中分开绘制了数据预处理器和模型，但数据预处理器是模型的一部分，因此可以在[模型教程](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html)中找到数据预处理器章节。 ***（[中文链接待更新](https://mmsegmentation.readthedocs.io/zh_CN/dev-1.x/advanced_guides/models.html)）***
+虽然在[上面的图](##数据流概述)中分开绘制了数据预处理器和模型，但数据预处理器是模型的一部分，因此可以在[模型教程](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/models.html)中找到数据预处理器章节。 ***（[中文链接待更新](https://mmsegmentation.readthedocs.io/zh_CN/dev-1.x/advanced_guides/models.html)）***
 
 数据预处理器的返回值是一个包含 `inputs` 和 `data_samples` 的字典，其中 `inputs` 是批处理图像的 4D 张量，`data_samples` 中添加了一些用于数据预处理的额外元信息。当传递给网络时，字典将被解包为两个值。 以下伪代码展示了数据预处理器的返回值和模型的输入值。
 
