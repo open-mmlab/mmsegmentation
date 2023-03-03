@@ -11,18 +11,18 @@ with various backgrounds. The images (shown in Figure 1) are randomly split into
 
 ### Information Statistics
 
-| dataset_name                                  | anatomical region | task type    | modality       | number of categories | train/val/test image | release date | License                                                       |
-| --------------------------------------------- | ----------------- | ------------ | -------------- | -------------------- | -------------------- | ------------ | ------------------------------------------------------------- |
-| [fusc2021](https://fusc.grand-challenge.org/) | lower limb        | segmentation | histopathology | 2                    | 810/200/200          | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dataset Name                                  | Anatomical Region | Task Type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                       |
+| --------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
+| [fusc2021](https://fusc.grand-challenge.org/) | lower limb        | segmentation | histopathology | 2            | 810/200/200           | yes/yes/no             | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
-| class_name | Percentage of pixels（%） | Number of pictures in this category |
-| ---------- | ------------------------- | ----------------------------------- |
-| background | 98.74                     | 1010                                |
-| wound      | 1.26                      | 986                                 |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    810     |   98.71    |   200    |  98.78   |     -     |     -     |
+|   wound    |    791     |    1.29    |   195    |   1.22   |     -     |     -     |
 
 ### Visualization
 
-![fusc2021](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/histopathology/fusc2021/fusc2021_dataset.png?raw=true)
+![fusc2021](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/fusc2021/fusc2021_dataset.png?raw=true)
 
 <!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
 
@@ -46,7 +46,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://fusc.grand-challenge.org/) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -60,24 +61,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
 
 ### Training commands
