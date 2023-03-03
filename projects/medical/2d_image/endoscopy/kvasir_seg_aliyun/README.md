@@ -12,18 +12,22 @@ The Kvasir-SEG dataset is based on the previous Kvasir dataset, which is the fir
 
 ### Information Statistics
 
-| dataset_name                                           | anatomical region | task type    | modality  | number of categories | train/val/test image | release date | License                                                   |
-| ------------------------------------------------------ | ----------------- | ------------ | --------- | -------------------- | -------------------- | ------------ | --------------------------------------------------------- |
-| [kvasir-seg](https://tianchi.aliyun.com/dataset/84385) | abdomen           | segmentation | endoscopy | 2                    | 1000/-/-             | 2020         | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| Dataset Name                                           | Anatomical Region | Task Type    | Modality  | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                   |
+| ------------------------------------------------------ | ----------------- | ------------ | --------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------- |
+| [kvasir-seg](https://tianchi.aliyun.com/dataset/84385) | abdomen           | segmentation | endoscopy | 2            | 1000/-/-              | yes/-/-                | 2020         | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 
-| class_name | Percentage of pixels（%） | Number of pictures in this category |
-| ---------- | ------------------------- | ----------------------------------- |
-| background | 84.72                     | 1000                                |
-| polyp      | 15.28                     | 1000                                |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    1000    |   84.72    |    -     |    -     |     -     |     -     |
+|   polyp    |    1000    |   15.28    |    -     |    -     |     -     |     -     |
+
+Note:
+
+- `pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
-![kvasir_seg_aliyun](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/endoscopy_images/kvasir_seg_aliyun/kvasir_seg_aliyun_dataset.png?raw=true)
+![kvasir_seg_aliyun](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/endoscopy_images/kvasir_seg_aliyun/kvasir_seg_aliyun_dataset.png?raw=true)
 
 <!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
 
@@ -47,7 +51,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://tianchi.aliyun.com/dataset/84385) and decompression data to path 'data/.'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -61,25 +66,28 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
+  │   │   │   │   |   │   │   │   └── xxx.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    800     |   84.66    |   200    |  84.94   |     -     |     -     |
+|   polyp    |    800     |   15.34    |   200    |  15.06   |     -     |     -     |
 
 ### Training commands
 
