@@ -4,7 +4,7 @@ from typing import Tuple, Union
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import ConvModule, build_activation_layer
+from mmcv.cnn import ConvModule
 from mmengine.model import BaseModule
 from mmengine.runner import CheckpointLoader
 from torch import Tensor
@@ -18,18 +18,18 @@ class PagFM(BaseModule):
     """Pixel-attention-guided fusion module.
 
     Args:
-         in_channels (int): The number of input channels.
-         channels (int): The number of channels.
-         after_relu (bool): Whether to use ReLU before attention.
-             Default: False.
-         with_channel (bool): Whether to use channel attention.
-             Default: False.
-         upsample_mode (str): The mode of upsample. Default: 'bilinear'.
-         norm_cfg (dict): Config dict for normalization layer.
-             Default: dict(type='BN').
-         act_cfg (dict): Config dict for activation layer.
-             Default: dict(typ='ReLU', inplace=True).
-         init_cfg (dict): Config dict for initialization. Default: None.
+        in_channels (int): The number of input channels.
+        channels (int): The number of channels.
+        after_relu (bool): Whether to use ReLU before attention.
+            Default: False.
+        with_channel (bool): Whether to use channel attention.
+            Default: False.
+        upsample_mode (str): The mode of upsample. Default: 'bilinear'.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(typ='ReLU', inplace=True).
+        init_cfg (dict): Config dict for initialization. Default: None.
     """
 
     def __init__(self,
@@ -53,9 +53,18 @@ class PagFM(BaseModule):
             self.up = ConvModule(
                 channels, in_channels, 1, norm_cfg=norm_cfg, act_cfg=None)
         if after_relu:
-            self.relu = build_activation_layer(act_cfg)
+            self.relu = MODELS.build(act_cfg)
 
     def forward(self, x_p: Tensor, x_i: Tensor) -> Tensor:
+        """Forward function.
+
+        Args:
+            x_p (Tensor): The featrue map from P branch.
+            x_i (Tensor): The featrue map from I branch.
+
+        Returns:
+            Tensor: The feature map with pixel-attention-guided fusion.
+        """
         if self.after_relu:
             x_p = self.relu(x_p)
             x_i = self.relu(x_i)
@@ -88,17 +97,17 @@ class Bag(BaseModule):
     """Boundary-attention-guided fusion module.
 
     Args:
-         in_channels (int): The number of input channels.
-         out_channels (int): The number of output channels.
-         kernel_size (int): The kernel size of the convolution. Default: 3.
-         padding (int): The padding of the convolution. Default: 1.
-         norm_cfg (dict): Config dict for normalization layer.
-             Default: dict(type='BN').
-         act_cfg (dict): Config dict for activation layer.
-             Default: dict(type='ReLU', inplace=True).
-         conv_cfg (dict): Config dict for convolution layer.
-             Default: dict(order=('norm', 'act', 'conv')).
-         init_cfg (dict): Config dict for initialization. Default: None.
+        in_channels (int): The number of input channels.
+        out_channels (int): The number of output channels.
+        kernel_size (int): The kernel size of the convolution. Default: 3.
+        padding (int): The padding of the convolution. Default: 1.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU', inplace=True).
+        conv_cfg (dict): Config dict for convolution layer.
+            Default: dict(order=('norm', 'act', 'conv')).
+        init_cfg (dict): Config dict for initialization. Default: None.
     """
 
     def __init__(self,
@@ -122,6 +131,16 @@ class Bag(BaseModule):
             **conv_cfg)
 
     def forward(self, x_p: Tensor, x_i: Tensor, x_d: Tensor) -> Tensor:
+        """Forward function.
+
+        Args:
+            x_p (Tensor): The featrue map from P branch.
+            x_i (Tensor): The featrue map from I branch.
+            x_d (Tensor): The featrue map from D branch.
+
+        Returns:
+            Tensor: The feature map with boundary-attention-guided fusion.
+        """
         sigma = torch.sigmoid(x_d)
         return self.conv(sigma * x_p + (1 - sigma) * x_i)
 
@@ -130,12 +149,12 @@ class LightBag(BaseModule):
     """Light Boundary-attention-guided fusion module.
 
     Args:
-         in_channels (int): The number of input channels.
-         out_channels (int): The number of output channels.
-         norm_cfg (dict): Config dict for normalization layer.
+        in_channels (int): The number of input channels.
+        out_channels (int): The number of output channels.
+        norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='BN').
-         act_cfg (dict): Config dict for activation layer. Default: None.
-         init_cfg (dict): Config dict for initialization. Default: None.
+        act_cfg (dict): Config dict for activation layer. Default: None.
+        init_cfg (dict): Config dict for initialization. Default: None.
     """
 
     def __init__(self,
@@ -158,7 +177,17 @@ class LightBag(BaseModule):
             norm_cfg=norm_cfg,
             act_cfg=act_cfg)
 
-    def forward(self, x_p: Tensor, x_i: Tensor, x_d: Tensor):
+    def forward(self, x_p: Tensor, x_i: Tensor, x_d: Tensor) -> Tensor:
+        """Forward function.
+        Args:
+            x_p (Tensor): The featrue map from P branch.
+            x_i (Tensor): The featrue map from I branch.
+            x_d (Tensor): The featrue map from D branch.
+
+        Returns:
+            Tensor: The feature map with light boundary-attention-guided
+                fusion.
+        """
         sigma = torch.sigmoid(x_d)
 
         f_p = self.f_p((1 - sigma) * x_i + x_p)
@@ -307,13 +336,14 @@ class PIDNet(BaseModule):
     def _make_stem_layer(self, in_channels: int, channels: int,
                          num_blocks: int) -> nn.Sequential:
         """Make stem layer.
-            Args:
-                in_channels (int): Number of input channels.
-                channels (int): Number of output channels.
-                num_blocks (int): Number of blocks.
 
-            Returns:
-                Stem layer (nn.Sequential)
+        Args:
+            in_channels (int): Number of input channels.
+            channels (int): Number of output channels.
+            num_blocks (int): Number of blocks.
+
+        Returns:
+            nn.Sequential: The stem layer.
         """
 
         layers = [
@@ -352,15 +382,15 @@ class PIDNet(BaseModule):
                     num_blocks: int,
                     stride: int = 1) -> nn.Sequential:
         """Make layer for PIDNet backbone.
-            Args:
-                block (BasicBlock): Basic block.
-                in_channels (int): Number of input channels.
-                channels (int): Number of output channels.
-                num_blocks (int): Number of blocks.
-                stride (int): Stride of the first block. Default: 1.
+        Args:
+            block (BasicBlock): Basic block.
+            in_channels (int): Number of input channels.
+            channels (int): Number of output channels.
+            num_blocks (int): Number of blocks.
+            stride (int): Stride of the first block. Default: 1.
 
-            Returns:
-                Layer (nn.Sequential).
+        Returns:
+            nn.Sequential: The Branch Layer.
         """
         downsample = None
         if stride != 1 or in_channels != channels * block.expansion:
@@ -389,14 +419,14 @@ class PIDNet(BaseModule):
                            channels: int,
                            stride: int = 1) -> nn.Module:
         """Make single layer for PIDNet backbone.
-            Args:
-                block (BasicBlock or Bottleneck): Basic block or Bottleneck.
-                in_channels (int): Number of input channels.
-                channels (int): Number of output channels.
-                stride (int): Stride of the first block. Default: 1.
+        Args:
+            block (BasicBlock or Bottleneck): Basic block or Bottleneck.
+            in_channels (int): Number of input channels.
+            channels (int): Number of output channels.
+            stride (int): Stride of the first block. Default: 1.
 
-            Returns:
-                Layer (nn.Module).
+        Returns:
+            nn.Module
         """
 
         downsample = None
@@ -430,7 +460,7 @@ class PIDNet(BaseModule):
                                                   f'`init_cfg` in ' \
                                                   f'{self.__class__.__name__} '
             ckpt = CheckpointLoader.load_checkpoint(
-                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
+                self.init_cfg['checkpoint'], map_location='cpu')
             self.load_state_dict(ckpt, strict=False)
 
     def forward(self, x: Tensor) -> Union[Tensor, Tuple[Tensor]]:

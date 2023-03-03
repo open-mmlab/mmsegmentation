@@ -8,8 +8,8 @@ Collections:
     Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
   README: configs/pidnet/README.md
   Code:
-    URL: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/backbones/pidnet.py
-    Version: dev-3.x
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/pidnet.py
+    Version: dev-1.x
   Converted From:
     Code: https://github.com/XuJiacong/PIDNet
 Models:

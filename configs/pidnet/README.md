@@ -1,6 +1,6 @@
 # PIDNet
 
-[PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller](https://arxiv.org/pdf/2206.02066.pdf)
+> [PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller](https://arxiv.org/pdf/2206.02066.pdf)
 
 ## Introduction
 
@@ -8,7 +8,7 @@
 
 <a href="https://github.com/XuJiacong/PIDNet">Official Repo</a>
 
-<a href="https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/backbones/pidnet.py">Code Snippet</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/pidnet.py">Code Snippet</a>
 
 ## Abstract
 

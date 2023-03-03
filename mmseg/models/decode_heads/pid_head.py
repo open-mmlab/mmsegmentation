@@ -48,12 +48,12 @@ class BasePIDHead(BaseModule):
 
     def forward(self, x: Tensor, cls_seg: Optional[nn.Module]) -> Tensor:
         """Forward function.
-            Args:
-                x (Tensor): Input tensor.
-                cls_seg (nn.Module, optional): The classification head.
+        Args:
+            x (Tensor): Input tensor.
+            cls_seg (nn.Module, optional): The classification head.
 
-            Returns:
-                Tensor: Output tensor.
+        Returns:
+            Tensor: Output tensor.
         """
         x = self.conv(x)
         x = self.norm(x)
@@ -116,8 +116,8 @@ class PIDHead(BaseDecodeHead):
             inputs: Union[Tensor,
                           Tuple[Tensor]]) -> Union[Tensor, Tuple[Tensor]]:
         """Forward function.
-            Args:
-                inputs (Tensor | tuple[Tensor]): Input tensor or tuple of
+        Args:
+            inputs (Tensor | tuple[Tensor]): Input tensor or tuple of
                 Tensor. When training, the input is a tuple of three tensors,
                 (p_feat, i_feat, d_feat), and the output is a tuple of three
                 tensors, (p_seg_logit, i_seg_logit, d_seg_logit).
@@ -125,8 +125,8 @@ class PIDHead(BaseDecodeHead):
                 input is a tensor of integral feature map, and the output is
                 the segmentation logit.
 
-            Returns:
-                Tensor | tuple[Tensor]: Output tensor or tuple of tensors.
+        Returns:
+            Tensor | tuple[Tensor]: Output tensor or tuple of tensors.
         """
         if self.training:
             x_p, x_i, x_d = inputs
