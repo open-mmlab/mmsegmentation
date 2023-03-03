@@ -1,6 +1,7 @@
 _base_ = [
+    './bactteria-detection_512x512.py',
     'mmseg::_base_/models/fcn_unet_s5-d16.py',
-    './bactteria-detection_512x512.py', 'mmseg::_base_/default_runtime.py',
+    'mmseg::_base_/default_runtime.py',
     'mmseg::_base_/schedules/schedule_20k.py'
 ]
 custom_imports = dict(imports='datasets.bactteria-detection_dataset')

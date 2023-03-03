@@ -13,7 +13,6 @@ save_seg_map_suffix = '.png'
 x_train = glob.glob(
     'data/Bacteria_detection_with_darkfield_microscopy_datasets/images/*' +
     img_suffix)  # noqa
-# x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
 
 os.system('mkdir -p ' + root_path + 'images/train/')
 os.system('mkdir -p ' + root_path + 'masks/train/')
