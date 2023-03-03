@@ -9,9 +9,10 @@
 实例化 Cityscapes 训练数据集:
 
 ```python
+from mmengine.registry import init_default_scope
 from mmseg.datasets import CityscapesDataset
-from mmseg.utils import register_all_modules
-register_all_modules()
+
+init_default_scope('mmseg')
 
 data_root = 'data/cityscapes/'
 data_prefix=dict(img_path='leftImg8bit/train', seg_map_path='gtFine/train')

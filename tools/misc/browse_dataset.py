@@ -3,10 +3,10 @@ import argparse
 import os.path as osp
 
 from mmengine import Config, DictAction
+from mmengine.registry import init_default_scope
 from mmengine.utils import ProgressBar
 
 from mmseg.registry import DATASETS, VISUALIZERS
-from mmseg.utils import register_all_modules
 
 
 def parse_args():
@@ -44,7 +44,7 @@ def main():
         cfg.merge_from_dict(args.cfg_options)
 
     # register all modules in mmseg into the registries
-    register_all_modules()
+    init_default_scope('mmseg')
 
     dataset = DATASETS.build(cfg.train_dataloader.dataset)
     cfg.visualizer['save_dir'] = args.output_dir

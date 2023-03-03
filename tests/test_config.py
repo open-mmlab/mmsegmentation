@@ -6,10 +6,10 @@ from os.path import dirname, exists, isdir, join, relpath
 import numpy as np
 from mmengine import Config
 from mmengine.dataset import Compose
+from mmengine.registry import init_default_scope
 from torch import nn
 
 from mmseg.models import build_segmentor
-from mmseg.utils import register_all_modules
 
 
 def _get_config_directory():
@@ -70,7 +70,7 @@ def test_config_data_pipeline():
         xdoctest -m tests/test_config.py test_config_build_data_pipeline
     """
 
-    register_all_modules()
+    init_default_scope('mmseg')
     config_dpath = _get_config_directory()
     print(f'Found config_dpath = {config_dpath!r}')
 

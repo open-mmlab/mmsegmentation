@@ -43,7 +43,7 @@ python tools/train.py ${配置文件} --resume --cfg-options load_from=${检查�
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-然后运行[上方](#在单GPU上训练)脚本。
+然后运行[上方](###在单GPU上训练)脚本。
 
 ### 在单GPU上测试
 
@@ -69,7 +69,7 @@ python tools/test.py ${配置文件} ${模型权重文件} [可选参数]
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-然后运行[上方](#在单GPU上测试)脚本。
+然后运行[上方](###在单GPU上测试)脚本。
 
 ## 多GPU、多机器上训练和测试
 
@@ -85,7 +85,7 @@ OpenMMLab2.0 通过 `MMDistributedDataParallel`实现 **分布式** 训练。
 sh tools/dist_train.sh ${配置文件} ${GPU数量} [可选参数]
 ```
 
-可选参数与[上方](#在单GPU上训练)相同并且还增加了可以指定gpu数量的参数。
+可选参数与[上方](###在单GPU上训练)相同并且还增加了可以指定gpu数量的参数。
 
 示例:
 
@@ -112,7 +112,7 @@ ln -s ${您的工作路径} ${MMSEG 路径}/work_dirs
 sh tools/dist_test.sh ${配置文件} ${检查点文件} ${GPU数量} [可选参数]
 ```
 
-可选参数与[上方](#在单GPU上测试)相同并且增加了可以指定 gpu 数量的参数。
+可选参数与[上方](###在单GPU上测试)相同并且增加了可以指定 gpu 数量的参数。
 
 示例:
 

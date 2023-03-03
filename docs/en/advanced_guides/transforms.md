@@ -6,7 +6,9 @@ The structure of this guide is as follows:
 
 - [Data Transforms](#data-transforms)
   - [Design of Data pipelines](#design-of-data-pipelines)
-  - [Customization data transformation](#customization-data-transformation)
+    - [Data loading](#data-loading)
+    - [Pre-processing](#pre-processing)
+    - [Formatting](#formatting)
 
 ## Design of Data pipelines
 
@@ -125,48 +127,3 @@ The position of random contrast is in second or second to last(mode 0 or 1 below
 
 - add: `inputs`, `data_sample`
 - remove: keys specified by `meta_keys` (merged into the metainfo of data_sample), all other keys
-
-## Customization data transformation
-
-The customized data transformation must inherited from `BaseTransform` and implement `transform` function.
-Here we use a simple flipping transformation as example:
-
-```python
-import random
-import mmcv
-from mmcv.transforms import BaseTransform, TRANSFORMS
-
-@TRANSFORMS.register_module()
-class MyFlip(BaseTransform):
-    def __init__(self, direction: str):
-        super().__init__()
-        self.direction = direction
-
-    def transform(self, results: dict) -> dict:
-        img = results['img']
-        results['img'] = mmcv.imflip(img, direction=self.direction)
-        return results
-```
-
-Thus, we can instantiate a `MyFlip` object and use it to process the data dict.
-
-```python
-import numpy as np
-
-transform = MyFlip(direction='horizontal')
-data_dict = {'img': np.random.rand(224, 224, 3)}
-data_dict = transform(data_dict)
-processed_img = data_dict['img']
-```
-
-Or, we can use `MyFlip` transformation in data pipeline in our config file.
-
-```python
-pipeline = [
-    ...
-    dict(type='MyFlip', direction='horizontal'),
-    ...
-]
-```
-
-Note that if you want to use `MyFlip` in config, you must ensure the file containing `MyFlip` is imported during runtime.

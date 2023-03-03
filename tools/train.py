@@ -6,10 +6,9 @@ import os.path as osp
 
 from mmengine.config import Config, DictAction
 from mmengine.logging import print_log
-from mmengine.registry import RUNNERS
 from mmengine.runner import Runner
 
-from mmseg.utils import register_all_modules
+from mmseg.registry import RUNNERS
 
 
 def parse_args():
@@ -51,10 +50,6 @@ def parse_args():
 
 def main():
     args = parse_args()
-
-    # register all modules in mmseg into the registries
-    # do not init the default scope here because it will be init in the runner
-    register_all_modules(init_default_scope=False)
 
     # load config
     cfg = Config.fromfile(args.config)
