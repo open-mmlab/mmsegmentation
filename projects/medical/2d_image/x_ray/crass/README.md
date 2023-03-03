@@ -11,18 +11,18 @@ The current data is still incomplete and to be added later.
 
 ### Information Statistics
 
-| dataset_name                                | anatomical region | task type    | modality | number of categories | train/val/test image | release date | License                                                       |
-| ------------------------------------------- | ----------------- | ------------ | -------- | -------------------- | -------------------- | ------------ | ------------------------------------------------------------- |
-| [crass](https://crass.grand-challenge.org/) | pulmonary         | segmentation | x_ray    | 2                    | 299/-/234            | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dataset Name                                | Anatomical Region | Task Type    | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                       |
+| ------------------------------------------- | ----------------- | ------------ | -------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
+| [crass](https://crass.grand-challenge.org/) | pulmonary         | segmentation | x_ray    | 2            | 299/-/234             | yes/-/no               | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
-| class_name | Percentage of pixels（%） | Number of pictures in this category |
-| ---------- | ------------------------- | ----------------------------------- |
-| background | 98.38                     | 299                                 |
-| clavicles  | 1.62                      | 299                                 |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    299     |   98.38    |    -     |    -     |     -     |     -     |
+| clavicles  |    299     |    1.62    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![crass](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/x_ray/crass/crass_dataset.png?raw=true)
+![crass](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/x_ray/crass/crass_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -44,7 +44,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://crass.grand-challenge.org/) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -58,25 +59,28 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    227     |   98.38    |    57    |  98.39   |     -     |     -     |
+| clavicles  |    227     |    1.62    |    57    |   1.61   |     -     |     -     |
 
 ### Training commands
 
