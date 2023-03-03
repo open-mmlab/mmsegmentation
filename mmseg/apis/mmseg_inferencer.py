@@ -6,15 +6,17 @@ from typing import List, Optional, Sequence, Union
 import mmcv
 import mmengine
 import numpy as np
+import torch
 import torch.nn as nn
 from mmcv.transforms import Compose
 from mmengine.infer.infer import BaseInferencer, ModelType
+from mmengine.model import revert_sync_batchnorm
+from mmengine.registry import init_default_scope
 from mmengine.runner.checkpoint import _load_checkpoint_to_model
 from PIL import Image
 
 from mmseg.structures import SegDataSample
-from mmseg.utils import (ConfigType, SampleList, get_classes, get_palette,
-                         register_all_modules)
+from mmseg.utils import ConfigType, SampleList, get_classes, get_palette
 from mmseg.visualization import SegLocalVisualizer
 
 InputType = Union[str, np.ndarray]
@@ -72,9 +74,12 @@ class MMSegInferencer(BaseInferencer):
         # naming of the output images
         self.num_visualized_imgs = 0
         self.num_pred_imgs = 0
-        register_all_modules()
+        init_default_scope(scope if scope else 'mmseg')
         super().__init__(
             model=model, weights=weights, device=device, scope=scope)
+
+        if device == 'cpu' or not torch.cuda.is_available():
+            self.model = revert_sync_batchnorm(self.model)
 
         assert isinstance(self.visualizer, SegLocalVisualizer)
         self.visualizer.set_dataset_meta(palette, classes, dataset_name)
