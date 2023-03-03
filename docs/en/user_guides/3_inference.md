@@ -56,16 +56,18 @@ Moreover, you can use `MMSegInferencer` to process a list of images:
 >>> inferencer(images, out_dir='outputs', img_out_dir='vis', pred_out_dir='pred')
 ```
 
-There are 2 kinds of inferencer outputs, and one is `dict` type the other is [`SegDataSample`](../advanced_guides/structures.md)(or list of it) type
+There is a optional parameter of inferencer, `return_datasamples`, whose default value is False, and
+return value of inferencer is a `dict` type by default, including 2 keys 'visualization' and 'predictions'.
+If `return_datasamples=True` inferencer will return [`SegDataSample`](../advanced_guides/structures.md), or list of it.
 
 ```
 result = inferencer('demo/demo.png')
 # result is a `dict` including 2 keys 'visualization' and 'predictions'.
-# color segmentation map
+# 'visualization' includes color segmentation map
 print(result['visualization'].shape)
 # (512, 683, 3)
 
-#  segmentation mask with label indice
+# 'predictions' includes segmentation mask with label indice
 print(result['predictions'].shape)
 # (512, 683)
 
