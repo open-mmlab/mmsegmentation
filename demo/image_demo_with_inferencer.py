@@ -17,11 +17,6 @@ def main():
         default=False,
         help='Whether to display the drawn image.')
     parser.add_argument(
-        '--save-mask',
-        action='store_true',
-        default=False,
-        help='Enable save the mask file')
-    parser.add_argument(
         '--dataset-name',
         default='cityscapes',
         help='Color palette used for segmentation map')
@@ -43,11 +38,7 @@ def main():
 
     # test a single image
     mmseg_inferencer(
-        args.img,
-        show=args.show,
-        out_dir=args.out_dir,
-        save_mask=args.save_mask,
-        opacity=args.opacity)
+        args.img, show=args.show, out_dir=args.out_dir, opacity=args.opacity)
 
 
 if __name__ == '__main__':
