@@ -10,19 +10,23 @@ GAMMA will release the world's first multi-modal dataset for glaucoma grading, w
 
 ### Statistic Information
 
-| dataset name                                | anatomical region | task type    | modality           | num. classes | train/val/test images | release date | License                                                         |
-| ------------------------------------------- | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ------------ | --------------------------------------------------------------- |
-| [Gamma](https://gamma.grand-challenge.org/) | head_and_neck     | segmentation | fundus_photography | 3            | 100/-/-               | 2022         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                                | Anatomical Region | Task Type    | Modality           | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ------------------------------------------- | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Gamma](https://gamma.grand-challenge.org/) | head_and_neck     | segmentation | fundus_photography | 3            | 100/-/-               | yes/-/-                | 2022         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-| class name   | pixel percentage | Num. images in this category |
-| ------------ | ---------------- | ---------------------------- |
-| background   | 99.02            | 100                          |
-| erythrocytes | 0.67             | 100                          |
-| spirochaete  | 0.31             | 100                          |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    100     |   99.02    |    -     |    -     |     -     |     -     |
+| optic disc |    100     |    0.67    |    -     |    -     |     -     |     -     |
+| optic cup  |    100     |    0.31    |    -     |    -     |     -     |     -     |
+
+Note:
+
+- `pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
-![bac](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/fundus_photography/gamma/gamma_dataset.png?raw=true)
+![gamma](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/gamma/gamma_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -44,7 +48,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://gamma.grand-challenge.org/) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -58,25 +63,29 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |     80     |   99.01    |    20    |  99.07   |     -     |     -     |
+| optic disc |     80     |    0.68    |    20    |   0.63   |     -     |     -     |
+| optic cup  |     80     |    0.32    |    20    |   0.31   |     -     |     -     |
 
 ### Training commands
 
