@@ -10,20 +10,20 @@ The chest X-ray image is recorded in png file form, with 199 cases for training 
 
 ### Information Statistics
 
-| dataset_name                         | anatomical region | task type    | modality | number of categories | train/val/test image | release date | License                                                       |
-| ------------------------------------ | ----------------- | ------------ | -------- | -------------------- | -------------------- | ------------ | ------------------------------------------------------------- |
-| [jsrt](http://db.jsrt.or.jp/eng.php) | abdomen           | segmentation | x_ray    | 2                    | 199/-/48             | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dataset Name                         | Anatomical Region | Task Type    | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                       |
+| ------------------------------------ | ----------------- | ------------ | -------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------- |
+| [jsrt](http://db.jsrt.or.jp/eng.php) | abdomen           | segmentation | x_ray    | 2            | 199/-/48              | yes/-/yes              | 2021         | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
-| class_name | Percentage of pixels（%） | Number of pictures in this category |
-| ---------- | ------------------------- | ----------------------------------- |
-| background | 6.46                      | 247                                 |
-| heart      | 12.42                     | 247                                 |
-| outer_zone | 50.66                     | 247                                 |
-| lung       | 30.46                     | 247                                 |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    247     |    6.46    |    -     |    -     |     -     |     -     |
+|   heart    |    247     |   12.42    |    -     |    -     |     -     |     -     |
+| outer_zone |    247     |   50.66    |    -     |    -     |     -     |     -     |
+|    lung    |    247     |   30.46    |    -     |    -     |     -     |     -     |
 
 ### Visualization
 
-![jsrt](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/x_ray/jsrt/jsrt_dataset.png?raw=true)
+![jsrt](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/x_ray/jsrt/jsrt_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -45,7 +45,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](http://db.jsrt.or.jp/eng.php) and decompression data to path 'data/jsrt'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -59,25 +60,30 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    199     |    6.90    |    -     |    -     |    48     |   6.02    |
+|   heart    |    199     |   12.49    |    -     |    -     |    48     |   12.36   |
+| outer_zone |    199     |   49.73    |    -     |    -     |    48     |   51.59   |
+|    lung    |    199     |   30.89    |    -     |    -     |    48     |   30.03   |
 
 ### Training commands
 
