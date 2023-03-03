@@ -81,7 +81,7 @@ The arguments of the constructor:
 - `process` method processes one batch of data and data_samples.
 - `compute_metrics` method computes the metrics from processed results.
 
-#### IoUMetric.process
+### IoUMetric.process
 
 Parameters:
 
@@ -92,7 +92,7 @@ Returns:
 
 This method doesn't have returns since the processed results would be stored in `self.results`, which will be used to compute the metrics when all batches have been processed.
 
-#### IoUMetric.compute_metrics
+### IoUMetric.compute_metrics
 
 Parameters:
 
