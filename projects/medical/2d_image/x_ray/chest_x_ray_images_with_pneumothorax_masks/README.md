@@ -14,18 +14,18 @@ Treatment for a pneumothorax usually involves inserting a needle or chest tube b
 
 ### Statistic Information
 
-| dataset name                                                                                                                      | anatomical region | task type    | modality | num. classes | train/val/test images | release date | License                                                         |
-| --------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------ | --------------------- | ------------ | --------------------------------------------------------------- |
-| [Chest-x-ray-images-with-pneumothorax-masks](https://www.kaggle.com/datasets/vbookshelf/pneumothorax-chest-xray-images-and-masks) | throax            | segmentation | x_ray    | 2            | 10675/-/1372          | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                                                                                                                      | Anatomical Region | Task type    | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release date | License                                                         |
+| --------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Chest-x-ray-images-with-pneumothorax-masks](https://www.kaggle.com/datasets/vbookshelf/pneumothorax-chest-xray-images-and-masks) | throax            | segmentation | x_ray    | 2            | 10675/-/1372          | yes/-/yes              | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-| class name   | pixel percentage | Num. images in this category |
-| ------------ | ---------------- | ---------------------------- |
-| background   | 99.70            | 12047                        |
-| pneumothroax | 0.30             | 2669                         |
+|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|  background  |   10675    |    99.7    |    -     |    -     |   1372    |   99.71   |
+| pneumothroax |    2379    |    0.3     |    -     |    -     |    290    |   0.29    |
 
 ### Visualization
 
-![chest_x_ray_images_with_pneumothorax_masks](https://github.com/uni-medical/medical-datasets-visualization/blob/main/2d/semantic_seg/x_ray/chest_x_ray_images_with_pneumothorax_masks/chest_x_ray_images_with_pneumothorax_masks_dataset.png?raw=true)
+![chest_x_ray_images_with_pneumothorax_masks](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/x_ray/chest_x_ray_images_with_pneumothorax_masks/chest_x_ray_images_with_pneumothorax_masks_dataset.png?raw=true)
 
 ### Prerequisites
 
@@ -47,7 +47,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://www.kaggle.com/datasets/vbookshelf/pneumothorax-chest-xray-images-and-masks) and decompression data to path 'data/'.
-- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -61,24 +62,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
 
 ### Training commands
