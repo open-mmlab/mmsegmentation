@@ -1,25 +1,29 @@
 # Changelog of v1.x
 
-## v1.0.0rc6(02/27/2023)
+## v1.0.0rc6(03/03/2023)
 
 ### Features
 
 - Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
 - Support auto import modules from registry ([#2481](https://github.com/open-mmlab/mmsegmentation/pull/2481))
-- Support MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413))
+- Add MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413), [#2658](https://github.com/open-mmlab/mmsegmentation/pull/2658))
 - Replace numpy ascontiguousarray with torch contiguous to speed-up ([#2604](https://github.com/open-mmlab/mmsegmentation/pull/2604))
+- Add browse_dataset.py tool ([#2649](https://github.com/open-mmlab/mmsegmentation/pull/2649))
 
 ### Bug fix
 
 - Rename and Fix bug of projects HieraSeg ([#2565](https://github.com/open-mmlab/mmsegmentation/pull/2565))
+- Add out_channels  in `CascadeEncoderDecoder` and update OCRNet and MobileNet v2 results ([#2656](https://github.com/open-mmlab/mmsegmentation/pull/2656))
 
 ### Documentation
 
 - Add EN custmized runtime doc in dev-1.x ([#2533](https://github.com/open-mmlab/mmsegmentation/pull/2533))
 - Add NPU results ([#2569](https://github.com/open-mmlab/mmsegmentation/pull/2569), [#2596](https://github.com/open-mmlab/mmsegmentation/pull/2596), [#2610](https://github.com/open-mmlab/mmsegmentation/pull/2610))
 - Add docs for visualizing feature map using wandb backend in dev-1.x ([#2557](https://github.com/open-mmlab/mmsegmentation/pull/2557))
+- Add Chinese dataflow documentation ([#2652](https://github.com/open-mmlab/mmsegmentation/pull/2652))
 - Fix api name error in the migration doc ([#2601](https://github.com/open-mmlab/mmsegmentation/pull/2601))
 - Refine projects documentation ([#2586](https://github.com/open-mmlab/mmsegmentation/pull/2586))
+- Refine MMSegmentation documentation ([#2668](https://github.com/open-mmlab/mmsegmentation/pull/2668), [#2659](https://github.com/open-mmlab/mmsegmentation/pull/2659))
 
 ### New Contributors
 

@@ -76,7 +76,7 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc6 was released on 27/02/2023.
+v1.0.0rc6 was released on 03/03/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
 - Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
