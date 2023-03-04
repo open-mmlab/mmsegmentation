@@ -34,7 +34,7 @@ conda install pytorch torchvision cpuonly -c pytorch
 
 ## 安装
 
-我们建议用户遵循我们的最佳实践来安装 MMSegmentation 。但是整个过程是高度自定义的。更多信息请参见[自定义安装](#自定义安装)部分。
+我们建议用户遵循我们的最佳实践来安装 MMSegmentation 。但是整个过程是高度自定义的。更多信息请参见[自定义安装](##自定义安装)部分。
 
 ### 最佳实践
 
