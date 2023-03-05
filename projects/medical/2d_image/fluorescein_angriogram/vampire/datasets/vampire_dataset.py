@@ -18,7 +18,7 @@ class VampireDataset(BaseSegDataset):
 
     def __init__(self,
                  img_suffix='.png',
-                 seg_map_suffix='-GT.png',
+                 seg_map_suffix='.png',
                  reduce_zero_label=False,
                  **kwargs) -> None:
         super().__init__(

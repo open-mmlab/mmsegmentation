@@ -1,24 +1,54 @@
-# Vampire with darkfield microscopy Dataset
+# Vampire
 
-This project support **`Vampire with darkfield microscopy Dataset`**, and the dataset can be download from [here](https://tianchi.aliyun.com/dataset/94411).
+## Description
 
-## Usage
+This project support **`Vampire`**, and the dataset used in this project can be downloaded from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html).
 
-<!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
+### Dataset Overview
+
+In order to promote evaluation of vessel segmentation on ultra-wide field-of-view (UWFV) fluorescein angriogram (FA) frames, we make public 8 frames from two different sequences, the manually annotated images and the result of our automatic vessel segmentation algorithm.
+
+### Original Statistic Information
+
+| Dataset name                                                     | Anatomical region | Task type    | Modality               | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ---------------------------------------------------------------- | ----------------- | ------------ | ---------------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Vampire](https://vampire.computing.dundee.ac.uk/vesselseg.html) | vessel            | segmentation | fluorescein angriogram | 2            | 8/-/-                 | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |     8      |   96.75    |    -     |    -     |     -     |     -     |
+|   vessel   |     8      |    3.25    |    -     |    -     |     -     |     -     |
+
+Note:
+
+- `pct` means percentage of pixels in this category in all pixels.
+
+### Visualization
+
+![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fluorescein_angriogram/vampire/vampire_dataset.png)
 
 ### Prerequisites
 
 - Python 3.8
 - PyTorch 1.10.0
+- pillow(PIL) 9.3.0
+- scikit-learn(sklearn) 1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
-- [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc3
-- [MMEngine](https://github.com/open-mmlab/mmengine) v0.1.0 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc3
+- [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
+- [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
+
+All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In vampire/ root directory, run the following line to add the current directory to PYTHONPATH:
+
+```shell
+export PYTHONPATH=`pwd`:$PYTHONPATH
+```
 
 ### Dataset preparing
 
-- download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and decompression data to path 'data/vampire'.
+- download dataset from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html) and decompression data to path 'data/'.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -36,21 +66,30 @@ This project support **`Vampire with darkfield microscopy Dataset`**, and the da
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   │   ├── val
   │   │   │   │   |   │   │   │   ├── yyy.png
   │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
+  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   │   ├── val
   │   │   │   │   |   │   │   │   ├── yyy.png
   │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
+  │   │   │   │   |   │   │   │   └── yyy.png
 ```
+
+### Divided Dataset Information
+
+***Note: The table information below is divided by ourselves.***
+
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |     6      |   97.48    |    2     |  94.54   |     -     |     -     |
+|   vessel   |     6      |    2.52    |    2     |   5.46   |     -     |     -     |
 
 ### Training commands
 
@@ -76,13 +115,13 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ## Results
 
-### Bactteria detection with darkfield microscopy Dataset
+### Vampire
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                   config                                                                   |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :----------------------------------------------------------------------------------------------------------------------------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 91.68 | 95.55 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/vampire/configs/Bactteria_Det_unet_0.01_CrossEntropyLoss.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 92.02 | 95.74 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/vampire/configs/Bactteria_Det_unet_0.001_CrossEntropyLoss.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 90.25 | 94.72 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/vampire/configs/Bactteria_Det_unet_0.0001_CrossEntropyLoss.py) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                            config                                                                                             |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fluorescein_angriogram/vampire/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_vampire-512x512.py)  |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fluorescein_angriogram/vampire/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_vampire-512x512.py)  |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fluorescein_angriogram/vampire/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_vampire-512x512.py) |
 
 ## Checklist
 
@@ -96,9 +135,9 @@ You should claim whether this is based on the pre-trained weights, which are con
 
   - [x] A full README
 
-- [ ] Milestone 2: Indicates a successful model implementation.
+- [x] Milestone 2: Indicates a successful model implementation.
 
-  - [ ] Training-time correctness
+  - [x] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 
