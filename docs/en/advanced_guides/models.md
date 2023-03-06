@@ -20,9 +20,9 @@ In MMSegmentation, we abstract the network architecture as a **Segmentor**, it i
 
 **Neck** is the part that connects the backbone and heads. It performs some refinements or reconfigurations on the raw feature maps produced by the backbone. An example is **Feature Pyramid Network (FPN)**.
 
-### Decode Head
+### Decode head
 
-**Decode Head** is the part that transforms the feature maps into a segmentation mask, such as **PSPNet**.
+**Decode head** is the part that transforms the feature maps into a segmentation mask, such as **PSPNet**.
 
 ### Auxiliary head
 
