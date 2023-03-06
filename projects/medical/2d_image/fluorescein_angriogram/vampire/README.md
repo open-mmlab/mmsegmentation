@@ -1,8 +1,8 @@
-# Vampire
+# Vessel Assessment and Measurement Platform for Images of the REtina
 
 ## Description
 
-This project support **`Vampire`**, and the dataset used in this project can be downloaded from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html).
+This project support **`Vessel Assessment and Measurement Platform for Images of the REtina`**, and the dataset used in this project can be downloaded from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html).
 
 ### Dataset Overview
 
@@ -21,11 +21,33 @@ In order to promote evaluation of vessel segmentation on ultra-wide field-of-vie
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fluorescein_angriogram/vampire/vampire_dataset.png)
+
+## Dataset Citation
+
+@inproceedings{perez2011improving,
+  title={Improving vessel segmentation in ultra-wide field-of-view retinal fluorescein angiograms},
+  author={Perez-Rovira, Adria and Zutis, K and Hubschman, Jean Pierre and Trucco, Emanuele},
+  booktitle={2011 Annual International Conference of the IEEE Engineering in Medicine and Biology Society},
+  pages={2614--2617},
+  year={2011},
+  organization={IEEE}
+}
+
+@article{perez2011rerbee,
+  title={RERBEE: robust efficient registration via bifurcations and elongated elements applied to retinal fluorescein angiogram sequences},
+  author={Perez-Rovira, Adria and Cabido, Raul and Trucco, Emanuele and McKenna, Stephen J and Hubschman, Jean Pierre},
+  journal={IEEE Transactions on Medical Imaging},
+  volume={31},
+  number={1},
+  pages={140--150},
+  year={2011},
+  publisher={IEEE}
+}
 
 ### Prerequisites
 
@@ -38,7 +60,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In vampire/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `vampire/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -46,7 +68,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html) and decompression data to path 'data/'.
+- download dataset from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -87,6 +109,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -98,6 +122,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To test models on a single server with one GPU. (default)
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
