@@ -6,28 +6,27 @@
 
 ### 分割器（Segmentor）
 
-在 MMSegmentation 中，我们将网络架构抽象为**分割器（Segmentor）**，它是一个包含网络所有组件的模型。我们已经实现了**编码器解码器（EncoderDecoder）**和**级联编码器解码器（CascadeEncoderDecoder）**，它们通常由**数据预处理器（Data preprocessor）**、**骨干网络（Backbone）**、**解码头（Decode head）**
-和**辅助头（Auxiliary head）**组成。
+在 MMSegmentation 中，我们将网络架构抽象为**分割器**，它是一个包含网络所有组件的模型。我们已经实现了**编码器解码器（EncoderDecoder）**和**级联编码器解码器（CascadeEncoderDecoder）**，它们通常由**数据预处理器**、**骨干网络**、**解码头**和**辅助头**组成。
 
 ### 数据预处理器（Data preprocessor）
 
-**数据预处理器（Data preprocessor）**是将数据复制到目标设备并将数据预处理为模型输入格式的部分。
+**数据预处理器**是将数据复制到目标设备并将数据预处理为模型输入格式的部分。
 
 ### 主干网络（Backbone）
 
-**主干网络（Backbone）**是将图像转换为特征图的部分，例如没有最后全连接层的 **ResNet-50**。
+**主干网络**是将图像转换为特征图的部分，例如没有最后全连接层的 **ResNet-50**。
 
 ### 颈部（Neck）
 
-**颈部（Neck）**是连接主干网络和头的部分。它对主干网络生成的原始特征图进行一些改进或重新配置。例如 **Feature Pyramid Network（FPN）**。
+**颈部**是连接主干网络和头的部分。它对主干网络生成的原始特征图进行一些改进或重新配置。例如 **Feature Pyramid Network（FPN）**。
 
 ### 解码头（Decode head）
 
-**解码头（Decode head）**是将特征图转换为分割掩膜的部分，例如 **PSPNet**。
+**解码头**是将特征图转换为分割掩膜的部分，例如 **PSPNet**。
 
 ### 辅助头（Auxiliary head）
 
-**辅助头（Auxiliary head）**是一个可选组件，它将特征图转换为仅用于计算辅助损失的分割掩膜。
+**辅助头**是一个可选组件，它将特征图转换为仅用于计算辅助损失的分割掩膜。
 
 ## 基本接口
 
