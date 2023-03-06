@@ -1,8 +1,8 @@
-# RetinaCheck
+# IOSTAR Retinal Vessel Segmentation
 
 ## Description
 
-This project support **`RetinaCheck`**, and the dataset used in this project can be downloaded from [here](http://www.retinacheck.org/download-iostar-retinal-vessel-segmentation-dataset).
+This project support **`IOSTAR Retinal Vessel Segmentation`**, and the dataset used in this project can be downloaded from [here](http://www.retinacheck.org/download-iostar-retinal-vessel-segmentation-dataset).
 
 ### Dataset Overview
 
@@ -21,11 +21,34 @@ This is an improved version of our vessel segmentation dataset on Scanning Laser
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/retinacheck/retinacheck_dataset.png)
+
+## Dataset Citation
+```bibtex
+@article{zhang2016robust,
+  title={Robust retinal vessel segmentation via locally adaptive derivative frames in orientation scores},
+  author={Zhang, Jiong and Dashtbozorg, Behdad and Bekkers, Erik and Pluim, Josien PW and Duits, Remco and ter Haar Romeny, Bart M},
+  journal={IEEE transactions on medical imaging},
+  volume={35},
+  number={12},
+  pages={2631--2644},
+  year={2016},
+  publisher={IEEE}
+}
+
+@inproceedings{abbasi2015biologically,
+  title={Biologically-inspired supervised vasculature segmentation in SLO retinal fundus images},
+  author={Abbasi-Sureshjani, Samaneh and Smit-Ockeloen, Iris and Zhang, Jiong and Ter Haar Romeny, Bart},
+  booktitle={Image Analysis and Recognition: 12th International Conference, ICIAR 2015, Niagara Falls, ON, Canada, July 22-24, 2015, Proceedings 12},
+  pages={325--334},
+  year={2015},
+  organization={Springer}
+}
+```
 
 ### Prerequisites
 
@@ -38,7 +61,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In retinacheck/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `retinacheck/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -46,8 +69,9 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](http://www.retinacheck.org/download-iostar-retinal-vessel-segmentation-dataset) and decompression data to path 'data/'.
+- download dataset from [here](http://www.retinacheck.org/download-iostar-retinal-vessel-segmentation-dataset) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -86,6 +110,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -97,6 +123,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
