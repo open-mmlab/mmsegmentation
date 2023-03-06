@@ -203,7 +203,9 @@ class PIDNet(BaseModule):
     This backbone is the implementation of `PIDNet: A Real-time Semantic
     Segmentation Network Inspired from PID Controller
     <https://arxiv.org/abs/2206.02066>`_.
-    Inspiration from https://github.com/XuJiacong/PIDNet.
+    Modified from https://github.com/XuJiacong/PIDNet.
+
+    Licensed under the MIT License.
 
     Args:
         in_channels (int): The number of input channels. Default: 3.
@@ -464,6 +466,15 @@ class PIDNet(BaseModule):
             self.load_state_dict(ckpt, strict=False)
 
     def forward(self, x: Tensor) -> Union[Tensor, Tuple[Tensor]]:
+        """Forward function.
+
+        Args:
+            x (Tensor): Input tensor with shape (B, C, H, W).
+
+        Returns:
+            Tensor or tuple[Tensor]: If self.training is True, return
+                tuple[Tensor], else return Tensor.
+        """
         w_out = x.shape[-1] // 8
         h_out = x.shape[-2] // 8
 

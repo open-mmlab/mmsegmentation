@@ -15,7 +15,7 @@ class OhemCrossEntropy(nn.Module):
     This func is modified from
     `PIDNet <https://github.com/XuJiacong/PIDNet/blob/main/utils/criterion.py#L43>`_.  # noqa
 
-    Licensed under the MIT License
+    Licensed under the MIT License.
 
     Args:
         ignore_label (int): Labels to ignore when computing the loss.

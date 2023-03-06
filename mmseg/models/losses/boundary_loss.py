@@ -13,6 +13,7 @@ class BoundaryLoss(nn.Module):
 
     This function is modified from
     `PIDNet <https://github.com/XuJiacong/PIDNet/blob/main/utils/criterion.py#L122>`_.  # noqa
+    Licensed under the MIT License.
 
 
     Args:
