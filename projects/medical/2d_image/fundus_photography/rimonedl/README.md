@@ -10,9 +10,9 @@ The RIM-ONE DL image dataset consists of 313 retinographies from normal subjects
 
 ### Original Statistic Information
 
-| Dataset name | Anatomical region | Task type | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License |
-| - | - | - | - | - | - | - | - |
-| [RIM_ONE_DL](https://bit.ly/rim-one-dl-images) | eye | segmentation | fundus photophy | 3 | 339/-/146 | yes/-/yes | 2020 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                   | Anatomical region | Task type    | Modality        | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ---------------------------------------------- | ----------------- | ------------ | --------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [RIM_ONE_DL](https://bit.ly/rim-one-dl-images) | eye               | segmentation | fundus photophy | 3            | 339/-/146             | yes/-/yes              | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
