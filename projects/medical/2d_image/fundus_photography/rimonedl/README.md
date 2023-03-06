@@ -64,6 +64,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
+  │   │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   │   ├── test.txt
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
