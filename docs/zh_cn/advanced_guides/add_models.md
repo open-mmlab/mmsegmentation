@@ -2,11 +2,11 @@
 
 ## 开发新组件
 
-我们可以自定义 [模型文档](./models.md) 中介绍的所有组件，例如**主干网络**、**头**、**损失函数**和**数据预处理器**。
+我们可以自定义 [模型文档](./models.md) 中介绍的所有组件，例如**主干网络（backbone）**、**头（head）**、**损失函数（loss function）**和**数据预处理器（data preprocessor）**。
 
-### 添加新的主干网络
+### 添加新的主干网络（backbone）
 
-在这里，我们以 MobileNet 为例展示如何开发新的主干网。
+在这里，我们以 MobileNet 为例展示如何开发新的主干网络。
 
 1. 创建一个新文件 `mmseg/models/backbones/mobilenet.py`。
 
@@ -47,7 +47,7 @@
        ...
    ```
 
-### 添加新的头
+### 添加新的头（head）
 
 在 MMSegmentation 中，我们提供 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/decode_heads/decode_head.py#L17) 用于开发所有分割头。
 所有新实现的解码头都应该从中派生出来。
@@ -108,7 +108,7 @@ model = dict(
 
 ```
 
-### 添加新的损失函数
+### 添加新的损失函数（loss）
 
 假设您想为分割解码添加一个叫做 `MyLoss` 的新的损失函数。
 要添加新的损失函数，用户需要在 `mmseg/models/loss/my_loss.py` 中实现它。
@@ -164,7 +164,7 @@ from .my_loss import MyLoss, my_loss
 loss_decode=dict(type='MyLoss', loss_weight=1.0))
 ```
 
-### 添加新的数据预处理器
+### 添加新的数据预处理器（data preprocessor）
 
 在 MMSegmentation 1.x 版本中，我们使用 [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/data_preprocessor.py#L13) 将数据复制到目标设备，并将数据预处理为默认的模型输入格式。这里我们将展示如何开发一个新的数据预处理器。
 
@@ -200,7 +200,7 @@ loss_decode=dict(type='MyLoss', loss_weight=1.0))
    )
    ```
 
-## 开发新的分割器
+## 开发新的分割器（segmentor）
 
 分割器是一种户可以通过添加自定义组件和定义算法执行逻辑来自定义其算法的算法架构。请参考[模型文档](./models.md)了解更多详情。
 
