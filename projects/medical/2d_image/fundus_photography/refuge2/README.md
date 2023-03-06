@@ -55,10 +55,10 @@ No definitions available.
 
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL) 9.3.0
-- scikit-learn(sklearn) 1.2.0
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0
+- scikit-learn(sklearn) v1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
