@@ -4,7 +4,7 @@
 
 <center>
   <img src='../../../resources/test_step.png' />
-  <center>测试/验证 数据流程</center>
+  <center>测试/验证 数据流</center>
 </center>
 
 在 MMSegmentation 中，默认情况下，我们将 dataloader 和 metrics 的设置写在数据集配置文件中，并将 evaluation loop 的配置写在 `schedule_x` 配置文件中。
@@ -69,7 +69,7 @@ MMSegmentation 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 提供�
 
 构造函数的参数：
 
-- ignore_index（int）- 将在评估中忽略的索引。默认值：255。
+- ignore_index（int）- 将在评估中忽略的类别索引。默认值：255。
 - iou_metrics（list\[str\] | str）- 需要计算的指标，可选项包括 'mIoU'、'mDice' 和 'mFscore'。
 - nan_to_num（int，可选）- 如果指定，NaN 值将被用户定义的数字替换。默认值：None。
 - beta（int）- 决定综合评分中 recall 的权重。默认值：1。
@@ -121,11 +121,11 @@ val_evaluator = dict(type='CitysMetric', citys_metrics=['cityscapes'])
 test_evaluator = val_evaluator
 ```
 
-### Interface
+### 接口
 
 构造函数的参数：
 
-- ignore_index（int）- 将在评估中忽略的索引。默认值：255。
+- ignore_index（int）- 将在评估中忽略的类别索引。默认值：255。
 - city_metrics（list\[str\] | str）- 要评估的指标，默认值：\['cityscapes'\]。
 - to_label_id（bool）- 是否将输出转换为 label_id 以提交。默认值：True。
 - suffix（str）：png 文件的文件名前缀。如果前缀为 “somepath/xxx”，则 png 文件将命名为 “somepath/xxx.png”。默认值：“.format_cityscapes”。
