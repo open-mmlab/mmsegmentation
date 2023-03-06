@@ -80,6 +80,10 @@ def inference(args: argparse.Namespace, logger: MMLogger) -> dict:
     }
     data = model.data_preprocessor(data_batch)
     model.eval()
+    if cfg.model.decode_head.type in ['MaskFormerHead', 'Mask2FormerHead']:
+        # TODO: Support MaskFormer and Mask2Former
+        raise NotImplementedError('MaskFormer and Mask2Former are not '
+                                  'supported yet.')
     outputs = get_model_complexity_info(
         model,
         input_shape,
