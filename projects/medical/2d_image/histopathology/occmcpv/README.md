@@ -1,8 +1,8 @@
-# OCCMCPV
+# Segmentation of Overlapping Cervical Cells from Multi-layer Cytology Preparation Volumes
 
 ## Description
 
-This project support **`OCCMCPV`**, and the dataset used in this project can be downloaded from [here](https://set.adelaide.edu.au/computer-and-mathematical-sciences/).
+This project support **`Segmentation of Overlapping Cervical Cells from Multi-layer Cytology Preparation Volumes`**, and the dataset used in this project can be downloaded from [here](https://set.adelaide.edu.au/computer-and-mathematical-sciences/).
 
 ### Dataset Overview
 
@@ -19,7 +19,7 @@ This project support **`OCCMCPV`**, and the dataset used in this project can be 
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
@@ -36,7 +36,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In occmcpv/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `occmcpv/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -44,7 +44,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://set.adelaide.edu.au/computer-and-mathematical-sciences/) and decompression data to path 'data/'.
+- download dataset from [here](https://set.adelaide.edu.au/computer-and-mathematical-sciences/) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 
 ```none
@@ -84,6 +84,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -95,6 +97,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
