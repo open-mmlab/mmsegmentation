@@ -109,11 +109,6 @@ def main():
     params = result['params']
     compute_type = result['compute_type']
 
-    cfg = Config.fromfile(args.config)
-    cfg.model.pretrained = None
-    model = MODELS.build(cfg.model)
-    model.eval()
-
     if pad_shape != ori_shape:
         print(f'{split_line}\nUse size divisor set input shape '
               f'from {ori_shape} to {pad_shape}')
