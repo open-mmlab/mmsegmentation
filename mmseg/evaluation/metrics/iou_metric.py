@@ -1,15 +1,16 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from collections import OrderedDict
 import os.path as osp
+from collections import OrderedDict
 from typing import Dict, List, Optional, Sequence
-from mmengine.dist import is_main_process
-from mmengine.utils import mkdir_or_exist
+
 import numpy as np
 import torch
+from mmengine.dist import is_main_process
 from mmengine.evaluator import BaseMetric
 from mmengine.logging import MMLogger, print_log
-from prettytable import PrettyTable
+from mmengine.utils import mkdir_or_exist
 from PIL import Image
+from prettytable import PrettyTable
 
 from mmseg.registry import METRICS
 
@@ -30,7 +31,7 @@ class IoUMetric(BaseMetric):
         collect_device (str): Device name used for collecting results from
             different ranks during distributed training. Must be 'cpu' or
             'gpu'. Defaults to 'cpu'.
-        output_dir (str): The directory for output prediction. Defaults to 
+        output_dir (str): The directory for output prediction. Defaults to
             None.
         format_only (bool): Only format result for results commit without
             perform evaluation. It is useful when you want to format the result
