@@ -63,12 +63,14 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   │   │   │   ├── test
   │   │   │   │   |   │   │   │   ├── yyy.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── yyy.png
@@ -77,10 +79,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
 
 ### Divided Dataset Information
