@@ -69,6 +69,7 @@ jobs:
       - name: Run unittests and generate coverage report
         run: |
           pip install timm
+          pip install -r requirements/albu.txt
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
@@ -301,12 +302,14 @@ jobs:
           pip install -U openmim
           mim install mmcv-full
       - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: |
+          pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
         run: |
           python -m pip install timm
+          python -m pip install -r requirements/albu.txt
           coverage run --branch --source mmseg -m pytest tests/
       - name: Generate coverage report
         run: |
