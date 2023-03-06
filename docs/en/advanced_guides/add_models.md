@@ -202,7 +202,7 @@ In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/
 
 ## Develop new segmentors
 
-The segmentor is an algorithmic architecture in which users can customize their algorithms by adding customized components and defining the logic of algorithm execution. Please refer to [the model document](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/advanced_guides/models.md) for more details.
+The segmentor is an algorithmic architecture in which users can customize their algorithms by adding customized components and defining the logic of algorithm execution. Please refer to [the model document](./models.md) for more details.
 
 Since the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) in MMSegmentation unifies three modes for a forward process, to develop a new segmentor, users need to overwrite `loss`, `predict` and `_forward` methods corresponding to the `loss`, `predict` and `tensor` modes.
 
