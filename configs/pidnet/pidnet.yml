@@ -31,10 +31,10 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 78.44
-      mIoU(ms+flip): 80.82
+      mIoU: 78.74
+      mIoU(ms+flip): 80.87
   Config: configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes/pidnet-s_2xb6-120k_1024x1024-cityscapes_20221030_182724-3a9cfe45.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes/pidnet-s_2xb6-120k_1024x1024-cityscapes_20230302_191700-bb8e3bcc.pth
 - Name: pidnet-m_2xb6-120k_1024x1024-cityscapes
   In Collection: PIDNet
   Metadata:
@@ -53,10 +53,10 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 79.75
-      mIoU(ms+flip): 81.85
+      mIoU: 80.22
+      mIoU(ms+flip): 82.05
   Config: configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes/pidnet_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-84adbfcb.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes/pidnet-m_2xb6-120k_1024x1024-cityscapes_20230301_143452-f9bcdbf3.pth
 - Name: pidnet-l_2xb6-120k_1024x1024-cityscapes
   In Collection: PIDNet
   Metadata:
@@ -75,7 +75,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 80.46
-      mIoU(ms+flip): 82.58
+      mIoU: 80.89
+      mIoU(ms+flip): 82.37
   Config: configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes/pidnet-l_2xb6-120k_1024x1024-cityscapes_20221114_232813-f14e7ce0.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes/pidnet-l_2xb6-120k_1024x1024-cityscapes_20230303_114514-0783ca6b.pth
