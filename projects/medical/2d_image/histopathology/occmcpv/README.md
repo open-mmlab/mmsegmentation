@@ -10,7 +10,7 @@ This project support **`OCCMCPV`**, and the dataset used in this project can be 
 
 | Dataset name | Anatomical region | Task type | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License |
 | - | - | - | - | - | - | - | - | - |
-| [OCCMCPV](https://set.adelaide.edu.au/computer-and-mathematical-sciences/) | eye | segmentation | histopathology | 2 | 8/-/- | yes/-/- | 2020 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [OCCMCPV](https://set.adelaide.edu.au/computer-and-mathematical-sciences/) | cell | segmentation | histopathology | 2 | 8/-/- | yes/-/- | 2020 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
