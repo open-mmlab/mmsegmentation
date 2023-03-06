@@ -62,14 +62,14 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── test.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
-  │   │   │   │   │   │   │   ├── train.txt
-  │   │   │   │   │   │   │   ├── test.txt
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   │   │   │   ├── test
   │   │   │   │   |   │   │   │   ├── yyy.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── yyy.png
@@ -78,7 +78,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   │   │   │   ├── test
   │   │   │   │   |   │   │   │   ├── yyy.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── yyy.png
