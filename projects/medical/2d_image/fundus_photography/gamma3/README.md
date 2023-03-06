@@ -1,8 +1,8 @@
-# GammaTask3
+# Glaucoma grAding from Multi-Modality imAges Task3
 
 ## Description
 
-This project support **`GammaTask3`**, and the dataset used in this project can be downloaded from [here](https://aistudio.baidu.com/aistudio/competition/detail/121/0/datasets).
+This project support **`Glaucoma grAding from Multi-Modality imAges Task3`**, and the dataset used in this project can be downloaded from [here](https://aistudio.baidu.com/aistudio/competition/detail/121/0/datasets).
 
 ### Dataset Overview
 
@@ -22,11 +22,36 @@ This regular-challenge dataset was provided by Sun Yat-sen Ophthalmic Center, Su
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/gamma3/gamma3_dataset.png)
+
+## Dataset Citation
+
+```bibtex
+@article{fu2018joint,
+  title={Joint optic disc and cup segmentation based on multi-label deep network and polar transformation},
+  author={Fu, Huazhu and Cheng, Jun and Xu, Yanwu and Wong, Damon Wing Kee and Liu, Jiang and Cao, Xiaochun},
+  journal={IEEE transactions on medical imaging},
+  volume={37},
+  number={7},
+  pages={1597--1605},
+  year={2018},
+  publisher={IEEE}
+}
+
+@article{sevastopolsky2017optic,
+  title={Optic disc and cup segmentation methods for glaucoma detection with modification of U-Net convolutional neural network},
+  author={Sevastopolsky, Artem},
+  journal={Pattern Recognition and Image Analysis},
+  volume={27},
+  pages={618--624},
+  year={2017},
+  publisher={Springer}
+}
+```
 
 ### Prerequisites
 
@@ -39,7 +64,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In bactteria_detection/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `gammm3/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -47,7 +72,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://aistudio.baidu.com/aistudio/competition/detail/121/0/datasets) and decompression data to path 'data/'.
+- download dataset from [here](https://aistudio.baidu.com/aistudio/competition/detail/121/0/datasets) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -93,6 +118,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -104,6 +131,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
