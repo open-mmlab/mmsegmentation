@@ -2,7 +2,7 @@
 
 ## Description
 
-This project support **`Bactteria detection with darkfield microscopy`**, and the dataset used in this project can be downloaded from [here](https://tianchi.aliyun.com/dataset/94411).
+This project supports **`Bactteria detection with darkfield microscopy`**, which can be downloaded from [here](https://tianchi.aliyun.com/dataset/94411).
 
 ### Dataset Overview
 
@@ -43,7 +43,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In bactteria_detection/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `bactteria_detection/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -51,7 +51,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and decompression data to path 'data/'.
+- download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and decompress data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -93,20 +93,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}
-```
-
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
+Train models on a single server with one GPU.
 
 ```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
+mim train mmseg ./configs/${CONFIG_FILE}
 ```
 
 ### Testing commands
 
+Test models on a single server with one GPU.
+
 ```shell
-mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
+mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
 
 <!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
