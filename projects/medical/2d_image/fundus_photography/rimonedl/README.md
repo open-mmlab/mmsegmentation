@@ -1,8 +1,8 @@
-# RIM_ONE_DL
+# RIM-ONE DL: A unified retinal image database for assessing glaucoma using Deep Learning
 
 ## Description
 
-This project support **`RIM_ONE_DL`**, and the dataset used in this project can be downloaded from [here](https://bit.ly/rim-one-dl-images).
+This project support **`RIM-ONE DL: A unified retinal image database for assessing glaucoma using Deep Learning`**, and the dataset used in this project can be downloaded from [here](https://bit.ly/rim-one-dl-images).
 
 ### Dataset Overview
 
@@ -22,11 +22,28 @@ The RIM-ONE DL image dataset consists of 313 retinographies from normal subjects
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/rimonedl/rimonedl_dataset.png)
+
+## Dataset Citation
+```bibtex
+@article{RIMONEDLImageAnalStereol2346,
+	author = {Francisco José Fumero Batista and Tinguaro Diaz-Aleman and Jose Sigut and Silvia Alayon and Rafael Arnay and Denisse Angel-Pereira},
+	title = {RIM-ONE DL: A Unified Retinal Image Database for Assessing Glaucoma Using Deep Learning},
+	journal = {Image Analysis & Stereology},
+	volume = {39},
+	number = {3},
+	year = {2020},
+	keywords = {Convolutional Neural Networks; Deep Learning; Glaucoma Assessment; RIM-ONE},
+	issn = {1854-5165},
+	pages = {161--167},
+	doi = {10.5566/ias.2346},
+	url = {https://www.ias-iss.org/ojs/IAS/article/view/2346}
+}
+```
 
 ### Prerequisites
 
@@ -39,7 +56,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In rimonedl/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `rimonedl/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -47,7 +64,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://bit.ly/rim-one-dl-images) and decompression data to path 'data/'.
+- download dataset from [here](https://bit.ly/rim-one-dl-images) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 
 ```none
@@ -86,6 +103,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -97,6 +116,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
