@@ -1,6 +1,6 @@
 # SegNeXt
 
-[SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation](https://arxiv.org/abs/2209.08575)
+> [SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation](https://arxiv.org/abs/2209.08575)
 
 ## Introduction
 
@@ -8,7 +8,7 @@
 
 <a href="https://github.com/visual-attention-network/segnext">Official Repo</a>
 
-<a href="https://github.com/open-mmlab/mmsegmentation/blob/v0.31.0/mmseg/models/backbones/mscan.py#L328">Code Snippet</a>
+<a href="https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/mscan.py#L328">Code Snippet</a>
 
 ## Abstract
 

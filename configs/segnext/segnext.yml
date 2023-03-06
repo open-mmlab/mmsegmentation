@@ -8,8 +8,8 @@ Collections:
     Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
   README: configs/segnext/README.md
   Code:
-    URL: https://github.com/open-mmlab/mmsegmentation/blob/v0.31.0/mmseg/models/backbones/mscan.py#L328
-    Version: v0.31.0
+    URL: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/mscan.py#L328
+    Version: dev-1.x
   Converted From:
     Code: https://github.com/visual-attention-network/segnext
 Models:
