@@ -6,7 +6,8 @@
 
 ### 分割器（Segmentor）
 
-在 MMSegmentation 中，我们将网络架构抽象为**分割器（Segmentor）**，它是一个包含网络所有组件的模型。我们已经实现了**编码器解码器（EncoderDecoder）**和**级联编码器解码器（CascadeEncoderDecoder）**，它们通常由**数据预处理器（Data preprocessor）**、**骨干网络（Backbone）**、**解码头（Decode head）**和**辅助头（Auxiliary head）**组成。
+在 MMSegmentation 中，我们将网络架构抽象为**分割器（Segmentor）**，它是一个包含网络所有组件的模型。我们已经实现了**编码器解码器（EncoderDecoder）**和**级联编码器解码器（CascadeEncoderDecoder）**，它们通常由**数据预处理器（Data preprocessor）**、**骨干网络（Backbone）**、**解码头（Decode head）**
+和**辅助头（Auxiliary head）**组成。
 
 ### 数据预处理器（Data preprocessor）
 
