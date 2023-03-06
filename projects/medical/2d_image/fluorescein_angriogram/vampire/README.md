@@ -29,6 +29,9 @@ Note:
 
 ## Dataset Citation
 
+
+```bibtex
+
 @inproceedings{perez2011improving,
   title={Improving vessel segmentation in ultra-wide field-of-view retinal fluorescein angiograms},
   author={Perez-Rovira, Adria and Zutis, K and Hubschman, Jean Pierre and Trucco, Emanuele},
@@ -48,6 +51,8 @@ Note:
   year={2011},
   publisher={IEEE}
 }
+
+```
 
 ### Prerequisites
 
