@@ -1,8 +1,8 @@
-# Refuge2
+# Retinal Fundus Glaucoma  Challenge  Edition2
 
 ## Description
 
-This project support **`Refuge2`**, and the dataset used in this project can be downloaded from [here](https://refuge.grand-challenge.org/REFUGE2Download/).
+This project support **`Retinal Fundus Glaucoma  Challenge  Edition2`**, and the dataset used in this project can be downloaded from [here](https://refuge.grand-challenge.org/REFUGE2Download/).
 
 ### Dataset Overview
 
@@ -22,11 +22,36 @@ This regular-challenge dataset was provided by Sun Yat-sen Ophthalmic Center, Su
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/refuge2/refuge2_dataset.png)
+
+## Dataset Citation
+
+```bibtex
+@article{orlando2020refuge,
+  title={Refuge challenge: A unified framework for evaluating automated methods for glaucoma assessment from fundus photographs},
+  author={Orlando, Jos{\'e} Ignacio and Fu, Huazhu and Breda, Jo{\~a}o Barbosa and Van Keer, Karel and Bathula, Deepti R and Diaz-Pinto, Andr{\'e}s and Fang, Ruogu and Heng, Pheng-Ann and Kim, Jeyoung and Lee, JoonHo and others},
+  journal={Medical image analysis},
+  volume={59},
+  pages={101570},
+  year={2020},
+  publisher={Elsevier}
+}
+
+@article{li2022development,
+  title={Development and clinical deployment of a smartphone-based visual field deep learning system for glaucoma detection (vol 3, 123, 2020)},
+  author={Li, Fei and Song, Diping and Chen, Han and Xiong, Jian and Li, Xingyi and Zhong, Hua and Tang, Guangxian and Fan, Sujie and Lam, Dennis SC and Pan, Weihua and others},
+  journal={npj Digital Medicine},
+  volume={5},
+  number={1},
+  year={2022},
+  publisher={Nature Research (part of Springer Nature)}
+}
+No definitions available.
+```
 
 ### Prerequisites
 
@@ -39,7 +64,7 @@ Note:
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In refuge2/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `refuge2/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -47,8 +72,9 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://refuge.grand-challenge.org/REFUGE2Download/) and decompression data to path 'data/'.
+- download dataset from [here](https://refuge.grand-challenge.org/REFUGE2Download/) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -92,6 +118,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -103,6 +131,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
