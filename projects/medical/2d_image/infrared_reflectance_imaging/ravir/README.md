@@ -10,9 +10,9 @@ The retinal vasculature provides important clues in the diagnosis and monitoring
 
 ### Original Statistic Information
 
-| Dataset name | Anatomical region | Task type | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License |
-| - | - | - | - | - | - | - | - | - |
-| [Ravir](https://ravir.grand-challenge.org/) | eye | segmentation | infrared reflectance imaging | 3 | 23/-/19 | yes/-/- | 2022 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                | Anatomical region | Task type    | Modality                     | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ------------------------------------------- | ----------------- | ------------ | ---------------------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [Ravir](https://ravir.grand-challenge.org/) | eye               | segmentation | infrared reflectance imaging | 3            | 23/-/19               | yes/-/-                | 2022         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -29,6 +29,7 @@ Note:
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/infrared_reflectance_imaging/ravir/ravir_dataset.png)
 
 ## Dataset Citation
+
 ```bibtex
 @article{hatamizadeh2022ravir,
   title={RAVIR: A dataset and methodology for the semantic segmentation and quantitative analysis of retinal arteries and veins in infrared reflectance imaging},
@@ -63,6 +64,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 - download dataset from [here](https://ravir.grand-challenge.org/) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
 ```none
   mmsegmentation
@@ -112,12 +114,6 @@ To train models on a single server with one GPU. (default）
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
 
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
-
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
-```
-
 ### Testing commands
 
 To train models on a single server with one GPU. (default）
@@ -134,11 +130,11 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ### Ravir
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                          config                                                                                           |         download         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/infrared_reflectance_imaging/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_ravir-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/infrared_reflectance_imaging/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_ravir-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/infrared_reflectance_imaging/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_ravir-512x512.py) | [model](<>) \| [log](<>) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                   config                                   |         download         |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :------------------------------------------------------------------------: | :----------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_ravir-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_ravir-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_ravir-512x512.py) | [model](<>) \| [log](<>) |
 
 ## Checklist
 
