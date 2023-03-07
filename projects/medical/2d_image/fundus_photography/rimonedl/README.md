@@ -29,6 +29,7 @@ Note:
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/rimonedl/rimonedl_dataset.png)
 
 ## Dataset Citation
+
 ```bibtex
 @article{RIMONEDLImageAnalStereol2346,
 	author = {Francisco José Fumero Batista and Tinguaro Diaz-Aleman and Jose Sigut and Silvia Alayon and Rafael Arnay and Denisse Angel-Pereira},
@@ -131,11 +132,11 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ### rimonedl
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                           config                                                                                            |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/rimonedl/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_rimonedl-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/rimonedl/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_rimonedl-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/rimonedl/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_rimonedl-512x512.py) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                           config                                                                                            |         download         |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/rimonedl/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_rimonedl-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/rimonedl/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_rimonedl-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/rimonedl/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_rimonedl-512x512.py) | [model](<>) \| [log](<>) |
 
 ## Checklist
 
