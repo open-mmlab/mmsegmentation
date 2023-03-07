@@ -197,4 +197,4 @@ docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmseg
 
 ## 问题解答
 
-如果您在安装过程中遇到了其他问题，请第一时间查阅 [FAQ](faq.md) 文件。如果没有找到答案，您也可以在 GitHub 上提出 [issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)
+如果您在安装过程中遇到了其他问题，请第一时间查阅 [FAQ](notes/faq.md) 文件。如果没有找到答案，您也可以在 GitHub 上提出 [issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)
