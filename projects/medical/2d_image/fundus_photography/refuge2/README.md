@@ -50,7 +50,6 @@ Note:
   year={2022},
   publisher={Nature Research (part of Springer Nature)}
 }
-No definitions available.
 ```
 
 ### Prerequisites
@@ -124,15 +123,9 @@ To train models on a single server with one GPU. (default）
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
 
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
-
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
-```
-
 ### Testing commands
 
-To train models on a single server with one GPU. (default）
+To test models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
@@ -146,11 +139,11 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ### Refuge2
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                          config                                                                                           |         download         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/refuge2/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_refuge2-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/refuge2/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_refuge2-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/refuge2/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_refuge2-512x512.py) | [model](<>) \| [log](<>) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                    config                                    |         download         |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :--------------------------------------------------------------------------: | :----------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_refuge2-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_refuge2-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_refuge2-512x512.py) | [model](<>) \| [log](<>) |
 
 ## Checklist
 
