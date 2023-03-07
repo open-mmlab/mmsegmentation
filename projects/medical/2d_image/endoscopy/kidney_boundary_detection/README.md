@@ -1,8 +1,8 @@
-# Kidney Boundary detection with darkfield microscopy
+# Kidney Boundary detection
 
 ## Description
 
-This project support **`Kidney Boundary detection with darkfield microscopy `**, and the dataset used in this project can be downloaded from [here](https://endovissub2017-kidneyboundarydetection.grand-challenge.org/).
+This project support **`Kidney Boundary detection`**, and the dataset used in this project can be downloaded from [here](https://endovissub2017-kidneyboundarydetection.grand-challenge.org/).
 
 ### Dataset Overview
 
@@ -23,24 +23,38 @@ In each frame we have hand labelled the visible border of the kidney, skipping r
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/endoscopy/kidney_boundary_detection/kidney_boundary_detection_dataset.png)
 
+## Dataset Citation
+
+```bibtex
+@article{hattab2020kidney,
+  title={Kidney edge detection in laparoscopic image data for computer-assisted surgery: Kidney edge detection},
+  author={Hattab, Georges and Arnold, Marvin and Strenger, Leon and Allan, Max and Arsentjeva, Darja and Gold, Oliver and Simpfend{\"o}rfer, Tobias and Maier-Hein, Lena and Speidel, Stefanie},
+  journal={International journal of computer assisted radiology and surgery},
+  volume={15},
+  pages={379--387},
+  year={2020},
+  publisher={Springer}
+}
+```
+
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL) 9.3.0
-- scikit-learn(sklearn) 1.2.0
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0
+- scikit-learn(sklearn) v1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In kidney_boundary_detection/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `kidney_boundary_detection/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -48,7 +62,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and decompression data to path 'data/'.
+- download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -64,24 +78,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
 
 ### Divided Dataset Information
@@ -95,6 +103,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -106,6 +116,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
