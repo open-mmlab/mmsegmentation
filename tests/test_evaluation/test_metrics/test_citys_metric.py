@@ -1,15 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os.path as osp
 from unittest import TestCase
 
 import numpy as np
+import pytest
 import torch
 from mmengine.structures import BaseDataElement, PixelData
 
-from mmseg.evaluation import CitysMetric
+from mmseg.evaluation import CityscapesMetric
 from mmseg.structures import SegDataSample
 
 
-class TestCitysMetric(TestCase):
+class TestCityscapesMetric(TestCase):
 
     def _demo_mm_inputs(self,
                         batch_size=1,
@@ -42,9 +44,8 @@ class TestCitysMetric(TestCase):
             gt_sem_seg_data = dict(data=gt_semantic_seg)
             data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
             mm_inputs['data_sample'] = data_sample.to_dict()
-            mm_inputs['data_sample']['seg_map_path'] = \
-                'tests/data/pseudo_cityscapes_dataset/gtFine/val/\
-                    frankfurt/frankfurt_000000_000294_gtFine_labelTrainIds.png'
+            mm_inputs['data_sample'][
+                'seg_map_path'] = 'tests/data/pseudo_cityscapes_dataset/gtFine/val/frankfurt/frankfurt_000000_000294_gtFine_labelTrainIds.png'  # noqa
 
             mm_inputs['seg_map_path'] = mm_inputs['data_sample'][
                 'seg_map_path']
@@ -86,9 +87,8 @@ class TestCitysMetric(TestCase):
         for pred in batch_datasampes:
             if isinstance(pred, BaseDataElement):
                 test_data = pred.to_dict()
-                test_data['img_path'] = \
-                    'tests/data/pseudo_cityscapes_dataset/leftImg8bit/val/\
-                        frankfurt/frankfurt_000000_000294_leftImg8bit.png'
+                test_data[
+                    'img_path'] = 'tests/data/pseudo_cityscapes_dataset/leftImg8bit/val/frankfurt/frankfurt_000000_000294_leftImg8bit.png'  # noqa
 
                 _predictions.append(test_data)
             else:
@@ -104,15 +104,23 @@ class TestCitysMetric(TestCase):
             dict(**data, **result)
             for data, result in zip(data_batch, predictions)
         ]
-        iou_metric = CitysMetric(citys_metrics=['cityscapes'])
-        iou_metric.process(data_batch, data_samples)
-        res = iou_metric.evaluate(6)
+        # test keep_results should be True when format_only is True
+        with pytest.raises(AssertionError):
+            CityscapesMetric(
+                output_dir='tmp', format_only=True, keep_results=False)
+
+        # test evaluate with cityscape metric
+        metric = CityscapesMetric(output_dir='tmp')
+        metric.process(data_batch, data_samples)
+        res = metric.evaluate(2)
         self.assertIsInstance(res, dict)
-        # test to_label_id = True
-        iou_metric = CitysMetric(
-            citys_metrics=['cityscapes'], to_label_id=True)
-        iou_metric.process(data_batch, data_samples)
-        res = iou_metric.evaluate(6)
-        self.assertIsInstance(res, dict)
+
+        # test format_only
+        metric = CityscapesMetric(
+            output_dir='tmp', format_only=True, keep_results=True)
+        metric.process(data_batch, data_samples)
+        metric.evaluate(2)
+        assert osp.exists('tmp')
+        assert osp.isfile('tmp/frankfurt_000000_000294_leftImg8bit.png')
         import shutil
-        shutil.rmtree('.format_cityscapes')
+        shutil.rmtree('tmp')
