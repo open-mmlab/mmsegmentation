@@ -1,8 +1,8 @@
-# Ravir
+# RAVIR: A Dataset and Methodology for the Semantic Segmentation and Quantitative Analysis of Retinal Arteries and Veins in Infrared Reflectance Imaging
 
 ## Description
 
-This project support **`Ravir`**, and the dataset used in this project can be downloaded from [here](https://ravir.grand-challenge.org/).
+This project support **`RAVIR: A Dataset and Methodology for the Semantic Segmentation and Quantitative Analysis of Retinal Arteries and Veins in Infrared Reflectance Imaging`**, and the dataset used in this project can be downloaded from [here](https://ravir.grand-challenge.org/).
 
 ### Dataset Overview
 
@@ -11,8 +11,8 @@ The retinal vasculature provides important clues in the diagnosis and monitoring
 ### Original Statistic Information
 
 | Dataset name | Anatomical region | Task type | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License |
-| - | - | - | - | - | - | - | - |
-| [Ravir](https://ravir.grand-challenge.org/) | eye | segmentation | infrared reflectance imaging | 3 | 23/-/19 | yes/-/- | 2020 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| - | - | - | - | - | - | - | - | - |
+| [Ravir](https://ravir.grand-challenge.org/) | eye | segmentation | infrared reflectance imaging | 3 | 23/-/19 | yes/-/- | 2022 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -22,24 +22,38 @@ The retinal vasculature provides important clues in the diagnosis and monitoring
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/infrared_reflectance_imaging/ravir/ravir_dataset.png)
 
+## Dataset Citation
+```bibtex
+@article{hatamizadeh2022ravir,
+  title={RAVIR: A dataset and methodology for the semantic segmentation and quantitative analysis of retinal arteries and veins in infrared reflectance imaging},
+  author={Hatamizadeh, Ali and Hosseini, Hamid and Patel, Niraj and Choi, Jinseo and Pole, Cameron C and Hoeferlin, Cory M and Schwartz, Steven D and Terzopoulos, Demetri},
+  journal={IEEE Journal of Biomedical and Health Informatics},
+  volume={26},
+  number={7},
+  pages={3272--3283},
+  year={2022},
+  publisher={IEEE}
+}
+```
+
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL) 9.3.0
-- scikit-learn(sklearn) 1.2.0
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0
+- scikit-learn(sklearn) v1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In bactteria_detection/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `ravir/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
@@ -47,7 +61,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://ravir.grand-challenge.org/) and decompression data to path 'data/'.
+- download dataset from [here](https://ravir.grand-challenge.org/) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 
 ```none
@@ -62,12 +76,14 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
+  │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── val.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   │   │   │   ├── test
   │   │   │   │   |   │   │   │   ├── yyy.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── yyy.png
@@ -76,10 +92,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   │   ├── val
-  │   │   │   │   |   │   │   │   ├── yyy.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── yyy.png
 ```
 
 ### Divided Dataset Information
@@ -94,6 +106,8 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
+To train models on a single server with one GPU. (default）
+
 ```shell
 mim train mmseg ./configs/${CONFIG_PATH}
 ```
@@ -105,6 +119,8 @@ mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
 ```
 
 ### Testing commands
+
+To train models on a single server with one GPU. (default）
 
 ```shell
 mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
