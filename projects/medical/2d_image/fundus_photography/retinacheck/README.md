@@ -10,9 +10,9 @@ This is an improved version of our vessel segmentation dataset on Scanning Laser
 
 ### Original Statistic Information
 
-| Dataset name | Anatomical region | Task type | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled |  Release Date | License |
-| - | - | - | - | - | - | - | - | - |
-| [RetinaCheck](http://www.retinacheck.org/download-iostar-retinal-vessel-segmentation-dataset) | eye | segmentation | fundus photophy | 2 | 20/-/20 | yes/-/- | 2015 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                                  | Anatomical region | Task type    | Modality        | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| --------------------------------------------------------------------------------------------- | ----------------- | ------------ | --------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [RetinaCheck](http://www.retinacheck.org/download-iostar-retinal-vessel-segmentation-dataset) | eye               | segmentation | fundus photophy | 2            | 20/-/20               | yes/-/-                | 2015         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -28,6 +28,7 @@ Note:
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/fundus_photography/retinacheck/retinacheck_dataset.png)
 
 ## Dataset Citation
+
 ```bibtex
 @article{zhang2016robust,
   title={Robust retinal vessel segmentation via locally adaptive derivative frames in orientation scores},
@@ -138,11 +139,11 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ### Retina Check
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                        config                                                                                         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_retinacheck-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_retinacheck-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_retinacheck-512x512.py) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                        config                                                                                         |         download         |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_retinacheck-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_retinacheck-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/fundus_photography/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_retinacheck-512x512.py) | [model](<>) \| [log](<>) |
 
 ## Checklist
 
