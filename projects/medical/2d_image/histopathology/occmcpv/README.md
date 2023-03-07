@@ -8,9 +8,9 @@ This project support **`Segmentation of Overlapping Cervical Cells from Multi-la
 
 ### Original Statistic Information
 
-| Dataset name | Anatomical region | Task type | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License |
-| - | - | - | - | - | - | - | - | - |
-| [OCCMCPV](https://set.adelaide.edu.au/computer-and-mathematical-sciences/) | cell | segmentation | histopathology | 2 | 8/-/- | yes/-/- | 2020 | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                               | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| -------------------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [OCCMCPV](https://set.adelaide.edu.au/computer-and-mathematical-sciences/) | cell              | segmentation | histopathology | 2            | 8/-/-                 | yes/-/-                | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -112,11 +112,11 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ### occmcpv
 
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                        config                                                                                         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/histopathology/occmcpv/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_occmcpv-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/histopathology/occmcpv/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_occmcpv-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/histopathology/occmcpv/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_occmcpv-512x512.py) |
+|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                        config                                                                                         |         download         |
+| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |
+| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/histopathology/occmcpv/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_occmcpv-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/histopathology/occmcpv/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_occmcpv-512x512.py)  | [model](<>) \| [log](<>) |
+| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/histopathology/occmcpv/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_occmcpv-512x512.py) | [model](<>) \| [log](<>) |
 
 ## Checklist
 
