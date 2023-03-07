@@ -6,7 +6,7 @@ from unittest import TestCase
 import numpy as np
 import pytest
 import torch
-from mmengine.structures import BaseDataElement, PixelData
+from mmengine.structures import PixelData
 
 from mmseg.evaluation import CityscapesMetric
 from mmseg.structures import SegDataSample

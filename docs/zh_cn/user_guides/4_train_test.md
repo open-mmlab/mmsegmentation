@@ -224,7 +224,6 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${分区} ${任务名} config2.py ${工作路径}
 ```
 
-
 ## 测试并保存输出分割结果
 
 ### 基础使用
