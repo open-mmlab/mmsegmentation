@@ -33,7 +33,7 @@ Note:
 ```bibtex
 @article{fu2018joint,
   title={Joint optic disc and cup segmentation based on multi-label deep network and polar transformation},
-  author={Fu, Huazhu and Cheng, Jun and Xu, Yanwu and Wong, demon Wing Kee and Liu, Jiang and Cao, Xiaochun},
+  author={Fu, Huazhu and Cheng, Jun and Xu, Yanwu and Wong, Damon Wing Kee and Liu, Jiang and Cao, Xiaochun},
   journal={IEEE transactions on medical imaging},
   volume={37},
   number={7},
