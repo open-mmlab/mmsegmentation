@@ -30,7 +30,7 @@
 
 ## 基本接口
 
-MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) 类，主要提供 `forward`、`train_step`、`val_step` 和 `test_step`接口。接下来将详细介绍这些接口。
+MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) 类，主要提供 `forward`、`train_step`、`val_step` 和 `test_step` 接口。接下来将详细介绍这些接口。
 
 ### forward
 
@@ -50,9 +50,9 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
 
 - “tensor”：前向推理整个网络并返回张量或张量数组，无需任何后处理，与常见的 `nn.Module` 相同。
 - “predict”：前向推理并返回预测值，这些预测值将被完全处理到 `SegDataSample` 列表中。
-- “loss”：前向推理并根据给定的输入和数据样本返回损失的 `字典`。
+- “loss”：前向推理并根据给定的输入和数据样本返回损失的`字典`。
 
-**注：**[SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) 是 MMSegmentation 的数据结构接口，用作不同组件之间的接口。 `SegDataSample` 实现了抽象数据元素 `mmengine.structures.BaseDataElement`，请参阅 [MMMEngine](https://github.com/open-mmlab/mmengine) 中的 [SegDataSample 文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/structures.html)和[数据元素文档](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html)了解更多信息。
+**注：**[SegDataSample](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/structures/seg_data_sample.py) 是 MMSegmentation 的数据结构接口，用作不同组件之间的接口。`SegDataSample` 实现了抽象数据元素 `mmengine.structures.BaseDataElement`，请参阅 [MMMEngine](https://github.com/open-mmlab/mmengine) 中的 [SegDataSample 文档](https://mmsegmentation.readthedocs.io/zh_CN/1.x/advanced_guides/structures.html)和[数据元素文档](https://mmengine.readthedocs.io/zh_CN/latest/advanced_tutorials/data_element.html)了解更多信息。
 
 注意，此方法不处理在 `train_step` 方法中完成的反向传播或优化器更新。
 
@@ -69,7 +69,7 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
   - 如果 `mode == "predict"`，则返回 `SegDataSample` 的`列表`，推理结果将被递增地添加到传递给 forward 方法的 `data_sample` 参数中，每个 `SegDataSeample` 包含以下关键词：
     - pred_sm_seg (`PixelData`)：语义分割的预测。
     - seg_logits (`PixelData`)：标准化前语义分割的预测指标。
-  - 如果 `mode == "tensor"`，则返回 `张量` 或 `张量数组` 的 `字典` 以供自定义使用。
+  - 如果 `mode == "tensor"`，则返回`张量`或`张量数组`的`字典`以供自定义使用。
 
 ### 预测模式
 
@@ -87,7 +87,7 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
   )
   ```
 
-- `slide_inference`：如果 `cfg.model.test_cfg.mode == ‘slide’`，则模型将通过滑动窗口进行推理。**注意：**如果选择 `slide` 模式，还应指定 `cfg.model.test_cfg.stride` 和 `cfg.model.test_cfg.crop_size`。
+- `slide_inference`：如果 `cfg.model.test_cfg.mode == ‘slide’`，则模型将通过滑动窗口进行推理。\*\*注意：\*\*如果选择 `slide` 模式，还应指定 `cfg.model.test_cfg.stride` 和 `cfg.model.test_cfg.crop_size`。
 
   `slide_inference` 模式的一个示例配置：
 
@@ -106,7 +106,7 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
 参数：
 
 - data (dict or tuple or list) - 从数据集采样的数据。在 MMSegmentation 中，数据字典包含 `inputs` 和 `data_samples` 两个字段。
-- optim_wrapper（OptimWrapper）- 用于更新模型参数的 OptimWrappe 实例。
+- optim_wrapper (OptimWrapper) - 用于更新模型参数的 OptimWrapper 实例。
 
 **注：**[OptimWrapper](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/optimizer_wrapper.py#L17) 提供了一个用于更新参数的通用接口，请参阅 [MMMEngine](https://github.com/open-mmlab/mmengine) 中的优化器封装[文档](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/optim_wrapper.html)了解更多信息。
 
@@ -165,7 +165,7 @@ Runner 在构建阶段将模型传送到指定的设备，而 [SegDataPreProcess
 - 将输入堆栈到 batch_input。
 - 如果输入的形状为 (3, H, W)，则将输入从 BGR 转换为 RGB。
 - 使用定义的标准差和平均值标准化图像。
-- 在训练期间进行如 Mixep 和 Cutmix 的批量化数据增强。
+- 在训练期间进行如 Mixup 和 Cutmix 的批量化数据增强。
 
 `forward` 方法的参数：
 
