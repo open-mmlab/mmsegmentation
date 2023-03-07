@@ -87,7 +87,7 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
   )
   ```
 
-- `slide_inference`：如果 `cfg.model.test_cfg.mode == ‘slide’`，则模型将通过滑动窗口进行推理。\*\*注意：\*\*如果选择 `slide` 模式，还应指定 `cfg.model.test_cfg.stride` 和 `cfg.model.test_cfg.crop_size`。
+- `slide_inference`：如果 `cfg.model.test_cfg.mode == ‘slide’`，则模型将通过滑动窗口进行推理。**注意：** 如果选择 `slide` 模式，还应指定 `cfg.model.test_cfg.stride` 和 `cfg.model.test_cfg.crop_size`。
 
   `slide_inference` 模式的一个示例配置：
 
