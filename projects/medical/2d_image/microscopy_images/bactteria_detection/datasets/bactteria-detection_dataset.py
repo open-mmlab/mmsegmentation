@@ -7,8 +7,8 @@ class BactteriaDetectionDataset(BaseSegDataset):
     """BactteriaDetectionDataset dataset.
 
     In segmentation map annotation for BactteriaDetectionDataset,
-    The ``img_suffix``is fixed to '.png' and ``seg_map_suffix``
-    is fixed to '.png'.
+    ``reduce_zero_label`` is fixed to False. The ``img_suffix``
+    is fixed to '.png' and ``seg_map_suffix`` is fixed to '.png'.
 
     Args:
         img_suffix (str): Suffix of images. Default: '.png'
@@ -21,4 +21,7 @@ class BactteriaDetectionDataset(BaseSegDataset):
                  seg_map_suffix='.png',
                  **kwargs) -> None:
         super().__init__(
-            img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
+            img_suffix=img_suffix,
+            seg_map_suffix=seg_map_suffix,
+            reduce_zero_label=False,
+            **kwargs)
