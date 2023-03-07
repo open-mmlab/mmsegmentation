@@ -34,7 +34,7 @@ class IoUMetric(BaseMetric):
         output_dir (str): The directory for output prediction. Defaults to
             None.
         format_only (bool): Only format result for results commit without
-            perform evaluation. It is useful when you want to format the result
+            perform evaluation. It is useful when you want to save the result
             to a specific format and submit it to the test server.
             Defaults to False.
         prefix (str, optional): The prefix that will be added in the metric

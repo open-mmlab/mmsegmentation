@@ -70,7 +70,7 @@ This tool accepts several optional arguments, including:
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-And then run the script [above](#testing-on-a-single-gpu).
+then run the script [above](#testing-on-a-single-gpu).
 
 ## Training and testing on multiple GPUs and multiple machines
 
@@ -218,3 +218,31 @@ You can check [the source code](../../../tools/slurm_test.sh) to review full arg
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py ${WORK_DIR}
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py ${WORK_DIR}
 ```
+
+## Testing dataset and saving predicted segment files
+
+When you want to save the results and submit them to a test server, you can specify
+the `output_dir` in metrics. 
+
+```shell
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --cfg-options test_evaluator.output_dir=${OUTPUT_DIR}
+```
+
+Here is an example to save the predicted results from model `fcn_r50-d8_4xb4-80k_ade20k-512x512` on ADE20k test dataset.
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --cfg-options test_evaluator.output_dir=work_dirs/format_results
+
+```
+You also can modify the config file to define `output_dir`, like modity `test_evaluator` in `configs/_base_/datasets/ade20k.py`
+
+```python
+test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], output_dir='work_dirs/format_results')
+```
+then run command without `--cfg-options`
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
+```
+
+If you would like to 
