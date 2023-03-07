@@ -76,11 +76,15 @@ class IoUMetric(BaseMetric):
 
         num_classes = len(self.dataset_meta['classes'])
         for data_sample in data_samples:
+
             pred_label = data_sample['pred_sem_seg']['data'].squeeze()
-            label = data_sample['gt_sem_seg']['data'].squeeze().to(pred_label)
-            self.results.append(
-                self.intersect_and_union(pred_label, label, num_classes,
-                                         self.ignore_index))
+            # format_only always for test dataset without ground truth
+            if not self.format_only:
+                label = data_sample['gt_sem_seg']['data'].squeeze().to(
+                    pred_label)
+                self.results.append(
+                    self.intersect_and_union(pred_label, label, num_classes,
+                                             self.ignore_index))
             # format_result
             if self.output_dir is not None:
                 basename = osp.splitext(osp.basename(
@@ -91,10 +95,10 @@ class IoUMetric(BaseMetric):
                 # The index range of official ADE20k dataset is from 0 to 150.
                 # But the index range of output is from 0 to 149.
                 # That is because we set reduce_zero_label=True.
-                if data_sample['reduce_zero_label']:
+                if data_sample.get('reduce_zero_label', False):
                     output_mask = output_mask + 1
-                    output = Image.fromarray(output_mask.astype(np.uint8))
-                    output.save(png_filename)
+                output = Image.fromarray(output_mask.astype(np.uint8))
+                output.save(png_filename)
 
     def compute_metrics(self, results: list) -> Dict[str, float]:
         """Compute the metrics from processed results.

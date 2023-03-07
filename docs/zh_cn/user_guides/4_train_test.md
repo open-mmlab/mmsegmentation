@@ -223,3 +223,90 @@ GPUS=4 sh tools/slurm_train.sh dev pspnet configs/pspnet/pspnet_r50-d8_512x1024_
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${分区} ${任务名} config1.py ${工作路径}
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${分区} ${任务名} config2.py ${工作路径}
 ```
+
+
+## 测试并保存输出分割结果
+
+### 基础使用
+
+当需要保存测试输出的分割结果，可以指定 `test_evaluator` 的 `output_dir` 输出路径
+
+```shell
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --cfg-options test_evaluator.output_dir=${OUTPUT_DIR}
+```
+
+以保存模型 `fcn_r50-d8_4xb4-80k_ade20k-512x512` 在 ADE20K 验证数据集上的结果为例：
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --cfg-options test_evaluator.output_dir=work_dirs/format_results
+```
+
+或者通过配置文件定义 `output_dir`。例如在 `configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py` 添加 `test_evaluator` 定义：
+
+```python
+test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], output_dir='work_dirs/format_results')
+```
+
+然后执行相同的命令但是不需要 `--cfg-options`。
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
+```
+
+当测试的数据集没有提供标注，评测时没有真值可以参与计算，因此需要设置 `format_only=True`。
+同时需要修改 `test_dataloader`，由于没有标注，我们需要在数据增强变换中删掉 `dict(type='LoadAnnotations')`，以下是一个配置示例：
+
+```python
+test_evaluator = dict(
+    type='IoUMetric',
+    iou_metrics=['mIoU'],
+    format_only=True,
+    output_dir='work_dirs/format_results')
+test_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type = 'ADE20KDataset'
+        data_root='data/ade/release_test',
+        data_prefix=dict(img_path='testing'),
+        # 测试数据变换中没有加载标注
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='Resize', scale=(2048, 512), keep_ratio=True),
+            dict(type='PackSegInputs')
+        ]))
+```
+
+### 测试 Cityscapes 数据集并保存输出分割结果
+
+推荐使用 `CityscapesMetric` 来保存模型在 Cityscapes 数据集上的测试结果，以下是一个配置示例：
+
+```python
+test_evaluator = dict(
+    type='CityscapesMetric',
+    format_only=True,
+    keep_results=True,
+    output_dir='work_dirs/format_results')
+test_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type='CityscapesDataset',
+        data_root='data/cityscapes/',
+        data_prefix=dict(img_path='leftImg8bit/test'),
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='Resize', scale=(2048, 1024), keep_ratio=True),
+            dict(type='PackSegInputs')
+        ]))
+```
+
+然后执行相同的命令，例如：
+
+```shell
+python tools/test.py configs/fcn/fcn_r18-d8_4xb2-80k_cityscapes-512x1024.py ckpt/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
+```

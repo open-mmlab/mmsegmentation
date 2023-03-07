@@ -97,10 +97,14 @@ class CityscapesMetric(BaseMetric):
                 osp.join(self.output_dir, f'{basename}.png'))
             output = Image.fromarray(pred_label.astype(np.uint8)).convert('P')
             output.save(png_filename)
-            # when evaluating with official cityscapesscripts,
-            # **_gtFine_labelIds.png is used
-            gt_filename = data_sample['seg_map_path'].replace(
-                'labelTrainIds.png', 'labelIds.png')
+            if self.format_only:
+                # format_only always for test dataset without ground truth
+                gt_filename = ''
+            else:
+                # when evaluating with official cityscapesscripts,
+                # **_gtFine_labelIds.png is used
+                gt_filename = data_sample['seg_map_path'].replace(
+                    'labelTrainIds.png', 'labelIds.png')
             self.results.append((png_filename, gt_filename))
 
     def compute_metrics(self, results: list) -> Dict[str, float]:

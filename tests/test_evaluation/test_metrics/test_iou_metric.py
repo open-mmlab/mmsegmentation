@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os.path as osp
+import shutil
 from unittest import TestCase
 
 import numpy as np
@@ -58,6 +60,8 @@ class TestIoUMetric(TestCase):
                 data=torch.randn(num_classes, h, w))
             data_sample['pred_sem_seg'] = dict(
                 data=torch.randint(0, num_classes, (1, h, w)))
+            data_sample[
+                'img_path'] = 'tests/data/pseudo_dataset/imgs/00000_img.jpg'
         return data_samples
 
     def test_evaluate(self):
@@ -72,5 +76,29 @@ class TestIoUMetric(TestCase):
             label_map=dict(),
             reduce_zero_label=False)
         iou_metric.process([0] * len(data_samples), data_samples)
-        res = iou_metric.evaluate(6)
+        res = iou_metric.evaluate(2)
         self.assertIsInstance(res, dict)
+
+        # test save segment file in output_dir
+        iou_metric = IoUMetric(iou_metrics=['mIoU'], output_dir='tmp')
+        iou_metric.dataset_meta = dict(
+            classes=['wall', 'building', 'sky', 'floor', 'tree'],
+            label_map=dict(),
+            reduce_zero_label=False)
+        iou_metric.process([0] * len(data_samples), data_samples)
+        assert osp.exists('tmp')
+        assert osp.isfile('tmp/00000_img.png')
+        shutil.rmtree('tmp')
+
+        # test format_only
+        iou_metric = IoUMetric(
+            iou_metrics=['mIoU'], output_dir='tmp', format_only=True)
+        iou_metric.dataset_meta = dict(
+            classes=['wall', 'building', 'sky', 'floor', 'tree'],
+            label_map=dict(),
+            reduce_zero_label=False)
+        iou_metric.process([0] * len(data_samples), data_samples)
+        assert iou_metric.results == []
+        assert osp.exists('tmp')
+        assert osp.isfile('tmp/00000_img.png')
+        shutil.rmtree('tmp')
