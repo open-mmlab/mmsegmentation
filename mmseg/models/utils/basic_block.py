@@ -2,14 +2,31 @@
 from typing import Optional
 
 import torch.nn as nn
-from mmcv.cnn import ConvModule, build_activation_layer
+from mmcv.cnn import ConvModule
 from mmengine.model import BaseModule
 from torch import Tensor
 
+from mmseg.registry import MODELS
 from mmseg.utils import OptConfigType
 
 
 class BasicBlock(BaseModule):
+    """Basic block from `ResNet <https://arxiv.org/abs/1512.03385>`_.
+
+    Args:
+        in_channels (int): Input channels.
+        channels (int): Output channels.
+        stride (int): Stride of the first block. Default: 1.
+        downsample (nn.Module, optional): Downsample operation on identity.
+            Default: None.
+        norm_cfg (dict, optional): Config dict for normalization layer.
+            Default: dict(type='BN').
+        act_cfg (dict, optional): Config dict for activation layer in
+            ConvModule. Default: dict(type='ReLU', inplace=True).
+        act_cfg_out (dict, optional): Config dict for activation layer at the
+            last of the block. Default: None.
+        init_cfg (dict, optional): Initialization config dict. Default: None.
+    """
 
     expansion = 1
 
@@ -40,7 +57,7 @@ class BasicBlock(BaseModule):
             act_cfg=None)
         self.downsample = downsample
         if act_cfg_out:
-            self.act = build_activation_layer(act_cfg_out)
+            self.act = MODELS.build(act_cfg_out)
 
     def forward(self, x: Tensor) -> Tensor:
         residual = x
@@ -59,6 +76,22 @@ class BasicBlock(BaseModule):
 
 
 class Bottleneck(BaseModule):
+    """Bottleneck block from `ResNet <https://arxiv.org/abs/1512.03385>`_.
+
+    Args:
+        in_channels (int): Input channels.
+        channels (int): Output channels.
+        stride (int): Stride of the first block. Default: 1.
+        downsample (nn.Module, optional): Downsample operation on identity.
+            Default: None.
+        norm_cfg (dict, optional): Config dict for normalization layer.
+            Default: dict(type='BN').
+        act_cfg (dict, optional): Config dict for activation layer in
+            ConvModule. Default: dict(type='ReLU', inplace=True).
+        act_cfg_out (dict, optional): Config dict for activation layer at
+            the last of the block. Default: None.
+        init_cfg (dict, optional): Initialization config dict. Default: None.
+    """
 
     expansion = 2
 
@@ -89,7 +122,7 @@ class Bottleneck(BaseModule):
             norm_cfg=norm_cfg,
             act_cfg=None)
         if act_cfg_out:
-            self.act = build_activation_layer(act_cfg_out)
+            self.act = MODELS.build(act_cfg_out)
         self.downsample = downsample
 
     def forward(self, x: Tensor) -> Tensor:

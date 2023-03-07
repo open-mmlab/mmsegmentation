@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
 import tempfile
 
 import torch
@@ -27,11 +28,13 @@ def test_pidnet_backbone():
 
     # Test init weights
     temp_file = tempfile.NamedTemporaryFile()
+    temp_file.close()
     torch.save(model.state_dict(), temp_file.name)
     backbone_cfg.update(
         init_cfg=dict(type='Pretrained', checkpoint=temp_file.name))
     model = MODELS.build(backbone_cfg)
     model.init_weights()
+    os.remove(temp_file.name)
 
     # Test eval mode
     model.eval()

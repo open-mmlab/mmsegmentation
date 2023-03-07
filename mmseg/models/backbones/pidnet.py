@@ -289,49 +289,43 @@ class PIDNet(BaseModule):
                 self._make_single_layer(BasicBlock, channels * 2, channels),
                 self._make_layer(Bottleneck, channels, channels, 1)
             ])
-            self.diff_1 = ConvModule(
-                channels * 4,
-                channels,
-                kernel_size=3,
-                padding=1,
-                bias=False,
-                norm_cfg=norm_cfg,
-                act_cfg=None)
-            self.diff_2 = ConvModule(
-                channels * 8,
-                channels * 2,
-                kernel_size=3,
-                padding=1,
-                bias=False,
-                norm_cfg=norm_cfg,
-                act_cfg=None)
-            self.spp = PAPPM(
-                channels * 16, ppm_channels, channels * 4, num_scales=5)
-            self.dfm = LightBag(channels * 4, channels * 4, norm_cfg=norm_cfg)
+            channel_expand = 1
+            spp_module = PAPPM
+            dfm_module = LightBag
+            act_cfg_dfm = None
         else:
             self.d_branch_layers = nn.ModuleList([
                 self._make_single_layer(BasicBlock, channels * 2,
                                         channels * 2),
                 self._make_single_layer(BasicBlock, channels * 2, channels * 2)
             ])
-            self.diff_1 = ConvModule(
-                channels * 4,
-                channels * 2,
-                kernel_size=3,
-                padding=1,
-                norm_cfg=norm_cfg,
-                act_cfg=None)
-            self.diff_2 = ConvModule(
-                channels * 8,
-                channels * 2,
-                kernel_size=3,
-                padding=1,
-                norm_cfg=norm_cfg,
-                act_cfg=None)
-            self.spp = DAPPM(
-                channels * 16, ppm_channels, channels * 4, num_scales=5)
-            self.dfm = Bag(
-                channels * 4, channels * 4, norm_cfg=norm_cfg, act_cfg=act_cfg)
+            channel_expand = 2
+            spp_module = DAPPM
+            dfm_module = Bag
+            act_cfg_dfm = act_cfg
+
+        self.diff_1 = ConvModule(
+            channels * 4,
+            channels * channel_expand,
+            kernel_size=3,
+            padding=1,
+            bias=False,
+            norm_cfg=norm_cfg,
+            act_cfg=None)
+        self.diff_2 = ConvModule(
+            channels * 8,
+            channels * 2,
+            kernel_size=3,
+            padding=1,
+            bias=False,
+            norm_cfg=norm_cfg,
+            act_cfg=None)
+
+        self.spp = spp_module(
+            channels * 16, ppm_channels, channels * 4, num_scales=5)
+        self.dfm = dfm_module(
+            channels * 4, channels * 4, norm_cfg=norm_cfg, act_cfg=act_cfg_dfm)
+
         self.d_branch_layers.append(
             self._make_layer(Bottleneck, channels * 2, channels * 2, 1))
 
