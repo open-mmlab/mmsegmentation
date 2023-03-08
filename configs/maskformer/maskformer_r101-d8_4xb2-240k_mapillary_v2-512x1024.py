@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/datasets/mapillary_v2_0.py',
+    '../_base_/datasets/mapillary_v2.py',
     '../_base_/default_runtime.py',
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)

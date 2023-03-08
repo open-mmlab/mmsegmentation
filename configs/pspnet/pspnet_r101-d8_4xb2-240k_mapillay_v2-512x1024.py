@@ -1,7 +1,6 @@
 _base_ = [
-    '../_base_/models/pspnet_r50-d8.py',
-    '../_base_/datasets/mapillary_v2_0.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_240k.py'
+    '../_base_/models/pspnet_r50-d8.py', '../_base_/datasets/mapillary_v2.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_240k.py'
 ]
 
 crop_size = (512, 1024)

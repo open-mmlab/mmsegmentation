@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/datasets/mapillary_v1_2_65.py',
+    '../_base_/datasets/mapillary_v1_65.py',
     '../_base_/default_runtime.py',
 ]
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -11,8 +11,8 @@ data_preprocessor = dict(
     std=[58.395, 57.12, 57.375],
     bgr_to_rgb=True,
     pad_val=0,
-    seg_pad_val=255,
-    #test_cfg=dict(size_divisor=1280)
+    seg_pad_val=255
+    # test_cfg=dict(size_divisor=1280)
 )
 # model_cfg
 num_classes = 65

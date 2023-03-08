@@ -1,14 +1,14 @@
-# Add New Modules
+# 新增模块
 
-## Develop new components
+## 开发新组件
 
-We can customize all the components introduced at [the model documentation](./models.md), such as **backbone**, **head**, **loss function** and **data preprocessor**.
+我们可以自定义 [模型文档](./models.md) 中介绍的所有组件，例如**主干网络（backbone）**、**头（head）**、**损失函数（loss function）**和**数据预处理器（data preprocessor）**。
 
-### Add new backbones
+### 添加新的主干网络（backbone）
 
-Here we show how to develop a new backbone with an example of MobileNet.
+在这里，我们以 MobileNet 为例展示如何开发新的主干网络。
 
-1. Create a new file `mmseg/models/backbones/mobilenet.py`.
+1. 创建一个新文件 `mmseg/models/backbones/mobilenet.py`。
 
    ```python
    import torch.nn as nn
@@ -29,13 +29,13 @@ Here we show how to develop a new backbone with an example of MobileNet.
            pass
    ```
 
-2. Import the module in `mmseg/models/backbones/__init__.py`.
+2. 在 `mmseg/models/backbones/__init__.py` 中引入模块。
 
    ```python
    from .mobilenet import MobileNet
    ```
 
-3. Use it in your config file.
+3. 在配置文件中使用它。
 
    ```python
    model = dict(
@@ -47,15 +47,15 @@ Here we show how to develop a new backbone with an example of MobileNet.
        ...
    ```
 
-### Add new heads
+### 添加新的头（head）
 
-In MMSegmentation, we provide a [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/decode_heads/decode_head.py#L17) for developing all segmentation heads.
-All newly implemented decode heads should be derived from it.
-Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
+在 MMSegmentation 中，我们提供 [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/decode_heads/decode_head.py#L17) 用于开发所有分割头。
+所有新实现的解码头都应该从中派生出来。
+接下来我们以 [PSPNet](https://arxiv.org/abs/1612.01105) 为例说明如何开发新的头。
 
-First, add a new decode head in `mmseg/models/decode_heads/psp_head.py`.
-PSPNet implements a decode head for segmentation decode.
-To implement a decode head, we need to implement three functions of the new module as the following.
+首先，在 `mmseg/models/decode_heads/psp_head.py` 中添加一个新的解码头。
+PSPNet 实现了用于分割解码的解码头。
+为了实现解码头，在新模块中我们需要执行以下三个函数。
 
 ```python
 from mmseg.registry import MODELS
@@ -73,9 +73,9 @@ class PSPHead(BaseDecodeHead):
         pass
 ```
 
-Next, the users need to add the module in the `mmseg/models/decode_heads/__init__.py`, thus the corresponding registry could find and load them.
+接下来，用户需要在 `mmseg/models/decode_heads/__init__.py` 中添加模块，这样相应的注册器就可以找到并加载它们。
 
-To config file of PSPNet is as the following
+PSPNet 的配置文件如下
 
 ```python
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -108,11 +108,11 @@ model = dict(
 
 ```
 
-### Add new loss
+### 添加新的损失函数（loss）
 
-Assume you want to add a new loss as `MyLoss` for segmentation decode.
-To add a new loss function, the users need to implement it in `mmseg/models/losses/my_loss.py`.
-The decorator `weighted_loss` enables the loss to be weighted for each element.
+假设您想为分割解码添加一个叫做 `MyLoss` 的新的损失函数。
+要添加新的损失函数，用户需要在 `mmseg/models/loss/my_loss.py` 中实现它。
+修饰器 `weighted_loss` 可以对损失的每个元素进行加权。
 
 ```python
 import torch
@@ -149,26 +149,26 @@ class MyLoss(nn.Module):
         return loss
 ```
 
-Then the users need to add it in the `mmseg/models/losses/__init__.py`.
+然后，用户需要将其添加到 `mmseg/models/loss/__init__.py` 中。
 
 ```python
 from .my_loss import MyLoss, my_loss
 
 ```
 
-To use it, modify the `loss_xxx` field.
-Then you need to modify the `loss_decode` field in the head.
-`loss_weight` could be used to balance multiple losses.
+要使用它，请修改 `loss_xx` 字段。
+然后需要修改头中的 `loss_decode` 字段。
+`loss_weight` 可用于平衡多重损失。
 
 ```python
 loss_decode=dict(type='MyLoss', loss_weight=1.0))
 ```
 
-### Add new data preprocessor
+### 添加新的数据预处理器（data preprocessor）
 
-In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/data_preprocessor.py#L13) to copy data to the target device and preprocess the data into the model input format as default. Here we show how to develop a new data preprocessor.
+在 MMSegmentation 1.x 版本中，我们使用 [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/data_preprocessor.py#L13) 将数据复制到目标设备，并将数据预处理为默认的模型输入格式。这里我们将展示如何开发一个新的数据预处理器。
 
-1. Create a new file `mmseg/models/my_datapreprocessor.py`.
+1. 创建一个新文件 `mmseg/models/my_datapreprocessor.py`。
 
    ```python
    from mmengine.model import BaseDataPreprocessor
@@ -185,13 +185,13 @@ In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/
            pass
    ```
 
-2. Import your data preprocessor in `mmseg/models/__init__.py`
+2. 在 `mmseg/models/__init__.py` 中导入数据预处理器
 
    ```python
    from .my_datapreprocessor import MyDataPreProcessor
    ```
 
-3. Use it in your config file.
+3. 在配置文件中使用它。
 
    ```python
    model = dict(
@@ -200,15 +200,15 @@ In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/
    )
    ```
 
-## Develop new segmentors
+## 开发新的分割器（segmentor）
 
-The segmentor is an algorithmic architecture in which users can customize their algorithms by adding customized components and defining the logic of algorithm execution. Please refer to [the model document](./models.md) for more details.
+分割器是一种户可以通过添加自定义组件和定义算法执行逻辑来自定义其算法的算法架构。请参考[模型文档](./models.md)了解更多详情。
 
-Since the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) in MMSegmentation unifies three modes for a forward process, to develop a new segmentor, users need to overwrite `loss`, `predict` and `_forward` methods corresponding to the `loss`, `predict` and `tensor` modes.
+由于 MMSegmentation 中的 [BaseSegmenter](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) 统一了前向过程的三种模式，为了开发新的分割器，用户需要重写与 `loss`、`predict` 和 `tensor` 相对应的 `loss`、`predict` 和 `_forward` 方法。
 
-Here we show how to develop a new segmentor.
+这里我们将展示如何开发一个新的分割器。
 
-1. Create a new file `mmseg/models/segmentors/my_segmentor.py`.
+1. 创建一个新文件 `mmseg/models/segmentors/my_segmentor.py`。
 
    ```python
     from typing import Dict, Optional, Union
@@ -244,13 +244,13 @@ Here we show how to develop a new segmentor.
             pass
    ```
 
-2. Import your segmentor in `mmseg/models/segmentors/__init__.py`.
+2. 在 `mmseg/models/segmentors/__init__.py` 中导入分割器。
 
    ```python
    from .my_segmentor import MySegmentor
    ```
 
-3. Use it in your config file.
+3. 在配置文件中使用它。
 
    ```python
    model = dict(

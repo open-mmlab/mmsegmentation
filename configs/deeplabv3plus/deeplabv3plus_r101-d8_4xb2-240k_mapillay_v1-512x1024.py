@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/deeplabv3plus_r50-d8.py',
-    '../_base_/datasets/mapillary_v1_2.py', '../_base_/default_runtime.py',
+    '../_base_/datasets/mapillary_v1.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_240k.py'
 ]
 

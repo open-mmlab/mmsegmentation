@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/datasets/mapillary_v2_0.py',
+    '../_base_/datasets/mapillary_v2.py',
     '../_base_/default_runtime.py',
 ]
 crop_size = (512, 1024)

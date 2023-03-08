@@ -1,53 +1,14 @@
-## Prepare datasets
-
-It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
-If your folder structure is different, you may need to change the corresponding paths in config files.
-
-```none
-mmsegmentation
-├── mmseg
-├── tools
-├── configs
-├── data
-│   ├── mapillary
-│   │   ├── training
-│   │   │   ├── images
-│   │   │   ├── v1.2
-|   │   │   │   ├── instances
-|   │   │   │   ├── labels
-|   │   │   │   ├── labels_mask
-|   │   │   │   └── panoptic
-│   │   │   ├── v2.0
-|   │   │   │   ├── instances
-|   │   │   │   ├── labels
-|   │   │   │   ├── labels_mask
-|   │   │   │   ├── panoptic
-|   │   │   │   └── polygons
-│   │   ├── validation
-│   │   │   ├── images
-|   │   │   ├── v1.2
-|   │   │   │   ├── instances
-|   │   │   │   ├── labels
-|   │   │   │   ├── labels_mask
-|   │   │   │   └── panoptic
-│   │   │   ├── v2.0
-|   │   │   │   ├── instances
-|   │   │   │   ├── labels
-|   │   │   │   ├── labels_mask
-|   │   │   │   ├── panoptic
-|   │   │   │   └── polygons
-```
-
 ## Mapillary Vistas Datasets
 
 - The dataset could be download [here](https://www.mapillary.com/dataset/vistas) after registration.
+- Mapillary Vistas Dataset use 8-bit with color-palette to store labels. No conversion operation is required.
 - Assumption you have put the dataset zip file in `mmsegmentation/data/mapillary`
 - Please run the following commands to unzip dataset.
   ```bash
   cd data/mapillary
   unzip An-ZjB1Zm61yAZG0ozTymz8I8NqI4x0MrYrh26dq7kPgfu8vf9ImrdaOAVOFYbJ2pNAgUnVGBmbue9lTgdBOb5BbKXIpFs0fpYWqACbrQDChAA2fdX0zS9PcHu7fY8c-FOvyBVxPNYNFQuM.zip
   ```
-- After unzip, you will get Mapillary Vistas Dataset like this structure.
+- After unzip, you will get Mapillary Vistas Dataset like this structure. Semantic segmentation mask labels in `labels` folder.
   ```none
   mmsegmentation
   ├── mmseg
@@ -78,7 +39,8 @@ mmsegmentation
   |   │   │   │   ├── panoptic
   |   │   │   │   └── polygons
   ```
-- run following command to convert RGB labels to mask labels.
+
+<!-- - run following command to convert RGB labels to mask labels.
   ```bash
   # --nproc optional, default 1, whether use multi-progress
   # --version optional, 'v1.2', 'v2.0','all', default 'all', choose convert which version labels
@@ -86,45 +48,14 @@ mmsegmentation
   # python tools/dataset_converters/mapillary.py [datasets path] [--nproc 8] [--version all]
   python tools/dataset_converters/mapillary.py data/mapillary --nproc 8 --version all
   ```
-  After then, you will get this structure, mask labels saved in `labels_mask`.
-  ```none
-  mmsegmentation
-  ├── mmseg
-  ├── tools
-  ├── configs
-  ├── data
-  │   ├── mapillary
-  │   │   ├── training
-  │   │   │   ├── images
-  │   │   │   ├── v1.2
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   └── panoptic
-  │   │   │   ├── v2.0
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   ├── panoptic
-  |   │   │   │   └── polygons
-  │   │   ├── validation
-  │   │   │   ├── images
-  |   │   │   ├── v1.2
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   └── panoptic
-  │   │   │   ├── v2.0
-  |   │   │   │   ├── instances
-  |   │   │   │   ├── labels
-  |   │   │   │   ├── labels_mask
-  |   │   │   │   ├── panoptic
-  |   │   │   │   └── polygons
-  ```
+  After then, you will get this structure, mask labels saved in `labels_mask`. -->
 
-* **View datasets labels index and palette**
+- You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
+  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)
 
-* **Mapillary Vistas Datasets labels information**
+- **View datasets labels index and palette**
+
+- **Mapillary Vistas Datasets labels information**
   **v1.2 information**
 
   ```none

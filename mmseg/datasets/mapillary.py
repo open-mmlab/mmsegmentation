@@ -4,7 +4,7 @@ from .basesegdataset import BaseSegDataset
 
 
 @DATASETS.register_module()
-class MapillaryDataset_v1_2(BaseSegDataset):
+class MapillaryDataset_v1(BaseSegDataset):
     """Mapillary Vistas Dataset.
 
     Dataset paper link:
@@ -66,7 +66,7 @@ class MapillaryDataset_v1_2(BaseSegDataset):
 
 
 @DATASETS.register_module()
-class MapillaryDataset_v2_0(BaseSegDataset):
+class MapillaryDataset_v2(BaseSegDataset):
     """Mapillary Vistas Dataset.
 
     Dataset paper link:
@@ -175,9 +175,10 @@ class MapillaryDataset_v2_0(BaseSegDataset):
         super().__init__(
             img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
 
+
 @DATASETS.register_module()
-class MapillaryDataset_v1_2_65(BaseSegDataset):
-    """Mapillary Vistas Dataset.
+class MapillaryDataset_v1_65(BaseSegDataset):
+    """Mapillary Vistas Dataset. ignore index 65.
 
     Dataset paper link:
     http://ieeexplore.ieee.org/document/8237796/
@@ -226,8 +227,7 @@ class MapillaryDataset_v1_2_65(BaseSegDataset):
                  [192, 192, 192], [220, 220, 0], [140, 140, 20], [119, 11, 32],
                  [150, 0, 255], [0, 60, 100], [0, 0, 142], [0, 0, 90],
                  [0, 0, 230], [0, 80, 100], [128, 64, 64], [0, 0, 110],
-                 [0, 0, 70], [0, 0, 192], [32, 32, 32], [120, 10,
-                                                         10]])
+                 [0, 0, 70], [0, 0, 192], [32, 32, 32], [120, 10, 10]])
 
     def __init__(self,
                  img_suffix='.jpg',
@@ -235,4 +235,7 @@ class MapillaryDataset_v1_2_65(BaseSegDataset):
                  ignore_index=65,
                  **kwargs) -> None:
         super().__init__(
-            img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, ignore_index=ignore_index, **kwargs)
+            img_suffix=img_suffix,
+            seg_map_suffix=seg_map_suffix,
+            ignore_index=ignore_index,
+            **kwargs)

@@ -1,6 +1,6 @@
 _base_ = [
     '../../../configs/_base_/models/pspnet_r50-d8.py',
-    './_base_/datasets/mapillary_v1_2.py',
+    './_base_/datasets/mapillary_v1.py',
     '../../../configs/_base_/default_runtime.py',
     '../../../configs/_base_/schedules/schedule_240k.py'
 ]

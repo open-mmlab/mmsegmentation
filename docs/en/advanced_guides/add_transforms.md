@@ -1,8 +1,9 @@
-# 新增数据增强
+# Adding New Data Transforms
 
-## 自定义数据增强
+## Customization data transformation
 
-自定义数据增强必须继承 `BaseTransform` 并实现 `transform` 函数。这里我们使用一个简单的翻转变换作为示例：
+The customized data transformation must inherited from `BaseTransform` and implement `transform` function.
+Here we use a simple flipping transformation as example:
 
 ```python
 import random
@@ -21,13 +22,13 @@ class MyFlip(BaseTransform):
         return results
 ```
 
-此外，新的类需要被导入。
+Moreover, import the new class.
 
 ```python
 from .my_pipeline import MyFlip
 ```
 
-这样，我们就可以实例化一个 `MyFlip` 对象并使用它来处理数据字典。
+Thus, we can instantiate a `MyFlip` object and use it to process the data dict.
 
 ```python
 import numpy as np
@@ -38,7 +39,7 @@ data_dict = transform(data_dict)
 processed_img = data_dict['img']
 ```
 
-或者，我们可以在配置文件中的数据流程中使用 `MyFlip` 变换。
+Or, we can use `MyFlip` transformation in data pipeline in our config file.
 
 ```python
 pipeline = [
@@ -48,4 +49,4 @@ pipeline = [
 ]
 ```
 
-需要注意，如果要在配置文件中使用 `MyFlip`，必须确保在运行时导入了包含 `MyFlip` 的文件。
+Note that if you want to use `MyFlip` in config, you must ensure the file containing `MyFlip` is imported during runtime.

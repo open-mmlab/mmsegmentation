@@ -1,5 +1,5 @@
 # dataset settings
-dataset_type = 'MapillaryDataset_v1_2_65'
+dataset_type = 'MapillaryDataset_v1_65'
 data_root = 'data/mapillary/'
 crop_size = (512, 1024)
 train_pipeline = [
@@ -48,8 +48,7 @@ train_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='training/images',
-            seg_map_path='training/v1.2/labels_mask'),
+            img_path='training/images', seg_map_path='training/v1.2/labels'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -61,7 +60,7 @@ val_dataloader = dict(
         data_root=data_root,
         data_prefix=dict(
             img_path='validation/images',
-            seg_map_path='validation/v1.2/labels_mask'),
+            seg_map_path='validation/v1.2/labels'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
