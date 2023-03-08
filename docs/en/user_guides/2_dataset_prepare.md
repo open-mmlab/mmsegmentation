@@ -328,34 +328,34 @@ More details about LoveDA can be found [here](https://github.com/Junjue-Wang/Lov
 ### ISPRS Potsdam
 
 The [Potsdam](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx)
-dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
-
-The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
+dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.  
+The whole dataset can be downloaded [here](https://www.isprs.org/education/benchmarks/UrbanSemLab/).  
 The '2_Ortho_RGB.zip' and '5_Labels_all_noBoundary.zip' are required.
 
-For Potsdam dataset, please run the following command to download and re-organize the dataset.
+For Potsdam dataset, please run the following command to re-organize the dataset after download.
 
 ```shell
 python tools/dataset_converters/potsdam.py /path/to/potsdam
 ```
 
-In our default setting, it will generate 3456 images for training and 2016 images for validation.
+In our default setting, it will generate 3456 images for training and 2016 images for validation.  
+More details about Potsdam can be found [here](https://www.isprs.org/education/benchmarks/UrbanSemLab/semantic-labeling.aspx). 
 
 ### ISPRS Vaihingen
 
 The [Vaihingen](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-vaihingen.aspx)
-dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
-
-The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
+dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.  
+The whole dataset can be downloaded [here](https://www.isprs.org/education/benchmarks/UrbanSemLab/).  
 The 'ISPRS_semantic_labeling_Vaihingen.zip' and 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip' are required.
 
-For Vaihingen dataset, please run the following command to download and re-organize the dataset.
+For Vaihingen dataset,  please run the following command to re-organize the dataset after download.
 
 ```shell
 python tools/dataset_converters/vaihingen.py /path/to/vaihingen
 ```
 
-In our default setting (`clip_size` =512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.
+In our default setting (`clip_size` =512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.  
+More details about Vaihingen can be found [here](https://www.isprs.org/education/benchmarks/UrbanSemLab/semantic-labeling.aspx). 
 
 ### iSAID
 
