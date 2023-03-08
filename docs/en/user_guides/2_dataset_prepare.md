@@ -327,7 +327,7 @@ More details about LoveDA can be found [here](https://github.com/Junjue-Wang/Lov
 
 ### ISPRS Potsdam
 
-The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/)
+The [Potsdam](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx)
 dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
@@ -343,7 +343,7 @@ In our default setting, it will generate 3456 images for training and 2016 image
 
 ### ISPRS Vaihingen
 
-The [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/)
+The [Vaihingen](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-vaihingen.aspx)
 dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
