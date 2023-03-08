@@ -1382,7 +1382,7 @@ class Albu:
 
     def __init__(self, transforms, keymap=None, update_pad_shape=False):
         if Compose is None:
-            raise RuntimeError('albumentations is not installed')
+            raise ImportError('albumentations is not installed')
 
         # Args will be modified later, copying it will be safer
         transforms = copy.deepcopy(transforms)
