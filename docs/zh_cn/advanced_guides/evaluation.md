@@ -61,7 +61,7 @@ test_cfg = dict(type='TestLoop')
 
 ## IoUMetric
 
-MMSegmentation 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 提供的 [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) 实现 [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) 和 [CitysMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py)，以评估模型的性能。有关统一评估接口的更多详细信息，请参阅[文档](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/evaluation.html)。
+MMSegmentation 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 提供的 [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) 实现 [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) 和 [CityscapesMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py)，以评估模型的性能。有关统一评估接口的更多详细信息，请参阅[文档](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/evaluation.html)。
 
 这里我们简要介绍 `IoUMetric` 的参数和两种主要方法。
 
@@ -102,9 +102,9 @@ MMSegmentation 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 提供�
 
 - Dict\[str，float\] - 计算的指标。指标的名称为 key，值是相应的结果。key 主要包括 **aAcc**、**mIoU**、**mAcc**、**mDice**、**mFscore**、**mPrecision**、**mPrecall**。
 
-## CitysMetric
+## CityscapesMetric
 
-`CitysMetric` 使用由 Cityscapes 官方提供的 [CityscapesScripts](https://github.com/mcordts/cityscapesScripts) 进行模型性能的评估。
+`CityscapesMetric` 使用由 Cityscapes 官方提供的 [CityscapesScripts](https://github.com/mcordts/cityscapesScripts) 进行模型性能的评估。
 
 ### 使用方法
 
@@ -114,10 +114,10 @@ MMSegmentation 基于 [MMEngine](https://github.com/open-mmlab/mmengine) 提供�
 pip install cityscapesscripts
 ```
 
-由于 `IoUMetric` 在 MMSegmentation 中作为默认的 evaluator 只用，如果您想使用 `CitysMetric`，则需要自定义配置文件。在自定义配置文件中，应按如下方式替换默认 evaluator。
+由于 `IoUMetric` 在 MMSegmentation 中作为默认的 evaluator 使用，如果您想使用 `CityscapesMetric`，则需要自定义配置文件。在自定义配置文件中，应按如下方式替换默认 evaluator。
 
 ```python
-val_evaluator = dict(type='CitysMetric', citys_metrics=['cityscapes'])
+val_evaluator = dict(type='CityscapesMetric', output_dir='tmp')
 test_evaluator = val_evaluator
 ```
 
@@ -125,27 +125,27 @@ test_evaluator = val_evaluator
 
 构造函数的参数：
 
-- ignore_index（int）- 将在评估中忽略的类别索引。默认值：255。
-- city_metrics（list\[str\] | str）- 要评估的指标，默认值：\['cityscapes'\]。
-- to_label_id（bool）- 是否将输出转换为 label_id 以提交。默认值：True。
-- suffix（str）：png 文件的文件名前缀。如果前缀为 “somepath/xxx”，则 png 文件将命名为 “somepath/xxx.png”。默认值：“.format_cityscapes”。
-- collect_device（str）：用于在分布式训练期间从不同进程收集结果的设备名称。必须是 'cpu' 或 'gpu'。默认为 'cpu'。
-- prefix（str，可选）：将添加到指标名称中的前缀，以消除不同 evaluator 的同名指标的歧义。如果参数中未提供前缀，则将使用 self.default_prefix 进行替代。默认为 None。
+- output_dir (str) - 预测结果输出的路径
+- ignore_index (int) - 将在评估中忽略的类别索引。默认值：255。
+- format_only (bool) - 只为提交进行结果格式化而不进行评估。当您希望将结果格式化为特定格式并将其提交给测试服务器时有用。默认为 False。
+- keep_results (bool) - 是否保留结果。当 `format_only` 为 True 时，`keep_results` 必须为 True。默认为 False。
+- collect_device (str) - 用于在分布式训练期间从不同进程收集结果的设备名称。必须是 'cpu' 或 'gpu'。默认为 'cpu'。
+- prefix (str，可选) - 将添加到指标名称中的前缀，以消除不同 evaluator 的同名指标的歧义。如果参数中未提供前缀，则将使用 self.default_prefix 进行替代。默认为 None。
 
-#### CitysMetric.process
+#### CityscapesMetric.process
 
 该方法将在图像上绘制 mask，并将绘制的图像保存到 `work_dir` 中。
 
 参数：
 
-- data_batch（Any）- 来自 dataloader 的一批数据。
+- data_batch（dict）- 来自 dataloader 的一批数据。
 - data_samples（Sequence\[dict\]）- 模型的一批输出。
 
 返回值：
 
 此方法没有返回值，因为处理的结果将存储在 `self.results` 中，以在处理完所有批次后进行指标的计算。
 
-#### CitysMetric.compute_metrics
+#### CityscapesMetric.compute_metrics
 
 此方法将调用 `cityscapessscripts.evaluation.evalPixelLevelSemanticLabeling` 工具来计算指标。
 
