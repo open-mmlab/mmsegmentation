@@ -51,6 +51,7 @@ def get_model_info(md_file: str, config_dir: str,
     paper_url: str = ''
     code_url: str = ''
     is_backbone: bool = False
+    is_dataset: bool = False
     collection_name: str = ''
     with open(md_file) as f:
         lines: List[str] = f.readlines()
@@ -73,6 +74,9 @@ def get_model_info(md_file: str, config_dir: str,
 
             if line.startswith('<!-- [BACKBONE]'):
                 is_backbone = True
+
+            if line.startswith('<!-- [DATASET]'):
+                is_dataset = True
 
             # get dataset names
             if line.startswith('###'):
@@ -193,7 +197,8 @@ def get_model_info(md_file: str, config_dir: str,
                 i = j
             i += 1
 
-    if not is_backbone or collection_name not in collection_name_list:
+    if not (is_dataset
+            or is_backbone) or collection_name not in collection_name_list:
         collection = {
             'Name': collection_name,
             'License': 'Apache License 2.0',
