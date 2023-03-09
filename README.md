@@ -205,6 +205,7 @@ Supported datasets:
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#isaid)
 - [x] [High quality synthetic face occlusion](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#delving-into-high-quality-synthetic-face-occlusion-segmentation-datasets)
 - [x] [ImageNetS](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#imagenets)
+- [x] [KITTI-STEP](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/en/dataset_prepare.md#kitti-step)
 
 ## FAQ
 
