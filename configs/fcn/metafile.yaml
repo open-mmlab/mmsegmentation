@@ -12,6 +12,8 @@ Collections:
     Title: Fully Convolutional Networks for Semantic Segmentation
     URL: https://arxiv.org/abs/1411.4038
   README: configs/fcn/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: fcn_r50-d8_4xb2-40k_cityscapes-512x1024
   In Collection: FCN
@@ -28,6 +30,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 5.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_40k_cityscapes/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608.log.json
@@ -51,6 +54,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 9.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852-a883d3a1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_40k_cityscapes/fcn_r101-d8_512x1024_40k_cityscapes_20200604_181852.log.json
@@ -74,6 +78,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 6.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104-977b5d02.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_40k_cityscapes/fcn_r50-d8_769x769_40k_cityscapes_20200606_113104.log.json
@@ -97,6 +102,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 10.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208-7d4ab69c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_40k_cityscapes/fcn_r101-d8_769x769_40k_cityscapes_20200606_113208.log.json
@@ -120,6 +126,7 @@ Models:
     Architecture:
     - R-18-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 1.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_512x1024_80k_cityscapes/fcn_r18-d8_512x1024_80k_cityscapes-20201225_021327.log.json
@@ -143,6 +150,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019-03aa804d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x1024_80k_cityscapes/fcn_r50-d8_512x1024_80k_cityscapes_20200606_113019.log.json
   Paper:
@@ -165,6 +173,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038-3fb937eb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x1024_80k_cityscapes/fcn_r101-d8_512x1024_80k_cityscapes_20200606_113038.log.json
   Paper:
@@ -187,6 +196,7 @@ Models:
     - R-101-D8
     - FCN
     - (FP16)
+    Training Resources: V100
     Memory (GB): 5.37
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921-fb13e883.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_fp16_512x1024_80k_cityscapes/fcn_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230921.log.json
@@ -210,6 +220,7 @@ Models:
     Architecture:
     - R-18-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 1.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes_20201225_021451-9739d1b8.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18-d8_769x769_80k_cityscapes/fcn_r18-d8_769x769_80k_cityscapes-20201225_021451.log.json
@@ -233,6 +244,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749-f5caeabc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_769x769_80k_cityscapes/fcn_r50-d8_769x769_80k_cityscapes_20200606_195749.log.json
   Paper:
@@ -255,6 +267,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354-45cbac68.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_769x769_80k_cityscapes/fcn_r101-d8_769x769_80k_cityscapes_20200606_214354.log.json
   Paper:
@@ -277,6 +290,7 @@ Models:
     Architecture:
     - R-18b-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 1.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_512x1024_80k_cityscapes/fcn_r18b-d8_512x1024_80k_cityscapes_20201225_230143-92c0f445.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_512x1024_80k_cityscapes/fcn_r18b-d8_512x1024_80k_cityscapes-20201225_230143.log.json
@@ -300,6 +314,7 @@ Models:
     Architecture:
     - R-50b-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 5.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_512x1024_80k_cityscapes/fcn_r50b-d8_512x1024_80k_cityscapes_20201225_094221-82957416.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_512x1024_80k_cityscapes/fcn_r50b-d8_512x1024_80k_cityscapes-20201225_094221.log.json
@@ -323,6 +338,7 @@ Models:
     Architecture:
     - R-101b-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 9.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_512x1024_80k_cityscapes/fcn_r101b-d8_512x1024_80k_cityscapes_20201226_160213-4543858f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_512x1024_80k_cityscapes/fcn_r101b-d8_512x1024_80k_cityscapes-20201226_160213.log.json
@@ -346,6 +362,7 @@ Models:
     Architecture:
     - R-18b-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 1.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes_20201226_004430-32d504e5.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r18b-d8_769x769_80k_cityscapes/fcn_r18b-d8_769x769_80k_cityscapes-20201226_004430.log.json
@@ -369,6 +386,7 @@ Models:
     Architecture:
     - R-50b-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 6.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes_20201225_094223-94552d38.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50b-d8_769x769_80k_cityscapes/fcn_r50b-d8_769x769_80k_cityscapes-20201225_094223.log.json
@@ -392,6 +410,7 @@ Models:
     Architecture:
     - R-101b-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 10.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes_20201226_170012-82be37e2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101b-d8_769x769_80k_cityscapes/fcn_r101b-d8_769x769_80k_cityscapes-20201226_170012.log.json
@@ -416,6 +435,7 @@ Models:
     - R-50-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 3.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes_20210305_130133-98d5d1bc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_40k_cityscapes/fcn_d6_r50-d16_512x1024_40k_cityscapes-20210305_130133.log.json
@@ -440,6 +460,7 @@ Models:
     - R-50-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes_20210306_115604-133c292f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_512x1024_80k_cityscapes/fcn_d6_r50-d16_512x1024_80k_cityscapes-20210306_115604.log.json
   Paper:
@@ -463,6 +484,7 @@ Models:
     - R-50-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 3.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes_20210305_185744-1aab18ed.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_40k_cityscapes/fcn_d6_r50-d16_769x769_40k_cityscapes-20210305_185744.log.json
@@ -487,6 +509,7 @@ Models:
     - R-50-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes_20210305_200413-109d88eb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50-d16_769x769_80k_cityscapes/fcn_d6_r50-d16_769x769_80k_cityscapes-20210305_200413.log.json
   Paper:
@@ -510,6 +533,7 @@ Models:
     - R-101-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 4.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes_20210305_130337-9cf2b450.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_40k_cityscapes/fcn_d6_r101-d16_512x1024_40k_cityscapes-20210305_130337.log.json
@@ -534,6 +558,7 @@ Models:
     - R-101-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes_20210308_102747-cb336445.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_512x1024_80k_cityscapes/fcn_d6_r101-d16_512x1024_80k_cityscapes-20210308_102747.log.json
   Paper:
@@ -557,6 +582,7 @@ Models:
     - R-101-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 5.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes_20210308_102453-60b114e9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_40k_cityscapes/fcn_d6_r101-d16_769x769_40k_cityscapes-20210308_102453.log.json
@@ -581,6 +607,7 @@ Models:
     - R-101-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes_20210306_120016-e33adc4f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101-d16_769x769_80k_cityscapes/fcn_d6_r101-d16_769x769_80k_cityscapes-20210306_120016.log.json
   Paper:
@@ -604,6 +631,7 @@ Models:
     - R-50b-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 3.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_512x1024_80k_cityscapes/fcn_d6_r50b-d16_512x1024_80k_cityscapes_20210311_125550-6a0b62e9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_512x1024_80k_cityscapes/fcn_d6_r50b_d16_512x1024_80k_cityscapes-20210311_125550.log.json
@@ -628,6 +656,7 @@ Models:
     - R-50b-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 3.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b-d16_769x769_80k_cityscapes/fcn_d6_r50b-d16_769x769_80k_cityscapes_20210311_131012-d665f231.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r50b_d16_769x769_80k_cityscapes/fcn_d6_r50b_d16_769x769_80k_cityscapes-20210311_131012.log.json
@@ -652,6 +681,7 @@ Models:
     - R-101b-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 4.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_512x1024_80k_cityscapes/fcn_d6_r101b-d16_512x1024_80k_cityscapes_20210311_144305-3f2eb5b4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_512x1024_80k_cityscapes/fcn_d6_r101b_d16_512x1024_80k_cityscapes-20210311_144305.log.json
@@ -676,6 +706,7 @@ Models:
     - R-101b-D16
     - FCN
     - (D6)
+    Training Resources: TITAN Xp
     Memory (GB): 4.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b-d16_769x769_80k_cityscapes/fcn_d6_r101b-d16_769x769_80k_cityscapes_20210311_154527-c4d8bfbc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_d6_r101b_d16_769x769_80k_cityscapes/fcn_d6_r101b_d16_769x769_80k_cityscapes-20210311_154527.log.json
@@ -699,6 +730,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 8.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_80k_ade20k/fcn_r50-d8_512x512_80k_ade20k_20200614_144016.log.json
@@ -722,6 +754,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 12.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143-bc1809f7.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_80k_ade20k/fcn_r101-d8_512x512_80k_ade20k_20200615_014143.log.json
@@ -745,6 +778,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713-4edbc3b4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_160k_ade20k/fcn_r50-d8_512x512_160k_ade20k_20200615_100713.log.json
   Paper:
@@ -767,6 +801,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816-fd192bd5.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_160k_ade20k/fcn_r101-d8_512x512_160k_ade20k_20200615_105816.log.json
   Paper:
@@ -789,6 +824,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 5.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715-52dc5306.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_20k_voc12aug/fcn_r50-d8_512x512_20k_voc12aug_20200617_010715.log.json
@@ -812,6 +848,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 9.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842-0bb4e798.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_20k_voc12aug/fcn_r101-d8_512x512_20k_voc12aug_20200617_010842.log.json
@@ -835,6 +872,7 @@ Models:
     Architecture:
     - R-50-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222-5e2dbf40.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r50-d8_512x512_40k_voc12aug/fcn_r50-d8_512x512_40k_voc12aug_20200613_161222.log.json
   Paper:
@@ -857,6 +895,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240-4c8bcefd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_512x512_40k_voc12aug/fcn_r101-d8_512x512_40k_voc12aug_20200613_161240.log.json
   Paper:
@@ -879,6 +918,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context_20210421_154757-b5e97937.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context/fcn_r101-d8_480x480_40k_pascal_context-20210421_154757.log.json
   Paper:
@@ -901,6 +941,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context_20210421_163310-4711813f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context/fcn_r101-d8_480x480_80k_pascal_context-20210421_163310.log.json
   Paper:
@@ -923,6 +964,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59_20210415_230724-8cf83682.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_40k_pascal_context_59/fcn_r101-d8_480x480_40k_pascal_context_59-20210415_230724.log.json
   Paper:
@@ -945,6 +987,7 @@ Models:
     Architecture:
     - R-101-D8
     - FCN
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59_20210416_110804-9a6f2c94.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fcn/fcn_r101-d8_480x480_80k_pascal_context_59/fcn_r101-d8_480x480_80k_pascal_context_59-20210416_110804.log.json
   Paper:

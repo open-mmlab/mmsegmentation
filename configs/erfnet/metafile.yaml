@@ -8,6 +8,8 @@ Collections:
     Title: 'ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation'
     URL: http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf
   README: configs/erfnet/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: erfnet_fcn_4xb4-160k_cityscapes-512x1024
   In Collection: ERFNet
@@ -24,6 +26,7 @@ Models:
     Architecture:
     - ERFNet
     - ERFNet
+    Training Resources: V100
     Memory (GB): 6.04
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145-dc90157a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145.log.json

@@ -14,6 +14,8 @@ Collections:
     Title: Rethinking atrous convolution for semantic image segmentation
     URL: https://arxiv.org/abs/1706.05587
   README: configs/deeplabv3/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: deeplabv3_r50-d8_4xb2-40k_cityscapes-512x1024
   In Collection: DeepLabV3
@@ -30,6 +32,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 6.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449-acadc2f8.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes/deeplabv3_r50-d8_512x1024_40k_cityscapes_20200605_022449.log.json
@@ -53,6 +56,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes/deeplabv3_r101-d8_512x1024_40k_cityscapes_20200605_012241-7fd3f799.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_40k_cityscapes/deeplabv3_r101-d8_512x1024_40k_cityscapes_20200605_012241.log.json
@@ -76,6 +80,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 6.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes/deeplabv3_r50-d8_769x769_40k_cityscapes_20200606_113723-7eda553c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_40k_cityscapes/deeplabv3_r50-d8_769x769_40k_cityscapes_20200606_113723.log.json
@@ -99,6 +104,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 10.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes/deeplabv3_r101-d8_769x769_40k_cityscapes_20200606_113809-c64f889f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_40k_cityscapes/deeplabv3_r101-d8_769x769_40k_cityscapes_20200606_113809.log.json
@@ -122,6 +128,7 @@ Models:
     Architecture:
     - R-18-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 1.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes/deeplabv3_r18-d8_512x1024_80k_cityscapes_20201225_021506-23dffbe2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_512x1024_80k_cityscapes/deeplabv3_r18-d8_512x1024_80k_cityscapes-20201225_021506.log.json
@@ -145,6 +152,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404-b92cfdd4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x1024_80k_cityscapes/deeplabv3_r50-d8_512x1024_80k_cityscapes_20200606_113404.log.json
   Paper:
@@ -167,6 +175,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503-9e428899.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x1024_80k_cityscapes/deeplabv3_r101-d8_512x1024_80k_cityscapes_20200606_113503.log.json
   Paper:
@@ -189,6 +198,7 @@ Models:
     - R-101-D8
     - DeepLabV3
     - (FP16)
+    Training Resources: V100
     Memory (GB): 5.75
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-774d9cec.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920.log.json
@@ -212,6 +222,7 @@ Models:
     Architecture:
     - R-18-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 1.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes/deeplabv3_r18-d8_769x769_80k_cityscapes_20201225_021506-6452126a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18-d8_769x769_80k_cityscapes/deeplabv3_r18-d8_769x769_80k_cityscapes-20201225_021506.log.json
@@ -235,6 +246,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338-788d6228.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_769x769_80k_cityscapes/deeplabv3_r50-d8_769x769_80k_cityscapes_20200606_221338.log.json
   Paper:
@@ -257,6 +269,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353-60e95418.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_769x769_80k_cityscapes/deeplabv3_r101-d8_769x769_80k_cityscapes_20200607_013353.log.json
   Paper:
@@ -279,6 +292,7 @@ Models:
     Architecture:
     - R-101-D16-MG124
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 4.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-67b0c992.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_40k_cityscapes-20200908_005644.log.json
@@ -302,6 +316,7 @@ Models:
     Architecture:
     - R-101-D16-MG124
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-57bb8425.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3_r101-d16-mg124_512x1024_80k_cityscapes-20200908_005644.log.json
   Paper:
@@ -324,6 +339,7 @@ Models:
     Architecture:
     - R-18b-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 1.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_512x1024_80k_cityscapes/deeplabv3_r18b-d8_512x1024_80k_cityscapes_20201225_094144-46040cef.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_512x1024_80k_cityscapes/deeplabv3_r18b-d8_512x1024_80k_cityscapes-20201225_094144.log.json
@@ -347,6 +363,7 @@ Models:
     Architecture:
     - R-50b-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 6.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50b-d8_512x1024_80k_cityscapes/deeplabv3_r50b-d8_512x1024_80k_cityscapes_20201225_155148-ec368954.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50b-d8_512x1024_80k_cityscapes/deeplabv3_r50b-d8_512x1024_80k_cityscapes-20201225_155148.log.json
@@ -370,6 +387,7 @@ Models:
     Architecture:
     - R-101b-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 9.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101b-d8_512x1024_80k_cityscapes/deeplabv3_r101b-d8_512x1024_80k_cityscapes_20201226_171821-8fd49503.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101b-d8_512x1024_80k_cityscapes/deeplabv3_r101b-d8_512x1024_80k_cityscapes-20201226_171821.log.json
@@ -393,6 +411,7 @@ Models:
     Architecture:
     - R-18b-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 1.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes/deeplabv3_r18b-d8_769x769_80k_cityscapes_20201225_094144-fdc985d9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes/deeplabv3_r18b-d8_769x769_80k_cityscapes-20201225_094144.log.json
@@ -416,6 +435,7 @@ Models:
     Architecture:
     - R-50b-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 6.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50b-d8_769x769_80k_cityscapes/deeplabv3_r50b-d8_769x769_80k_cityscapes_20201225_155404-87fb0cf4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50b-d8_769x769_80k_cityscapes/deeplabv3_r50b-d8_769x769_80k_cityscapes-20201225_155404.log.json
@@ -439,6 +459,7 @@ Models:
     Architecture:
     - R-101b-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 10.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101b-d8_769x769_80k_cityscapes/deeplabv3_r101b-d8_769x769_80k_cityscapes_20201226_190843-9142ee57.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101b-d8_769x769_80k_cityscapes/deeplabv3_r101b-d8_769x769_80k_cityscapes-20201226_190843.log.json
@@ -462,6 +483,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 8.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028-0bb3f844.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_80k_ade20k/deeplabv3_r50-d8_512x512_80k_ade20k_20200614_185028.log.json
@@ -485,6 +507,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 12.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k/deeplabv3_r101-d8_512x512_80k_ade20k_20200615_021256-d89c7fa4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_80k_ade20k/deeplabv3_r101-d8_512x512_80k_ade20k_20200615_021256.log.json
@@ -508,6 +531,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k/deeplabv3_r50-d8_512x512_160k_ade20k_20200615_123227-5d0ee427.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_160k_ade20k/deeplabv3_r50-d8_512x512_160k_ade20k_20200615_123227.log.json
   Paper:
@@ -530,6 +554,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816-b1f72b3b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_160k_ade20k/deeplabv3_r101-d8_512x512_160k_ade20k_20200615_105816.log.json
   Paper:
@@ -552,6 +577,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 6.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906-596905ef.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_20k_voc12aug/deeplabv3_r50-d8_512x512_20k_voc12aug_20200617_010906.log.json
@@ -575,6 +601,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug/deeplabv3_r101-d8_512x512_20k_voc12aug_20200617_010932-8d13832f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_20k_voc12aug/deeplabv3_r101-d8_512x512_20k_voc12aug_20200617_010932.log.json
@@ -598,6 +625,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug/deeplabv3_r50-d8_512x512_40k_voc12aug_20200613_161546-2ae96e7e.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_40k_voc12aug/deeplabv3_r50-d8_512x512_40k_voc12aug_20200613_161546.log.json
   Paper:
@@ -620,6 +648,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432-0017d784.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_40k_voc12aug/deeplabv3_r101-d8_512x512_40k_voc12aug_20200613_161432.log.json
   Paper:
@@ -642,6 +671,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 9.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context/deeplabv3_r101-d8_480x480_40k_pascal_context_20200911_204118-1aa27336.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context/deeplabv3_r101-d8_480x480_40k_pascal_context-20200911_204118.log.json
@@ -665,6 +695,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context/deeplabv3_r101-d8_480x480_80k_pascal_context_20200911_170155-2a21fff3.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context/deeplabv3_r101-d8_480x480_80k_pascal_context-20200911_170155.log.json
   Paper:
@@ -687,6 +718,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context_59/deeplabv3_r101-d8_480x480_40k_pascal_context_59_20210416_110332-cb08ea46.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_40k_pascal_context_59/deeplabv3_r101-d8_480x480_40k_pascal_context_59-20210416_110332.log.json
   Paper:
@@ -709,6 +741,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context_59/deeplabv3_r101-d8_480x480_80k_pascal_context_59_20210416_113002-26303993.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_480x480_80k_pascal_context_59/deeplabv3_r101-d8_480x480_80k_pascal_context_59-20210416_113002.log.json
   Paper:
@@ -731,6 +764,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k_20210821_043025-b35f789d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k/deeplabv3_r50-d8_512x512_4x4_20k_coco-stuff10k_20210821_043025.log.json
@@ -754,6 +788,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 13.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k_20210821_043025-c49752cb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k/deeplabv3_r101-d8_512x512_4x4_20k_coco-stuff10k_20210821_043025.log.json
@@ -777,6 +812,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_043305-dc76f3ff.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k/deeplabv3_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_043305.log.json
   Paper:
@@ -799,6 +835,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_043305-636cb433.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k/deeplabv3_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_043305.log.json
   Paper:
@@ -821,6 +858,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k_20210709_163016-88675c24.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_80k_coco-stuff164k_20210709_163016.log.json
@@ -844,6 +882,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 13.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k_20210709_201252-13600dc2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_80k_coco-stuff164k_20210709_201252.log.json
@@ -867,6 +906,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k_20210709_163016-49f2812b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_160k_coco-stuff164k_20210709_163016.log.json
   Paper:
@@ -889,6 +929,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k_20210709_155402-f035acfd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_160k_coco-stuff164k_20210709_155402.log.json
   Paper:
@@ -911,6 +952,7 @@ Models:
     Architecture:
     - R-50-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k_20210709_155403-51b21115.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r50-d8_512x512_4x4_320k_coco-stuff164k_20210709_155403.log.json
   Paper:
@@ -933,6 +975,7 @@ Models:
     Architecture:
     - R-101-D8
     - DeepLabV3
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k_20210709_155402-3cbca14d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k/deeplabv3_r101-d8_512x512_4x4_320k_coco-stuff164k_20210709_155402.log.json
   Paper:

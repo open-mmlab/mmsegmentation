@@ -14,6 +14,7 @@ Models:
     Architecture:
     - M-V2-D8
     - FCN
+    Training Resources: A100
     Memory (GB): 3.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024-20230224_185436-13fef4ea.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024_20230224_185436.json
@@ -36,6 +37,7 @@ Models:
     Architecture:
     - M-V2-D8
     - PSPNet
+    Training Resources: V100
     Memory (GB): 3.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-19e81d51.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes-20200825_124817.log.json
@@ -58,6 +60,7 @@ Models:
     Architecture:
     - M-V2-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 3.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-bef03590.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes-20200825_124836.log.json
@@ -80,6 +83,7 @@ Models:
     Architecture:
     - M-V2-D8
     - DeepLabV3+
+    Training Resources: V100
     Memory (GB): 5.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-d256dd4b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes-20200825_124836.log.json
@@ -102,6 +106,7 @@ Models:
     Architecture:
     - M-V2-D8
     - FCN
+    Training Resources: V100
     Memory (GB): 6.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k_20200825_214953-c40e1095.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k-20200825_214953.log.json
@@ -124,6 +129,7 @@ Models:
     Architecture:
     - M-V2-D8
     - PSPNet
+    Training Resources: V100
     Memory (GB): 6.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k_20200825_214953-f5942f7a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k-20200825_214953.log.json
@@ -146,6 +152,7 @@ Models:
     Architecture:
     - M-V2-D8
     - DeepLabV3
+    Training Resources: V100
     Memory (GB): 6.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k_20200825_223255-63986343.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k-20200825_223255.log.json
@@ -168,6 +175,7 @@ Models:
     Architecture:
     - M-V2-D8
     - DeepLabV3+
+    Training Resources: V100
     Memory (GB): 8.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k/deeplabv3plus_m-v2-d8_512x512_160k_ade20k_20200825_223255-465a01d4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k/deeplabv3plus_m-v2-d8_512x512_160k_ade20k-20200825_223255.log.json

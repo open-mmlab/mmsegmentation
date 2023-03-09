@@ -10,6 +10,8 @@ Collections:
     Title: Dual Attention Network for Scene Segmentation
     URL: https://arxiv.org/abs/1809.02983
   README: configs/danet/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: danet_r50-d8_4xb2-40k_cityscapes-512x1024
   In Collection: DANet
@@ -25,6 +27,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 7.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x1024_40k_cityscapes/danet_r50-d8_512x1024_40k_cityscapes_20200605_191324-c0dbfa5f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x1024_40k_cityscapes/danet_r50-d8_512x1024_40k_cityscapes_20200605_191324.log.json
@@ -47,6 +50,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 10.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x1024_40k_cityscapes/danet_r101-d8_512x1024_40k_cityscapes_20200605_200831-c57a7157.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x1024_40k_cityscapes/danet_r101-d8_512x1024_40k_cityscapes_20200605_200831.log.json
@@ -70,6 +74,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 8.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_769x769_40k_cityscapes/danet_r50-d8_769x769_40k_cityscapes_20200530_025703-76681c60.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_769x769_40k_cityscapes/danet_r50-d8_769x769_40k_cityscapes_20200530_025703.log.json
@@ -93,6 +98,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 12.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_769x769_40k_cityscapes/danet_r101-d8_769x769_40k_cityscapes_20200530_025717-dcb7fd4e.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_769x769_40k_cityscapes/danet_r101-d8_769x769_40k_cityscapes_20200530_025717.log.json
@@ -115,6 +121,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x1024_80k_cityscapes/danet_r50-d8_512x1024_80k_cityscapes_20200607_133029-2bfa2293.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x1024_80k_cityscapes/danet_r50-d8_512x1024_80k_cityscapes_20200607_133029.log.json
   Paper:
@@ -136,6 +143,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x1024_80k_cityscapes/danet_r101-d8_512x1024_80k_cityscapes_20200607_132918-955e6350.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x1024_80k_cityscapes/danet_r101-d8_512x1024_80k_cityscapes_20200607_132918.log.json
   Paper:
@@ -158,6 +166,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_769x769_80k_cityscapes/danet_r50-d8_769x769_80k_cityscapes_20200607_132954-495689b4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_769x769_80k_cityscapes/danet_r50-d8_769x769_80k_cityscapes_20200607_132954.log.json
   Paper:
@@ -180,6 +189,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_769x769_80k_cityscapes/danet_r101-d8_769x769_80k_cityscapes_20200607_132918-f3a929e7.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_769x769_80k_cityscapes/danet_r101-d8_769x769_80k_cityscapes_20200607_132918.log.json
   Paper:
@@ -202,6 +212,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 11.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_80k_ade20k/danet_r50-d8_512x512_80k_ade20k_20200615_015125-edb18e08.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_80k_ade20k/danet_r50-d8_512x512_80k_ade20k_20200615_015125.log.json
@@ -225,6 +236,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 15.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_80k_ade20k/danet_r101-d8_512x512_80k_ade20k_20200615_015126-d0357c73.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_80k_ade20k/danet_r101-d8_512x512_80k_ade20k_20200615_015126.log.json
@@ -248,6 +260,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_160k_ade20k/danet_r50-d8_512x512_160k_ade20k_20200616_082340-9cb35dcd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_160k_ade20k/danet_r50-d8_512x512_160k_ade20k_20200616_082340.log.json
   Paper:
@@ -270,6 +283,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_160k_ade20k/danet_r101-d8_512x512_160k_ade20k_20200616_082348-23bf12f9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_160k_ade20k/danet_r101-d8_512x512_160k_ade20k_20200616_082348.log.json
   Paper:
@@ -292,6 +306,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 6.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_20k_voc12aug/danet_r50-d8_512x512_20k_voc12aug_20200618_070026-9e9e3ab3.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_20k_voc12aug/danet_r50-d8_512x512_20k_voc12aug_20200618_070026.log.json
@@ -315,6 +330,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
     Memory (GB): 9.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_20k_voc12aug/danet_r101-d8_512x512_20k_voc12aug_20200618_070026-d48d23b2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_20k_voc12aug/danet_r101-d8_512x512_20k_voc12aug_20200618_070026.log.json
@@ -338,6 +354,7 @@ Models:
     Architecture:
     - R-50-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_40k_voc12aug/danet_r50-d8_512x512_40k_voc12aug_20200613_235526-426e3a64.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r50-d8_512x512_40k_voc12aug/danet_r50-d8_512x512_40k_voc12aug_20200613_235526.log.json
   Paper:
@@ -360,6 +377,7 @@ Models:
     Architecture:
     - R-101-D8
     - DANet
+    Training Resources: V100
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_40k_voc12aug/danet_r101-d8_512x512_40k_voc12aug_20200613_223031-788e232a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/danet/danet_r101-d8_512x512_40k_voc12aug/danet_r101-d8_512x512_40k_voc12aug_20200613_223031.log.json
   Paper:

@@ -8,6 +8,8 @@ Collections:
     Title: Fast-SCNN for Semantic Segmentation
     URL: https://arxiv.org/abs/1902.04502
   README: configs/fastscnn/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: fast_scnn_8xb4-160k_cityscapes-512x1024
   In Collection: FastSCNN
@@ -24,6 +26,7 @@ Models:
     Architecture:
     - FastSCNN
     - FastSCNN
+    Training Resources: V100
     Memory (GB): 3.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853-0cec9937.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853.log.json

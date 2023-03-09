@@ -86,6 +86,8 @@ def get_model_info(md_file: str, config_dir: str,
                 keys: List[str] = [key.strip() for key in line.split('|')]
                 crop_size_idx: int = keys.index('Crop Size')
                 mem_idx: int = keys.index('Mem (GB)')
+                assert 'Device' in keys, f'No Device in {md_file}'
+                device_idx: int = keys.index('Device')
 
                 if 'mIoU' in keys:
                     ss_idx = keys.index('mIoU')
@@ -168,7 +170,8 @@ def get_model_info(md_file: str, config_dir: str,
                         'Metadata': {
                             'Training Data': current_dataset,
                             'Batch Size': batch_size,
-                            'Architecture': archs
+                            'Architecture': archs,
+                            'Training Resources': values[device_idx],
                         },
                         'Weights': weight_url,
                         'Training log': log_url,
@@ -203,6 +206,7 @@ def get_model_info(md_file: str, config_dir: str,
             },
             'README': osp.join('configs',
                                config_dir.split('/')[-1], 'README.md'),
+            'Frameworks': ['PyTorch'],
         }
         results = {
             'Collections': [collection],

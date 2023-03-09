@@ -8,6 +8,8 @@ Collections:
     Title: Searching for MobileNetV3
     URL: https://arxiv.org/abs/1905.02244
   README: configs/mobilenet_v3/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: mobilenet-v3-d8_lraspp_4xb4-320k_cityscapes-512x1024
   In Collection: LRASPP
@@ -24,6 +26,7 @@ Models:
     Architecture:
     - M-V3-D8
     - LRASPP
+    Training Resources: V100
     Memory (GB): 8.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes/lraspp_m-v3-d8_512x1024_320k_cityscapes_20201224_220337-cfe8fb07.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes/lraspp_m-v3-d8_512x1024_320k_cityscapes-20201224_220337.log.json
@@ -47,6 +50,7 @@ Models:
     Architecture:
     - M-V3-D8
     - LRASPP
+    Training Resources: V100
     Memory (GB): 8.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes_20201224_220337-9f29cd72.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3-d8_scratch_512x1024_320k_cityscapes-20201224_220337.log.json
@@ -70,6 +74,7 @@ Models:
     Architecture:
     - M-V3s-D8
     - LRASPP
+    Training Resources: V100
     Memory (GB): 5.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_512x1024_320k_cityscapes/lraspp_m-v3s-d8_512x1024_320k_cityscapes_20201224_223935-61565b34.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_512x1024_320k_cityscapes/lraspp_m-v3s-d8_512x1024_320k_cityscapes-20201224_223935.log.json
@@ -93,6 +98,7 @@ Models:
     Architecture:
     - M-V3s-D8
     - LRASPP
+    Training Resources: V100
     Memory (GB): 5.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes_20201224_223935-03daeabb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v3/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes/lraspp_m-v3s-d8_scratch_512x1024_320k_cityscapes-20201224_223935.log.json

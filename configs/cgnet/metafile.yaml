@@ -8,6 +8,8 @@ Collections:
     Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
     URL: https://arxiv.org/abs/1811.08201
   README: configs/cgnet/README.md
+  Frameworks:
+  - PyTorch
 Models:
 - Name: cgnet_fcn_4xb4-60k_cityscapes-680x680
   In Collection: CGNet
@@ -24,6 +26,7 @@ Models:
     Architecture:
     - M3N21
     - CGNet
+    Training Resources: V100
     Memory (GB): 7.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes-20201101_110253.log.json
@@ -47,6 +50,7 @@ Models:
     Architecture:
     - M3N21
     - CGNet
+    Training Resources: V100
     Memory (GB): 8.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes-20201101_110254.log.json

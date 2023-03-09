@@ -22,6 +22,22 @@ Semantic segmentation is a challenging task that addresses most of the perceptio
 <img src="https://user-images.githubusercontent.com/24582831/143479729-ea7951f6-1a3c-47d6-aaee-62c5759c0638.png" width="60%"/>
 </div>
 
+## Results and models
+
+### Cityscapes
+
+| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device | mIoU | mIoU(ms+flip) | config                                                                                                                         | download                                                                                                                                                                                                                                                                                                                                                     |
+| ------ | -------- | --------- | ------: | -------- | -------------- | ------ | ---: | ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ERFNet | ERFNet   | 512x1024  |  160000 | 6.04     | 15.26          | V100   | 72.5 | 74.75         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/erfnet/erfnet_fcn_4xb4-160k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145-dc90157a.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145.log.json) |
+
+Note:
+
+- The model is trained from scratch.
+
+- Last deconvolution layer in the [original paper](https://github.com/Eromera/erfnet_pytorch/blob/master/train/erfnet.py#L123) is replaced by a naive `FCNHead` decoder head and a bilinear upsampling layer, found more effective and efficient.
+
+- This model performance is sensitive to the seed values used, please refer to the log file for the specific settings of the seed. If you choose a different seed, the results might differ from the table results.
+
 ## Citation
 
 ```bibtex
@@ -36,19 +52,3 @@ Semantic segmentation is a challenging task that addresses most of the perceptio
   publisher={IEEE}
 }
 ```
-
-## Results and models
-
-### Cityscapes
-
-| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU | mIoU(ms+flip) | config                                                                                                                         | download                                                                                                                                                                                                                                                                                                                                                     |
-| ------ | -------- | --------- | ------: | -------- | -------------- | ---: | ------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| ERFNet | ERFNet   | 512x1024  |  160000 | 6.04     | 15.26          | 72.5 | 74.75         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/erfnet/erfnet_fcn_4xb4-160k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145-dc90157a.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145.log.json) |
-
-Note:
-
-- The model is trained from scratch.
-
-- Last deconvolution layer in the [original paper](https://github.com/Eromera/erfnet_pytorch/blob/master/train/erfnet.py#L123) is replaced by a naive `FCNHead` decoder head and a bilinear upsampling layer, found more effective and efficient.
-
-- This model performance is sensitive to the seed values used, please refer to the log file for the specific settings of the seed. If you choose a different seed, the results might differ from the table results.
