@@ -9,9 +9,6 @@ import mmcv
 
 
 def kitti_to_train_ids(input):
-    """
-    Converts KITTI format to mmsegmentation format
-    """
     src, gt_dir, new_gt_dir = input
     label_file = src.replace('.png',
                              '_labelTrainIds.png').replace(gt_dir, new_gt_dir)
@@ -23,9 +20,6 @@ def kitti_to_train_ids(input):
 
 
 def copy_file(input):
-    """
-    Copies an input file and creates a folder, if the destination is not existing
-    """
     src, dst = input
     if not osp.exists(dst):
         os.makedirs(osp.dirname(dst), exist_ok=True)
