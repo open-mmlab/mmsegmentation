@@ -451,7 +451,6 @@ After executing the script, your directory should look like
 │   │   ├── panoptic_maps_openmmlab
 ```
 
-
 ## Dataset Preparation
 
 step 1
