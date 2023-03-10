@@ -87,18 +87,18 @@ class MMEvalIoUMetric(MeanIoU):
         """
         predictions, labels = [], []
         for data_sample in data_samples:
-            pred = data_sample['pred_sem_seg']['data'].squeeze()
-            if not self.format_only:
-                label = data_sample['gt_sem_seg']['data'].squeeze().to(pred)
-                predictions.append(pred)
-                labels.append(label)
+            pred_label = data_sample['pred_sem_seg']['data'].squeeze()
+            label = data_sample['gt_sem_seg']['data'].squeeze().to(pred_label)
+            predictions.append(pred_label)
+            labels.append(label)
+
             # format_result:
             if self.output_dir:
                 basename = osp.splitext(osp.basename(
                     data_sample['img_path']))[0]
                 png_filename = osp.abspath(
                     osp.join(self.output_dir, f'{basename}.png'))
-                output_mask = pred.cpu().numpy()
+                output_mask = pred_label.cpu().numpy()
                 # The index range of official ADE20k dataset is from 0 to 150.
                 # But the index range of output is from 0 to 149.
                 # That is because we set reduce_zero_label=True.
@@ -109,7 +109,13 @@ class MMEvalIoUMetric(MeanIoU):
 
         self.add(predictions, labels)
 
-    def evaluate(self, *args, **kwargs) -> dict:
+    def evaluate(self, *args, **kwargs):
+        """Returns metric results and print pretty table of metrics per class.
+
+        This method would be invoked by ``mmengine.Evaluator``.
+        """
+        if self.format_only:
+            return {}
         metric_results = self.compute(*args, **kwargs)
         self.reset()
 
