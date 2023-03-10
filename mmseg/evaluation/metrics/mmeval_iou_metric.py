@@ -9,11 +9,12 @@ from mmengine.logging import print_log
 from PIL import Image
 from prettytable import PrettyTable
 
+from .iou_metric import IoUMetric
+
 try:
-    import mmeval
     from mmeval.metrics import MeanIoU
 except ImportError:
-    from .iou_metric import IoUMetric as MeanIoU
+    MeanIoU = IoUMetric
 
 from mmseg.registry import METRICS
 
@@ -32,8 +33,6 @@ class MMEvalIoUMetric(MeanIoU):
             by the numbers defined by the user. Defaults to None.
         beta (int, optional): Determines the weight of recall in the F-score.
             Defaults to 1.
-        classwise_results (bool, optional): Whether to return the computed
-            results of each class. Defaults to False.
         output_dir (str): The directory for output prediction. Defaults to
             None.
         format_only (bool): Only format result for results commit without
@@ -61,18 +60,17 @@ class MMEvalIoUMetric(MeanIoU):
                  ignore_index: Optional[int] = 255,
                  nan_to_num: Optional[int] = None,
                  beta: Optional[int] = 1,
-                 classwise_results: Optional[bool] = False,
                  output_dir: Optional[str] = None,
                  format_only: bool = False,
                  **kwargs):
 
-        if not isinstance(super(), mmeval.MeanIoU):
+        if isinstance(self, IoUMetric):
             raise TypeError(
                 'MMEvalIoUMetric must be a subclass of mmeval.MeanIoU,'
                 'please install MMEval first.')
 
-        super().__init__(num_classes, ignore_index, nan_to_num, beta,
-                         classwise_results, **kwargs)
+        super().__init__(num_classes, ignore_index, nan_to_num, beta, True,
+                         **kwargs)
 
         self.output_dir = output_dir
         if self.output_dir and is_main_process():
@@ -87,7 +85,7 @@ class MMEvalIoUMetric(MeanIoU):
             data_batch (dict): The data batch.
             data_samples (Sequence[dict]): The data samples.
         """
-        predictions, labels = []
+        predictions, labels = [], []
         for data_sample in data_samples:
             pred = data_sample['pred_sem_seg']['data'].squeeze()
             if not self.format_only:

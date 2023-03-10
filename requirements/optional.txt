@@ -1,2 +1,3 @@
 cityscapesscripts
+mmeval
 nibabel
