@@ -6,4 +6,3 @@ Migration
 
    interface.md
    package.md
-   
