@@ -32,6 +32,8 @@ Note:
 
 ![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/microscopy_images/bactteria_detection/bactteria_detection_dataset.png)
 
+## Usage
+
 ### Prerequisites
 
 - Python v3.8
@@ -49,11 +51,12 @@ All the commands below rely on the correct configuration of `PYTHONPATH`, which 
 export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
 
-### Dataset preparing
+### Dataset Preparing
 
-- download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and decompress data to path `'data/'`.
-- run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
-- run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
+- Download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and save it to the `data/` directory .
+- Decompress data to path `data/`. This will create a new folder named `data/Bacteria_detection_with_darkfield_microscopy_datasets/`, which contains the original image data.
+- run script `python tools/prepare_dataset.py` to format data and change folder structure as below.
+- run script `python ../../tools/split_seg_dataset.py` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` randomly from the training set in a 4:1 ratio.
 
 ```none
   mmsegmentation
@@ -69,6 +72,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
+  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -114,6 +118,8 @@ You should claim whether this is based on the pre-trained weights, which are con
 ## Results
 
 ### Bactteria detection with darkfield microscopy
+
+***Note: The following experimental results are based on the data randomly partitioned according to the above method described in the dataset preparing section.***
 
 |     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                          config                                          |         download         |
 | :-------------: | :------: | :-------: | :----: | :---: | :---: | :--------------------------------------------------------------------------------------: | :----------------------: |
