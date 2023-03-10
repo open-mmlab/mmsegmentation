@@ -296,7 +296,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         # item weight
         if weight is not None:
             # make dimensionality compatible (given )
-            for _ in seg_label.dim() - 1: 
+            for _ in range(seg_label.dim() - 1):
                 weight = weight.unsqueeze(-1)
 
         # combine them
