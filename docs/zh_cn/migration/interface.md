@@ -12,9 +12,9 @@ MMSegmentation 1.x 依赖于一些新的软件包，您可以准备一个新的�
 
 1. [MMEngine](https://github.com/open-mmlab/mmengine)：MMEngine 是 OpenMMLab 2.0 架构的核心，我们将许多与计算机视觉无关的内容从 MMCV 拆分到 MMEngine 中。
 
-1. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0rc1** 以上的版本。
+2. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0rc1** 以上的版本。
 
-1. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc0** 以上的版本。
+3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc0** 以上的版本。
 
 ## 启动训练
 
@@ -327,7 +327,7 @@ optim_wrapper = dict(
 - 我们将 `lr_config` 字段删除，并使用新的 `param_scheduler` 替代。
 - 我们删除了与 `warmup` 相关的参数，因为我们使用 scheduler 组合来实现该功能。
 
-新的 scheduler 组合机制非常灵活，您可以使用它来设计多种学习率/动量曲线。有关详细信息，请参见\[教程\]（TODO）。
+新的 scheduler 组合机制非常灵活，您可以使用它来设计多种学习率/动量曲线。有关详细信息，请参见[教程](TODO)。
 
 <table class="docutils">
 <tr>
