@@ -1,12 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-# import os.path as osp
-from typing import Sequence
+import os.path as osp
+from typing import Optional, Sequence
 
 import numpy as np
-# from mmengine import mkdir_or_exist
-# from mmengine.dist import is_main_process
+from mmengine import mkdir_or_exist
+from mmengine.dist import is_main_process
 from mmengine.logging import print_log
-# from PIL import Image
+from PIL import Image
 from prettytable import PrettyTable
 
 from .iou_metric import IoUMetric
@@ -24,15 +24,6 @@ class MMEvalIoUMetric(MeanIoU):
     """MeanIoU evaluation metric.
 
     Args:
-        num_classes (int, optional): The number of classes. If None, it will be
-            obtained from the 'num_classes' or 'classes' field in
-            `self.dataset_meta`. Defaults to None.
-        ignore_index (int, optional): Index that will be ignored in evaluation.
-            Defaults to 255.
-        nan_to_num (int, optional): If specified, NaN values will be replaced
-            by the numbers defined by the user. Defaults to None.
-        beta (int, optional): Determines the weight of recall in the F-score.
-            Defaults to 1.
         output_dir (str): The directory for output prediction. Defaults to
             None.
         format_only (bool): Only format result for results commit without
@@ -55,7 +46,11 @@ class MMEvalIoUMetric(MeanIoU):
             If None, use the default backend. Defaults to None.
     """
 
-    def __init__(self, dist_backend='torch_cuda', **kwargs):
+    def __init__(self,
+                 output_dir: Optional[str] = None,
+                 format_only: bool = False,
+                 dist_backend='torch_cuda',
+                 **kwargs):
 
         if isinstance(self, IoUMetric):
             raise TypeError(
@@ -65,6 +60,11 @@ class MMEvalIoUMetric(MeanIoU):
         # Changes the default value of `classwise_results` to True.
         super().__init__(
             classwise_results=True, dist_backend=dist_backend, **kwargs)
+
+        self.output_dir = output_dir
+        if self.output_dir and is_main_process():
+            mkdir_or_exist(self.output_dir)
+        self.format_only = format_only
 
     def process(self, data_batch: dict, data_samples: Sequence[dict]) -> None:
         """Process one batch of data and data_samples.
@@ -83,6 +83,21 @@ class MMEvalIoUMetric(MeanIoU):
             predictions.append(pred_label)
             labels.append(label)
 
+            # format_result:
+            if self.output_dir:
+                basename = osp.splitext(osp.basename(
+                    data_sample['img_path']))[0]
+                png_filename = osp.abspath(
+                    osp.join(self.output_dir, f'{basename}.png'))
+                output_mask = pred_label.cpu().numpy()
+                # The index range of official ADE20k dataset is from 0 to 150.
+                # But the index range of output is from 0 to 149.
+                # That is because we set reduce_zero_label=True.
+                if data_sample.get('reduce_zero_label', False):
+                    output_mask += 1
+                output = Image.fromarray(output_mask.astype(np.uint8))
+                output.save(png_filename)
+
         self.add(predictions, labels)
 
     def evaluate(self, *args, **kwargs):
@@ -90,6 +105,8 @@ class MMEvalIoUMetric(MeanIoU):
 
         This method would be invoked by ``mmengine.Evaluator``.
         """
+        if self.format_only:
+            return {}
         metric_results = self.compute(*args, **kwargs)
         self.reset()
 
