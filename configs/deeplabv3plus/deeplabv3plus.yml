@@ -11,6 +11,8 @@ Collections:
     - Potsdam
     - Vaihingen
     - iSAID
+    - Mapillary Vistas v1.2
+    - Mapiillary Vistas v2
   Paper:
     URL: https://arxiv.org/abs/1802.02611
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
@@ -848,3 +850,45 @@ Models:
       mIoU(ms+flip): 68.02
   Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_isaid-896x896.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526-598be439.pth
+- Name: deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-50-D8
+    crop size: (1280,1280)
+    lr schd: 80000
+    inference time (ms/im):
+    - value: 40.31
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (1280,1280)
+    Training Memory (GB): 6.19
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Mapillary Vistas v1.2
+    Metrics:
+      mIoU: 47.35
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid_20220110_180526-7059991d.pth
+- Name: deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896
+  In Collection: DeepLabV3+
+  Metadata:
+    backbone: R-101-D8
+    crop size: (512,1024)
+    lr schd: 240000
+    inference time (ms/im):
+    - value: 40.31
+      hardware: V100
+      backend: PyTorch
+      batch size: 1
+      mode: FP32
+      resolution: (512,1024)
+    Training Memory (GB): 6.19
+  Results:
+  - Task: Semantic Segmentation
+    Dataset: Mapiillary Vistas v2
+    Metrics:
+      mIoU: 37.28
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896.py
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid_20220110_180526-7059991d.pth
