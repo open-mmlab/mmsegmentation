@@ -1062,9 +1062,9 @@ class RandomMosaic(BaseTransform):
 
         assert 'mix_results' in results
         if len(results['img'].shape) == 3:
+            c = results['img'].shape[2]
             mosaic_img = np.full(
-                (int(self.img_scale[0] * 2), int(
-                    self.img_scale[1] * 2), results['img'].shape[2]),
+                (int(self.img_scale[0] * 2), int(self.img_scale[1] * 2), c),
                 self.pad_val,
                 dtype=results['img'].dtype)
         else:
