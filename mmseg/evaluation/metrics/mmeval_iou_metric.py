@@ -49,7 +49,6 @@ class MMEvalIoUMetric(MeanIoU):
     def __init__(self,
                  output_dir: Optional[str] = None,
                  format_only: bool = False,
-                 dist_backend='torch_cuda',
                  **kwargs):
 
         if isinstance(self, IoUMetric):
@@ -58,8 +57,7 @@ class MMEvalIoUMetric(MeanIoU):
                 'please install MMEval first.')
 
         # Changes the default value of `classwise_results` to True.
-        super().__init__(
-            classwise_results=True, dist_backend=dist_backend, **kwargs)
+        super().__init__(classwise_results=True, **kwargs)
 
         self.output_dir = output_dir
         if self.output_dir and is_main_process():
