@@ -1,4 +1,4 @@
-# \[WIP\] Add New Datasets
+# Add New Datasets
 
 ## Customize datasets by reorganizing data
 
@@ -42,10 +42,8 @@ Only
 `data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
 `data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` will be loaded.
 
-:::{note}
-The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
+**Note:** The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
 You may use `'P'` mode of [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) to create your annotation image with color.
-:::
 
 ## Customize datasets by mixing dataset
 
@@ -59,14 +57,14 @@ For example, suppose the original dataset is `Dataset_A`, to repeat it, the conf
 
 ```python
 dataset_A_train = dict(
-        type='RepeatDataset',
-        times=N,
-        dataset=dict(  # This is the original config of Dataset_A
-            type='Dataset_A',
-            ...
-            pipeline=train_pipeline
-        )
+    type='RepeatDataset',
+    times=N,
+    dataset=dict(  # This is the original config of Dataset_A
+        type='Dataset_A',
+        ...
+        pipeline=train_pipeline
     )
+)
 ```
 
 ### Concatenate dataset
@@ -111,7 +109,9 @@ dataset_B_train = dict(
     )
 )
 train_dataloader = dict(
-    dataset=dict('ConcatDataset', datasets=[dataset_A_train, dataset_B_train]))
+    dataset=dict(
+        type='ConcatDataset',
+        datasets=[dataset_A_train, dataset_B_train]))
 
 val_dataloader = dict(dataset=dataset_A_val)
 test_dataloader = dict(dataset=dataset_A_test)
@@ -123,8 +123,7 @@ You can refer base dataset [tutorial](https://mmengine.readthedocs.io/en/latest/
 ### Multi-image Mix Dataset
 
 We use `MultiImageMixDataset` as a wrapper to mix images from multiple datasets.
-`MultiImageMixDataset` can be used by multiple images mixed data augmentation
-like mosaic and mixup.
+`MultiImageMixDataset` can be used by multiple images mixed data augmentation like mosaic and mixup.
 
 An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
 
