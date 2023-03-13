@@ -1,13 +1,17 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import unittest
 
-import mmeval
 import torch
 from mmengine.structures import PixelData
 
 from mmseg.evaluation import IoUMetric, MMEvalIoUMetric
 from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList
+
+try:
+    import mmeval
+except ImportError:
+    mmeval = None
 
 
 class TestMMEvalIoUMetric(unittest.TestCase):
