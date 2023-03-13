@@ -639,6 +639,17 @@ def test_mosaic():
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)
 
+    results = dict()
+    results['img'] = np.concatenate((img, img), axis=2)
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+
+    transform = dict(type='RandomMosaic', prob=1, img_scale=(10, 12))
+    mosaic_module = TRANSFORMS.build(transform)
+    results['mix_results'] = [copy.deepcopy(results)] * 3
+    results = mosaic_module(results)
+    assert results['img'].shape[2] == 6
+
 
 def test_cutout():
     # test prob
