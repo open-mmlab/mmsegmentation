@@ -1,8 +1,9 @@
 Migration
-***************
+
+______________________________________________________________________
 
 .. toctree::
-   :maxdepth: 1
+:maxdepth: 1
 
-   interface.md
-   package.md
+interface.md
+package.md
