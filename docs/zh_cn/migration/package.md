@@ -78,35 +78,35 @@ OpenMMLab 2.0 尝试支持计算机视觉的多任务统一接口，并发布了
 
 以下是 `mmseg.apis` 的更改：
 
-|          函数          | 变化                                            |
-| :-------------------: | :---------------------------------------------- |
-|   `init_segmentor`    | 重命名为 `init_model`                            |
-| `inference_segmentor` | 重命名为 `inference_model`                       |
-| `show_result_pyplot`  | 基于 `SegLocalVisualizer` 实现                   |
-|     `train_model`     | 删除，使用 `runner.train` 训练。                  |
-|   `multi_gpu_test`    | 删除，使用 `runner.test` 测试。                   |
-|   `single_gpu_test`   | 删除，使用 `runner.test` 测试。                   |
-|   `set_random_seed`   | 删除，使用 `mmengine.runner.set_random_seed`。    |
-|  `init_random_seed`   | 删除，使用 `mmengine.dist.sync_random_seed`。     |
+|         函数          | 变化                                           |
+| :-------------------: | :--------------------------------------------- |
+|   `init_segmentor`    | 重命名为 `init_model`                          |
+| `inference_segmentor` | 重命名为 `inference_model`                     |
+| `show_result_pyplot`  | 基于 `SegLocalVisualizer` 实现                 |
+|     `train_model`     | 删除，使用 `runner.train` 训练。               |
+|   `multi_gpu_test`    | 删除，使用 `runner.test` 测试。                |
+|   `single_gpu_test`   | 删除，使用 `runner.test` 测试。                |
+|   `set_random_seed`   | 删除，使用 `mmengine.runner.set_random_seed`。 |
+|  `init_random_seed`   | 删除，使用 `mmengine.dist.sync_random_seed`。  |
 
 ### `mmseg.datasets`
 
 OpenMMLab 2.0 将 `BaseDataset` 定义为数据集的函数和接口，MMSegmentation 1.x 也遵循此协议，并定义了从 `BaseDataset` 继承的 `BaseSegDataset`。MMCV 2.x 收集多种任务的通用数据转换，例如分类、检测、分割，因此 MMSegmentation 1.x 使用这些数据转换并将其从 mmseg.dataset 中删除。
 
-|         包/模块        | 更改                                                                              |
-| :-------------------: | :-------------------------------------------------------------------------------- |
-|   `mmseg.pipelines`   | 移动到 `mmcv.transforms` 中                                                        |
-|    `mmseg.sampler`    | 移动到 `mmengine.dataset.sampler` 中                                               |
+|        包/模块        | 更改                                                                                 |
+| :-------------------: | :----------------------------------------------------------------------------------- |
+|   `mmseg.pipelines`   | 移动到 `mmcv.transforms` 中                                                          |
+|    `mmseg.sampler`    | 移动到 `mmengine.dataset.sampler` 中                                                 |
 |    `CustomDataset`    | 重命名为 `BaseSegDataset` 并从 MMEngine 中的 `BaseDataset` 继承                      |
-| `DefaultFormatBundle` | 替换为 `PackSegInputs`                                                             |
-|  `LoadImageFromFile`  | 移动到 `mmcv.transforms.LoadImageFromFile` 中                                      |
-|   `LoadAnnotations`   | 移动到 `mmcv.transforms.LoadAnnotations` 中                                        |
+| `DefaultFormatBundle` | 替换为 `PackSegInputs`                                                               |
+|  `LoadImageFromFile`  | 移动到 `mmcv.transforms.LoadImageFromFile` 中                                        |
+|   `LoadAnnotations`   | 移动到 `mmcv.transforms.LoadAnnotations` 中                                          |
 |       `Resize`        | 移动到 `mmcv.transforms` 中并拆分为 `Resize`，`RandomResize` 和 `RandomChoiceResize` |
-|     `RandomFlip`      | 移动到 `mmcv.transforms.RandomFlip` 中                                             |
-|         `Pad`         | 移动到 `mmcv.transforms.Pad` 中                                                    |
-|      `Normalize`      | 移动到 `mmcv.transforms.Normalize` 中                                              |
-|       `Compose`       | 移动到 `mmcv.transforms.Compose` 中                                                |
-|    `ImageToTensor`    | 移动到 `mmcv.transforms.ImageToTensor` 中                                          |
+|     `RandomFlip`      | 移动到 `mmcv.transforms.RandomFlip` 中                                               |
+|         `Pad`         | 移动到 `mmcv.transforms.Pad` 中                                                      |
+|      `Normalize`      | 移动到 `mmcv.transforms.Normalize` 中                                                |
+|       `Compose`       | 移动到 `mmcv.transforms.Compose` 中                                                  |
+|    `ImageToTensor`    | 移动到 `mmcv.transforms.ImageToTensor` 中                                            |
 
 ### `mmseg.models`
 
