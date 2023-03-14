@@ -1029,17 +1029,17 @@ class RandomMosaic(BaseTransform):
         return results
 
     def get_indices(self, dataset: MultiImageMixDataset) -> list:
-        """Call function to collect indexes.
+        """Call function to collect indices.
 
         Args:
             dataset (:obj:`MultiImageMixDataset`): The dataset.
 
         Returns:
-            list: indexes.
+            list: indices.
         """
 
-        indexes = [random.randint(0, len(dataset)) for _ in range(3)]
-        return indexes
+        indices = [random.randint(0, len(dataset)) for _ in range(3)]
+        return indices
 
     @cache_randomness
     def generate_mosaic_center(self):
