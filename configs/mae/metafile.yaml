@@ -14,7 +14,7 @@ Models:
     Architecture:
     - ViT-B
     - UPerNet
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 9.96
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752.log.json

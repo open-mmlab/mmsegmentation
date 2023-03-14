@@ -14,7 +14,7 @@ Models:
     Architecture:
     - S-101-D8
     - FCN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 11.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes-20200807_140631.log.json
@@ -38,7 +38,7 @@ Models:
     Architecture:
     - S-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 11.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes_20200807_140631-c75f3b99.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes-20200807_140631.log.json
@@ -62,7 +62,7 @@ Models:
     Architecture:
     - S-101-D8
     - DeepLabV3
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 11.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json
@@ -86,7 +86,7 @@ Models:
     Architecture:
     - S-101-D8
     - DeepLabV3+
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 13.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json
@@ -110,7 +110,7 @@ Models:
     Architecture:
     - S-101-D8
     - FCN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 14.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k_20200807_145416-d3160329.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k-20200807_145416.log.json
@@ -134,7 +134,7 @@ Models:
     Architecture:
     - S-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 14.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k_20200807_145416-a6daa92a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k-20200807_145416.log.json
@@ -158,7 +158,7 @@ Models:
     Architecture:
     - S-101-D8
     - DeepLabV3
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 14.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k_20200807_144503-17ecabe5.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k-20200807_144503.log.json
@@ -182,7 +182,7 @@ Models:
     Architecture:
     - S-101-D8
     - DeepLabV3+
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 16.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k_20200807_144503-27b26226.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k-20200807_144503.log.json

@@ -26,7 +26,7 @@ Models:
     Architecture:
     - R-18-D8
     - ICNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_80k_cityscapes/icnet_r18-d8_832x832_80k_cityscapes_20210925_225521-2e36638d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_80k_cityscapes/icnet_r18-d8_832x832_80k_cityscapes_20210925_225521.log.json
@@ -50,7 +50,7 @@ Models:
     Architecture:
     - R-18-D8
     - ICNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_160k_cityscapes/icnet_r18-d8_832x832_160k_cityscapes_20210925_230153-2c6eb6e0.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_160k_cityscapes/icnet_r18-d8_832x832_160k_cityscapes_20210925_230153.log.json
   Paper:
@@ -74,7 +74,7 @@ Models:
     - R-18-D8
     - ICNet
     - (in1k-pre)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354-1cbe3022.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354.log.json
   Paper:
@@ -98,7 +98,7 @@ Models:
     - R-18-D8
     - ICNet
     - (in1k-pre)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702-619c8ae1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702.log.json
   Paper:
@@ -121,7 +121,7 @@ Models:
     Architecture:
     - R-50-D8
     - ICNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 2.53
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_80k_cityscapes/icnet_r50-d8_832x832_80k_cityscapes_20210926_044625-c6407341.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_80k_cityscapes/icnet_r50-d8_832x832_80k_cityscapes_20210926_044625.log.json
@@ -145,7 +145,7 @@ Models:
     Architecture:
     - R-50-D8
     - ICNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_160k_cityscapes/icnet_r50-d8_832x832_160k_cityscapes_20210925_232612-a95f0d4e.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_160k_cityscapes/icnet_r50-d8_832x832_160k_cityscapes_20210925_232612.log.json
   Paper:
@@ -169,7 +169,7 @@ Models:
     - R-50-D8
     - ICNet
     - (in1k-pre)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943-1743dc7b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943.log.json
   Paper:
@@ -193,7 +193,7 @@ Models:
     - R-50-D8
     - ICNet
     - (in1k-pre)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715-ce310aea.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715.log.json
   Paper:
@@ -216,7 +216,7 @@ Models:
     Architecture:
     - R-101-D8
     - ICNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 3.08
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_80k_cityscapes/icnet_r101-d8_832x832_80k_cityscapes_20210926_072447-b52f936e.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_80k_cityscapes/icnet_r101-d8_832x832_80k_cityscapes_20210926_072447.log.json
@@ -240,7 +240,7 @@ Models:
     Architecture:
     - R-101-D8
     - ICNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_160k_cityscapes/icnet_r101-d8_832x832_160k_cityscapes_20210926_092350-3a1ebf1a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_160k_cityscapes/icnet_r101-d8_832x832_160k_cityscapes_20210926_092350.log.json
   Paper:
@@ -264,7 +264,7 @@ Models:
     - R-101-D8
     - ICNet
     - (in1k-pre)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414-7ceb12c5.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414.log.json
   Paper:
@@ -288,7 +288,7 @@ Models:
     - R-101-D8
     - ICNet
     - (in1k-pre)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612-9484ae8a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612.log.json
   Paper:

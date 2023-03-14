@@ -28,7 +28,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211.log.json
@@ -52,7 +52,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243.log.json
@@ -76,7 +76,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712.log.json
@@ -100,7 +100,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 10.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720.log.json
@@ -124,7 +124,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911.log.json
   Paper:
@@ -147,7 +147,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728.log.json
   Paper:
@@ -170,7 +170,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426.log.json
   Paper:
@@ -193,7 +193,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713.log.json
   Paper:
@@ -216,7 +216,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818.log.json
@@ -240,7 +240,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 12.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818.log.json
@@ -264,7 +264,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733.log.json
   Paper:
@@ -287,7 +287,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733.log.json
   Paper:
@@ -310,7 +310,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246.log.json
@@ -334,7 +334,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246.log.json
@@ -358,7 +358,7 @@ Models:
     Architecture:
     - R-50-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314.log.json
   Paper:
@@ -381,7 +381,7 @@ Models:
     Architecture:
     - R-101-D8
     - ANN
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314-bd205bbe.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314.log.json
   Paper:

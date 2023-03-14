@@ -27,7 +27,7 @@ Models:
     - ViT-T_16
     - Segmenter
     - Mask
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 1.21
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706-ffcf7509.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706.log.json
@@ -52,7 +52,7 @@ Models:
     - ViT-S_16
     - Segmenter
     - Linear
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 1.78
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713.log.json
@@ -77,7 +77,7 @@ Models:
     - ViT-S_16
     - Segmenter
     - Mask
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 2.03
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706-511bb103.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706.log.json
@@ -102,7 +102,7 @@ Models:
     - ViT-B_16
     - Segmenter
     - Mask
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 4.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706-bc533b08.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706.log.json
@@ -127,7 +127,7 @@ Models:
     - ViT-L_16
     - Segmenter
     - Mask
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 16.56
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750-7ef345be.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750.log.json

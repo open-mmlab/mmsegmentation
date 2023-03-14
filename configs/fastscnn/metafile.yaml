@@ -26,7 +26,7 @@ Models:
     Architecture:
     - FastSCNN
     - FastSCNN
-    Training Resources: V100
+    Training Resources: 8x V100 GPUS
     Memory (GB): 3.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853-0cec9937.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853.log.json

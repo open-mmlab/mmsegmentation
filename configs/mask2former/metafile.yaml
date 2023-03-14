@@ -27,7 +27,7 @@ Models:
     Architecture:
     - R-50-D32
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 5.67
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-90k_cityscapes-512x1024/mask2former_r50_8xb2-90k_cityscapes-512x1024_20221202_140802-ffd9d750.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-90k_cityscapes-512x1024/mask2former_r50_8xb2-90k_cityscapes-512x1024_20221202_140802.json
@@ -50,7 +50,7 @@ Models:
     Architecture:
     - R-101-D32
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 6.81
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-90k_cityscapes-512x1024/mask2former_r101_8xb2-90k_cityscapes-512x1024_20221130_031628-43e68666.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-90k_cityscapes-512x1024/mask2former_r101_8xb2-90k_cityscapes-512x1024_20221130_031628.json
@@ -73,7 +73,7 @@ Models:
     Architecture:
     - Swin-T
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 6.36
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024/mask2former_swin-t_8xb2-90k_cityscapes-512x1024_20221127_144501-36c59341.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-90k_cityscapes-512x1024/mask2former_swin-t_8xb2-90k_cityscapes-512x1024_20221127_144501.json
@@ -96,7 +96,7 @@ Models:
     Architecture:
     - Swin-S
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 8.09
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-90k_cityscapes-512x1024/mask2former_swin-s_8xb2-90k_cityscapes-512x1024_20221127_143802-9ab177f6.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-90k_cityscapes-512x1024/mask2former_swin-s_8xb2-90k_cityscapes-512x1024_20221127_143802.json
@@ -119,7 +119,7 @@ Models:
     Architecture:
     - Swin-B
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 10.89
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221203_045030-9a86a225.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-b-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221203_045030.json
@@ -142,7 +142,7 @@ Models:
     Architecture:
     - Swin-L
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 15.83
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221202_141901-28ad20f1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024/mask2former_swin-l-in22k-384x384-pre_8xb2-90k_cityscapes-512x1024_20221202_141901.json
@@ -165,7 +165,7 @@ Models:
     Architecture:
     - R-50-D32
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 3.31
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512/mask2former_r50_8xb2-160k_ade20k-512x512_20221204_000055-2d1f55f1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512/mask2former_r50_8xb2-160k_ade20k-512x512_20221204_000055.json
@@ -188,7 +188,7 @@ Models:
     Architecture:
     - R-101-D32
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 4.09
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512/mask2former_r101_8xb2-160k_ade20k-512x512_20221203_233905-b7135890.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512/mask2former_r101_8xb2-160k_ade20k-512x512_20221203_233905.json
@@ -211,7 +211,7 @@ Models:
     Architecture:
     - Swin-T
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 3826.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512/mask2former_swin-t_8xb2-160k_ade20k-512x512_20221203_234230-7d64e5dd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512/mask2former_swin-t_8xb2-160k_ade20k-512x512_20221203_234230.json
@@ -234,7 +234,7 @@ Models:
     Architecture:
     - Swin-S
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 3.74
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512/mask2former_swin-s_8xb2-160k_ade20k-512x512_20221204_143905-e715144e.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512/mask2former_swin-s_8xb2-160k_ade20k-512x512_20221204_143905.json
@@ -257,7 +257,7 @@ Models:
     Architecture:
     - Swin-B
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 5.66
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640_20221129_125118-a4a086d2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in1k-384x384-pre_8xb2-160k_ade20k-640x640_20221129_125118.json
@@ -280,7 +280,7 @@ Models:
     Architecture:
     - Swin-B
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 5.66
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235230-7ec0f569.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-b-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235230.json
@@ -303,7 +303,7 @@ Models:
     Architecture:
     - Swin-L
     - Mask2Former
-    Training Resources: A100
+    Training Resources: 8x A100 GPUS
     Memory (GB): 8.86
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json

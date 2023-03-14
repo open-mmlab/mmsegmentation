@@ -27,7 +27,7 @@ Models:
     Architecture:
     - R-50-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 8.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes_20200621_220958-68638a47.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_40k_cityscapes/encnet_r50-d8_512x1024_40k_cityscapes-20200621_220958.log.json
@@ -51,7 +51,7 @@ Models:
     Architecture:
     - R-101-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 12.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_40k_cityscapes/encnet_r101-d8_512x1024_40k_cityscapes_20200621_220933-35e0a3e8.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_40k_cityscapes/encnet_r101-d8_512x1024_40k_cityscapes-20200621_220933.log.json
@@ -75,7 +75,7 @@ Models:
     Architecture:
     - R-50-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_40k_cityscapes/encnet_r50-d8_769x769_40k_cityscapes_20200621_220958-3bcd2884.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_40k_cityscapes/encnet_r50-d8_769x769_40k_cityscapes-20200621_220958.log.json
@@ -99,7 +99,7 @@ Models:
     Architecture:
     - R-101-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 13.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_40k_cityscapes/encnet_r101-d8_769x769_40k_cityscapes_20200621_220933-2fafed55.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_40k_cityscapes/encnet_r101-d8_769x769_40k_cityscapes-20200621_220933.log.json
@@ -123,7 +123,7 @@ Models:
     Architecture:
     - R-50-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_80k_cityscapes/encnet_r50-d8_512x1024_80k_cityscapes_20200622_003554-fc5c5624.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x1024_80k_cityscapes/encnet_r50-d8_512x1024_80k_cityscapes-20200622_003554.log.json
   Paper:
@@ -146,7 +146,7 @@ Models:
     Architecture:
     - R-101-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_80k_cityscapes/encnet_r101-d8_512x1024_80k_cityscapes_20200622_003555-1de64bec.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x1024_80k_cityscapes/encnet_r101-d8_512x1024_80k_cityscapes-20200622_003555.log.json
   Paper:
@@ -169,7 +169,7 @@ Models:
     Architecture:
     - R-50-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_80k_cityscapes/encnet_r50-d8_769x769_80k_cityscapes_20200622_003554-55096dcb.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_769x769_80k_cityscapes/encnet_r50-d8_769x769_80k_cityscapes-20200622_003554.log.json
   Paper:
@@ -192,7 +192,7 @@ Models:
     Architecture:
     - R-101-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes_20200622_003555-470ef79d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_769x769_80k_cityscapes/encnet_r101-d8_769x769_80k_cityscapes-20200622_003555.log.json
   Paper:
@@ -215,7 +215,7 @@ Models:
     Architecture:
     - R-50-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 10.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k_20200622_042412-44b46b04.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_80k_ade20k/encnet_r50-d8_512x512_80k_ade20k-20200622_042412.log.json
@@ -239,7 +239,7 @@ Models:
     Architecture:
     - R-101-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 13.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_80k_ade20k/encnet_r101-d8_512x512_80k_ade20k_20200622_101128-dd35e237.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_80k_ade20k/encnet_r101-d8_512x512_80k_ade20k-20200622_101128.log.json
@@ -263,7 +263,7 @@ Models:
     Architecture:
     - R-50-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_160k_ade20k/encnet_r50-d8_512x512_160k_ade20k_20200622_101059-b2db95e0.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r50-d8_512x512_160k_ade20k/encnet_r50-d8_512x512_160k_ade20k-20200622_101059.log.json
   Paper:
@@ -286,7 +286,7 @@ Models:
     Architecture:
     - R-101-D8
     - EncNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_160k_ade20k/encnet_r101-d8_512x512_160k_ade20k_20200622_073348-7989641f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/encnet/encnet_r101-d8_512x512_160k_ade20k/encnet_r101-d8_512x512_160k_ade20k-20200622_073348.log.json
   Paper:

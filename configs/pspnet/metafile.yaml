@@ -37,7 +37,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338.log.json
@@ -61,7 +61,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes/pspnet_r101-d8_512x1024_40k_cityscapes_20200604_232751-467e7cf4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_40k_cityscapes/pspnet_r101-d8_512x1024_40k_cityscapes_20200604_232751.log.json
@@ -85,7 +85,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_40k_cityscapes/pspnet_r50-d8_769x769_40k_cityscapes_20200606_112725-86638686.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_40k_cityscapes/pspnet_r50-d8_769x769_40k_cityscapes_20200606_112725.log.json
@@ -109,7 +109,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 10.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_40k_cityscapes/pspnet_r101-d8_769x769_40k_cityscapes_20200606_112753-61c6f5be.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_40k_cityscapes/pspnet_r101-d8_769x769_40k_cityscapes_20200606_112753.log.json
@@ -133,7 +133,7 @@ Models:
     Architecture:
     - R-18-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x1024_80k_cityscapes/pspnet_r18-d8_512x1024_80k_cityscapes_20201225_021458-09ffa746.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x1024_80k_cityscapes/pspnet_r18-d8_512x1024_80k_cityscapes-20201225_021458.log.json
@@ -157,7 +157,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131-2376f12b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_512x1024_80k_cityscapes_20200606_112131.log.json
   Paper:
@@ -180,7 +180,7 @@ Models:
     Architecture:
     - R-50b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220315_123238-588c30be.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes/pspnet_r50-d8_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220315_123238.log.json
@@ -204,7 +204,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211-e1e1100f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x1024_80k_cityscapes/pspnet_r101-d8_512x1024_80k_cityscapes_20200606_112211.log.json
   Paper:
@@ -227,7 +227,7 @@ Models:
     - R-101-D8
     - PSPNet
     - (FP16)
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 5.34
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes/pspnet_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230919-a0875e5c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_fp16_512x1024_80k_cityscapes/pspnet_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230919.log.json
@@ -251,7 +251,7 @@ Models:
     Architecture:
     - R-18-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_769x769_80k_cityscapes/pspnet_r18-d8_769x769_80k_cityscapes_20201225_021458-3deefc62.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_769x769_80k_cityscapes/pspnet_r18-d8_769x769_80k_cityscapes-20201225_021458.log.json
@@ -275,7 +275,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_80k_cityscapes/pspnet_r50-d8_769x769_80k_cityscapes_20200606_210121-5ccf03dd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_769x769_80k_cityscapes/pspnet_r50-d8_769x769_80k_cityscapes_20200606_210121.log.json
   Paper:
@@ -298,7 +298,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.oz1z1penmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055-dba412fa.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_769x769_80k_cityscapes/pspnet_r101-d8_769x769_80k_cityscapes_20200606_225055.log.json
   Paper:
@@ -321,7 +321,7 @@ Models:
     Architecture:
     - R-18b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_512x1024_80k_cityscapes/pspnet_r18b-d8_512x1024_80k_cityscapes_20201226_063116-26928a60.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_512x1024_80k_cityscapes/pspnet_r18b-d8_512x1024_80k_cityscapes-20201226_063116.log.json
@@ -345,7 +345,7 @@ Models:
     Architecture:
     - R-50b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_512x1024_80k_cityscapes/pspnet_r50b-d8_512x1024_80k_cityscapes_20201225_094315-6344287a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_512x1024_80k_cityscapes/pspnet_r50b-d8_512x1024_80k_cityscapes-20201225_094315.log.json
@@ -369,7 +369,7 @@ Models:
     Architecture:
     - R-101b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_512x1024_80k_cityscapes/pspnet_r101b-d8_512x1024_80k_cityscapes_20201226_170012-3a4d38ab.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_512x1024_80k_cityscapes/pspnet_r101b-d8_512x1024_80k_cityscapes-20201226_170012.log.json
@@ -393,7 +393,7 @@ Models:
     Architecture:
     - R-18b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.7
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_769x769_80k_cityscapes/pspnet_r18b-d8_769x769_80k_cityscapes_20201226_080942-bf98d186.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18b-d8_769x769_80k_cityscapes/pspnet_r18b-d8_769x769_80k_cityscapes-20201226_080942.log.json
@@ -417,7 +417,7 @@ Models:
     Architecture:
     - R-50b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_769x769_80k_cityscapes/pspnet_r50b-d8_769x769_80k_cityscapes_20201225_094316-4c643cf6.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d8_769x769_80k_cityscapes/pspnet_r50b-d8_769x769_80k_cityscapes-20201225_094316.log.json
@@ -441,7 +441,7 @@ Models:
     Architecture:
     - R-101b-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 10.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_769x769_80k_cityscapes/pspnet_r101b-d8_769x769_80k_cityscapes_20201226_171823-f0e7c293.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101b-d8_769x769_80k_cityscapes/pspnet_r101b-d8_769x769_80k_cityscapes-20201226_171823.log.json
@@ -465,7 +465,7 @@ Models:
     Architecture:
     - R-50-D32
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 3.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d32_512x1024_80k_cityscapes/pspnet_r50-d32_512x1024_80k_cityscapes_20220316_224840-9092b254.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d32_512x1024_80k_cityscapes/pspnet_r50-d32_512x1024_80k_cityscapes_20220316_224840.log.json
@@ -489,7 +489,7 @@ Models:
     Architecture:
     - R-50b-D32
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 3.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220316_141229-dd9c9610.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220316_141229.log.json
@@ -513,7 +513,7 @@ Models:
     Architecture:
     - R-50b-D32
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 2.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d32_512x1024_80k_cityscapes/pspnet_r50b-d32_512x1024_80k_cityscapes_20220311_152152-23bcaf8c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50b-d32_512x1024_80k_cityscapes/pspnet_r50b-d32_512x1024_80k_cityscapes_20220311_152152.log.json
@@ -537,7 +537,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 8.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128-15a8b914.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_ade20k/pspnet_r50-d8_512x512_80k_ade20k_20200615_014128.log.json
@@ -561,7 +561,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 12.0
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_ade20k/pspnet_r101-d8_512x512_80k_ade20k_20200614_031423-b6e782f0.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_ade20k/pspnet_r101-d8_512x512_80k_ade20k_20200614_031423.log.json
@@ -585,7 +585,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_160k_ade20k/pspnet_r50-d8_512x512_160k_ade20k_20200615_184358-1890b0bd.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_160k_ade20k/pspnet_r50-d8_512x512_160k_ade20k_20200615_184358.log.json
   Paper:
@@ -608,7 +608,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650-967c316f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_160k_ade20k/pspnet_r101-d8_512x512_160k_ade20k_20200615_100650.log.json
   Paper:
@@ -631,7 +631,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_20k_voc12aug/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958.log.json
@@ -655,7 +655,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_20k_voc12aug/pspnet_r101-d8_512x512_20k_voc12aug_20200617_102003-4aef3c9a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_20k_voc12aug/pspnet_r101-d8_512x512_20k_voc12aug_20200617_102003.log.json
@@ -679,7 +679,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_40k_voc12aug/pspnet_r50-d8_512x512_40k_voc12aug_20200613_161222-ae9c1b8c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_40k_voc12aug/pspnet_r50-d8_512x512_40k_voc12aug_20200613_161222.log.json
   Paper:
@@ -702,7 +702,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222-bc933b18.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_40k_voc12aug/pspnet_r101-d8_512x512_40k_voc12aug_20200613_161222.log.json
   Paper:
@@ -725,7 +725,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 8.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context/pspnet_r101-d8_480x480_40k_pascal_context_20200911_211210-bf0f5d7c.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context/pspnet_r101-d8_480x480_40k_pascal_context-20200911_211210.log.json
@@ -749,7 +749,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context/pspnet_r101-d8_480x480_80k_pascal_context_20200911_190530-c86d6233.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context/pspnet_r101-d8_480x480_80k_pascal_context-20200911_190530.log.json
   Paper:
@@ -772,7 +772,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59/pspnet_r101-d8_480x480_40k_pascal_context_59_20210416_114524-86d44cd4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_40k_pascal_context_59/pspnet_r101-d8_480x480_40k_pascal_context_59-20210416_114524.log.json
   Paper:
@@ -795,7 +795,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59_20210416_114418-fa6caaa2.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_480x480_80k_pascal_context_59/pspnet_r101-d8_480x480_80k_pascal_context_59-20210416_114418.log.json
   Paper:
@@ -818,7 +818,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k_20210820_203258-b88df27f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_20k_coco-stuff10k_20210820_203258.log.json
@@ -842,7 +842,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 13.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k_20210820_232135-76aae482.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_20k_coco-stuff10k_20210820_232135.log.json
@@ -866,7 +866,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_030857-92e2902b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r50-d8_512x512_4x4_40k_coco-stuff10k_20210821_030857.log.json
   Paper:
@@ -889,7 +889,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_014022-831aec95.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k/pspnet_r101-d8_512x512_4x4_40k_coco-stuff10k_20210821_014022.log.json
   Paper:
@@ -912,7 +912,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034-0e41b2db.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034.log.json
@@ -936,7 +936,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 13.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034-7eb41789.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_80k_coco-stuff164k_20210707_152034.log.json
@@ -960,7 +960,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004-51276a57.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004.log.json
   Paper:
@@ -983,7 +983,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004-4af9621b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_160k_coco-stuff164k_20210707_152004.log.json
   Paper:
@@ -1006,7 +1006,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-be9610cc.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r50-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004.log.json
   Paper:
@@ -1029,7 +1029,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004-72220c60.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k/pspnet_r101-d8_512x512_4x4_320k_coco-stuff164k_20210707_152004.log.json
   Paper:
@@ -1052,7 +1052,7 @@ Models:
     Architecture:
     - R-18-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.45
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x512_80k_loveda/pspnet_r18-d8_512x512_80k_loveda_20211105_052100-b97697f1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_512x512_80k_loveda/pspnet_r18-d8_512x512_80k_loveda_20211105_052100.log.json
@@ -1076,7 +1076,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.14
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_loveda/pspnet_r50-d8_512x512_80k_loveda_20211104_155728-88610f9f.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_512x512_80k_loveda/pspnet_r50-d8_512x512_80k_loveda_20211104_155728.log.json
@@ -1100,7 +1100,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.61
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_loveda/pspnet_r101-d8_512x512_80k_loveda_20211104_153212-1c06c6a8.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_512x512_80k_loveda/pspnet_r101-d8_512x512_80k_loveda_20211104_153212.log.json
@@ -1124,7 +1124,7 @@ Models:
     Architecture:
     - R-18-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_potsdam/pspnet_r18-d8_4x4_512x512_80k_potsdam_20211220_125612-7cd046e1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_potsdam/pspnet_r18-d8_4x4_512x512_80k_potsdam_20211220_125612.log.json
@@ -1148,7 +1148,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.14
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_potsdam/pspnet_r50-d8_4x4_512x512_80k_potsdam_20211219_043541-2dd5fe67.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_potsdam/pspnet_r50-d8_4x4_512x512_80k_potsdam_20211219_043541.log.json
@@ -1172,7 +1172,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.61
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_4x4_512x512_80k_potsdam/pspnet_r101-d8_4x4_512x512_80k_potsdam_20211220_125612-aed036c4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_4x4_512x512_80k_potsdam/pspnet_r101-d8_4x4_512x512_80k_potsdam_20211220_125612.log.json
@@ -1196,7 +1196,7 @@ Models:
     Architecture:
     - R-18-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 1.45
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_vaihingen/pspnet_r18-d8_4x4_512x512_80k_vaihingen_20211228_160355-52a8a6f6.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_512x512_80k_vaihingen/pspnet_r18-d8_4x4_512x512_80k_vaihingen_20211228_160355.log.json
@@ -1220,7 +1220,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.14
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_vaihingen/pspnet_r50-d8_4x4_512x512_80k_vaihingen_20211228_160355-382f8f5b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_512x512_80k_vaihingen/pspnet_r50-d8_4x4_512x512_80k_vaihingen_20211228_160355.log.json
@@ -1244,7 +1244,7 @@ Models:
     Architecture:
     - R-101-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.61
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_4x4_512x512_80k_vaihingen/pspnet_r101-d8_4x4_512x512_80k_vaihingen_20211231_230806-8eba0a09.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r101-d8_4x4_512x512_80k_vaihingen/pspnet_r101-d8_4x4_512x512_80k_vaihingen_20211231_230806.log.json
@@ -1268,7 +1268,7 @@ Models:
     Architecture:
     - R-18-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 4.52
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_896x896_80k_isaid/pspnet_r18-d8_4x4_896x896_80k_isaid_20220110_180526-e84c0b6a.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r18-d8_4x4_896x896_80k_isaid/pspnet_r18-d8_4x4_896x896_80k_isaid_20220110_180526.log.json
@@ -1292,7 +1292,7 @@ Models:
     Architecture:
     - R-50-D8
     - PSPNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 16.58
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_896x896_80k_isaid/pspnet_r50-d8_4x4_896x896_80k_isaid_20220110_180629-1f21dc32.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pspnet/pspnet_r50-d8_4x4_896x896_80k_isaid/pspnet_r50-d8_4x4_896x896_80k_isaid_20220110_180629.log.json

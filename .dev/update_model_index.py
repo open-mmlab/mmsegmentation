@@ -172,10 +172,14 @@ def get_model_info(md_file: str, config_dir: str,
                         },
                         'Config': config_path,
                         'Metadata': {
-                            'Training Data': current_dataset,
-                            'Batch Size': batch_size,
-                            'Architecture': archs,
-                            'Training Resources': values[device_idx],
+                            'Training Data':
+                            current_dataset,
+                            'Batch Size':
+                            batch_size,
+                            'Architecture':
+                            archs,
+                            'Training Resources':
+                            f'{bs[0]}x {values[device_idx]} GPUS',
                         },
                         'Weights': weight_url,
                         'Training log': log_url,

@@ -28,7 +28,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827.log.json
@@ -52,7 +52,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 7.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933-ebce3b10.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933.log.json
@@ -76,7 +76,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 7.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048-92d21539.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048.log.json
@@ -100,7 +100,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 8.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819.log.json
@@ -124,7 +124,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207-848beca8.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207.log.json
   Paper:
@@ -147,7 +147,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403-f05f2345.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403.log.json
   Paper:
@@ -170,7 +170,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107-82ae7d15.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107.log.json
   Paper:
@@ -193,7 +193,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014.log.json
   Paper:
@@ -216,7 +216,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 8.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127-ecc8377b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127.log.json
@@ -240,7 +240,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.1
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117-32e4db94.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117.log.json
@@ -264,7 +264,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328-8534de8d.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328.log.json
   Paper:
@@ -287,7 +287,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951.log.json
   Paper:
@@ -310,7 +310,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 6.4
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330-5b5890a7.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330.log.json
@@ -334,7 +334,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 7.5
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629.log.json
@@ -358,7 +358,7 @@ Models:
     Architecture:
     - R-50
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257-ca9bcc6b.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257.log.json
   Paper:
@@ -381,7 +381,7 @@ Models:
     Architecture:
     - R-101
     - UPerNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549-e26476ac.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549.log.json
   Paper:

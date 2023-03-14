@@ -26,7 +26,7 @@ Models:
     Architecture:
     - R-50-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 7.3
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes/dnl_r50-d8_512x1024_40k_cityscapes_20200904_233629-53d4ea93.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes/dnl_r50-d8_512x1024_40k_cityscapes-20200904_233629.log.json
@@ -49,7 +49,7 @@ Models:
     Architecture:
     - R-101-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 10.9
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes/dnl_r101-d8_512x1024_40k_cityscapes_20200904_233629-9928ffef.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes/dnl_r101-d8_512x1024_40k_cityscapes-20200904_233629.log.json
@@ -73,7 +73,7 @@ Models:
     Architecture:
     - R-50-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 9.2
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_40k_cityscapes/dnl_r50-d8_769x769_40k_cityscapes_20200820_232206-0f283785.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_40k_cityscapes/dnl_r50-d8_769x769_40k_cityscapes-20200820_232206.log.json
@@ -97,7 +97,7 @@ Models:
     Architecture:
     - R-101-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 12.6
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_40k_cityscapes/dnl_r101-d8_769x769_40k_cityscapes_20200820_171256-76c596df.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_40k_cityscapes/dnl_r101-d8_769x769_40k_cityscapes-20200820_171256.log.json
@@ -120,7 +120,7 @@ Models:
     Architecture:
     - R-50-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes/dnl_r50-d8_512x1024_80k_cityscapes_20200904_233629-58b2f778.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes/dnl_r50-d8_512x1024_80k_cityscapes-20200904_233629.log.json
   Paper:
@@ -142,7 +142,7 @@ Models:
     Architecture:
     - R-101-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes_20200904_233629-758e2dd4.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes-20200904_233629.log.json
   Paper:
@@ -165,7 +165,7 @@ Models:
     Architecture:
     - R-50-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes_20200820_011925-366bc4c7.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes-20200820_011925.log.json
   Paper:
@@ -188,7 +188,7 @@ Models:
     Architecture:
     - R-101-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes_20200821_051111-95ff84ab.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes-20200821_051111.log.json
   Paper:
@@ -211,7 +211,7 @@ Models:
     Architecture:
     - R-50-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 8.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k_20200826_183354-1cf6e0c1.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k-20200826_183354.log.json
@@ -235,7 +235,7 @@ Models:
     Architecture:
     - R-101-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
     Memory (GB): 12.8
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k_20200826_183354-d820d6ea.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k-20200826_183354.log.json
@@ -259,7 +259,7 @@ Models:
     Architecture:
     - R-50-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k_20200826_183350-37837798.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k-20200826_183350.log.json
   Paper:
@@ -282,7 +282,7 @@ Models:
     Architecture:
     - R-101-D8
     - DNLNet
-    Training Resources: V100
+    Training Resources: 4x V100 GPUS
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_160k_ade20k/dnl_r101-d8_512x512_160k_ade20k_20200826_183350-ed522c61.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_160k_ade20k/dnl_r101-d8_512x512_160k_ade20k-20200826_183350.log.json
   Paper:
