@@ -22,15 +22,6 @@ We present SegNeXt, a simple convolutional network architecture for semantic seg
 <img src="https://user-images.githubusercontent.com/24582831/215688018-5d4c8366-7793-4fdf-9397-960a09fac951.png" width="70%"/>
 </div>
 
-```bibtex
-@article{guo2022segnext,
-  title={SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation},
-  author={Guo, Meng-Hao and Lu, Cheng-Ze and Hou, Qibin and Liu, Zhengning and Cheng, Ming-Ming and Hu, Shi-Min},
-  journal={arXiv preprint arXiv:2209.08575},
-  year={2022}
-}
-```
-
 ## Results and models
 
 ### ADE20K
@@ -59,3 +50,14 @@ def main():
 ```
 
 - This model performance is sensitive to the seed values used, please refer to the log file for the specific settings of the seed. If you choose a different seed, the results might differ from the table results. Take SegNeXt Large for example, its results range from 49.60 to 51.0.
+
+## Citation
+
+```bibtex
+@article{guo2022segnext,
+  title={SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation},
+  author={Guo, Meng-Hao and Lu, Cheng-Ze and Hou, Qibin and Liu, Zhengning and Cheng, Ming-Ming and Hu, Shi-Min},
+  journal={arXiv preprint arXiv:2209.08575},
+  year={2022}
+}
+```
