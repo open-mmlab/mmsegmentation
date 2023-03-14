@@ -67,19 +67,19 @@ bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d
 
   - [x] A full README
 
-- [ ] Milestone 2: Indicates a successful model implementation.
+- [x] Milestone 2: Indicates a successful model implementation.
 
-  - [ ] Training-time correctness
+  - [x] Training-time correctness
 
 - [x] Milestone 3: Good to be a part of our core package!
 
   - [x] Type hints and docstrings
 
-  - [ ] Unit tests
+  - [x] Unit tests
 
-  - [ ] Code polishing
+  - [x] Code polishing
 
-  - [ ] Metafile.yml
+  - [x] Metafile.yml
 
 - [x] Move your modules into the core package following the codebase's file hierarchy structure.
 
