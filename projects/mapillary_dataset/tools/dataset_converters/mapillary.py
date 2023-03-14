@@ -106,7 +106,7 @@ def mapillary_colormap2label(colormap: np.ndarray) -> list:
 
     Returns:
         list: values are mask labels,
-              indexes are  palette's convert results.、
+              indices are palette's convert results.
     """
     colormap2label = np.zeros(256**3, dtype=np.longlong)
     for i, colormap_ in enumerate(colormap):
