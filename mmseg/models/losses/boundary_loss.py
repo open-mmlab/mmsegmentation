@@ -32,12 +32,12 @@ class BoundaryLoss(nn.Module):
 
     def forward(self, bd_pre: Tensor, bd_gt: Tensor) -> Tensor:
         """Forward function.
-            Args:
-                bd_pre (Tensor): Predictions of the boundary head.
-                bd_gt (Tensor): Ground truth of the boundary.
+        Args:
+            bd_pre (Tensor): Predictions of the boundary head.
+            bd_gt (Tensor): Ground truth of the boundary.
 
-            Returns:
-                Tensor: Loss tensor.
+        Returns:
+            Tensor: Loss tensor.
         """
         log_p = bd_pre.permute(0, 2, 3, 1).contiguous().view(1, -1)
         target_t = bd_gt.view(1, -1).float()

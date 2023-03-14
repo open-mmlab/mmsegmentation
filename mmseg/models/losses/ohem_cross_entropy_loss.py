@@ -51,12 +51,12 @@ class OhemCrossEntropy(nn.Module):
 
     def forward(self, score: Tensor, target: Tensor) -> Tensor:
         """Forward function.
-            Args:
-                score (Tensor): Predictions of the segmentation head.
-                target (Tensor): Ground truth of the image.
+        Args:
+            score (Tensor): Predictions of the segmentation head.
+            target (Tensor): Ground truth of the image.
 
-            Returns:
-                Tensor: Loss tensor.
+        Returns:
+            Tensor: Loss tensor.
         """
         # score: (N, C, H, W)
         pred = F.softmax(score, dim=1)
