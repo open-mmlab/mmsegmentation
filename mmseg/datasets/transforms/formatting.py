@@ -79,7 +79,7 @@ class PackSegInputs(BaseTransform):
                                                        ...].astype(np.int64))
             else:
                 warnings.warn('Please pay attention your ground truth '
-                              'segmentation map, usually the segentation '
+                              'segmentation map, usually the segmentation '
                               'map is 2D, but got '
                               f'{results["gt_seg_map"].shape}')
                 data = to_tensor(results['gt_seg_map'].astype(np.int64))

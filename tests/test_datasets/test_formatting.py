@@ -49,7 +49,7 @@ class TestPackSegInputs(unittest.TestCase):
         results = copy.deepcopy(self.results)
         # test dataset shape is not 2D
         results['gt_seg_map'] = np.random.rand(3, 300, 400)
-        msg = 'the segentation map is 2D'
+        msg = 'the segmentation map is 2D'
         with pytest.warns(UserWarning, match=msg):
             results = transform(results)
         self.assertEqual(results['data_samples'].ori_shape,
