@@ -12,6 +12,7 @@ Collections:
     - Potsdam
     - Vaihingen
     - iSAID
+    - Mapillary Vistas v1.2
   Paper:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
@@ -1010,6 +1011,29 @@ Models:
     Memory (GB): 21.45
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526-598be439.pth
   Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Mapillary Vistas v1.2
+    Metrics:
+      mIoU: 47.35
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280.py
+  Metadata:
+    Training Data: Mapillary Vistas v1.2
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x A100 GPUS
+    Memory (GB): 24.04
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280_20230301_110504-655f8e43.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280_20230301_110504.json
   Paper:
     Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
     URL: https://arxiv.org/abs/1802.02611
