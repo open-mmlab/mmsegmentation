@@ -154,6 +154,29 @@ mmsegmentation
 │   │   │   ├── training
 │   │   │   ├── validation
 │   │   │   ├── test
+│   ├── mapillary
+│   │   ├── training
+│   │   │   ├── images
+│   │   │   ├── v1.2
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   └── panoptic
+│   │   │   ├── v2.0
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── panoptic
+|   │   │   │   └── polygons
+│   │   ├── validation
+│   │   │   ├── images
+|   │   │   ├── v1.2
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   └── panoptic
+│   │   │   ├── v2.0
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── panoptic
+|   │   │   │   └── polygons
 ```
 
 ### Cityscapes
@@ -551,3 +574,54 @@ The script will make directory structure below:
 ```
 
 It includes 400 images for training, 400 images for validation and 400 images for testing which is the same as REFUGE 2018 dataset.
+
+## Mapillary Vistas Datasets
+
+- The dataset could be download [here](https://www.mapillary.com/dataset/vistas) after registration.
+
+- Mapillary Vistas Dataset use 8-bit with color-palette to store labels. No conversion operation is required.
+
+- Assumption you have put the dataset zip file in `mmsegmentation/data/mapillary`
+
+- Please run the following commands to unzip dataset.
+
+  ```bash
+  cd data/mapillary
+  unzip An-ZjB1Zm61yAZG0ozTymz8I8NqI4x0MrYrh26dq7kPgfu8vf9ImrdaOAVOFYbJ2pNAgUnVGBmbue9lTgdBOb5BbKXIpFs0fpYWqACbrQDChAA2fdX0zS9PcHu7fY8c-FOvyBVxPNYNFQuM.zip
+  ```
+
+- After unzip, you will get Mapillary Vistas Dataset like this structure. Semantic segmentation mask labels in `labels` folder.
+
+  ```none
+  mmsegmentation
+  ├── mmseg
+  ├── tools
+  ├── configs
+  ├── data
+  │   ├── mapillary
+  │   │   ├── training
+  │   │   │   ├── images
+  │   │   │   ├── v1.2
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   └── panoptic
+  │   │   │   ├── v2.0
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   ├── panoptic
+  |   │   │   │   └── polygons
+  │   │   ├── validation
+  │   │   │   ├── images
+  |   │   │   ├── v1.2
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   └── panoptic
+  │   │   │   ├── v2.0
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   ├── panoptic
+  |   │   │   │   └── polygons
+  ```
+
+- You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
+  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)
