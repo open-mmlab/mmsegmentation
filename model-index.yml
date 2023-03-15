@@ -31,6 +31,7 @@ Import:
 - configs/mobilenet_v3/metafile.yaml
 - configs/nonlocal_net/metafile.yaml
 - configs/ocrnet/metafile.yaml
+- configs/pidnet/metafile.yaml
 - configs/point_rend/metafile.yaml
 - configs/poolformer/metafile.yaml
 - configs/psanet/metafile.yaml
