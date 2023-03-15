@@ -74,7 +74,7 @@ class PackSegInputs(BaseTransform):
 
         data_sample = SegDataSample()
         if 'gt_seg_map' in results:
-            if results['gt_seg_map'].shape == 2:
+            if len(results['gt_seg_map'].shape) == 2:
                 data = to_tensor(results['gt_seg_map'][None,
                                                        ...].astype(np.int64))
             else:
