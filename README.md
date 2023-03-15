@@ -159,6 +159,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
+- [x] [PIDNet (ArXiv'2022)](configs/pidnet)
 
 </details>
 
@@ -181,6 +182,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isaid)
+- [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
 
 </details>
 
