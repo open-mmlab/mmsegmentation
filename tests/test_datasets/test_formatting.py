@@ -45,6 +45,11 @@ class TestPackSegInputs(unittest.TestCase):
                               BaseDataElement)
         self.assertEqual(results['data_samples'].ori_shape,
                          results['data_samples'].gt_sem_seg.shape)
+        results = copy.deepcopy(self.results)
+        results['gt_seg_map'] = np.random.rand(3, 300, 400)
+        results = transform(results)
+        self.assertEqual(results['data_samples'].ori_shape,
+                         results['data_samples'].gt_sem_seg.shape)
 
     def test_repr(self):
         transform = PackSegInputs(meta_keys=self.meta_keys)
