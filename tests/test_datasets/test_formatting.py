@@ -2,7 +2,6 @@
 import copy
 import os.path as osp
 import unittest
-import warnings
 
 import numpy as np
 import pytest
@@ -50,12 +49,9 @@ class TestPackSegInputs(unittest.TestCase):
         results = copy.deepcopy(self.results)
         # test dataset shape is not 2D
         results['gt_seg_map'] = np.random.rand(3, 300, 400)
-        with pytest.warns(UserWarning):
-            warnings.warn('Please pay attention your ground truth '
-                          'segmentation map, usually the segentation '
-                          'map is 2D, but got '
-                          f'{results["gt_seg_map"].shape}')
-        results = transform(results)
+        msg = 'the segentation map is 2D'
+        with pytest.warns(UserWarning, match=msg):
+            results = transform(results)
         self.assertEqual(results['data_samples'].ori_shape,
                          results['data_samples'].gt_sem_seg.shape)
 
