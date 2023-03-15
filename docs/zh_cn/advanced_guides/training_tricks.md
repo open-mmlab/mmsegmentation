@@ -9,13 +9,13 @@ MMSegmentation 支持如下训练技巧：
 在 MMSegmentation 里面，您也可以在配置文件里添加如下行来让解码头组件的学习率是主干组件的10倍。
 
 ```python
-optimizer=dict(
+optim_wrapper=dict(
     paramwise_cfg = dict(
         custom_keys={
             'head': dict(lr_mult=10.)}))
 ```
 
-通过这种修改，任何被分组到 `'head'` 的参数的学习率都将乘以10。您也可以参照 [MMCV 文档](https://mmcv.readthedocs.io/en/latest/api.html#mmcv.runner.DefaultOptimizerConstructor)  获取更详细的信息。
+通过这种修改，任何被分组到 `'head'` 的参数的学习率都将乘以10。您也可以参照 [MMEngine 文档](<>)  获取更详细的信息。
 
 ## 在线难样本挖掘 (Online Hard Example Mining, OHEM)
 
