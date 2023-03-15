@@ -1,7 +1,5 @@
 # Models
 
-# Models
-
 We usually define a neural network in a deep learning task as a model, and this model is the core of an algorithm. [MMEngine](https://github.com/open-mmlab/mmengine) abstracts a unified model [BaseModel](https://github.com/open-mmlab/mmengine/blob/main/mmengine/model/base_model/base_model.py#L16) to standardize the interfaces for training, testing and other processes. All models implemented by MMSegmentation inherit from `BaseModel`, and in MMSegmentation we implemented forward and added some functions for the semantic segmentation algorithm.
 
 ## Common components
@@ -22,9 +20,9 @@ In MMSegmentation, we abstract the network architecture as a **Segmentor**, it i
 
 **Neck** is the part that connects the backbone and heads. It performs some refinements or reconfigurations on the raw feature maps produced by the backbone. An example is **Feature Pyramid Network (FPN)**.
 
-### Decode Head
+### Decode head
 
-**Decode Head** is the part that transforms the feature maps into a segmentation mask, such as **PSPNet**.
+**Decode head** is the part that transforms the feature maps into a segmentation mask, such as **PSPNet**.
 
 ### Auxiliary head
 
@@ -110,7 +108,7 @@ Parameters:
 - data (dict or tuple or list) - Data sampled from the dataset. In MMSegmentation, the data dict contains `inputs` and `data_samples` two fields.
 - optim_wrapper (OptimWrapper) - OptimWrapper instance used to update model parameters.
 
-**Note:** [OptimWrapper](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/optimizer_wrapper.py#L17) provides a common interface for updating parameters, please refer to optimizer wrapper [documentation](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/optim_wrapper.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
+**Note:** [OptimWrapper](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/optimizer_wrapper.py#L17) provides a common interface for updating parameters, please refer to optimizer wrapper [documentation](https://mmengine.readthedocs.io/en/latest/tutorials/optim_wrapper.html) in [MMEngine](https://github.com/open-mmlab/mmengine) for more information.
 
 Returns:
 
@@ -157,7 +155,7 @@ The parameters of the `SegDataPreProcessor` constructor:
 - pad_val (float, optional) - Padding value. Default: 0.
 - seg_pad_val (float, optional) - Padding value of segmentation map. Default: 255.
 - bgr_to_rgb (bool) - whether to convert image from BGR to RGB. Defaults to False.
-- rgb_to_bgr (bool) - whether to convert image from RGB to RGB. Defaults to False.
+- rgb_to_bgr (bool) - whether to convert image from RGB to BGR. Defaults to False.
 - batch_augments (list\[dict\], optional) - Batch-level augmentations. Default to None.
 
 The data will be processed as follows:

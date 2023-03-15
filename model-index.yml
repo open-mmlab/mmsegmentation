@@ -31,6 +31,7 @@ Import:
 - configs/mobilenet_v3/mobilenet_v3.yml
 - configs/nonlocal_net/nonlocal_net.yml
 - configs/ocrnet/ocrnet.yml
+- configs/pidnet/pidnet.yml
 - configs/point_rend/point_rend.yml
 - configs/poolformer/poolformer.yml
 - configs/psanet/psanet.yml

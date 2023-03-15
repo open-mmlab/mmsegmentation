@@ -20,6 +20,7 @@ from .mask2former_head import Mask2FormerHead
 from .maskformer_head import MaskFormerHead
 from .nl_head import NLHead
 from .ocr_head import OCRHead
+from .pid_head import PIDHead
 from .point_head import PointHead
 from .psa_head import PSAHead
 from .psp_head import PSPHead
@@ -40,5 +41,5 @@ __all__ = [
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
     'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
     'KernelUpdateHead', 'KernelUpdator', 'MaskFormerHead', 'Mask2FormerHead',
-    'LightHamHead'
+    'LightHamHead', 'PIDHead'
 ]

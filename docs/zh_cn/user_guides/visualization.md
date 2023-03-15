@@ -69,7 +69,7 @@ default_hooks = dict(
 work_dirs/test_visual/20220810_115248/vis_data/vis_image
 ```
 
-另外，如果在 `vis_backends` 中添加 `TensorboardVisBackend` ，如 [TensorBoard 的配置](#tensorboard-configuration)，我们还可以运行下面的命令在 TensorBoard 中查看它们：
+另外，如果在 `vis_backends` 中添加 `TensorboardVisBackend` ，如 [TensorBoard 的配置](###TensorBoard的配置)，我们还可以运行下面的命令在 TensorBoard 中查看它们：
 
 ```shell
 tensorboard --logdir work_dirs/test_visual/20220810_115248/vis_data
