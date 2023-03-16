@@ -39,6 +39,7 @@ Import:
 - configs/resnest/resnest.yml
 - configs/segformer/segformer.yml
 - configs/segmenter/segmenter.yml
+- configs/segnext/segnext.yml
 - configs/sem_fpn/sem_fpn.yml
 - configs/setr/setr.yml
 - configs/stdc/stdc.yml
