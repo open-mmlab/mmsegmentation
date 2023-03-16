@@ -74,12 +74,12 @@ class PackSegInputs(BaseTransform):
 
         data_sample = SegDataSample()
         if 'gt_seg_map' in results:
-            if results['gt_seg_map'].shape == 2:
+            if len(results['gt_seg_map'].shape) == 2:
                 data = to_tensor(results['gt_seg_map'][None,
                                                        ...].astype(np.int64))
             else:
                 warnings.warn('Please pay attention your ground truth '
-                              'segmentation map, usually the segentation '
+                              'segmentation map, usually the segmentation '
                               'map is 2D, but got '
                               f'{results["gt_seg_map"].shape}')
                 data = to_tensor(results['gt_seg_map'].astype(np.int64))

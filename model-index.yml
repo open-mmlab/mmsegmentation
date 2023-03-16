@@ -39,6 +39,7 @@ Import:
 - configs/resnest/metafile.yaml
 - configs/segformer/metafile.yaml
 - configs/segmenter/metafile.yaml
+- configs/segnext/metafile.yaml
 - configs/sem_fpn/metafile.yaml
 - configs/setr/metafile.yaml
 - configs/stdc/metafile.yaml

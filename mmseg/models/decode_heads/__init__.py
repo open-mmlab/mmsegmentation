@@ -12,6 +12,7 @@ from .enc_head import EncHead
 from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
+from .ham_head import LightHamHead
 from .isa_head import ISAHead
 from .knet_head import IterativeDecodeHead, KernelUpdateHead, KernelUpdator
 from .lraspp_head import LRASPPHead
@@ -40,5 +41,5 @@ __all__ = [
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
     'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
     'KernelUpdateHead', 'KernelUpdator', 'MaskFormerHead', 'Mask2FormerHead',
-    'PIDHead'
+    'LightHamHead', 'PIDHead'
 ]
