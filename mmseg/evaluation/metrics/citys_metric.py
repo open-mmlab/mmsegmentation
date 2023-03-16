@@ -51,7 +51,8 @@ class CityscapesMetric(BaseMetric):
                  format_only: bool = False,
                  keep_results: bool = False,
                  collect_device: str = 'cpu',
-                 prefix: Optional[str] = None) -> None:
+                 prefix: Optional[str] = None,
+                 **kwargs) -> None:
         super().__init__(collect_device=collect_device, prefix=prefix)
         if CSEval is None:
             raise ImportError('Please run "pip install cityscapesscripts" to '

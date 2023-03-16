@@ -18,6 +18,10 @@ def parse_args():
         help=('if specified, the evaluation metric results will be dumped'
               'into the directory as json'))
     parser.add_argument(
+        '--out',
+        type=str,
+        help='The directory to save output prediction for offline evaluation')
+    parser.add_argument(
         '--show', action='store_true', help='show prediction results')
     parser.add_argument(
         '--show-dir',
@@ -103,6 +107,10 @@ def main():
     # build the runner from config
     runner = Runner.from_cfg(cfg)
 
+    # add output_dir in metric
+    if args.out is not None:
+        runner.test_evaluator.metrics['output_dir'] = args.out
+        runner.test_evaluator.metrics['keep_results'] = True
     # start testing
     runner.test()
 

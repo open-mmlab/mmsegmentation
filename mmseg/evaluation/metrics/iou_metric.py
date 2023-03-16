@@ -51,7 +51,8 @@ class IoUMetric(BaseMetric):
                  collect_device: str = 'cpu',
                  output_dir: Optional[str] = None,
                  format_only: bool = False,
-                 prefix: Optional[str] = None) -> None:
+                 prefix: Optional[str] = None,
+                 **kwargs) -> None:
         super().__init__(collect_device=collect_device, prefix=prefix)
 
         self.ignore_index = ignore_index
