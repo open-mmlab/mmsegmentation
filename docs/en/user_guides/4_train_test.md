@@ -223,16 +223,16 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${
 
 ### Basic Usage
 
-When you want to save the results, you can specify the `output_dir` in     `test_evaluator`.
+When you want to save the results, you can use `--out` to specify the output directory.
 
 ```shell
-python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --cfg-options test_evaluator.output_dir=${OUTPUT_DIR}
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --out ${OUTPUT_DIR}
 ```
 
 Here is an example to save the predicted results from model `fcn_r50-d8_4xb4-80k_ade20k-512x512` on ADE20k validatation dataset.
 
 ```shell
-python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --cfg-options test_evaluator.output_dir=work_dirs/format_results
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --out work_dirs/format_results
 ```
 
 You also can modify the config file to define `output_dir`. We also take
@@ -243,7 +243,7 @@ You also can modify the config file to define `output_dir`. We also take
 test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], output_dir='work_dirs/format_results')
 ```
 
-then run command without `--cfg-options`.
+then run command without `--out`:
 
 ```shell
 python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
@@ -273,6 +273,12 @@ test_dataloader = dict(
             dict(type='Resize', scale=(2048, 512), keep_ratio=True),
             dict(type='PackSegInputs')
         ]))
+```
+
+then run test command:
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
 ```
 
 ### Testing Cityscape dataset and save predicted segment files

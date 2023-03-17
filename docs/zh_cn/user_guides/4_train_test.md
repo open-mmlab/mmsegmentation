@@ -228,16 +228,16 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${
 
 ### 基础使用
 
-当需要保存测试输出的分割结果，可以指定 `test_evaluator` 的 `output_dir` 输出路径
+当需要保存测试输出的分割结果，用指定 `--out` 分割结果输出路径
 
 ```shell
-python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --cfg-options test_evaluator.output_dir=${OUTPUT_DIR}
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --out ${OUTPUT_DIR}
 ```
 
 以保存模型 `fcn_r50-d8_4xb4-80k_ade20k-512x512` 在 ADE20K 验证数据集上的结果为例：
 
 ```shell
-python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --cfg-options test_evaluator.output_dir=work_dirs/format_results
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --out work_dirs/format_results
 ```
 
 或者通过配置文件定义 `output_dir`。例如在 `configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py` 添加 `test_evaluator` 定义：
@@ -246,13 +246,13 @@ python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_
 test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], output_dir='work_dirs/format_results')
 ```
 
-然后执行相同的命令但是不需要 `--cfg-options`。
+然后执行相同功能的命令不需要再使用 `--out`：
 
 ```shell
 python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
 ```
 
-当测试的数据集没有提供标注，评测时没有真值可以参与计算，因此需要设置 `format_only=True`。
+当测试的数据集没有提供标注，评测时没有真值可以参与计算，因此需要设置 `format_only=True`，
 同时需要修改 `test_dataloader`，由于没有标注，我们需要在数据增强变换中删掉 `dict(type='LoadAnnotations')`，以下是一个配置示例：
 
 ```python
@@ -276,6 +276,12 @@ test_dataloader = dict(
             dict(type='Resize', scale=(2048, 512), keep_ratio=True),
             dict(type='PackSegInputs')
         ]))
+```
+
+然后执行测试命令：
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
 ```
 
 ### 测试 Cityscapes 数据集并保存输出分割结果
