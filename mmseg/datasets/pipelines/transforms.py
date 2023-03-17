@@ -1418,7 +1418,7 @@ class Albu:
         obj_type = args.pop('type')
         if mmcv.is_str(obj_type):
             if albumentations is None:
-                raise RuntimeError('albumentations is not installed')
+                raise ImportError('albumentations is not installed')
             obj_cls = getattr(albumentations, obj_type)
         elif inspect.isclass(obj_type):
             obj_cls = obj_type
