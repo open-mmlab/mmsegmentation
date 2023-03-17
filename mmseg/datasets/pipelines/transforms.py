@@ -1382,7 +1382,11 @@ class Albu:
 
     def __init__(self, transforms, keymap=None, update_pad_shape=False):
         if Compose is None:
-            raise ImportError('albumentations is not installed')
+            raise ImportError(
+                'albumentations is not installed, '
+                'we suggest install albumentation by '
+                '"pip install albumentations>=0.3.2 --no-binary qudida,albumentations"'  # noqa
+            )
 
         # Args will be modified later, copying it will be safer
         transforms = copy.deepcopy(transforms)
@@ -1418,7 +1422,11 @@ class Albu:
         obj_type = args.pop('type')
         if mmcv.is_str(obj_type):
             if albumentations is None:
-                raise ImportError('albumentations is not installed')
+                raise ImportError(
+                    'albumentations is not installed, '
+                    'we suggest install albumentation by '
+                    '"pip install albumentations>=0.3.2 --no-binary qudida,albumentations"'  # noqa
+                )
             obj_cls = getattr(albumentations, obj_type)
         elif inspect.isclass(obj_type):
             obj_cls = obj_type

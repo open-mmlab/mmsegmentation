@@ -67,6 +67,9 @@ pip install -v -e .
 pip install mmsegmentation
 ```
 
+**注意：**
+如果你想使用 albumentations，我们建议使用 pip install-U albumentations --no-binary qudida,albumentations 进行安装。如果您仅使用 pip install albumentations>=0.3.2 进行安装，它将同时安装 opencv-python-headless（即使您已经安装了 opencv-python）。我们建议在安装了 albumentations 后检查环境，以确保没有同时安装 opencv-python 和 opencv-python-headless，因为如果两者都安装了，可能会导致意外问题。请参阅[官方文档](https://albumentations.ai/docs/getting_started/installation/#note-on-opencv-dependencies)了解更多详细信息。
+
 ## 验证安装
 
 为了验证 MMSegmentation 是否安装正确，我们提供了一些示例代码来执行模型推理。

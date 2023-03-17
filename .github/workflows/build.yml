@@ -305,7 +305,9 @@ jobs:
           pip install -U openmim
           mim install mmcv-full
       - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: |
+          pip install -r requirements/tests.txt -r requirements/optional.txt
+          pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - name: Build and install
         run: pip install -e .
       - name: Run unittests
