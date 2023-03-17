@@ -1,11 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
+import shutil
 from unittest import TestCase
 
 import numpy as np
 import pytest
 import torch
-from mmengine.structures import BaseDataElement, PixelData
+from mmengine.structures import PixelData
 
 from mmseg.evaluation import CityscapesMetric
 from mmseg.structures import SegDataSample
@@ -36,20 +37,16 @@ class TestCityscapesMetric(TestCase):
             image_shape = image_shapes[idx]
             _, h, w = image_shape
 
-            mm_inputs = dict()
             data_sample = SegDataSample()
             gt_semantic_seg = np.random.randint(
                 0, num_classes, (1, h, w), dtype=np.uint8)
             gt_semantic_seg = torch.LongTensor(gt_semantic_seg)
             gt_sem_seg_data = dict(data=gt_semantic_seg)
             data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
-            mm_inputs['data_sample'] = data_sample.to_dict()
-            mm_inputs['data_sample'][
+            data_sample = data_sample.to_dict()
+            data_sample[
                 'seg_map_path'] = 'tests/data/pseudo_cityscapes_dataset/gtFine/val/frankfurt/frankfurt_000000_000294_gtFine_labelTrainIds.png'  # noqa
-
-            mm_inputs['seg_map_path'] = mm_inputs['data_sample'][
-                'seg_map_path']
-            packed_inputs.append(mm_inputs)
+            packed_inputs.append(data_sample)
 
         return packed_inputs
 
@@ -85,14 +82,11 @@ class TestCityscapesMetric(TestCase):
 
         _predictions = []
         for pred in batch_datasampes:
-            if isinstance(pred, BaseDataElement):
-                test_data = pred.to_dict()
-                test_data[
-                    'img_path'] = 'tests/data/pseudo_cityscapes_dataset/leftImg8bit/val/frankfurt/frankfurt_000000_000294_leftImg8bit.png'  # noqa
+            test_data = pred.to_dict()
+            test_data[
+                'img_path'] = 'tests/data/pseudo_cityscapes_dataset/leftImg8bit/val/frankfurt/frankfurt_000000_000294_leftImg8bit.png'  # noqa
+            _predictions.append(test_data)
 
-                _predictions.append(test_data)
-            else:
-                _predictions.append(pred)
         return _predictions
 
     def test_evaluate(self):
@@ -122,5 +116,4 @@ class TestCityscapesMetric(TestCase):
         metric.evaluate(2)
         assert osp.exists('tmp')
         assert osp.isfile('tmp/frankfurt_000000_000294_leftImg8bit.png')
-        import shutil
         shutil.rmtree('tmp')

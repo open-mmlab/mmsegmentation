@@ -70,7 +70,7 @@ This tool accepts several optional arguments, including:
 export CUDA_VISIBLE_DEVICES=-1
 ```
 
-And then run the script [above](#testing-on-a-single-gpu).
+then run the script [above](#testing-on-a-single-gpu).
 
 ## Training and testing on multiple GPUs and multiple machines
 
@@ -217,4 +217,99 @@ You can check [the source code](../../../tools/slurm_test.sh) to review full arg
 ```shell
 CUDA_VISIBLE_DEVICES=0,1,2,3 GPUS=4 MASTER_PORT=29500 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config1.py ${WORK_DIR}
 CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${PARTITION} ${JOB_NAME} config2.py ${WORK_DIR}
+```
+
+## Testing and saving segment files
+
+### Basic Usage
+
+When you want to save the results, you can use `--out` to specify the output directory.
+
+```shell
+python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --out ${OUTPUT_DIR}
+```
+
+Here is an example to save the predicted results from model `fcn_r50-d8_4xb4-80k_ade20k-512x512` on ADE20k validatation dataset.
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth --out work_dirs/format_results
+```
+
+You also can modify the config file to define `output_dir`. We also take
+`fcn_r50-d8_4xb4-80k_ade20k-512x512` as example just add
+`test_evaluator` in `configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py`
+
+```python
+test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], output_dir='work_dirs/format_results')
+```
+
+then run command without `--out`:
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
+```
+
+If you would like to only save the predicted results without evaluation as annotation is not released by the official dataset, you can set `format_only=True` and modify `test_dataloader`.
+As there is no annotation in dataset, we remove `dict(type='LoadAnnotations')` from `test_dataloader` Here is the example configuration:
+
+```python
+test_evaluator = dict(
+    type='IoUMetric',
+    iou_metrics=['mIoU'],
+    format_only=True,
+    output_dir='work_dirs/format_results')
+test_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type = 'ADE20KDataset'
+        data_root='data/ade/release_test',
+        data_prefix=dict(img_path='testing'),
+        # we don't load annotation in test transform pipeline.
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='Resize', scale=(2048, 512), keep_ratio=True),
+            dict(type='PackSegInputs')
+        ]))
+```
+
+then run test command:
+
+```shell
+python tools/test.py configs/fcn/fcn_r50-d8_4xb4-80k_ade20k-512x512.py ckpt/fcn_r50-d8_512x512_80k_ade20k_20200614_144016-f8ac5082.pth
+```
+
+### Testing Cityscape dataset and save predicted segment files
+
+We recommend `CityscapesMetric` which is the wrapper of Cityscapes'sdk, when you want to
+save the predicted results of Cityscape test dataset to submit them in [Cityscape test server](https://www.cityscapes-dataset.com/submit/). Here is the example configuration:
+
+```python
+test_evaluator = dict(
+    type='CityscapesMetric',
+    format_only=True,
+    keep_results=True,
+    output_dir='work_dirs/format_results')
+test_dataloader = dict(
+    batch_size=1,
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type='CityscapesDataset',
+        data_root='data/cityscapes/',
+        data_prefix=dict(img_path='leftImg8bit/test'),
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(type='Resize', scale=(2048, 1024), keep_ratio=True),
+            dict(type='PackSegInputs')
+        ]))
+```
+
+then run test command, for example:
+
+```shell
+python tools/test.py configs/fcn/fcn_r18-d8_4xb2-80k_cityscapes-512x1024.py ckpt/fcn_r18-d8_512x1024_80k_cityscapes_20201225_021327-6c50f8b4.pth
 ```
