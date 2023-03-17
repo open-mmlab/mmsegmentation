@@ -26,21 +26,11 @@
 
 一个训练对将由 img_dir/ann_dir 里同样首缀的文件组成。
 
-如果给定 `split` 参数，只有部分在 img_dir/ann_dir 里的文件会被加载。
-我们可以对被包括在 split 文本里的文件指定前缀。
+有些数据集不发布测试子数据集或不发布测试子集的标注，如果没有测试子集的标注，我们就无法对模型进行本地评估，因此我们在配置文件中忽略了测试子集。
 
-除此以外，一个 split 文本如下所示：
+然而，我们永远不会阻止您将数据集拆分为训练、验证和测试子数据集。
 
-```none
-xxx
-zzz
-```
-
-只有
-`data/my_dataset/img_dir/train/xxx{img_suffix}`,
-`data/my_dataset/img_dir/train/zzz{img_suffix}`,
-`data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
-`data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` 将被加载。
+关于如何构建自己的数据集或实现新的数据集类，请参阅[数据集指南](./datasets.md)以获取更多详细信息。
 
 **注意：** 标注是跟图像同样的形状 (H, W)，其中的像素值的范围是 `[0, num_classes - 1]`。
 您也可以使用 [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) 的 `'P'` 模式去创建包含颜色的标注。
@@ -138,8 +128,6 @@ train_pipeline = [
 train_dataset = dict(
     type='MultiImageMixDataset',
     dataset=dict(
-        classes=classes,
-        palette=palette,
         type=dataset_type,
         reduce_zero_label=False,
         img_dir=data_root + "images/train",

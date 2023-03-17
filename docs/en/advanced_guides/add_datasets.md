@@ -26,21 +26,11 @@ An example of file structure is as followed.
 
 A training pair will consist of the files with same suffix in img_dir/ann_dir.
 
-If `split` argument is given, only part of the files in img_dir/ann_dir will be loaded.
-We may specify the prefix of files we would like to be included in the split txt.
+Some datasets don't release test sub-dataset or don't release the ground truth of test sub-dataset, and we cannot evaluate model locally without ground truth of test sub-dataset, so we ignore test sub-dataset in config files.
 
-More specifically, for a split txt like following,
+However, we will never prevent you to split your dataset into train, val and test sub-datasets.
 
-```none
-xxx
-zzz
-```
-
-Only
-`data/my_dataset/img_dir/train/xxx{img_suffix}`,
-`data/my_dataset/img_dir/train/zzz{img_suffix}`,
-`data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
-`data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` will be loaded.
+About how to build your own datasets or implement a new dataset class please refer to the [datasets guide](./datasets.md) for more detailed information.
 
 **Note:** The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
 You may use `'P'` mode of [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) to create your annotation image with color.
@@ -138,8 +128,6 @@ train_pipeline = [
 train_dataset = dict(
     type='MultiImageMixDataset',
     dataset=dict(
-        classes=classes,
-        palette=palette,
         type=dataset_type,
         reduce_zero_label=False,
         img_dir=data_root + "images/train",
