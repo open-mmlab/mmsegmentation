@@ -2,6 +2,7 @@
 import copy
 import inspect
 
+import cv2
 import mmcv
 import numpy as np
 from mmcv.utils import deprecated_api_warning, is_tuple_of
@@ -1464,7 +1465,13 @@ class Albu:
         # dict to albumentations format
         results = self.mapper(results, self.keymap_to_albu)
 
+        # Convert to RGB since Albumentations works with RGB images
+        results['image'] = cv2.cvtColor(results['image'], cv2.COLOR_BGR2RGB)
+
         results = self.aug(**results)
+
+        # Convert back to BGR
+        results['image'] = cv2.cvtColor(results['image'], cv2.COLOR_RGB2BGR)
 
         # back to the original format
         results = self.mapper(results, self.keymap_back)
