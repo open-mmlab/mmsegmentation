@@ -9,6 +9,7 @@ import numpy as np
 import torch
 from mmengine import Config
 from mmengine.dataset import Compose
+from mmengine.registry import init_default_scope
 from mmengine.runner import load_checkpoint
 from mmengine.utils import mkdir_or_exist
 
@@ -48,6 +49,8 @@ def init_model(config: Union[str, Path, Config],
         config.model.backbone.init_cfg = None
     config.model.pretrained = None
     config.model.train_cfg = None
+    init_default_scope(config.get('default_scope', 'mmseg'))
+
     model = MODELS.build(config.model)
     if checkpoint is not None:
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
@@ -93,8 +96,9 @@ ImageType = Union[str, np.ndarray, Sequence[str], Sequence[np.ndarray]]
 def _preprare_data(imgs: ImageType, model: BaseSegmentor):
 
     cfg = model.cfg
-    if dict(type='LoadAnnotations') in cfg.test_pipeline:
-        cfg.test_pipeline.remove(dict(type='LoadAnnotations'))
+    for t in cfg.test_pipeline:
+        if t.get('type') == 'LoadAnnotations':
+            cfg.test_pipeline.remove(t)
 
     is_batch = True
     if not isinstance(imgs, (list, tuple)):

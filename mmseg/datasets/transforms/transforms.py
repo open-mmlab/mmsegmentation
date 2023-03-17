@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import warnings
-from typing import Dict, Sequence, Tuple, Union
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
@@ -1029,17 +1029,17 @@ class RandomMosaic(BaseTransform):
         return results
 
     def get_indices(self, dataset: MultiImageMixDataset) -> list:
-        """Call function to collect indexes.
+        """Call function to collect indices.
 
         Args:
             dataset (:obj:`MultiImageMixDataset`): The dataset.
 
         Returns:
-            list: indexes.
+            list: indices.
         """
 
-        indexes = [random.randint(0, len(dataset)) for _ in range(3)]
-        return indexes
+        indices = [random.randint(0, len(dataset)) for _ in range(3)]
+        return indices
 
     @cache_randomness
     def generate_mosaic_center(self):
@@ -1062,8 +1062,9 @@ class RandomMosaic(BaseTransform):
 
         assert 'mix_results' in results
         if len(results['img'].shape) == 3:
+            c = results['img'].shape[2]
             mosaic_img = np.full(
-                (int(self.img_scale[0] * 2), int(self.img_scale[1] * 2), 3),
+                (int(self.img_scale[0] * 2), int(self.img_scale[1] * 2), c),
                 self.pad_val,
                 dtype=results['img'].dtype)
         else:
@@ -2014,4 +2015,123 @@ class BioMedical3DPad(BaseTransform):
         repr_str += f'pad_shape={self.pad_shape}, '
         repr_str += f'pad_val={self.pad_val}), '
         repr_str += f'seg_pad_val={self.seg_pad_val})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class BioMedical3DRandomFlip(BaseTransform):
+    """Flip biomedical 3D images and segmentations.
+
+    Modified from https://github.com/MIC-DKFZ/batchgenerators/blob/master/batchgenerators/transforms/spatial_transforms.py # noqa:E501
+
+    Copyright 2021 Division of
+    Medical Image Computing, German Cancer Research Center (DKFZ) and Applied
+    Computer Vision Lab, Helmholtz Imaging Platform.
+    Licensed under the Apache-2.0 License.
+
+    Required Keys:
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
+    Modified Keys:
+
+    - img (np.ndarry): Biomedical image with shape (N, Z, Y, X) by default,
+        N is the number of modalities.
+    - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (Z, Y, X) by default.
+
+    Added Keys:
+
+    - do_flip
+    - flip_axes
+
+    Args:
+        prob (float): Flipping probability.
+        axes (Tuple[int, ...]): Flipping axes with order 'ZXY'.
+        swap_label_pairs (Optional[List[Tuple[int, int]]]):
+        The segmentation label pairs that are swapped when flipping.
+    """
+
+    def __init__(self,
+                 prob: float,
+                 axes: Tuple[int, ...],
+                 swap_label_pairs: Optional[List[Tuple[int, int]]] = None):
+        self.prob = prob
+        self.axes = axes
+        self.swap_label_pairs = swap_label_pairs
+        assert prob >= 0 and prob <= 1
+        if axes is not None:
+            assert max(axes) <= 2
+
+    @staticmethod
+    def _flip(img, direction: Tuple[bool, bool, bool]) -> np.ndarray:
+        if direction[0]:
+            img[:, :] = img[:, ::-1]
+        if direction[1]:
+            img[:, :, :] = img[:, :, ::-1]
+        if direction[2]:
+            img[:, :, :, :] = img[:, :, :, ::-1]
+        return img
+
+    def _do_flip(self, img: np.ndarray) -> Tuple[bool, bool, bool]:
+        """Call function to determine which axis to flip.
+
+        Args:
+            img (np.ndarry): Image or segmentation map array.
+        Returns:
+            tuple: Flip action, whether to flip on the z, x, and y axes.
+        """
+        flip_c, flip_x, flip_y = False, False, False
+        if self.axes is not None:
+            flip_c = 0 in self.axes and np.random.rand() < self.prob
+            flip_x = 1 in self.axes and np.random.rand() < self.prob
+            if len(img.shape) == 4:
+                flip_y = 2 in self.axes and np.random.rand() < self.prob
+        return flip_c, flip_x, flip_y
+
+    def _swap_label(self, seg: np.ndarray) -> np.ndarray:
+        out = seg.copy()
+        for first, second in self.swap_label_pairs:
+            first_area = (seg == first)
+            second_area = (seg == second)
+            out[first_area] = second
+            out[second_area] = first
+        return out
+
+    def transform(self, results: Dict) -> Dict:
+        """Call function to flip and swap pair labels.
+
+        Args:
+            results (dict): Result dict.
+        Returns:
+            dict: Flipped results, 'do_flip', 'flip_axes' keys are added into
+                result dict.
+        """
+        # get actual flipped axis
+        if 'do_flip' not in results:
+            results['do_flip'] = self._do_flip(results['img'])
+        if 'flip_axes' not in results:
+            results['flip_axes'] = self.axes
+        # flip image
+        results['img'] = self._flip(
+            results['img'], direction=results['do_flip'])
+        # flip seg
+        if results['gt_seg_map'] is not None:
+            if results['gt_seg_map'].shape != results['img'].shape:
+                results['gt_seg_map'] = results['gt_seg_map'][None, :]
+            results['gt_seg_map'] = self._flip(
+                results['gt_seg_map'], direction=results['do_flip'])
+            results['gt_seg_map'] = results['gt_seg_map'].squeeze()
+            # swap label pairs
+            if self.swap_label_pairs is not None:
+                results['gt_seg_map'] = self._swap_label(results['gt_seg_map'])
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(prob={self.prob}, axes={self.axes}, ' \
+                    f'swap_label_pairs={self.swap_label_pairs})'
         return repr_str

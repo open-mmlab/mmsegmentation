@@ -14,16 +14,18 @@ from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
 from .lip import LIPDataset
 from .loveda import LoveDADataset
+from .mapillary import MapillaryDataset_v1, MapillaryDataset_v2
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
+from .refuge import REFUGEDataset
 from .stare import STAREDataset
 from .synapse import SynapseDataset
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
-                         BioMedical3DRandomCrop, BioMedicalGaussianBlur,
-                         BioMedicalGaussianNoise, BioMedicalRandomGamma,
-                         GenerateEdge, LoadAnnotations,
+                         BioMedical3DRandomCrop, BioMedical3DRandomFlip,
+                         BioMedicalGaussianBlur, BioMedicalGaussianNoise,
+                         BioMedicalRandomGamma, GenerateEdge, LoadAnnotations,
                          LoadBiomedicalAnnotation, LoadBiomedicalData,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
@@ -34,19 +36,20 @@ from .voc import PascalVOCDataset
 
 # yapf: enable
 __all__ = [
-    'BaseSegDataset', 'BioMedical3DRandomCrop', 'CityscapesDataset',
-    'PascalVOCDataset', 'ADE20KDataset', 'PascalContextDataset',
-    'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
-    'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
-    'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
-    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'LoadAnnotations',
-    'RandomCrop', 'SegRescale', 'PhotoMetricDistortion', 'RandomRotate',
-    'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray', 'RandomCutOut',
-    'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
+    'BaseSegDataset', 'BioMedical3DRandomCrop', 'BioMedical3DRandomFlip',
+    'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
+    'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
+    'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
+    'NightDrivingDataset', 'COCOStuffDataset', 'LoveDADataset',
+    'MultiImageMixDataset', 'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset',
+    'LoadAnnotations', 'RandomCrop', 'SegRescale', 'PhotoMetricDistortion',
+    'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange', 'RGB2Gray',
+    'RandomCutOut', 'RandomMosaic', 'PackSegInputs', 'ResizeToMultiple',
     'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
-    'SynapseDataset'
+    'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
+    'MapillaryDataset_v2'
 ]

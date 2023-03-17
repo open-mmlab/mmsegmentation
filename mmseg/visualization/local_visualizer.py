@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import mmcv
 import numpy as np
@@ -9,6 +9,7 @@ from mmengine.visualization import Visualizer
 
 from mmseg.registry import VISUALIZERS
 from mmseg.structures import SegDataSample
+from mmseg.utils import get_classes, get_palette
 
 
 @VISUALIZERS.register_module()
@@ -23,6 +24,17 @@ class SegLocalVisualizer(Visualizer):
             Defaults to None.
         save_dir (str, optional): Save file dir for all storage backends.
             If it is None, the backend storage will not save any data.
+        classes (list, optional): Input classes for result rendering, as the
+            prediction of segmentation model is a segment map with label
+            indices, `classes` is a list which includes items responding to the
+            label indices. If classes is not defined, visualizer will take
+            `cityscapes` classes by default. Defaults to None.
+        palette (list, optional): Input palette for result rendering, which is
+            a list of color palette responding to the classes. Defaults to None.
+        dataset_name (str, optional): `Dataset name or alias <https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317>`_
+            visulizer will use the meta information of the dataset i.e. classes
+            and palette, but the `classes` and `palette` have higher priority.
+            Defaults to None.
         alpha (int, float): The transparency of segmentation mask.
                 Defaults to 0.8.
 
@@ -48,34 +60,40 @@ class SegLocalVisualizer(Visualizer):
         >>> seg_local_visualizer.add_datasample(
         ...                        'visualizer_example', image,
         ...                         gt_seg_data_sample, show=True)
-    """
+    """ # noqa
 
     def __init__(self,
                  name: str = 'visualizer',
                  image: Optional[np.ndarray] = None,
                  vis_backends: Optional[Dict] = None,
                  save_dir: Optional[str] = None,
+                 classes: Optional[List] = None,
+                 palette: Optional[List] = None,
+                 dataset_name: Optional[str] = None,
                  alpha: float = 0.8,
                  **kwargs):
         super().__init__(name, image, vis_backends, save_dir, **kwargs)
-        self.alpha = alpha
-        # Set default value. When calling
-        # `SegLocalVisualizer().dataset_meta=xxx`,
-        # it will override the default value.
-        self.dataset_meta = {}
+        self.alpha: float = alpha
+        self.set_dataset_meta(palette, classes, dataset_name)
 
     def _draw_sem_seg(self, image: np.ndarray, sem_seg: PixelData,
-                      classes: Optional[Tuple[str]],
-                      palette: Optional[List[List[int]]]) -> np.ndarray:
+                      classes: Optional[List],
+                      palette: Optional[List]) -> np.ndarray:
         """Draw semantic seg of GT or prediction.
 
         Args:
             image (np.ndarray): The image to draw.
-            sem_seg (:obj:`PixelData`): Data structure for
-                pixel-level annotations or predictions.
-            classes (Tuple[str], optional): Category information.
-            palette (List[List[int]], optional): The palette of
-                segmentation map.
+            sem_seg (:obj:`PixelData`): Data structure for pixel-level
+                annotations or predictions.
+            classes (list, optional): Input classes for result rendering, as
+                the prediction of segmentation model is a segment map with
+                label indices, `classes` is a list which includes items
+                responding to the label indices. If classes is not defined,
+                visualizer will take `cityscapes` classes by default.
+                Defaults to None.
+            palette (list, optional): Input palette for result rendering, which
+                is a list of color palette responding to the classes.
+                Defaults to None.
 
         Returns:
             np.ndarray: the drawn image which channel is RGB.
@@ -98,6 +116,38 @@ class SegLocalVisualizer(Visualizer):
                 sem_seg == label, colors=[color], alphas=self.alpha)
 
         return self.get_image()
+
+    def set_dataset_meta(self,
+                         classes: Optional[List] = None,
+                         palette: Optional[List] = None,
+                         dataset_name: Optional[str] = None) -> None:
+        """Set meta information to visualizer.
+
+        Args:
+            classes (list, optional): Input classes for result rendering, as
+                the prediction of segmentation model is a segment map with
+                label indices, `classes` is a list which includes items
+                responding to the label indices. If classes is not defined,
+                visualizer will take `cityscapes` classes by default.
+                Defaults to None.
+            palette (list, optional): Input palette for result rendering, which
+                is a list of color palette responding to the classes.
+                Defaults to None.
+            dataset_name (str, optional): `Dataset name or alias <https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317>`_
+                visulizer will use the meta information of the dataset i.e.
+                classes and palette, but the `classes` and `palette` have
+                higher priority. Defaults to None.
+        """ # noqa
+        # Set default value. When calling
+        # `SegLocalVisualizer().dataset_meta=xxx`,
+        # it will override the default value.
+        if dataset_name is None:
+            dataset_name = 'cityscapes'
+        classes = classes if classes else get_classes(dataset_name)
+        palette = palette if palette else get_palette(dataset_name)
+        assert len(classes) == len(
+            palette), 'The length of classes should be equal to palette'
+        self.dataset_meta: dict = {'classes': classes, 'palette': palette}
 
     @master_only
     def add_datasample(
@@ -176,6 +226,6 @@ class SegLocalVisualizer(Visualizer):
             self.show(drawn_img, win_name=name, wait_time=wait_time)
 
         if out_file is not None:
-            mmcv.imwrite(drawn_img, out_file)
+            mmcv.imwrite(mmcv.bgr2rgb(drawn_img), out_file)
         else:
             self.add_image(name, drawn_img, step)

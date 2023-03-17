@@ -1,6 +1,6 @@
 # Evaluation
 
-The evaluation procedure would be executed at [ValLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L300) and [TestLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L373), users can evaluate model performance during training or using the test script with simple settings in the configuration file. The `ValLoop` and `TestLoop` are properties of [Runner](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L59), they will be built the first time they are called. To build the `ValLoop` successfully, the `val_dataloader` and `val_evaluator` must be set when building `Runner` since `dataloder` and `evaluator` are required parameters, and the same goes for `TestLoop`. For more information about the Runner's design, please refer to the [documentoation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md) of [MMEngine](https://github.com/open-mmlab/mmengine).
+The evaluation procedure would be executed at [ValLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L300) and [TestLoop](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L373), users can evaluate model performance during training or using the test script with simple settings in the configuration file. The `ValLoop` and `TestLoop` are properties of [Runner](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L59), they will be built the first time they are called. To build the `ValLoop` successfully, the `val_dataloader` and `val_evaluator` must be set when building `Runner` since `dataloader` and `evaluator` are required parameters, and the same goes for `TestLoop`. For more information about the Runner's design, please refer to the [documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/runner.md) of [MMEngine](https://github.com/open-mmlab/mmengine).
 
 <center>
   <img src='../../../resources/test_step.png' />
@@ -61,7 +61,7 @@ In MMSegmentation, the settings of `test_dataloader` and `test_evaluator` are th
 
 ## IoUMetric
 
-MMSegmentation implements [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) and [CitysMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py) for evaluating the performance of models, based on the [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) provided by [MMEngine](https://github.com/open-mmlab/mmengine). Please refer to [the documentation](https://mmengine.readthedocs.io/en/latest/tutorials/evaluation.html) for more details about the unified evaluation interface.
+MMSegmentation implements [IoUMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/iou_metric.py) and [CityscapesMetric](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/evaluation/metrics/citys_metric.py) for evaluating the performance of models, based on the [BaseMetric](https://github.com/open-mmlab/mmengine/blob/main/mmengine/evaluator/metric.py) provided by [MMEngine](https://github.com/open-mmlab/mmengine). Please refer to [the documentation](https://mmengine.readthedocs.io/en/latest/tutorials/evaluation.html) for more details about the unified evaluation interface.
 
 Here we briefly describe the arguments and the two main methods of `IoUMetric`.
 
@@ -81,7 +81,7 @@ The arguments of the constructor:
 - `process` method processes one batch of data and data_samples.
 - `compute_metrics` method computes the metrics from processed results.
 
-#### IoUMetric.process
+### IoUMetric.process
 
 Parameters:
 
@@ -92,7 +92,7 @@ Returns:
 
 This method doesn't have returns since the processed results would be stored in `self.results`, which will be used to compute the metrics when all batches have been processed.
 
-#### IoUMetric.compute_metrics
+### IoUMetric.compute_metrics
 
 Parameters:
 
@@ -102,9 +102,9 @@ Returns:
 
 - Dict\[str, float\] - The computed metrics. The keys are the names of the metrics, and the values are corresponding results. The key mainly includes **aAcc**, **mIoU**, **mAcc**, **mDice**, **mFscore**, **mPrecision**, **mRecall**.
 
-## CitysMetric
+## CityscapesMetric
 
-`CitysMetric` uses the official [CityscapesScripts](https://github.com/mcordts/cityscapesScripts) provided by Cityscapes to evaluate model performance.
+`CityscapesMetric` uses the official [CityscapesScripts](https://github.com/mcordts/cityscapesScripts) provided by Cityscapes to evaluate model performance.
 
 ### Usage
 
@@ -114,10 +114,10 @@ Before using it, please install the `cityscapesscripts` package first:
 pip install cityscapesscripts
 ```
 
-Since the `IoUMetric` is used as the default evaluator in MMSegmentation, if you would like to use `CitysMetric`, customizing the config file is required. In your customized config file, you should overwrite the default evaluator as follows.
+Since the `IoUMetric` is used as the default evaluator in MMSegmentation, if you would like to use `CityscapesMetric`, customizing the config file is required. In your customized config file, you should overwrite the default evaluator as follows.
 
 ```python
-val_evaluator = dict(type='CitysMetric', citys_metrics=['cityscapes'])
+val_evaluator = dict(type='CityscapesMetric', output_dir='tmp')
 test_evaluator = val_evaluator
 ```
 
@@ -125,27 +125,27 @@ test_evaluator = val_evaluator
 
 The arguments of the constructor:
 
+- output_dir (str) - The directory for output prediction
 - ignore_index (int) - Index that will be ignored in evaluation. Default: 255.
-- citys_metrics (list\[str\] | str) - Metrics to be evaluated, Default: \['cityscapes'\].
-- to_label_id (bool) - whether convert output to label_id for submission. Default: True.
-- suffix (str): The filename prefix of the png files. If the prefix is "somepath/xxx", the png files will be named "somepath/xxx.png". Default: '.format_cityscapes'.
-- collect_device (str): Device name used for collecting results from different ranks during distributed training. Must be 'cpu' or 'gpu'. Defaults to 'cpu'.
-- prefix (str, optional): The prefix that will be added in the metric names to disambiguate homonymous metrics of different evaluators. If the prefix is not provided in the argument, self.default_prefix will be used instead. Defaults to None.
+- format_only (bool) - Only format result for results commit without perform evaluation. It is useful when you want to format the result to a specific format and submit it to the test server. Defaults to False.
+- keep_results (bool) - Whether to keep the results. When `format_only` is True, `keep_results` must be True. Defaults to False.
+- collect_device (str) - Device name used for collecting results from different ranks during distributed training. Must be 'cpu' or 'gpu'. Defaults to 'cpu'.
+- prefix (str, optional) - The prefix that will be added in the metric names to disambiguate homonymous metrics of different evaluators. If prefix is not provided in the argument, self.default_prefix will be used instead. Defaults to None.
 
-#### CitysMetric.process
+#### CityscapesMetric.process
 
 This method would draw the masks on images and save the painted images to `work_dir`.
 
 Parameters:
 
-- data_batch (Any) - A batch of data from the dataloader.
+- data_batch (dict) - A batch of data from the dataloader.
 - data_samples (Sequence\[dict\]) - A batch of outputs from the model.
 
 Returns:
 
 This method doesn't have returns, the annotations' path would be stored in `self.results`, which will be used to compute the metrics when all batches have been processed.
 
-#### CitysMetric.compute_metrics
+#### CityscapesMetric.compute_metrics
 
 This method would call `cityscapesscripts.evaluation.evalPixelLevelSemanticLabeling` tool to calculate metrics.
 

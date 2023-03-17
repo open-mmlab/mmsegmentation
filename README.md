@@ -17,8 +17,6 @@
     </sup>
   </div>
   <div>&nbsp;</div>
-</div>
-<br />
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
 [![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
@@ -32,6 +30,22 @@
 Documentation: <https://mmsegmentation.readthedocs.io/en/1.x/>
 
 English | [简体中文](README_zh-CN.md)
+
+</div>
+
+<div align="center">
+  <a href="https://openmmlab.medium.com/" style="text-decoration:none;">
+    <img src="https://user-images.githubusercontent.com/25839884/218352562-cdded397-b0f3-4ca1-b8dd-a60df8dca75b.png" width="3%" alt="" /></a>
+  <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
+  <a href="https://discord.gg/raweFPmdzG" style="text-decoration:none;">
+    <img src="https://user-images.githubusercontent.com/25839884/218347213-c080267f-cbb6-443e-8532-8e1ed9a58ea9.png" width="3%" alt="" /></a>
+  <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
+  <a href="https://twitter.com/OpenMMLab" style="text-decoration:none;">
+    <img src="https://user-images.githubusercontent.com/25839884/218346637-d30c8a0f-3eba-4699-8131-512fb06d46db.png" width="3%" alt="" /></a>
+  <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
+  <a href="https://www.youtube.com/openmmlab" style="text-decoration:none;">
+    <img src="https://user-images.githubusercontent.com/25839884/218346691-ceb2116a-465a-40af-8424-9f30d2348ca9.png" width="3%" alt="" /></a>
+</div>
 
 ## Introduction
 
@@ -62,11 +76,11 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc3 was released in 31/12/2022.
+v1.0.0rc6 was released on 03/03/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support test time augmentation ([#2184](https://github.com/open-mmlab/mmsegmentation/pull/2184))
-- Add 'Projects/' folder and the first example project ([#2412](https://github.com/open-mmlab/mmsegmentation/pull/2412))
+- Support MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413), [#2658](https://github.com/open-mmlab/mmsegmentation/pull/2658))
+- Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
 
 ## Installation
 
@@ -81,13 +95,14 @@ There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/dev
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
-To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migration.md).
+To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migration).
 
 ## Benchmark and model zoo
 
 Results and models are available in the [model zoo](docs/en/model_zoo.md).
 
-Supported backbones:
+<details open>
+<summary>Supported backbones:</summary>
 
 - [x] ResNet (CVPR'2016)
 - [x] ResNeXt (CVPR'2017)
@@ -102,8 +117,12 @@ Supported backbones:
 - [x] [ConvNeXt (CVPR'2022)](configs/convnext)
 - [x] [MAE (CVPR'2022)](configs/mae)
 - [x] [PoolFormer (CVPR'2022)](configs/poolformer)
+- [x] [SegNeXt (NeurIPS'2022)](configs/segnext)
 
-Supported methods:
+</details>
+
+<details open>
+<summary>Supported methods:</summary>
 
 - [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
 - [x] [ERFNet (T-ITS'2017)](configs/erfnet)
@@ -141,8 +160,12 @@ Supported methods:
 - [x] [K-Net (NeurIPS'2021)](configs/knet)
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
+- [x] [PIDNet (ArXiv'2022)](configs/pidnet)
 
-Supported datasets:
+</details>
+
+<details open>
+<summary>Supported datasets:</summary>
 
 - [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
 - [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#pascal-voc)
@@ -160,8 +183,15 @@ Supported datasets:
 - [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
 - [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isaid)
+- [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
+
+</details>
 
 Please refer to [FAQ](docs/en/notes/faq.md) for frequently asked questions.
+
+## Projects
+
+[Here](projects/README.md) are some implementations of SOTA models and solutions built on MMSegmentation, which are supported and maintained by community users. These projects demonstrate the best practices based on MMSegmentation for research and product development. We welcome and appreciate all the contributions to OpenMMLab ecosystem.
 
 ## Contributing
 
@@ -191,7 +221,7 @@ If you find this project useful in your research, please consider cite:
 
 This project is released under the [Apache 2.0 license](LICENSE).
 
-## Projects in OpenMMLab
+## OpenMMLab Family
 
 - [MMEngine](https://github.com/open-mmlab/mmengine): OpenMMLab foundational library for training deep learning models
 - [MMCV](https://github.com/open-mmlab/mmcv): OpenMMLab foundational library for computer vision.

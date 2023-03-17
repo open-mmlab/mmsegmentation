@@ -4,6 +4,7 @@ import os.path as osp
 from typing import Callable, Dict, List, Optional, Sequence, Union
 
 import mmengine
+import mmengine.fileio as fileio
 import numpy as np
 from mmengine.dataset import BaseDataset, Compose
 
@@ -72,39 +73,36 @@ class BaseSegDataset(BaseDataset):
         ignore_index (int): The label index to be ignored. Default: 255
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
-        file_client_args (dict): Arguments to instantiate a FileClient.
-            See :class:`mmengine.fileio.FileClient` for details.
-            Defaults to ``dict(backend='disk')``.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
+            See https://mmengine.readthedocs.io/en/latest/api/fileio.htm
+            for details. Defaults to None.
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
     """
     METAINFO: dict = dict()
 
-    def __init__(
-        self,
-        ann_file: str = '',
-        img_suffix='.jpg',
-        seg_map_suffix='.png',
-        metainfo: Optional[dict] = None,
-        data_root: Optional[str] = None,
-        data_prefix: dict = dict(img_path='', seg_map_path=''),
-        filter_cfg: Optional[dict] = None,
-        indices: Optional[Union[int, Sequence[int]]] = None,
-        serialize_data: bool = True,
-        pipeline: List[Union[dict, Callable]] = [],
-        test_mode: bool = False,
-        lazy_init: bool = False,
-        max_refetch: int = 1000,
-        ignore_index: int = 255,
-        reduce_zero_label: bool = False,
-        file_client_args: dict = dict(backend='disk')
-    ) -> None:
+    def __init__(self,
+                 ann_file: str = '',
+                 img_suffix='.jpg',
+                 seg_map_suffix='.png',
+                 metainfo: Optional[dict] = None,
+                 data_root: Optional[str] = None,
+                 data_prefix: dict = dict(img_path='', seg_map_path=''),
+                 filter_cfg: Optional[dict] = None,
+                 indices: Optional[Union[int, Sequence[int]]] = None,
+                 serialize_data: bool = True,
+                 pipeline: List[Union[dict, Callable]] = [],
+                 test_mode: bool = False,
+                 lazy_init: bool = False,
+                 max_refetch: int = 1000,
+                 ignore_index: int = 255,
+                 reduce_zero_label: bool = False,
+                 backend_args: Optional[dict] = None) -> None:
 
         self.img_suffix = img_suffix
         self.seg_map_suffix = seg_map_suffix
         self.ignore_index = ignore_index
         self.reduce_zero_label = reduce_zero_label
-        self.file_client_args = file_client_args
-        self.file_client = mmengine.FileClient.infer_client(
-            self.file_client_args)
+        self.backend_args = backend_args.copy() if backend_args else None
 
         self.data_root = data_root
         self.data_prefix = copy.copy(data_prefix)
@@ -220,7 +218,7 @@ class BaseSegDataset(BaseDataset):
             # return subset of palette
             for old_id, new_id in sorted(
                     self.label_map.items(), key=lambda x: x[1]):
-                if new_id != -1:
+                if new_id != 255:
                     new_palette.append(palette[old_id])
             new_palette = type(palette)(new_palette)
         else:
@@ -239,7 +237,7 @@ class BaseSegDataset(BaseDataset):
         ann_dir = self.data_prefix.get('seg_map_path', None)
         if osp.isfile(self.ann_file):
             lines = mmengine.list_from_file(
-                self.ann_file, file_client_args=self.file_client_args)
+                self.ann_file, backend_args=self.backend_args)
             for line in lines:
                 img_name = line.strip()
                 data_info = dict(
@@ -252,11 +250,12 @@ class BaseSegDataset(BaseDataset):
                 data_info['seg_fields'] = []
                 data_list.append(data_info)
         else:
-            for img in self.file_client.list_dir_or_file(
+            for img in fileio.list_dir_or_file(
                     dir_path=img_dir,
                     list_dir=False,
                     suffix=self.img_suffix,
-                    recursive=True):
+                    recursive=True,
+                    backend_args=self.backend_args):
                 data_info = dict(img_path=osp.join(img_dir, img))
                 if ann_dir is not None:
                     seg_map = img.replace(self.img_suffix, self.seg_map_suffix)

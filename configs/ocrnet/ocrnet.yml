@@ -33,10 +33,10 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 74.3
-      mIoU(ms+flip): 75.95
+      mIoU: 76.61
+      mIoU(ms+flip): 78.01
   Config: configs/ocrnet/ocrnet_hr18s_4xb2-40k_cityscapes-512x1024.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_512x1024_40k_cityscapes/ocrnet_hr18s_512x1024_40k_cityscapes_20200601_033304-fa2436c2.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ocrnet/ocrnet_hr18s_4xb2-40k_cityscapes-512x1024/ocrnet_hr18s_4xb2-40k_cityscapes-512x1024_20230227_145026-6c052a14.pth
 - Name: ocrnet_hr18_4xb2-40k_cityscapes-512x1024
   In Collection: OCRNet
   Metadata:
