@@ -18,8 +18,9 @@ In this work, we revisit atrous convolution, a powerful tool to explicitly adjus
 
 <!-- [IMAGE] -->
 
-<div align=center>
-<img src="https://user-images.githubusercontent.com/24582831/142900575-f30a7755-09aa-406a-bf78-45893a61ee9a.png" width="80%"/>
+<div align=center >
+<img alt="DEEPLABv3_ResNet-D8" src="https://user-images.githubusercontent.com/61172629/209305311-87ff9e36-b7cd-46d7-8b4c-9e26e10c27d0.jpg"/>
+DEEPLABv3_ResNet-D8 model structure
 </div>
 
 ## Results and models
