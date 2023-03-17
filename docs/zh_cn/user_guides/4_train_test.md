@@ -228,7 +228,7 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 GPUS=4 MASTER_PORT=29501 sh tools/slurm_train.sh ${
 
 ### 基础使用
 
-当需要保存测试输出的分割结果，用指定 `--out` 分割结果输出路径
+当需要保存测试输出的分割结果，用 `--out` 指定分割结果输出路径
 
 ```shell
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --out ${OUTPUT_DIR}
