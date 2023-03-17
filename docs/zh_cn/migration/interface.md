@@ -65,6 +65,33 @@ OpenMMLab 2.0 的主要改进是发布了 MMEngine，它为启动训练任务的
 <td>--cfg-options randomness.deterministic=True</td>
 </table>
 
+## 测试启动
+
+与训练启动类似，MMSegmentation 1.x 的测试启动脚本在 tools/test.py 中仅提供关键命令行参数，以下是测试启动脚本的区别，更多关于测试启动的细节请参考[这里](../user_guides/4_train_test.md)。
+
+<table class="docutils">
+<tr>
+<td>功能</td>
+<td>0.x</td>
+<td>1.x</td>
+</tr>
+<tr>
+<td>指定评测指标</td>
+<td>--eval mIoU</td>
+<td>--cfg-options test_evaluator.type=IoUMetric</td>
+</tr>
+<tr>
+<td>测试时数据增强</td>
+<td>--aug-test</td>
+<td>--tta</td>
+</tr>
+<tr>
+<td>测试时是否只保存预测结果不计算评测指标</td>
+<td>--format-only</td>
+<td>--cfg-options test_evaluator.format_only=True</td>
+</tr>
+</table>
+
 ## 配置文件
 
 ### 模型设置
@@ -98,7 +125,7 @@ OpenMMLab 2.0 的主要改进是发布了 MMEngine，它为启动训练任务的
 
 **data** 的更改：
 
-原版 `data` 字段被拆分为 `train_dataloader`、`val_dataloader` 和 `test_dataloader`。这允许我们以细粒度配置它们。例如，您可以在训练和测试期间指定不同的采样器和批次大小。
+原版 `data` 字段被拆分为 `train_dataloader`、`val_dataloader` 和 `test_dataloader`，允许我们以细粒度配置它们。例如，您可以在训练和测试期间指定不同的采样器和批次大小。
 `samples_per_gpu` 重命名为 `batch_size`。
 `workers_per_gpu` 重命名为 `num_workers`。
 
@@ -144,7 +171,7 @@ test_dataloader = val_dataloader
 </tr>
 </table>
 
-**流程**变更
+**数据增强变换流程**变更
 
 - 原始格式转换 **`ToTensor`**、**`ImageToTensor`**、**`Collect`** 组合为 [`PackSegInputs`](mmseg.datasets.transforms.PackSegInputs)
 - 我们不建议在数据集流程中执行 **`Normalize`** 和 **Pad**。请将其从流程中删除，并将其设置在 `data_preprocessor` 字段中。

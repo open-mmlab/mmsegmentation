@@ -18,6 +18,10 @@ def parse_args():
         help=('if specified, the evaluation metric results will be dumped'
               'into the directory as json'))
     parser.add_argument(
+        '--out',
+        type=str,
+        help='The directory to save output prediction for offline evaluation')
+    parser.add_argument(
         '--show', action='store_true', help='show prediction results')
     parser.add_argument(
         '--show-dir',
@@ -99,6 +103,11 @@ def main():
         cfg.test_dataloader.dataset.pipeline = cfg.tta_pipeline
         cfg.tta_model.module = cfg.model
         cfg.model = cfg.tta_model
+
+    # add output_dir in metric
+    if args.out is not None:
+        cfg.test_evaluator['output_dir'] = args.out
+        cfg.test_evaluator['keep_results'] = True
 
     # build the runner from config
     runner = Runner.from_cfg(cfg)

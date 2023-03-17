@@ -65,6 +65,35 @@ Compared with MMSeg0.x, MMSeg1.x provides fewer command line arguments in `tools
 <td>--cfg-options randomness.deterministic=True</td>
 </table>
 
+## Test launch
+
+Similar to training launch, there are only common arguments in tools/test.py of MMSegmentation 1.x.
+Below is the difference in test scripts,
+please refer to [this documentation](../user_guides/4_train_test.md) for more details about test launch.
+
+<table class="docutils">
+<tr>
+<td>Function</td>
+<td>0.x</td>
+<td>1.x</td>
+</tr>
+<tr>
+<td>Evaluation metrics</td>
+<td>--eval mIoU</td>
+<td>--cfg-options test_evaluator.type=IoUMetric</td>
+</tr>
+<tr>
+<td>Whether to use test time augmentation</td>
+<td>--aug-test</td>
+<td>--tta</td>
+</tr>
+<tr>
+<td>Whether save the output results without perform evaluation</td>
+<td>--format-only</td>
+<td>--cfg-options test_evaluator.format_only=True</td>
+</tr>
+</table>
+
 ## Configuration file
 
 ### Model settings
