@@ -1,4 +1,5 @@
 mmcv
 prettytable
+scipy
 torch
 torchvision
