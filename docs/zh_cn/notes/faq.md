@@ -40,6 +40,7 @@
 ```shell
 python tools/test.py ${CONFIG_FILE} ${CHECKPOINT_FILE} --out ${OUTPUT_DIR}
 ```
+
 更多用例细节可查阅[文档](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/user_guides/4_train_test.md#%E6%B5%8B%E8%AF%95%E5%B9%B6%E4%BF%9D%E5%AD%98%E5%88%86%E5%89%B2%E7%BB%93%E6%9E%9C)，[PR #2712](https://github.com/open-mmlab/mmsegmentation/pull/2712)以及[迁移文档](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/migration/interface.md#%E6%B5%8B%E8%AF%95%E5%90%AF%E5%8A%A8)了解相关说明
 
 ## 如何处理二值分割任务?
@@ -100,6 +101,7 @@ auxiliary_head=dict(
 
 数据集中 `reduce_zero_label` 参数类型为布尔类型, 默认为 False, 它的功能是为了忽略数据集 label 0. 具体做法是将 label 0 改为 255, 其余 label 相应编号减 1, 同时 decode head 里将 255 设为 ignore index, 即不参与 loss 计算.
 以下是 `reduce_zero_label` 具体实现逻辑:
+
 ```python
 if self.reduce_zero_label:
     # avoid using underflow conversion
@@ -109,8 +111,8 @@ if self.reduce_zero_label:
 ```
 
 关于您的数据集是否需要使用reduce_zero_label，有以下两类情况：
+
 - 例如在Potsdam数据集上，有 0-不透水面、1-建筑、2-低矮植被、3-树、4-汽车、5-杂乱，六类。但该数据集提供了两种RGB标签，一种为图像边缘处有黑色像素的标签，另一种是没有黑色边缘的标签。对于有黑色边缘的标签，在 [dataset_converters.py](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tools/dataset_converters/potsdam.py)中，其将黑色边缘转换为label 0，其余标签分别为 1-不透水面、2-建筑、3-低矮植被、4-树、5-汽车、6-杂乱，那么此时，就应该在数据集[potsdam.py](https://github.com/open-mmlab/mmsegmentation/blob/ff95416c3b5ce8d62b9289f743531398efce534f/mmseg/datasets/potsdam.py#L23)中将`reduce_zero_label=True`。如果使用的是没有黑色边缘的标签，那么mask label中只有0-5，此时就应该使`reduce_zero_label=False`。需要结合您的实际情况来使用。
 - 例如在第0类为background类别的数据集上，如果您最终是需要将背景和您的其余类别分开时，是不需要使用`reduce_zero_label`的，此时在数据集中应该将其设置为`reduce_zero_label=False`
-
 
 **注意:** 使用 `reduce_zero_label` 请确认数据集原始类别个数, 如果只有两类, 需要关闭 `reduce_zero_label` 即设置 `reduce_zero_label=False`.
