@@ -6,9 +6,17 @@
 
 兼容的MMSegmentation和MMCV版本如下。请安装正确版本的MMCV以避免安装问题。
 
-| MMSegmentation version |   MMCV version   | MMEngine version  |
-| :--------------------: | :--------------: | :---------------: |
-|        1.0.0rc6        | mmcv >= 2.0.0rc4 | mmengine >= 0.5.0 |
+| MMSegmentation version |          MMCV version          | MMEngine version  | MMClassification (optional) version | MMDetection (optional) version |
+| :--------------------: | :----------------------------: | :---------------: | :---------------------------------: | :----------------------------: |
+|     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
+|       1.x branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
+|        1.0.0rc6        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
+|        1.0.0rc5        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           |        mmdet>=3.0.0rc6         |
+|        1.0.0rc4        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
+|        1.0.0rc3        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4  \<=3.0.0rc5  |
+|        1.0.0rc2        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4  \<=3.0.0rc5  |
+|        1.0.0rc1        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
+|        1.0.0rc0        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 
 如果您已经安装了版本不合适的 mmcv，请先运行`pip uninstall mmcv`卸载已安装的 mmcv，如您先前安装的为 mmcv-full(存在于 OpenMMLab 1.x),请运行`pip uninstall mmcv-full`进行卸载。
 
@@ -24,14 +32,6 @@
 ## auxiliary head 是什么
 
 简单来说，这是一个提高准确率的深度监督技术。在训练阶段，`decode_head` 用于输出语义分割的结果，`auxiliary_head` 只是增加了一个辅助损失，其产生的分割结果对你的模型结果没有影响，仅在在训练中起作用。您可以阅读这篇[论文](https://arxiv.org/pdf/1612.01105.pdf)了解更多信息。
-
-<!-- ## 为什么日志文件没有被创建
-
-在训练脚本中，我们在第167行调用 `get_root_logger` 方法，然后 mmseg 的 `get_root_logger` 方法调用 mmcv 的 `get_logger`，mmcv 将返回在 'mmsegmentation/tools/train.py' 中使用参数 `log_file` 初始化的同一个 logger。在训练期间只存在一个用 `log_file` 初始化的 logger。
-
-参考：[https://github.com/open-mmlab/mmcv/blob/21bada32560c7ed7b15b017dc763d862789e29a8/mmcv/utils/logging.py#L9-L16](https://github.com/open-mmlab/mmcv/blob/21bada32560c7ed7b15b017dc763d862789e29a8/mmcv/utils/logging.py#L9-L16)
-
-如果你发现日志文件没有被创建，可以检查 `mmcv.utils.get_logger` 是否在其他地方被调用。 -->
 
 ## 运行测试脚本时如何输出绘制分割掩膜的图像
 
