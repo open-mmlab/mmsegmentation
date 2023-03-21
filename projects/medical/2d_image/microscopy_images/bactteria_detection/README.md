@@ -38,8 +38,8 @@ Note:
 
 - Python v3.8
 - PyTorch v1.10.0
-- pillow(PIL) v9.3.0
-- scikit-learn(sklearn) v1.2.0
+- pillow (PIL) v9.3.0
+- scikit-learn (sklearn) v1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
@@ -56,7 +56,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 - Download dataset from [here](https://tianchi.aliyun.com/dataset/94411) and save it to the `data/` directory .
 - Decompress data to path `data/`. This will create a new folder named `data/Bacteria_detection_with_darkfield_microscopy_datasets/`, which contains the original image data.
 - run script `python tools/prepare_dataset.py` to format data and change folder structure as below.
-- run script `python ../../tools/split_seg_dataset.py` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` randomly from the training set in a 4:1 ratio.
+- run script `python ../../tools/split_seg_dataset.py` to split dataset. For the Bacteria_detection dataset, as there is no test or validation dataset, we sample 20% samples from the whole dataset as the validation dataset and 80% samples for training data and make two filename lists `train.txt` and `val.txt`. As we set the random seed as the hard code, we eliminated the randomness, the dataset split actually can be reproducible.
 
 ```none
   mmsegmentation
