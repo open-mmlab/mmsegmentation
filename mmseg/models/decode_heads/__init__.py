@@ -11,6 +11,7 @@ from .ema_head import EMAHead
 from .enc_head import EncHead
 from .fcn_head import FCNHead
 from .fcn_generalized_head import FCNGenHead
+from .conv_head import ConvHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
 from .isa_head import ISAHead
@@ -35,5 +36,5 @@ __all__ = [
     'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
     'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
-    'SegformerHead', 'ISAHead', 'STDCHead'
+    'SegformerHead', 'ISAHead', 'STDCHead', 'ConvHead'
 ]
