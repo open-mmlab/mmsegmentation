@@ -16,7 +16,7 @@ optim_wrapper=dict(
 ```
 
 With this modification, the LR of any parameter group with `'head'` in name will be multiplied by 10.
-You may refer to [MMEngine documentation](https://mmengine.readthedocs.io/zh_CN/latest/tutorials/optim_wrapper.html#id6) for further details.
+You may refer to [MMEngine documentation](https://mmengine.readthedocs.io/en/latest/tutorials/optim_wrapper.html#advanced-usages) for further details.
 
 ## Online Hard Example Mining (OHEM)
 
