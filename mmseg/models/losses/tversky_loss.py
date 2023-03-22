@@ -16,7 +16,7 @@ def tversky_loss(pred,
                  valid_mask,
                  alpha=0.3,
                  beta=0.7,
-                 gamma=1,
+                 gamma=1.0,
                  smooth=1,
                  class_weight=None,
                  ignore_index=255):
@@ -79,7 +79,8 @@ class TverskyLoss(nn.Module):
             The coefficient of false negatives. Default: 0.7.
             Note: alpha + beta = 1.
         gamma (float, in [1, 3]): The focal term. When `gamma` > 1, the loss 
-            function focuses more on less accurate predictions that have been misclassified. Default: 1.0.
+            function focuses more on less accurate predictions that have been 
+            misclassified. Default: 1.0.
         loss_name (str, optional): Name of the loss item. If you want this loss
             item to be included into the backward graph, `loss_` must be the
             prefix of the name. Defaults to 'loss_tversky'.
