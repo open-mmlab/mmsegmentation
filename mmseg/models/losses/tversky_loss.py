@@ -33,7 +33,7 @@ def tversky_loss(pred,
                 beta=beta,
                 smooth=smooth)
             if gamma > 1:
-                tversky_loss **= (1 / gamma) 
+                tversky_loss **= (1 / gamma)
             if class_weight is not None:
                 tversky_loss *= class_weight[i]
             total_loss += tversky_loss
@@ -78,8 +78,8 @@ class TverskyLoss(nn.Module):
         beta (float, in [0, 1]):
             The coefficient of false negatives. Default: 0.7.
             Note: alpha + beta = 1.
-        gamma (float, in [1, 3]): The focal term. When `gamma` > 1, the loss 
-            function focuses more on less accurate predictions that have been 
+        gamma (float, in [1, 3]): The focal term. When `gamma` > 1, the loss
+            function focuses more on less accurate predictions that have been
             misclassified. Default: 1.0.
         loss_name (str, optional): Name of the loss item. If you want this loss
             item to be included into the backward graph, `loss_` must be the
