@@ -56,8 +56,8 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
 3. Test PSPNet on PASCAL VOC (without saving the test results) and evaluate the mIoU.
 
    ```shell
-   python tools/test.py configs/pspnet/pspnet_r50-d8_512x1024_20k_voc12aug.py \
-       checkpoints/pspnet_r50-d8_512x1024_20k_voc12aug_20200605_003338-c57ef100.pth \
+   python tools/test.py configs/pspnet/pspnet_r50-d8_512x512_20k_voc12aug.py \
+       checkpoints/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth \
        --eval mAP
    ```
 
