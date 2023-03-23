@@ -63,6 +63,9 @@ Case b: If you use mmsegmentation as a dependency or third-party package, instal
 pip install mmsegmentation
 ```
 
+**Note:**
+If you would like to use albumentations, we suggest using pip install -U albumentations --no-binary qudida,albumentations. If you simply use pip install albumentations>=0.3.2, it will install opencv-python-headless simultaneously (even though you have already installed opencv-python). We recommended checking the environment after installing albumentations to ensure that opencv-python and opencv-python-headless are not installed at the same time, because it might cause unexpected issues if they both installed. Please refer to [official documentation](https://albumentations.ai/docs/getting_started/installation/#note-on-opencv-dependencies) for more details.
+
 ## Verify the installation
 
 To verify whether MMSegmentation is installed correctly, we provide some sample codes to run an inference demo.

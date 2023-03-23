@@ -138,10 +138,19 @@ def test_mae_init():
         }
     }
     model = MAE(img_size=(512, 512))
-    with pytest.raises(AttributeError):
-        model.resize_rel_pos_embed(ckpt)
+    ckpt = model.resize_rel_pos_embed(ckpt)
 
     # test resize abs pos embed
+    value = torch.randn(732, 16)
+    abs_pos_embed_value = torch.rand(1, 17, 768)
+    ckpt = {
+        'state_dict': {
+            'layers.0.attn.relative_position_index': 0,
+            'layers.0.attn.relative_position_bias_table': value,
+            'pos_embed': abs_pos_embed_value
+        }
+    }
+    model = MAE(img_size=(512, 512))
     ckpt = model.resize_abs_pos_embed(ckpt['state_dict'])
 
     # pretrained=None
