@@ -120,7 +120,7 @@ jobs:
           command: |
             docker exec mmseg pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/${MMCV_CUDA}/torch${MMCV_TORCH}/index.html
             docker exec mmseg pip install -r requirements.txt
-            docker exec mmdet pip install albumentations --use-pep517 qudida albumentations
+            docker exec mmseg pip install albumentations --use-pep517 qudida albumentations
       - run:
           name: Build and install
           command: |
