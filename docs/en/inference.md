@@ -58,7 +58,7 @@ Assume that you have already downloaded the checkpoints to the directory `checkp
    ```shell
    python tools/test.py configs/pspnet/pspnet_r50-d8_512x512_20k_voc12aug.py \
        checkpoints/pspnet_r50-d8_512x512_20k_voc12aug_20200617_101958-ed5dfbd9.pth \
-       --eval mAP
+       --eval mIoU
    ```
 
 4. Test PSPNet with 4 GPUs, and evaluate the standard mIoU and cityscapes metric.
