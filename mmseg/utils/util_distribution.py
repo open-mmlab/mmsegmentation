@@ -33,6 +33,14 @@ def build_dp(model, device='cuda', dim=0, *args, **kwargs):
         dp_factory['mlu'] = MLUDataParallel
         model = model.mlu()
 
+    elif device == 'npu':
+        assert digit_version(mmcv.__version__) >= digit_version('1.7.0'), \
+                'Please use MMCV >= 1.7.0 for NPU training!'
+        from mmcv.device.npu import NPUDataParallel
+        torch.npu.set_compile_mode(jit_compile=False)
+        dp_factory['npu'] = NPUDataParallel
+        model = model.npu()
+
     return dp_factory[device](model, dim=dim, *args, **kwargs)
 
 
@@ -53,7 +61,8 @@ def build_ddp(model, device='cuda', *args, **kwargs):
         .. [1] https://pytorch.org/docs/stable/generated/torch.nn.parallel.
                      DistributedDataParallel.html
     """
-    assert device in ['cuda', 'mlu'], 'Only available for cuda or mlu devices.'
+    assert device in ['cuda', 'mlu', 'npu'], 'Only available for cuda, '\
+                                             'npu or mlu devices.'
     if device == 'cuda':
         model = model.cuda()
     elif device == 'mlu':
@@ -63,6 +72,14 @@ def build_ddp(model, device='cuda', *args, **kwargs):
         ddp_factory['mlu'] = MLUDistributedDataParallel
         model = model.mlu()
 
+    elif device == 'npu':
+        assert digit_version(mmcv.__version__) >= digit_version('1.7.0'), \
+            'Please use MMCV >= 1.7.0 for NPU training!'
+        from mmcv.device.npu import NPUDistributedDataParallel
+        torch.npu.set_compile_mode(jit_compile=False)
+        ddp_factory['npu'] = NPUDistributedDataParallel
+        model = model.npu()
+
     return ddp_factory[device](model, *args, **kwargs)
 
 
@@ -71,11 +88,17 @@ def is_mlu_available():
     return hasattr(torch, 'is_mlu_available') and torch.is_mlu_available()
 
 
+def is_npu_available():
+    """Returns a bool indicating if NPU is currently available."""
+    return hasattr(torch, 'npu') and torch.npu.is_available()
+
+
 def get_device():
-    """Returns an available device, cpu, cuda or mlu."""
+    """Returns an available device, cpu, npu, cuda or mlu."""
     is_device_available = {
+        'npu': is_npu_available(),
         'cuda': torch.cuda.is_available(),
         'mlu': is_mlu_available()
     }
     device_list = [k for k, v in is_device_available.items() if v]
-    return device_list[0] if len(device_list) == 1 else 'cpu'
+    return device_list[0] if len(device_list) >= 1 else 'cpu'

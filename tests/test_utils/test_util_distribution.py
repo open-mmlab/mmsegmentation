@@ -46,6 +46,13 @@ def test_build_dp():
             mludp = build_dp(model, 'mlu')
             assert isinstance(mludp, MLUDataParallel)
 
+    if digit_version(mmcv.__version__) >= digit_version('1.7.0'):
+        from mmcv.device.npu import NPUDataParallel
+        from mmcv.utils import IS_NPU_AVAILABLE
+        if IS_NPU_AVAILABLE:
+            npu_dp = model.npu(model, 'npu')
+            assert isinstance(npu_dp, NPUDataParallel)
+
 
 @patch('torch.distributed._broadcast_coalesced', mock)
 @patch('torch.distributed.broadcast', mock)
@@ -66,3 +73,11 @@ def test_build_ddp():
             mluddp = build_ddp(
                 model, 'mlu', device_ids=[0], process_group=MagicMock())
             assert isinstance(mluddp, MLUDistributedDataParallel)
+
+    if digit_version(mmcv.__version__) >= digit_version('1.7.0'):
+        from mmcv.device.npu import NPUDistributedDataParallel
+        from mmcv.utils import IS_NPU_AVAILABLE
+        if IS_NPU_AVAILABLE:
+            npu_ddp = build_ddp(
+                model, 'npu', device_ids=[0], process_group=MagicMock())
+            assert isinstance(npu_ddp, NPUDistributedDataParallel)
