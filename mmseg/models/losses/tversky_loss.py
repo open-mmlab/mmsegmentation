@@ -32,7 +32,7 @@ def tversky_loss(pred,
                 alpha=alpha,
                 beta=beta,
                 smooth=smooth)
-            if gamma > 1:
+            if gamma > 1.0:
                 tversky_loss **= (1 / gamma)
             if class_weight is not None:
                 tversky_loss *= class_weight[i]
@@ -78,7 +78,7 @@ class TverskyLoss(nn.Module):
         beta (float, in [0, 1]):
             The coefficient of false negatives. Default: 0.7.
             Note: alpha + beta = 1.
-        gamma (float, in [1, 3]): The focal term. When `gamma` > 1, the loss
+        gamma (float, in [1, inf)): The focal term. When `gamma` > 1, the loss
             function focuses more on less accurate predictions that have been
             misclassified. Default: 1.0.
         loss_name (str, optional): Name of the loss item. If you want this loss
@@ -101,6 +101,7 @@ class TverskyLoss(nn.Module):
         self.loss_weight = loss_weight
         self.ignore_index = ignore_index
         assert (alpha + beta == 1.0), 'Sum of alpha and beta but be 1.0!'
+        assert gamma >= 1.0, 'gamma should be at least 1.0!'
         self.alpha = alpha
         self.beta = beta
         self.gamma = gamma
