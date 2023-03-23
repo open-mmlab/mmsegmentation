@@ -1,5 +1,63 @@
 # Add New Datasets
 
+## Add new custom dataset
+
+Here we show how to develop a new custom dataset.
+
+1. Create a new file `mmseg/datasets/example.py`
+
+   ```python
+   from mmseg.registry import DATASETS
+   from .basesegdataset import BaseSegDataset
+
+
+   @DATASETS.register_module()
+   class ExampleDataset(BaseSegDataset):
+
+       METAINFO = dict(
+           classes=('xxx', 'xxx', ...),
+           palette=[[x, x, x], [x, x, x], ...])
+
+       def __init__(self, aeg1, arg2):
+           pass
+   ```
+
+2. Import the module in `mmseg/datasets/__init__.py`
+
+   ```python
+   from .example import ExampleDataset
+   ```
+
+3. Use it by creating a new new dataset config file `configs/_base_/datasets/example_dataset.py`
+
+   ```python
+   dataset_type = 'ExampleDataset'
+   data_root = 'data/example/'
+   ...
+   ```
+
+4. Add dataset meta information in `mmseg/utils/class_names.py`
+
+   ```python
+   def example_classes():
+       return [
+           'xxx', 'xxx',
+           ...
+       ]
+
+   def example_palette():
+       return [
+           [x, x, x], [x, x, x],
+           ...
+       ]
+   dataset_aliases ={
+       'example': ['example', ...],
+       ...
+   }
+   ```
+
+**Note:** If the new dataset does not satisfy the mmseg requirements, a data preprocessing script needs to be prepared in `tools/dataset_converters/`
+
 ## Customize datasets by reorganizing data
 
 The simplest way is to convert your dataset to organize your data into folders.
@@ -26,9 +84,7 @@ An example of file structure is as followed.
 
 A training pair will consist of the files with same suffix in img_dir/ann_dir.
 
-Some datasets don't release test sub-dataset or don't release the ground truth of test sub-dataset, and we cannot evaluate model locally without ground truth of test sub-dataset, so we ignore test sub-dataset in config files.
-
-However, we will never prevent you to split your dataset into train, val and test sub-datasets.
+Some datasets don't release the test set or don't release the ground truth of the test set, and we cannot evaluate models locally without the ground truth of the test set, so we set the validation set as the default test set in config files.
 
 About how to build your own datasets or implement a new dataset class please refer to the [datasets guide](./datasets.md) for more detailed information.
 

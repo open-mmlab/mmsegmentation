@@ -1,5 +1,63 @@
 # 新增自定义数据集
 
+## 新增自定义数据集
+
+在这里，我们展示如何构建一个新的数据集。
+
+1. 创建一个新文件 `mmseg/datasets/example.py`
+
+   ```python
+   from mmseg.registry import DATASETS
+   from .basesegdataset import BaseSegDataset
+
+
+   @DATASETS.register_module()
+   class ExampleDataset(BaseSegDataset):
+
+       METAINFO = dict(
+           classes=('xxx', 'xxx', ...),
+           palette=[[x, x, x], [x, x, x], ...])
+
+       def __init__(self, aeg1, arg2):
+           pass
+   ```
+
+2. 在 `mmseg/datasets/__init__.py` 中导入模块
+
+   ```python
+   from .example import ExampleDataset
+   ```
+
+3. 通过创建一个新的数据集配置文件 `configs/_base_/datasets/example_dataset.py` 来使用它
+
+   ```python
+   dataset_type = 'ExampleDataset'
+   data_root = 'data/example/'
+   ...
+   ```
+
+4. 在 `mmseg/utils/class_names.py` 中补充数据集元信息
+
+   ```python
+   def example_classes():
+       return [
+           'xxx', 'xxx',
+           ...
+       ]
+
+   def example_palette():
+       return [
+           [x, x, x], [x, x, x],
+           ...
+       ]
+   dataset_aliases ={
+       'example': ['example', ...],
+       ...
+   }
+   ```
+
+**注意：** 如果新数据集不满足 mmseg 的要求，则需要在 `tools/dataset_converters/` 中准备一个数据集预处理脚本
+
 ## 通过重新组织数据来定制数据集
 
 最简单的方法是将您的数据集进行转化，并组织成文件夹的形式。
@@ -26,9 +84,7 @@
 
 一个训练对将由 img_dir/ann_dir 里同样首缀的文件组成。
 
-有些数据集不发布测试子数据集或不发布测试子集的标注，如果没有测试子集的标注，我们就无法对模型进行本地评估，因此我们在配置文件中忽略了测试子集。
-
-然而，我们永远不会阻止您将数据集拆分为训练、验证和测试子数据集。
+有些数据集不会发布测试集或测试集的标注，如果没有测试集的标注，我们就无法在本地进行评估模型，因此我们在配置文件中将验证集设置为默认测试集。
 
 关于如何构建自己的数据集或实现新的数据集类，请参阅[数据集指南](./datasets.md)以获取更多详细信息。
 
@@ -59,7 +115,7 @@ dataset_A_train = dict(
 
 ### 拼接数据集
 
-如果要连接的数据集不同，可以按如下方式连接数据集配置。
+如果要拼接不同的数据集，可以按如下方式连接数据集配置。
 
 ```python
 dataset_A_train = dict()
