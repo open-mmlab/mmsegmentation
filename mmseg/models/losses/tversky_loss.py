@@ -16,6 +16,7 @@ def tversky_loss(pred,
                  valid_mask,
                  alpha=0.3,
                  beta=0.7,
+                 gamma=1.0,
                  smooth=1,
                  class_weight=None,
                  ignore_index=255):
@@ -30,7 +31,10 @@ def tversky_loss(pred,
                 valid_mask=valid_mask,
                 alpha=alpha,
                 beta=beta,
+                gamma=gamma,
                 smooth=smooth)
+            if gamma > 1.0:
+                tversky_loss **= gamma
             if class_weight is not None:
                 tversky_loss *= class_weight[i]
             total_loss += tversky_loss
@@ -75,6 +79,9 @@ class TverskyLoss(nn.Module):
         beta (float, in [0, 1]):
             The coefficient of false negatives. Default: 0.7.
             Note: alpha + beta = 1.
+        gamma (float, in [1, inf]): The focal term. When `gamma` > 1,
+            the loss focuses more on less accurate predictions that
+            have been misclassified. Default: 1.0.
         loss_name (str, optional): Name of the loss item. If you want this loss
             item to be included into the backward graph, `loss_` must be the
             prefix of the name. Defaults to 'loss_tversky'.
@@ -87,6 +94,7 @@ class TverskyLoss(nn.Module):
                  ignore_index=255,
                  alpha=0.3,
                  beta=0.7,
+                 gamma=1.0,
                  loss_name='loss_tversky'):
         super(TverskyLoss, self).__init__()
         self.smooth = smooth
@@ -94,8 +102,10 @@ class TverskyLoss(nn.Module):
         self.loss_weight = loss_weight
         self.ignore_index = ignore_index
         assert (alpha + beta == 1.0), 'Sum of alpha and beta but be 1.0!'
+        assert gamma >= 1.0, 'gamma should be at least 1.0!'
         self.alpha = alpha
         self.beta = beta
+        self.gamma = gamma
         self._loss_name = loss_name
 
     def forward(self, pred, target, **kwargs):
@@ -117,6 +127,7 @@ class TverskyLoss(nn.Module):
             valid_mask=valid_mask,
             alpha=self.alpha,
             beta=self.beta,
+            gamma=self.gamma,
             smooth=self.smooth,
             class_weight=class_weight,
             ignore_index=self.ignore_index)
