@@ -31,7 +31,6 @@ def tversky_loss(pred,
                 valid_mask=valid_mask,
                 alpha=alpha,
                 beta=beta,
-                gamma=gamma,
                 smooth=smooth)
             if gamma > 1.0:
                 tversky_loss **= gamma
