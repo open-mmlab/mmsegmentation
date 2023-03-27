@@ -184,8 +184,7 @@ mmsegmentation
 The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
 
 By convention, `**labelTrainIds.png` are used for cityscapes training.
-We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
-to generate `**labelTrainIds.png`.
+We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)to generate `**labelTrainIds.png`.
 
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
@@ -204,7 +203,7 @@ If you would like to use augmented VOC dataset, please run following command to 
 python tools/dataset_converters/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/datasets.md) for details about how to concatenate them and train them together.
+Please refer to [concat dataset](../advanced_guides/add_datasets.md#concatenate-dataset) for details about how to concatenate them and train them together.
 
 ### ADE20K
 
@@ -338,7 +337,7 @@ wget https://zenodo.org/record/5706578/files/Val.zip
 wget https://zenodo.org/record/5706578/files/Test.zip
 ```
 
-For LoveDA dataset, please run the following command to download and re-organize the dataset.
+For LoveDA dataset, please run the following command to re-organize the dataset.
 
 ```shell
 python tools/dataset_converters/loveda.py /path/to/loveDA
@@ -350,13 +349,12 @@ More details about LoveDA can be found [here](https://github.com/Junjue-Wang/Lov
 
 ### ISPRS Potsdam
 
-The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/)
-dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
+The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
 The '2_Ortho_RGB.zip' and '5_Labels_all_noBoundary.zip' are required.
 
-For Potsdam dataset, please run the following command to download and re-organize the dataset.
+For Potsdam dataset, please run the following command to re-organize the dataset.
 
 ```shell
 python tools/dataset_converters/potsdam.py /path/to/potsdam
@@ -366,19 +364,18 @@ In our default setting, it will generate 3456 images for training and 2016 image
 
 ### ISPRS Vaihingen
 
-The [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/)
-dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
+The [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
 The 'ISPRS_semantic_labeling_Vaihingen.zip' and 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip' are required.
 
-For Vaihingen dataset, please run the following command to download and re-organize the dataset.
+For Vaihingen dataset, please run the following command to re-organize the dataset.
 
 ```shell
 python tools/dataset_converters/vaihingen.py /path/to/vaihingen
 ```
 
-In our default setting (`clip_size` =512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.
+In our default setting (`clip_size`=512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.
 
 ### iSAID
 
@@ -386,7 +383,7 @@ The data images could be download from [DOTA-v1.0](https://captain-whu.github.io
 
 The data annotations could be download from [iSAID](https://captain-whu.github.io/iSAID/dataset.html) (train/val)
 
-The dataset is a Large-scale Dataset for Instance Segmentation (also have segmantic segmentation) in Aerial Images.
+The dataset is a Large-scale Dataset for Instance Segmentation (also have semantic segmentation) in Aerial Images.
 
 You may need to follow the following structure for dataset preparation after downloading iSAID dataset.
 
@@ -415,7 +412,7 @@ You may need to follow the following structure for dataset preparation after dow
 python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
-In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+In our default setting (`patch_width`=896, `patch_height`=896, `overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
 
 ## LIP(Look Into Person) dataset
 
@@ -435,7 +432,7 @@ mv val_segmentations ../
 cd ..
 ```
 
-The contents of  LIP datasets include:
+The contents of LIP datasets include:
 
 ```none
 ├── data
@@ -456,10 +453,9 @@ The contents of  LIP datasets include:
 
 ## Synapse dataset
 
-This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
+This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/).
 
-To follow the data preparation setting of [TransUNet](https://arxiv.org/abs/2102.04306), which splits original training set (30 scans)
-into new training (18 scans) and validation set (12 scans). Please run the following command to prepare the dataset.
+To follow the data preparation setting of [TransUNet](https://arxiv.org/abs/2102.04306), which splits original training set (30 scans) into new training (18 scans) and validation set (12 scans). Please run the following command to prepare the dataset.
 
 ```shell
 unzip RawData.zip
@@ -532,8 +528,7 @@ Then, use this command to convert synapse dataset.
 python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
 
-Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
-which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
+Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image, which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
 
 ### REFUGE
 
@@ -624,4 +619,4 @@ It includes 400 images for training, 400 images for validation and 400 images fo
   ```
 
 - You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
-  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)
+  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)
