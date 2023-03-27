@@ -1,4 +1,4 @@
-## 准备数据集
+# 教程2：准备数据集
 
 我们建议将数据集根目录符号链接到 `$MMSEGMENTATION/data`。
 如果您的文件夹结构不同，您可能需要更改配置文件中相应的路径。
@@ -179,7 +179,7 @@ mmsegmentation
 |   │   │   │   └── polygons
 ```
 
-### Cityscapes
+## Cityscapes
 
 注册后，数据可以在[这里](https://www.cityscapes-dataset.com/downloads/)找到。
 
@@ -191,7 +191,7 @@ mmsegmentation
 python tools/dataset_converters/cityscapes.py data/cityscapes --nproc 8
 ```
 
-### Pascal VOC
+## Pascal VOC
 
 Pascal VOC 2012 可从[此处](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar)下载。
 此外，Pascal VOC 数据集的最新工作通常利用额外的增强数据，可以在[这里](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz)找到。
@@ -205,12 +205,12 @@ python tools/dataset_converters/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug 
 
 请参考[拼接数据集文档](../advanced_guides/add_datasets.md#拼接数据集)以详细了解如何将它们拼接并合并训练。
 
-### ADE20K
+## ADE20K
 
 ADE20K 的训练和验证集可以从这个[链接](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip)下载。
 我们也可以从[此处](http://data.csail.mit.edu/places/ADEchallenge/release_test.zip)下载测试集。
 
-### Pascal Context
+## Pascal Context
 
 Pascal Context 的训练和验证集可以从[此处](http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar)下载。注册后，您也可以从[此处](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar)下载测试集。
 
@@ -222,7 +222,7 @@ Pascal Context 的训练和验证集可以从[此处](http://host.robots.ox.ac.u
 python tools/dataset_converters/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
 ```
 
-### COCO Stuff 10k
+## COCO Stuff 10k
 
 数据可以通过 wget 在[这里](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip)下载。
 
@@ -242,7 +242,7 @@ python tools/dataset_converters/coco_stuff10k.py /path/to/coco_stuff10k --nproc 
 
 按照惯例，`/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` 中的 mask 标注用于 COCO Stuff 10k 的训练和测试。
 
-### COCO Stuff 164k
+## COCO Stuff 164k
 
 对于 COCO Stuff 164k 数据集，请运行以下命令下载并转换增强的数据集。
 
@@ -266,7 +266,7 @@ python tools/dataset_converters/coco_stuff164k.py /path/to/coco_stuff164k --npro
 
 此数据集的详细信息可在[此处](https://github.com/nightrome/cocostuff#downloads)找到。
 
-### CHASE DB1
+## CHASE DB1
 
 CHASE DB1 的训练和验证集可以从[此处](https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip)下载。
 
@@ -278,7 +278,7 @@ python tools/dataset_converters/drive.py /path/to/training.zip /path/to/test.zip
 
 这个脚本将自动生成目录结构。
 
-### DRIVE
+## DRIVE
 
 DRIVE 的训练和验证集可从[此处](https://drive.grand-challenge.org/)下载。但在下载之前，需要注册一个帐户。目前官方尚未提供 '1st_manual'。
 
@@ -290,7 +290,7 @@ python tools/dataset_converters/drive.py /path/to/training.zip /path/to/test.zip
 
 这个脚本将自动生成目录结构。
 
-### HRF
+## HRF
 
 首先，下载 [health.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy.zip)、[glaucoma.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma.zip)、[diabetic_retinopathy.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy.zip)、[healthy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy_manualsegm.zip)、[glaucoma_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma_manualsegm.zip) 和 [diabetic_retinopathy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy_manualsegm.zip)。
 
@@ -302,7 +302,7 @@ python tools/dataset_converters/hrf.py /path/to/healthy.zip /path/to/healthy_man
 
 这个脚本将自动生成目录结构。
 
-### STARE
+## STARE
 
 首先，下载 [stare images.tar](http://cecas.clemson.edu/~ahoover/stare/probing/stare-images.tar)、[labels-ah.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-ah.tar) 和 [labels-vk.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-vk.tar)。
 
@@ -314,15 +314,15 @@ python tools/dataset_converters/stare.py /path/to/stare-images.tar /path/to/labe
 
 这个脚本将自动生成目录结构。
 
-### Dark Zurich
+## Dark Zurich
 
 由于我们只支持在此数据集上的模型测试，因此您只需要下载[验证集](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip)。
 
-### Nighttime Driving
+## Nighttime Driving
 
 由于我们只支持在此数据集上的模型测试，因此您只需要下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip)。
 
-### LoveDA
+## LoveDA
 
 数据可以从 Google Drive [此处](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing)下载。
 
@@ -347,7 +347,7 @@ python tools/dataset_converters/loveda.py /path/to/loveDA
 
 有关 LoveDA 的更多详细信息，可查看[此处](https://github.com/Junjue-Wang/LoveDA).
 
-### ISPRS Potsdam
+## ISPRS Potsdam
 
 [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/) 城市语义分割数据集用于 2D 语义分割竞赛 —— Potsdam。
 
@@ -362,7 +362,7 @@ python tools/dataset_converters/potsdam.py /path/to/potsdam
 
 在我们的默认设置中，将生成 3456 张图像用于训练和 2016 张图像用于验证。
 
-### ISPRS Vaihingen
+## ISPRS Vaihingen
 
 [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/) 城市语义分割数据集用于 2D 语义分割竞赛 —— Vaihingen。
 
@@ -377,7 +377,7 @@ python tools/dataset_converters/vaihingen.py /path/to/vaihingen
 
 在我们的默认设置（`clip_size`=512, `stride_size`=256）中，将生成 344 张图像用于训练和 398 张图像用于验证。
 
-### iSAID
+## iSAID
 
 图像数据可从 [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html)（训练/验证/测试）下载
 
@@ -530,7 +530,7 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 
 注意，MMSegmentation 的默认评估指标（例如 mean dice value）是在 2D 切片图像上计算的，这与 [TransUNet](https://arxiv.org/abs/2102.04306) 等一些论文中的 3D 扫描结果是不同的。
 
-### REFUGE
+## REFUGE
 
 在 [REFUGE Challenge](https://refuge.grand-challenge.org) 注册并下载 [REFUGE 数据集](https://refuge.grand-challenge.org/REFUGE2Download)。
 
