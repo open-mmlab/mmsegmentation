@@ -164,7 +164,7 @@ class SegVisualizationHook(Hook):
                     outputs: Sequence[SegDataSample],
                     mode: str = 'val') -> None:
 ...
-        # 如果是训练阶段或者 self.draw 为 False 则直接跳出
+        # If it's a training phase or self.draw is False, then skip it
         if self.draw is False or mode == 'train':
             return
 ...
