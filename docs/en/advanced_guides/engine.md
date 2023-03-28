@@ -66,7 +66,7 @@ They implement essential functions during training and are defined in the config
 
 Hooks have corresponding priorities; the higher the priority, the earlier the runner calls them. If the priorities are the same, the calling order is consistent with the hook registration order.
 
-Users are not recommended to modify the default hook priorities. Please refer to [MMEngine hooks documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) to understand the hook priority definitions.
+It is not recommended for users to modify the default hook priorities. Please refer to the [MMEngine hooks documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) to understand the hook priority definitions.
 
 The following are the default hooks used in MMSegmentation:
 
