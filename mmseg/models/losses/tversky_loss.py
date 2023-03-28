@@ -33,7 +33,7 @@ def tversky_loss(pred,
                 beta=beta,
                 smooth=smooth)
             if gamma > 1.0:
-                tversky_loss **= gamma
+                tversky_loss **= (1 / gamma)
             if class_weight is not None:
                 tversky_loss *= class_weight[i]
             total_loss += tversky_loss
@@ -65,7 +65,11 @@ class TverskyLoss(nn.Module):
     """TverskyLoss. This loss is proposed in `Tversky loss function for image
     segmentation using 3D fully convolutional deep networks.
 
-    <https://arxiv.org/abs/1706.05721>`_.
+    <https://arxiv.org/abs/1706.05721>`
+    and `A novel focal Tversky loss function with improved attention U-Net for
+    lesion segmentation.
+    
+    <https://arxiv.org/abs/1810.07842>`_.
     Args:
         smooth (float): A float number to smooth loss, and avoid NaN error.
             Default: 1.
