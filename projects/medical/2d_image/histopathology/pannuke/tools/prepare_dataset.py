@@ -3,30 +3,31 @@ import os
 import numpy as np
 from PIL import Image
 
-root_path = 'data/pannuke/'
-img_suffix = '.png'
-seg_map_suffix = '.png'
-save_img_suffix = '.png'
-save_seg_map_suffix = '.png'
-
-os.system('mkdir -p ' + root_path + 'images/train/')
-os.system('mkdir -p ' + root_path + 'images/val/')
-os.system('mkdir -p ' + root_path + 'masks/train/')
-os.system('mkdir -p ' + root_path + 'masks/val/')
-
-fold_img_paths = sorted([
-    os.path.join(root_path, 'fold_1/Fold 1/images/fold1/images.npy'),
-    os.path.join(root_path, 'fold_2/Fold 2/images/fold2/images.npy'),
-    os.path.join(root_path, 'fold_3/Fold 3/images/fold3/images.npy')
-])
-fold_mask_paths = sorted([
-    os.path.join(root_path, 'fold_1/Fold 1/masks/fold1/masks.npy'),
-    os.path.join(root_path, 'fold_2/Fold 2/masks/fold2/masks.npy'),
-    os.path.join(root_path, 'fold_3/Fold 3/masks/fold3/masks.npy'),
-])
+root_path = 'data/'
 
 tgt_img_dir = os.path.join(root_path, 'images/train')
 tgt_mask_dir = os.path.join(root_path, 'masks/train')
+os.system('mkdir -p ' + tgt_img_dir)
+os.system('mkdir -p ' + tgt_mask_dir)
+
+fold_img_paths = sorted([
+    os.path.join(root_path,
+                 'Pannuke/pannuke/fold_1/Fold 1/images/fold1/images.npy'),
+    os.path.join(root_path,
+                 'Pannuke/pannuke/fold_2/Fold 2/images/fold2/images.npy'),
+    os.path.join(root_path,
+                 'Pannuke/pannuke/fold_3/Fold 3/images/fold3/images.npy')
+])
+
+fold_mask_paths = sorted([
+    os.path.join(root_path,
+                 'Pannuke/pannuke/fold_1/Fold 1/masks/fold1/masks.npy'),
+    os.path.join(root_path,
+                 'Pannuke/pannuke/fold_2/Fold 2/masks/fold2/masks.npy'),
+    os.path.join(root_path,
+                 'Pannuke/pannuke/fold_3/Fold 3/masks/fold3/masks.npy')
+])
+
 for n, (img_path,
         mask_path) in enumerate(zip(fold_img_paths, fold_mask_paths)):
     fold_name = str(n + 1)
