@@ -68,7 +68,7 @@ class TverskyLoss(nn.Module):
     <https://arxiv.org/abs/1706.05721>`
     and `A novel focal Tversky loss function with improved attention U-Net for
     lesion segmentation.
-    
+
     <https://arxiv.org/abs/1810.07842>`_.
     Args:
         smooth (float): A float number to smooth loss, and avoid NaN error.
