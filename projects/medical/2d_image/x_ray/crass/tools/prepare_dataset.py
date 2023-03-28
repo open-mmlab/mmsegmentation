@@ -1,39 +1,84 @@
 import glob
 import os
-import shutil
 
+import cv2
+import SimpleITK as sitk
 from PIL import Image
-from sklearn.model_selection import train_test_split
 
-root_path = 'data/bactteria_detection/'
-img_suffix = '.png'
+root_path = 'data/'
+img_suffix = '.tif'
 seg_map_suffix = '.png'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
 
-all_imgs = glob.glob(
-    'data/bactteria_detection/Bacteria_detection_with_darkfield_\
-microscopy_datasets/images/*' + img_suffix)
-x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
+src_img_train_dir = os.path.join(root_path, 'CRASS/data_train')
+src_mask_train_dir = os.path.join(root_path, 'CRASS/mask_mhd')
+src_img_test_dir = os.path.join(root_path, 'CRASS/data_test')
 
-print(len(x_train), len(x_test))
-os.system('mkdir -p ' + root_path + 'images/train/')
-os.system('mkdir -p ' + root_path + 'images/val/')
-os.system('mkdir -p ' + root_path + 'masks/train/')
-os.system('mkdir -p ' + root_path + 'masks/val/')
+tgt_img_train_dir = os.path.join(root_path, 'images/train/')
+tgt_mask_train_dir = os.path.join(root_path, 'masks/train/')
+tgt_img_test_dir = os.path.join(root_path, 'images/test/')
+os.system('mkdir -p ' + tgt_img_train_dir)
+os.system('mkdir -p ' + tgt_mask_train_dir)
+os.system('mkdir -p ' + tgt_img_test_dir)
 
-part_dir_dict = {0: 'train/', 1: 'val/'}
-for ith, part in enumerate([x_train, x_test]):
-    part_dir = part_dir_dict[ith]
-    for img in part:
-        basename = os.path.basename(img)
-        img_save_path = os.path.join(root_path, 'images', part_dir,
-                                     basename.split('.')[0] + save_img_suffix)
-        shutil.copy(img, img_save_path)
-        mask_path = 'data/bactteria_detection/Bacteria_detection_with_\
-        darkfield_microscopy_datasets/masks/' + basename
-        mask = Image.open(mask_path).convert('L')
-        mask_save_path = os.path.join(
-            root_path, 'masks', part_dir,
-            basename.split('.')[0] + save_seg_map_suffix)
-        mask.save(mask_save_path)
+
+def filter_suffix_recursive(src_dir, suffix):
+    suffix = '.' + suffix if '.' not in suffix else suffix
+    file_paths = glob(
+        os.path.join(src_dir, '**', '*' + suffix), recursive=True)
+    file_names = [_.split('/')[-1] for _ in file_paths]
+    return sorted(file_paths), sorted(file_names)
+
+
+def read_single_array_from_med(path):
+    return sitk.GetArrayFromImage(sitk.ReadImage(path)).squeeze()
+
+
+def convert_meds_into_pngs(src_dir,
+                           tgt_dir,
+                           suffix='.dcm',
+                           norm_min=0,
+                           norm_max=255,
+                           convert='RGB'):
+    if not os.path.exists(tgt_dir):
+        os.makedirs(tgt_dir)
+
+    src_paths, src_names = filter_suffix_recursive(src_dir, suffix=suffix)
+    num = len(src_paths)
+    for i, (src_name, src_path) in enumerate(zip(src_names, src_paths)):
+        tgt_name = src_name.replace(suffix, '.png')
+        tgt_path = os.path.join(tgt_dir, tgt_name)
+
+        img = read_single_array_from_med(src_path)
+        if norm_min is not None and norm_max is not None:
+            img = cv2.normalize(img, None, norm_min, norm_max, cv2.NORM_MINMAX,
+                                cv2.CV_8U)
+        pil = Image.fromarray(img).convert(convert)
+        pil.save(tgt_path)
+        print(f'processed {i+1}/{num}.')
+
+
+convert_meds_into_pngs(
+    src_img_train_dir,
+    tgt_img_train_dir,
+    suffix='.mhd',
+    norm_min=0,
+    norm_max=255,
+    convert='RGB')
+
+convert_meds_into_pngs(
+    src_img_test_dir,
+    tgt_img_test_dir,
+    suffix='.mhd',
+    norm_min=0,
+    norm_max=255,
+    convert='RGB')
+
+convert_meds_into_pngs(
+    src_mask_train_dir,
+    tgt_mask_train_dir,
+    suffix='.mhd',
+    norm_min=0,
+    norm_max=1,
+    convert='L')

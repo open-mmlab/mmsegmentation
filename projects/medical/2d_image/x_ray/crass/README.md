@@ -2,7 +2,7 @@
 
 ## Description
 
-This project support **`Chest Radiograph Anatomical Structure Segmentation (CRASS) `**, and the dataset used in this project can be downloaded from [here](https://crass.grand-challenge.org/).
+This project supports **`Chest Radiograph Anatomical Structure Segmentation (CRASS) `**, which can be downloaded from [here](https://crass.grand-challenge.org/).
 
 ### Dataset Overview
 
@@ -20,30 +20,47 @@ The current data is still incomplete and to be added later.
 | background |    299     |   98.38    |    -     |    -     |     -     |     -     |
 | clavicles  |    299     |    1.62    |    -     |    -     |     -     |     -     |
 
+Note:
+
+- `Pct` means percentage of pixels in this category in all pixels.
+
 ### Visualization
 
 ![crass](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/x_ray/crass/crass_dataset.png?raw=true)
 
+### Dataset Citation
+
+```
+@article{HOGEWEG20121490,
+	title={Clavicle segmentation in chest radiographs},
+	journal={Medical Image Analysis},
+	volume={16},
+	number={8},
+	pages={1490-1502},
+	year={2012}
+}
+```
+
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL)
-- scikit-learn(sklearn)
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0
+- scikit-learn(sklearn) v1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In crass/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `crass/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
 
-### Dataset preparing
+### Dataset Preparing
 
-- download dataset from [here](https://crass.grand-challenge.org/) and decompression data to path 'data/'.
+- download dataset from [here](https://crass.grand-challenge.org/) and decompress data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -84,20 +101,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}
-```
-
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
+To train models on a single server with one GPU. (default)
 
 ```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
+mim train mmseg ./configs/${CONFIG_FILE}
 ```
 
 ### Testing commands
 
+To test models on a single server with one GPU. (default)
+
 ```shell
-mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
+mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
 
 <!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
