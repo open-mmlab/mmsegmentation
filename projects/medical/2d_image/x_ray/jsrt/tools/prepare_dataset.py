@@ -1,39 +1,75 @@
 import glob
 import os
-import shutil
 
+import numpy as np
 from PIL import Image
-from sklearn.model_selection import train_test_split
 
-root_path = 'data/bactteria_detection/'
-img_suffix = '.png'
+root_path = 'data/'
+img_suffix = '.bmp'
 seg_map_suffix = '.png'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
 
-all_imgs = glob.glob(
-    'data/bactteria_detection/Bacteria_detection_with_darkfield_\
-microscopy_datasets/images/*' + img_suffix)
-x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
+src_img_train_dir = os.path.join(
+    root_path, 'JSRT/segmentation02/segmentation/org_train/')
+src_mask_train_dir = os.path.join(
+    root_path, 'JSRT/segmentation02/segmentation/label_train/')
+src_img_test_dir = os.path.join(root_path,
+                                'JSRT/segmentation02/segmentation/org_test/')
+src_mask_test_dir = os.path.join(
+    root_path, 'JSRT/segmentation02/segmentation/label_test/')
 
-print(len(x_train), len(x_test))
-os.system('mkdir -p ' + root_path + 'images/train/')
-os.system('mkdir -p ' + root_path + 'images/val/')
-os.system('mkdir -p ' + root_path + 'masks/train/')
-os.system('mkdir -p ' + root_path + 'masks/val/')
+tgt_img_train_dir = os.path.join(root_path, 'images/train/')
+tgt_mask_train_dir = os.path.join(root_path, 'masks/train/')
+tgt_img_test_dir = os.path.join(root_path, 'images/test/')
+tgt_mask_test_dir = os.path.join(root_path, 'masks/test/')
+os.system('mkdir -p ' + tgt_img_train_dir)
+os.system('mkdir -p ' + tgt_mask_train_dir)
+os.system('mkdir -p ' + tgt_img_test_dir)
+os.system('mkdir -p ' + tgt_mask_test_dir)
 
-part_dir_dict = {0: 'train/', 1: 'val/'}
-for ith, part in enumerate([x_train, x_test]):
-    part_dir = part_dir_dict[ith]
-    for img in part:
-        basename = os.path.basename(img)
-        img_save_path = os.path.join(root_path, 'images', part_dir,
-                                     basename.split('.')[0] + save_img_suffix)
-        shutil.copy(img, img_save_path)
-        mask_path = 'data/bactteria_detection/Bacteria_detection_with_\
-        darkfield_microscopy_datasets/masks/' + basename
-        mask = Image.open(mask_path).convert('L')
-        mask_save_path = os.path.join(
-            root_path, 'masks', part_dir,
-            basename.split('.')[0] + save_seg_map_suffix)
-        mask.save(mask_save_path)
+
+def filter_suffix_recursive(src_dir, suffix):
+    suffix = '.' + suffix if '.' not in suffix else suffix
+    file_paths = glob.glob(
+        os.path.join(src_dir, '**', '*' + suffix), recursive=True)
+    file_names = [_.split('/')[-1] for _ in file_paths]
+    return sorted(file_paths), sorted(file_names)
+
+
+def convert_label(img, convert_dict):
+    arr = np.zeros_like(img, dtype=np.uint8)
+    for c, i in convert_dict.items():
+        arr[img == c] = i
+    return arr
+
+
+for i, src_img_dir in enumerate((src_img_train_dir, src_img_test_dir)):
+    img_paths, img_names = filter_suffix_recursive(
+        src_img_dir, suffix=img_suffix)
+    if i == 0:
+        tgt_img_dir = tgt_img_train_dir
+    else:
+        tgt_img_dir = tgt_img_test_dir
+
+    for path, name in zip(img_paths, img_names):
+        img = Image.open(path).convert('RGB')
+        tgt_img_name = name.replace(img_suffix, save_img_suffix)
+        tgt_img_path = os.path.join(tgt_img_dir, tgt_img_name)
+        img.save(tgt_img_path)
+
+for i, src_mask_dir in enumerate((src_mask_train_dir, src_mask_test_dir)):
+    mask_paths, mask_names = filter_suffix_recursive(
+        src_mask_dir, suffix=seg_map_suffix)
+    if i == 0:
+        tgt_mask_dir = tgt_mask_train_dir
+    else:
+        tgt_mask_dir = tgt_mask_test_dir
+
+    for path, name in zip(mask_paths, mask_names):
+        mask = np.array(Image.open(path).convert('L'))
+        mask = convert_label(mask, convert_dict={0: 0, 85: 1, 170: 2, 255: 3})
+        mask = Image.fromarray(mask)
+        tgt_mask_name = name.replace(seg_map_suffix, save_seg_map_suffix)
+        tgt_mask_path = os.path.join(tgt_mask_dir, tgt_mask_name)
+        mask.save(tgt_mask_path)
