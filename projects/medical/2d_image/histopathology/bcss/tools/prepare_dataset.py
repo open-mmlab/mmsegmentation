@@ -3,37 +3,32 @@ import os
 import shutil
 
 from PIL import Image
-from sklearn.model_selection import train_test_split
 
-root_path = 'data/bactteria_detection/'
+root_path = 'data/'
 img_suffix = '.png'
 seg_map_suffix = '.png'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
+tgt_img_dir = os.path.join(root_path, 'images/train/')
+tgt_mask_dir = os.path.join(root_path, 'masks/train/')
+os.system('mkdir -p ' + tgt_img_dir)
+os.system('mkdir -p ' + tgt_mask_dir)
 
-all_imgs = glob.glob(
-    'data/bactteria_detection/Bacteria_detection_with_darkfield_\
-microscopy_datasets/images/*' + img_suffix)
-x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
+img_folders = (os.path.join(root_path, 'BCSS/rgbs_colorNormalized'),
+               os.path.join(root_path, 'BCSS/rgbs_colorNormalized (2)'),
+               os.path.join(root_path, 'BCSS/rgbs_colorNormalized (3)'))
+x_train = []
 
-print(len(x_train), len(x_test))
-os.system('mkdir -p ' + root_path + 'images/train/')
-os.system('mkdir -p ' + root_path + 'images/val/')
-os.system('mkdir -p ' + root_path + 'masks/train/')
-os.system('mkdir -p ' + root_path + 'masks/val/')
+for img_folder in img_folders:
+    x_train += glob.glob(os.path.join(img_folder, '*' + img_suffix))
 
-part_dir_dict = {0: 'train/', 1: 'val/'}
-for ith, part in enumerate([x_train, x_test]):
-    part_dir = part_dir_dict[ith]
-    for img in part:
-        basename = os.path.basename(img)
-        img_save_path = os.path.join(root_path, 'images', part_dir,
-                                     basename.split('.')[0] + save_img_suffix)
-        shutil.copy(img, img_save_path)
-        mask_path = 'data/bactteria_detection/Bacteria_detection_with_\
-        darkfield_microscopy_datasets/masks/' + basename
-        mask = Image.open(mask_path).convert('L')
-        mask_save_path = os.path.join(
-            root_path, 'masks', part_dir,
-            basename.split('.')[0] + save_seg_map_suffix)
-        mask.save(mask_save_path)
+for img_path in x_train:
+    basename = os.path.basename(img_path)
+    img_save_path = os.path.join(root_path, 'images/train',
+                                 basename.split('.')[0] + save_img_suffix)
+    shutil.copy(img_path, img_save_path)
+    mask_path = 'data/BCSS/masks/' + basename
+    mask = Image.open(mask_path).convert('L')
+    mask_save_path = os.path.join(root_path, 'masks/train',
+                                  basename.split('.')[0] + save_seg_map_suffix)
+    mask.save(mask_save_path)
