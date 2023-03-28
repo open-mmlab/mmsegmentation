@@ -1,39 +1,41 @@
-import glob
 import os
-import shutil
 
+import tifffile as tiff
 from PIL import Image
-from sklearn.model_selection import train_test_split
 
-root_path = 'data/bactteria_detection/'
-img_suffix = '.png'
-seg_map_suffix = '.png'
-save_img_suffix = '.png'
-save_seg_map_suffix = '.png'
+root_path = 'data/'
 
-all_imgs = glob.glob(
-    'data/bactteria_detection/Bacteria_detection_with_darkfield_\
-microscopy_datasets/images/*' + img_suffix)
-x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
+src_dir = os.path.join(root_path, '2-PM_Vessel_Dataset')
+tgt_img_train_dir = os.path.join(root_path, 'images/train/')
+tgt_mask_train_dir = os.path.join(root_path, 'masks/train/')
+os.system('mkdir -p ' + tgt_img_train_dir)
+os.system('mkdir -p ' + tgt_mask_train_dir)
 
-print(len(x_train), len(x_test))
-os.system('mkdir -p ' + root_path + 'images/train/')
-os.system('mkdir -p ' + root_path + 'images/val/')
-os.system('mkdir -p ' + root_path + 'masks/train/')
-os.system('mkdir -p ' + root_path + 'masks/val/')
 
-part_dir_dict = {0: 'train/', 1: 'val/'}
-for ith, part in enumerate([x_train, x_test]):
-    part_dir = part_dir_dict[ith]
-    for img in part:
-        basename = os.path.basename(img)
-        img_save_path = os.path.join(root_path, 'images', part_dir,
-                                     basename.split('.')[0] + save_img_suffix)
-        shutil.copy(img, img_save_path)
-        mask_path = 'data/bactteria_detection/Bacteria_detection_with_\
-        darkfield_microscopy_datasets/masks/' + basename
-        mask = Image.open(mask_path).convert('L')
-        mask_save_path = os.path.join(
-            root_path, 'masks', part_dir,
-            basename.split('.')[0] + save_seg_map_suffix)
-        mask.save(mask_save_path)
+def filter_suffix(src_dir, suffix):
+    suffix = '.' + suffix if '.' not in suffix else suffix
+    file_names = [_ for _ in os.listdir(src_dir) if _.endswith(suffix)]
+    file_paths = [os.path.join(src_dir, _) for _ in file_names]
+    return sorted(file_paths), sorted(file_names)
+
+
+path_list, _ = filter_suffix(src_dir, suffix='.tif')
+
+for path_label in path_list:
+    labels = tiff.imread(path_label)
+    assert labels.ndim == 3
+    path_image = path_label.replace('_label', '')
+    name = path_image.split('/')[-1].replace('.tif', '')
+    images = tiff.imread(path_image)
+    assert images.shape == labels.shape
+    # a single .tif file contains multiple slices
+    # as long as it is read by tifffile package.
+    for i in range(labels.shape[0]):
+        slice_name = name + '_' + str(i).rjust(3, '0') + '.png'
+        image = images[i]
+        label = labels[i] // 255
+
+        save_path_label = os.path.join(tgt_mask_train_dir, slice_name)
+        Image.fromarray(label).save(save_path_label)
+        save_path_image = os.path.join(tgt_img_train_dir, slice_name)
+        Image.fromarray(image).convert('RGB').save(save_path_image)
