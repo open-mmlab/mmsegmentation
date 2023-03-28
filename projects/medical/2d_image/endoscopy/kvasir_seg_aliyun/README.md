@@ -2,7 +2,7 @@
 
 ## Description
 
-This project support **`Kvasir-SEG Segmented Polyp Dataset from Aliyun (Kvasir SEG Aliyun) `**, and the dataset used in this project can be downloaded from [here](https://tianchi.aliyun.com/dataset/84385).
+This project supports **`Kvasir-SEG Segmented Polyp Dataset from Aliyun (Kvasir SEG Aliyun) `**, which can be downloaded from [here](https://tianchi.aliyun.com/dataset/84385).
 
 ### Dataset Overview
 
@@ -23,32 +23,43 @@ The Kvasir-SEG dataset is based on the previous Kvasir dataset, which is the fir
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![kvasir_seg_aliyun](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/endoscopy_images/kvasir_seg_aliyun/kvasir_seg_aliyun_dataset.png?raw=true)
 
-<!-- For a typical model, this section should contain the commands for training and testing. You are also suggested to dump your environment specification to env.yml by `conda env export > env.yml`. -->
+### Dataset Citation
+
+```
+@inproceedings{jha2020kvasir,
+	title={Kvasir-seg: A segmented polyp dataset},
+	author={Jha, Debesh and Smedsrud, Pia H and Riegler, Michael A and Halvorsen, P{\aa}l and Lange, Thomas de and Johansen, Dag and Johansen, H{\aa}vard D},
+	booktitle={International Conference on Multimedia Modeling},
+	pages={451--462},
+	year={2020},
+	organization={Springer}
+ }
+```
 
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL)
-- scikit-learn(sklearn)
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0
+- scikit-learn(sklearn) v1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In kvasir_seg_aliyun/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `kvasir_seg_aliyun/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
 
-### Dataset preparing
+### Dataset Preparing
 
 - download dataset from [here](https://tianchi.aliyun.com/dataset/84385) and decompression data to path 'data/.'.
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
@@ -91,20 +102,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}
-```
-
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
+To train models on a single server with one GPU. (default)
 
 ```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
+mim train mmseg ./configs/${CONFIG_FILE}
 ```
 
 ### Testing commands
 
+To test models on a single server with one GPU. (default)
+
 ```shell
-mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
+mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
 
 <!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
