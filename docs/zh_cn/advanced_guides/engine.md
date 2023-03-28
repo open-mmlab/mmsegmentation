@@ -94,6 +94,7 @@ default_hooks = dict(
 以 `default_hooks` 里面的 `logger` 和 `checkpoint` 为例, 我们来介绍如何修改 `default_hooks` 中默认的钩子.
 
 (1) 模型保存配置
+
 `default_hooks` 使用 `checkpoint` 字段来初始化[模型保存钩子 (CheckpointHook)](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
 
 ```python
@@ -104,6 +105,7 @@ checkpoint = dict(type='CheckpointHook', interval=1)
 更多相关参数的细节可以参考[这里](https://mmengine.readthedocs.io/zh_CN/latest/api/generated/mmengine.hooks.CheckpointHook.html#checkpointhook).
 
 (2) 日志配置
+
 `日志钩子 (LoggerHook)` 被用来收集 `执行器 (Runner)` 里面不同组件的日志信息然后写入终端, JSON 文件, tensorboard 和 wandb 等地方.
 
 ```python

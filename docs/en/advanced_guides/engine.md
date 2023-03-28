@@ -1,14 +1,14 @@
 # Training Engine
 
-MMEngine defines some [basic loop controllers](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) such as epoch-based training loop (`EpochBasedTrainLoop`), iteration-based training loop (`IterBasedTrainLoop`), standard validation loop (`ValLoop`), and standard testing loop (`TestLoop`).
+MMEngine defined some [basic loop controllers](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py) such as epoch-based training loop (`EpochBasedTrainLoop`), iteration-based training loop (`IterBasedTrainLoop`), standard validation loop (`ValLoop`), and standard testing loop (`TestLoop`).
 
-OpenMMLab's algorithm libraries like MMSegmentation abstract model training, testing, and inference as executors (`Runner`) to handle. Users can use the default executor in MMEngine directly or modify the executor to meet customized needs. This document mainly introduces how users can configure existing running settings, hooks, and optimizers' basic concepts and usage methods.
+OpenMMLab's algorithm libraries like MMSegmentation abstract model training, testing, and inference as `Runner` to handle. Users can use the default `Runner` in MMEngine directly or modify the `Runner` to meet customized needs. This document mainly introduces how users can configure existing running settings, hooks, and optimizers' basic concepts and usage methods.
 
-## Configuring Running Settings
+## Configuring Runtime Settings
 
-### Configuring Training Length
+### Configuring Training Iterations
 
-Loop controllers refer to the execution process during training, validation, and testing. They use `train_cfg`, `val_cfg`, and `test_cfg` to build these processes in the configuration file. MMSegmentation sets commonly used training lengths in the configs/_base_/schedules folder's train_cfg.
+Loop controllers refer to the execution process during training, validation, and testing. `train_cfg`, `val_cfg`, and `test_cfg` are used to build these processes in the configuration file. MMSegmentation sets commonly used training iterations in `train_cfg` under the `configs/_base_/schedules` folder.
 For example, to train for 80,000 iterations using the iteration-based training loop (`IterBasedTrainLoop`) and perform validation every 8,000 iterations, you can set it as follows:
 
 ```python
@@ -17,7 +17,7 @@ train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=8000)
 
 ### Configuring Training Optimizers
 
-Here's an example of an SGD optimizer:
+Here's an example of a SGD optimizer:
 
 ```python
 optim_wrapper = dict(
@@ -28,13 +28,13 @@ optim_wrapper = dict(
 
 OpenMMLab supports all optimizers in PyTorch. For more details, please refer to the [MMEngine optimizer documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/optim_wrapper.md).
 
-It is worth emphasizing that `optim_wrapper` is a variable of the `runner`, so when configuring the optimizer, the field to configure is the `optim_wrapper` field. For more information on using optimizers, see the Optimizer section below.
+It is worth emphasizing that `optim_wrapper` is a variable of `runner`, so when configuring the optimizer, the field to configure is the `optim_wrapper` field. For more information on using optimizers, see the [Optimizer](#Optimizer) section below.
 
 ### Configuring Training Parameter Schedulers
 
 Before configuring the training parameter scheduler, it is recommended to first understand the basic concepts of parameter schedulers in the [MMEngine documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/param_scheduler.md).
 
-Here's an example of a parameter scheduler. During training, a linearly changing learning rate strategy is used for warm-up in the first 1,000 iterations. After the first 1,000 iterations and until the last 16,000 iterations, the default polynomial learning rate decay is used:
+Here's an example of a parameter scheduler. During training, a linearly changing learning rate strategy is used for warm-up in the first 1,000 iterations. After the first 1,000 iterations until the 16,000 iterations in the end, the default polynomial learning rate decay is used:
 
 ```python
 param_scheduler = [
@@ -56,15 +56,15 @@ Note: When modifying the `max_iters` in `train_cfg`, make sure the parameters in
 
 ### Introduction
 
-OpenMMLab abstracts the model training and testing process as `Runner`. Inserting hooks can implement the corresponding functionality needed at different training and testing nodes (such as "before and after each training iter", "before and after each validation iter", etc.) in `Runner`. For more introduction on hook mechanisms, please refer to [here](https://www.calltutors.com/blog/what-is-hook).
+OpenMMLab abstracts the model training and testing process as `Runner`. Inserting hooks can implement the corresponding functionality needed at different training and testing stages (such as "before and after each training iter", "before and after each validation iter", etc.) in `Runner`. For more introduction on hook mechanisms, please refer to [here](https://www.calltutors.com/blog/what-is-hook).
 
 Hooks used in `Runner` are divided into two categories:
 
 - Default hooks:
 
-They implement essential functions during training and are defined in the configuration file with `default_hooks` and passed to `Runner`. `Runner` registers them through the [`register_default_hooks`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L1780) method.
+They implement essential functions during training and are defined in the configuration file by `default_hooks` and passed to `Runner`. `Runner` registers them through the [`register_default_hooks`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L1780) method.
 
-Hooks have corresponding priorities; the higher the priority, the earlier the executor calls them. If the priorities are the same, the calling order is consistent with the hook registration order.
+Hooks have corresponding priorities; the higher the priority, the earlier the runner calls them. If the priorities are the same, the calling order is consistent with the hook registration order.
 
 Users are not recommended to modify the default hook priorities. Please refer to [MMEngine hooks documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/tutorials/hook.md) to understand the hook priority definitions.
 
@@ -95,7 +95,7 @@ All the default hooks mentioned above, except for `SegVisualizationHook`, are im
 
 - Modifying default hooks
 
-We will use the `logger` and `checkpoint` hooks in `default_hooks` as examples to demonstrate how to modify the default hooks in `default_hooks`.
+We will use the `logger` and `checkpoint` in `default_hooks` as examples to demonstrate how to modify the default hooks in `default_hooks`.
 
 (1) Model saving configuration
 
@@ -109,15 +109,15 @@ Users can set `max_keep_ckpts` to save only a small number of checkpoints or use
 
 (2) Logging configuration
 
-The `LoggerHook` is used to collect log information from different components in the `Runner` and write it to the terminal, JSON files, tensorboard, and wandb, among others.
+The `LoggerHook` is used to collect log information from different components in `Runner` and write it to terminal, JSON files, tensorboard, wandb, etc.
 
 ```python
 logger=dict(type='LoggerHook', interval=10)
 ```
 
-In the latest 1.x version of MMSegmentation, some logger hooks (LoggerHook) such as `TextLoggerHook`, `WandbLoggerHook`, and `TensorboardLoggerHook` will no longer be used. Instead, MMEngine uses LogProcessor to handle the information processed by the aforementioned hooks, which are now in [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17), [`WandbVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L324), and [`TensorboardVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L472).
+In the latest 1.x version of MMSegmentation, some logger hooks (LoggerHook) such as `TextLoggerHook`, `WandbLoggerHook`, and `TensorboardLoggerHook` will no longer be used. Instead, MMEngine uses `LogProcessor` to handle the information processed by the aforementioned hooks, which are now in [`MessageHub`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/logging/message_hub.py#L17), [`WandbVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L324), and [`TensorboardVisBackend`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/visualization/vis_backend.py#L472).
 
-The specific usage is as follows: configure the visualizer and specify the visualization backend at the same time, using Tensorboard as the visualizer's backend:
+Detailed usage is as follows, configuring the visualizer and specifying the visualization backend at the same time, here using Tensorboard as the visualizer's backend:
 
 ```python
 # TensorboardVisBackend
@@ -131,7 +131,7 @@ For more related usage, please refer to [MMEngine Visualization Backend User Tut
 
 Custom hooks are defined in the configuration through `custom_hooks`, and `Runner` registers them using the [`register_custom_hooks`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L1820) method.
 
-The priority of custom hooks needs to be set in the configuration file; if not set, it will be set to `NORMAL` by default. The following are some custom hooks implemented in MMEngine:
+The priority of custom hooks needs to be set in the configuration file; if not, it will be set to `NORMAL` by default. The following are some custom hooks implemented in MMEngine:
 
 |                                                  Hook                                                  |                                                               Usage                                                                |
 | :----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------: |
@@ -149,7 +149,7 @@ custom_hooks = [
 
 ### SegVisualizationHook
 
-MMSegmentation implements [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/hooks/visualization_hook.py#L17), which is used to visualize prediction results during validation and testing.
+MMSegmentation implemented [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/hooks/visualization_hook.py#L17), which is used to visualize prediction results during validation and testing.
 `SegVisualizationHook` overrides the `_after_iter` method in the base class `Hook`. During validation or testing, it calls the `add_datasample` method of `visualizer` to draw semantic segmentation results according to the specified iteration interval. The specific implementation is as follows:
 
 ```python
@@ -189,7 +189,7 @@ For more details about visualization, you can check [here](https://github.com/op
 
 ## Optimizer
 
-In the previous configuration and runtime settings, we provided a simple example of configuring the training optimizer. This section will further detail how to configure optimizers in MMSegmentation.
+In the previous configuration and runtime settings, we provided a simple example of configuring the training optimizer. This section will further detailly introduce  how to configure optimizers in MMSegmentation.
 
 ## Optimizer Wrapper
 
@@ -257,7 +257,7 @@ Here, `decay_mult` refers to the weight decay coefficient for the corresponding 
 
 ### Optimizer Wrapper Constructor
 
-The default optimizer wrapper constructor [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) builds the optimizer used in training based on the input `optim_wrapper` and the `paramwise_cfg` defined in the `optim_wrapper`. When the functionality of [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) does not meet the requirements, you can customize the optimizer wrapper constructor to implement the configuration of hyperparameters.
+The default optimizer wrapper constructor [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) builds the optimizer used in training based on the input `optim_wrapper` and `paramwise_cfg` defined in the `optim_wrapper`. When the functionality of [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) does not meet the requirements, you can customize the optimizer wrapper constructor to implement the configuration of hyperparameters.
 
 MMSegmentation has implemented the [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), which can decay the learning rate of model parameters in the backbone networks of ConvNeXt, BEiT, and MAE models during training according to the defined decay ratio (`decay_rate`). The configuration in the configuration file is as follows:
 
