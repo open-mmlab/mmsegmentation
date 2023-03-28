@@ -7,12 +7,12 @@ MMSegmentation 在 [Model Zoo](../Model_Zoo.md) 中为语义分割提供了预�
 MMSegmentation 为用户提供了数个接口，以便轻松使用预训练的模型进行推理。
 
 - [教程3：使用预训练模型推理](#教程3使用预训练模型推理)
-  - [Inferencer](#inferencer)
-    - [Basic Usage](#basic-usage)
-    - [Initialization](#initialization)
-    - [Visualize prediction](#visualize-prediction)
-    - [List model](#list-model)
-  - [Inference API](#inference-api)
+  - [推理器](#推理器)
+    - [基本使用](#基本使用)
+    - [初始化](#初始化)
+    - [可视化预测结果](#可视化预测结果)
+    - [模型列表](#模型列表)
+  - [推理 API](#推理-api)
     - [mmseg.apis.init_model](#mmsegapisinit_model)
     - [mmseg.apis.inference_model](#mmsegapisinference_model)
     - [mmseg.apis.show_result_pyplot](#mmsegapisshow_result_pyplot)
@@ -50,23 +50,23 @@ MMSegmentation 为用户提供了数个接口，以便轻松使用预训练的�
 >>> images = $IMAGESDIR
 >>> inferencer(images, show=True, wait_time=0.5)
 
-# 保存可视化渲染色图和预测结果
+# 保存可视化渲染彩色图和预测结果
 # out_dir 是保存输出结果的目录，img_out_dir 和 pred_out_dir 为 out_dir 的子目录
-# 以保存可视化渲染色图和预测结果
+# 以保存可视化渲染彩色图和预测结果
 >>> inferencer(images, out_dir='outputs', img_out_dir='vis', pred_out_dir='pred')
 ```
 
-推理器有一个可选参数 `return_datasamples`，其默认值为 False，推理器的返回值默认为 `字典` 类型，包括 'visualization' 和 'predictions' 两个 key。
+推理器有一个可选参数 `return_datasamples`，其默认值为 False，推理器的返回值默认为 `dict` 类型，包括 'visualization' 和 'predictions' 两个 key。
 如果 `return_datasamples=True` 推理器将返回 [`SegDataSample`](../advanced_guides/structures.md) 或其列表。
 
 ```
 result = inferencer('demo/demo.png')
-# 结果是一个包含 'visualization' 和 'predictions' 两个 key 的 `字典`
+# 结果是一个包含 'visualization' 和 'predictions' 两个 key 的 `dict`
 # 'visualization' 包含颜色分割图
 print(result['visualization'].shape)
 # (512, 683, 3)
 
-# 'predictions' 包含带有标签标记的分割掩膜
+# 'predictions' 包含带有标签索引的分割掩膜
 print(result['predictions'].shape)
 # (512, 683)
 
@@ -90,17 +90,17 @@ print(type(results[0]))
 
 ### 初始化
 
-`MMSegInferencer` 必须从 `model` 初始化，该 `model` 可以是模型名称或一个 `Config`，甚至可以是配置文件的路径。
-模型名称可以在模型的元文件中找到，比如 maskformer 的一个模型名称是 `maskformer_r50-d32_8xb2-160k_ade20k-512x512`，如果输入模型名称，模型的权重将自动下载。以下是其他输入参数：
+`MMSegInferencer` 必须使用 `model` 初始化，该 `model` 可以是模型名称或一个 `Config`，甚至可以是配置文件的路径。
+模型名称可以在模型的元文件（configs/xxx/metafile.yaml）中找到，比如 maskformer 的一个模型名称是 `maskformer_r50-d32_8xb2-160k_ade20k-512x512`，如果输入模型名称，模型的权重将自动下载。以下是其他输入参数：
 
 - weights（str，可选）- 权重的路径。如果未指定，并且模型是元文件中的模型名称，则权重将从元文件加载。默认为 None。
 - classes（list，可选）- 输入类别用于结果渲染，由于分割模型的预测是具有标签索引的分割图，`classes` 是一个响应标签索引的项目列表。若 classes 没有定义，可视化工具将默认使用 `cityscapes` 的类别。默认为 None。
-- palette（list，可选）- 输入配色用于结果渲染，它是响应类的配色列表。若 palette 没有定义，可视化工具将默认使用 `cityscapes` 配色。默认为 None。
+- palette（list，可选）- 输入调色盘用于结果渲染，它是对应分类的配色列表。若 palette 没有定义，可视化工具将默认使用 `cityscapes` 的调色盘。默认为 None。
 - dataset_name（str，可选）- [数据集名称或别名](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317)，可视化工具将使用数据集的元信息，如类别和配色，但 `classes` 和 `palette` 具有更高的优先级。默认为 None。
 - device（str，可选）- 运行推理的设备。如果无，则会自动使用可用的设备。默认为 None。
 - scope（str，可选）- 模型的作用域。默认为 'mmseg'。
 
-### 可视化预测
+### 可视化预测结果
 
 `MMSegInferencer` 支持4个用于可视化预测的参数，您可以在调用初始化推理器时使用它们：
 
@@ -175,7 +175,7 @@ model = init_model(config_path, checkpoint_path, 'cpu')
 
 - `gt_sem_seg`（`PixelData`）- 语义分割的标注。
 - `pred_sem_seg`（`PixelData`）- 语义分割的预测。
-- `seg_logits`（`PixelData`）- 语义分割的预测指标。
+- `seg_logits`（`PixelData`）- 模型最后一层的输出结果。
 
 **注意：** [PixelData](https://github.com/open-mmlab/mmengine/blob/main/mmengine/structures/pixel_data.py) 是像素级标注或预测的数据结构，请参阅 [MMEngine](https://github.com/open-mmlab/mmengine) 中的 PixelData [文档](https://mmengine.readthedocs.io/en/latest/advanced_tutorials/data_element.html)了解更多信息。
 

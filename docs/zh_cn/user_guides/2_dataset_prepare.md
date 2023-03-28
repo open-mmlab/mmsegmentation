@@ -1,7 +1,7 @@
 # 教程2：准备数据集
 
 我们建议将数据集根目录符号链接到 `$MMSEGMENTATION/data`。
-如果您的文件夹结构不同，您可能需要更改配置文件中相应的路径。
+如果您的目录结构不同，您可能需要更改配置文件中相应的路径。
 
 ```none
 mmsegmentation
@@ -273,7 +273,7 @@ CHASE DB1 的训练和验证集可以从[此处](https://staffnet.kingston.ac.uk
 要将 CHASE DB1 数据集转换为 MMSegmentation 的格式，请运行以下命令：
 
 ```shell
-python tools/dataset_converters/drive.py /path/to/training.zip /path/to/test.zip
+python tools/dataset_converters/chase_db1.py /path/to/CHASEDB1.zip
 ```
 
 这个脚本将自动生成目录结构。

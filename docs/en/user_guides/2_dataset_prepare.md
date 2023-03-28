@@ -184,7 +184,7 @@ mmsegmentation
 The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
 
 By convention, `**labelTrainIds.png` are used for cityscapes training.
-We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)to generate `**labelTrainIds.png`.
+We provided a [script](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)to generate `**labelTrainIds.png`.
 
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
