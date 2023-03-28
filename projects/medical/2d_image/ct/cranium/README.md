@@ -1,8 +1,8 @@
-# Cranium
+# Brain CT Images with Intracranial Hemorrhage Masks (Cranium)
 
 ## Description
 
-This project support **`Cranium `**, and the dataset used in this project can be downloaded from [here](https://www.kaggle.com/datasets/vbookshelf/computed-tomography-ct-images).
+This project supports **`Brain CT Images with Intracranial Hemorrhage Masks (Cranium)`**, which can be downloaded from [here](https://www.kaggle.com/datasets/vbookshelf/computed-tomography-ct-images).
 
 ### Dataset Overview
 
@@ -23,32 +23,46 @@ https://physionet.org/content/ct-ich/1.0.0/
 
 Note:
 
-- `pct` means percentage of pixels in this category in all pixels.
+- `Pct` means percentage of pixels in this category in all pixels.
 
 ### Visualization
 
 ![cranium](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/ct/cranium/cranium_dataset.png?raw=true)
 
+## Dataset Citation
+
+```
+@article{hssayeni2020computed,
+	title={Computed tomography images for intracranial hemorrhage detection and segmentation},
+	author={Hssayeni, Murtadha and Croock, MS and Salman, AD and Al-khafaji, HF and Yahya, ZA and Ghoraani, B},
+	journal={Intracranial Hemorrhage Segmentation Using A Deep Convolutional Model. Data},
+	volume={5},
+	number={1},
+	pages={179},
+	year={2020}
+}
+```
+
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL) 9.3.0
-- scikit-learn(sklearn) 1.2.0
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0 9.3.0
+- scikit-learn(sklearn) v1.2.0 1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In cranium/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `cranium/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
 
-### Dataset preparing
+### Dataset Preparing
 
-- download dataset from [here](https://www.kaggle.com/datasets/vbookshelf/computed-tomography-ct-images) and decompression data to path 'data/'.
+- download dataset from [here](https://www.kaggle.com/datasets/vbookshelf/computed-tomography-ct-images) and decompress data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -89,20 +103,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}
-```
-
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
+To train models on a single server with one GPU. (default)
 
 ```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
+mim train mmseg ./configs/${CONFIG_FILE}
 ```
 
 ### Testing commands
 
+To test models on a single server with one GPU. (default)
+
 ```shell
-mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
+mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
 
 <!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
