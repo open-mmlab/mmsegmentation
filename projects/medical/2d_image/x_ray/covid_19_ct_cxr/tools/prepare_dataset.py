@@ -1,39 +1,52 @@
-import glob
 import os
-import shutil
 
+import numpy as np
 from PIL import Image
-from sklearn.model_selection import train_test_split
 
-root_path = 'data/bactteria_detection/'
-img_suffix = '.png'
-seg_map_suffix = '.png'
-save_img_suffix = '.png'
-save_seg_map_suffix = '.png'
+root_path = 'data/'
+src_img_dir = os.path.join(root_path, 'COVID-19-CT-CXR',
+                           'covid-chestxray-dataset', 'images')
+src_mask_dir = os.path.join(root_path, 'COVID-19-CT-CXR',
+                            'covid-chestxray-dataset',
+                            'annotations/lungVAE-masks')
+tgt_img_train_dir = os.path.join(root_path, 'images/train/')
+tgt_mask_train_dir = os.path.join(root_path, 'masks/train/')
+tgt_img_test_dir = os.path.join(root_path, 'images/test/')
+os.system('mkdir -p ' + tgt_img_train_dir)
+os.system('mkdir -p ' + tgt_mask_train_dir)
+os.system('mkdir -p ' + tgt_img_test_dir)
 
-all_imgs = glob.glob(
-    'data/bactteria_detection/Bacteria_detection_with_darkfield_\
-microscopy_datasets/images/*' + img_suffix)
-x_train, x_test = train_test_split(all_imgs, test_size=0.2, random_state=0)
 
-print(len(x_train), len(x_test))
-os.system('mkdir -p ' + root_path + 'images/train/')
-os.system('mkdir -p ' + root_path + 'images/val/')
-os.system('mkdir -p ' + root_path + 'masks/train/')
-os.system('mkdir -p ' + root_path + 'masks/val/')
+def convert_label(img, convert_dict):
+    arr = np.zeros_like(img, dtype=np.uint8)
+    for c, i in convert_dict.items():
+        arr[img == c] = i
+    return arr
 
-part_dir_dict = {0: 'train/', 1: 'val/'}
-for ith, part in enumerate([x_train, x_test]):
-    part_dir = part_dir_dict[ith]
-    for img in part:
-        basename = os.path.basename(img)
-        img_save_path = os.path.join(root_path, 'images', part_dir,
-                                     basename.split('.')[0] + save_img_suffix)
-        shutil.copy(img, img_save_path)
-        mask_path = 'data/bactteria_detection/Bacteria_detection_with_\
-        darkfield_microscopy_datasets/masks/' + basename
-        mask = Image.open(mask_path).convert('L')
-        mask_save_path = os.path.join(
-            root_path, 'masks', part_dir,
-            basename.split('.')[0] + save_seg_map_suffix)
-        mask.save(mask_save_path)
+
+all_img_names = os.listdir(src_img_dir)
+all_mask_names = os.listdir(src_mask_dir)
+
+for img_name in all_img_names:
+    base_name = img_name.replace('.png', '')
+    base_name = base_name.replace('.jpg', '')
+    base_name = base_name.replace('.jpeg', '')
+    mask_name_orig = base_name + '_mask.png'
+    if mask_name_orig in all_mask_names:
+        mask_name = base_name + '.png'
+        src_img_path = os.path.join(src_img_dir, img_name)
+        src_mask_path = os.path.join(src_mask_dir, mask_name_orig)
+        tgt_img_path = os.path.join(tgt_img_train_dir, img_name)
+        tgt_mask_path = os.path.join(tgt_mask_train_dir, mask_name)
+
+        img = Image.open(src_img_path).convert('RGB')
+        img.save(tgt_img_path)
+        mask = np.array(Image.open(src_mask_path))
+        mask = convert_label(mask, {0: 0, 255: 1})
+        mask = Image.fromarray(mask)
+        mask.save(tgt_mask_path)
+    else:
+        src_img_path = os.path.join(src_img_dir, img_name)
+        tgt_img_path = os.path.join(tgt_img_test_dir, img_name)
+        img = Image.open(src_img_path).convert('RGB')
+        img.save(tgt_img_path)

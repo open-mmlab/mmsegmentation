@@ -1,8 +1,8 @@
-# Covid-19 CT Chest X-ray
+# Covid-19 CT Chest X-ray Dataset
 
 ## Description
 
-This project support **`Covid-19 CT Chest X-ray `**, and the dataset used in this project can be downloaded from [here](https://github.com/ieee8023/covid-chestxray-dataset).
+This project supports **`Covid-19 CT Chest X-ray Dataset`**, which can be downloaded from [here](https://github.com/ieee8023/covid-chestxray-dataset).
 
 ### Dataset Overview
 
@@ -12,39 +12,61 @@ The 2019 novel coronavirus (COVID-19) presents several unique features [Fang, 20
 
 ### Statistic Information
 
-| Dataset Name                                                           | Anatomical Region | Task Type    | Modality | Nnum. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release date | License                                                         |
-| ---------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------- | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [Covid-19-ct-cxr](https://github.com/ieee8023/covid-chestxray-dataset) | thorax            | segmentation | x_ray    | 2             | 205/-/714             | yes/-/no               | 2021         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset Name                                                           | Anatomical Region | Task Type    | Modality | Nnum. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release date | License                                                               |
+| ---------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------- | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------------- |
+| [Covid-19-ct-cxr](https://github.com/ieee8023/covid-chestxray-dataset) | thorax            | segmentation | x_ray    | 2             | 205/-/714             | yes/-/no               | 2021         | [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
 | background |    205     |   72.84    |    -     |    -     |     -     |     -     |
 |    lung    |    205     |   27.16    |    -     |    -     |     -     |     -     |
 
+Note:
+
+- `Pct` means percentage of pixels in this category in all pixels.
+
 ### Visualization
 
 ![cov19ctcxr](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/x_ray/covid_19_ct_cxr/covid_19_ct_cxr_dataset.png?raw=true)
 
+### Dataset Citation
+
+```
+@article{cohen2020covidProspective,
+  title={{COVID-19} Image Data Collection: Prospective Predictions Are the Future},
+  author={Joseph Paul Cohen and Paul Morrison and Lan Dao and Karsten Roth and Tim Q Duong and Marzyeh Ghassemi},
+  journal={arXiv 2006.11988},
+  year={2020}
+}
+
+@article{cohen2020covid,
+  title={COVID-19 image data collection},
+  author={Joseph Paul Cohen and Paul Morrison and Lan Dao},
+  journal={arXiv 2003.11597},
+  year={2020}
+}
+```
+
 ### Prerequisites
 
-- Python 3.8
-- PyTorch 1.10.0
-- pillow(PIL) 9.3.0
-- scikit-learn(sklearn) 1.2.0
+- Python v3.8
+- PyTorch v1.10.0
+- pillow(PIL) v9.3.0 9.3.0
+- scikit-learn(sklearn) v1.2.0 1.2.0
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
 - [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
 
-All the commands below rely on the correct configuration of PYTHONPATH, which should point to the project's directory so that Python can locate the module files. In covid_19_ct_cxr/ root directory, run the following line to add the current directory to PYTHONPATH:
+All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `covid_19_ct_cxr/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
 ```shell
 export PYTHONPATH=`pwd`:$PYTHONPATH
 ```
 
-### Dataset preparing
+### Dataset Preparing
 
-- download dataset from [here](https://github.com/ieee8023/covid-chestxray-dataset) and decompression data to path 'data/'.
+- download dataset from [here](https://github.com/ieee8023/covid-chestxray-dataset) and decompress data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -85,20 +107,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Training commands
 
-```shell
-mim train mmseg ./configs/${CONFIG_PATH}
-```
-
-To train on multiple GPUs, e.g. 8 GPUs, run the following command:
+To train models on a single server with one GPU. (default)
 
 ```shell
-mim train mmseg ./configs/${CONFIG_PATH}  --launcher pytorch --gpus 8
+mim train mmseg ./configs/${CONFIG_FILE}
 ```
 
 ### Testing commands
 
+To test models on a single server with one GPU. (default)
+
 ```shell
-mim test mmseg ./configs/${CONFIG_PATH}  --checkpoint ${CHECKPOINT_PATH}
+mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
 
 <!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
