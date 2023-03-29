@@ -71,9 +71,14 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: pytorch/pytorch:1.8.1-cuda10.2-cudnn7-devel
+    env:
+      MKL_THREADING_LAYER: GNU
     strategy:
       matrix:
         python-version: [3.7]
+        include:
+          - torch: 1.8.1
+            cuda: 10.2
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -88,9 +93,9 @@ jobs:
         run: |
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub
-      - name: Install Python-dev
-        run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-        if: ${{matrix.python-version != 3.9}}
+      # - name: Install Python-dev
+      #   run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
+      #   if: ${{matrix.python-version != 3.9}}
       - name: Install system dependencies
         run: |
           apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
