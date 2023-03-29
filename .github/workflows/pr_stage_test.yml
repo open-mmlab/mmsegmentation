@@ -82,6 +82,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Upgrade pip
         run: pip install pip --upgrade
       - name: Fetch GPG keys
