@@ -93,20 +93,20 @@ jobs:
         run: |
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub
-      # - name: Install Python-dev
-      #   run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-      #   if: ${{matrix.python-version != 3.9}}
       - name: Install system dependencies
         run: |
           apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
+      - name: Install Python-dev
+        run: apt-get install -y python${{matrix.python-version}}-dev
+        if: ${{matrix.python-version != 3.9}}
       - name: Install mmseg dependencies
         run: |
           python -V
-          # pip install -U openmim
-          # pip install git+https://github.com/open-mmlab/mmengine.git
-          # mim install 'mmcv>=2.0.0rc4'
-          # pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          # pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+          pip install -U openmim
+          pip install git+https://github.com/open-mmlab/mmengine.git
+          mim install 'mmcv>=2.0.0rc4'
+          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
