@@ -37,7 +37,7 @@ Here we show how to develop a new metric with an example of `CustomMetric` as th
 
    In the above example, `CustomMetric` is a subclass of `BaseMetric`. It has three methods: `process`, `compute_metrics` and `evaluate`.
 
-   - `process()` process one batch of data samples and predictions. The processed results are stored in `self.results` which will be used to compute the metrics after all the data samples are processed.
+   - `process()` process one batch of data samples and predictions. The processed results are stored in `self.results` which will be used to compute the metrics after all the data samples are processed. Please refer to [MMEngine documentation](https://github.com/open-mmlab/mmengine/blob/main/docs/en/design/evaluation.md) for more details.
 
    - `compute_metrics()` is used to compute the metrics from the processed results.
 

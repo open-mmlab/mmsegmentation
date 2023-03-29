@@ -37,7 +37,7 @@
 
    在上面的示例中，`CustomMetric` 是 `BaseMetric` 的子类。它有三个方法：`process`，`compute_metrics` 和 `evaluate`。
 
-   - `process()` 处理一批数据样本和预测。处理后的结果存储在 `self.results` 中，将在处理所有数据样本后用于计算指标。
+   - `process()` 处理一批数据样本和预测。处理后的结果需要显示地传给 `self.results` ，将在处理所有数据样本后用于计算指标。更多细节请参考 [MMEngine 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/design/evaluation.md)
 
    - `compute_metrics()` 用于从处理后的结果中计算指标。
 
