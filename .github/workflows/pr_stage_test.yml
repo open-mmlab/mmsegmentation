@@ -89,15 +89,7 @@ jobs:
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
           apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
       - name: Install system dependencies
-        run: |
-          apt-get update && apt-get install -y  ffmpeg libxext6 git ninja-build  libsm6 libxrender-dev libxext6
-          # python -V
-          # apt-get update && apt-get install -y build-essential wget ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
-          # wget https://ftp.gnu.org/gnu/libc/glibc-2.34.tar.gz && tar -xzf glibc-2.34.tar.gz && cd glibc-2.34 && mkdir build && cd build &&  ../configure --prefix=/usr/local/glibc-2.34 && make && make install
-          # cd / && rm -rf glibc-2.34*
-          # export LD_LIBRARY_PATH=/usr/local/glibc-2.34/lib:$LD_LIBRARY_PATH
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+        run: apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libxrender-dev libxext6
       - name: Install mmseg dependencies
         run: |
           python -V
