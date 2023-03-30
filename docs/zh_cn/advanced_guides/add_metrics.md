@@ -43,7 +43,7 @@
 
    - `evaluate()` 是一个接口，用于计算指标并返回结果。它将由 `ValLoop` 或 `TestLoop` 在 `Runner` 中调用。在大多数情况下，您不需要重写此方法，但如果您想做一些额外的工作，可以重写它。
 
-   **注意：** 您可以在[这里](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L366) 找到 `Runner` 调用 `evaluate()` 方法的过程。`Runner` 是训练和测试过程的执行器，您可以在[引擎文档](./engine.md)中找到有关它的详细信息。
+   **注意：** 您可以在[这里](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/loops.py#L366) 找到 `Runner` 调用 `evaluate()` 方法的过程。`Runner` 是训练和测试过程的执行器，您可以在[训练引擎文档](./engine.md)中找到有关它的详细信息。
 
 2. 在 `mmseg/evaluation/metrics/__init__.py` 中导入新的指标。
 
