@@ -17,8 +17,6 @@
     </sup>
   </div>
   <div>&nbsp;</div>
-</div>
-<br />
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
 [![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
@@ -28,6 +26,12 @@
 [![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/1.x/LICENSE)
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
+
+文档: <https://mmsegmentation.readthedocs.io/zh_CN/latest>
+
+[English](README.md) | 简体中文
+
+</div>
 
 <div align="center">
   <a href="https://openmmlab.medium.com/" style="text-decoration:none;">
@@ -48,10 +52,6 @@
   <a href="https://www.zhihu.com/people/openmmlab" style="text-decoration:none;">
     <img src="https://user-images.githubusercontent.com/25839884/219026120-ba71e48b-6e94-4bd4-b4e9-b7d175b5e362.png" width="3%" alt="" /></a>
 </div>
-
-文档: <https://mmsegmentation.readthedocs.io/zh_CN/latest>
-
-[English](README.md) | 简体中文
 
 ## 简介
 
