@@ -1,4 +1,4 @@
-## Prepare datasets
+# Tutorial 2: Prepare datasets
 
 It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
 If your folder structure is different, you may need to change the corresponding paths in config files.
@@ -179,20 +179,19 @@ mmsegmentation
 |   │   │   │   └── polygons
 ```
 
-### Cityscapes
+## Cityscapes
 
 The data could be found [here](https://www.cityscapes-dataset.com/downloads/) after registration.
 
 By convention, `**labelTrainIds.png` are used for cityscapes training.
-We provided a [scripts](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)
-to generate `**labelTrainIds.png`.
+We provided a [script](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py) based on [cityscapesscripts](https://github.com/mcordts/cityscapesScripts)to generate `**labelTrainIds.png`.
 
 ```shell
 # --nproc means 8 process for conversion, which could be omitted as well.
 python tools/dataset_converters/cityscapes.py data/cityscapes --nproc 8
 ```
 
-### Pascal VOC
+## Pascal VOC
 
 Pascal VOC 2012 could be downloaded from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar).
 Beside, most recent works on Pascal VOC dataset usually exploit extra augmentation data, which could be found [here](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz).
@@ -204,14 +203,14 @@ If you would like to use augmented VOC dataset, please run following command to 
 python tools/dataset_converters/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-Please refer to [concat dataset](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/advanced_guides/datasets.md) for details about how to concatenate them and train them together.
+Please refer to [concat dataset](../advanced_guides/add_datasets.md#concatenate-dataset) and [voc_aug config example](../../../configs/_base_/datasets/pascal_voc12_aug.py) for details about how to concatenate them and train them together.
 
-### ADE20K
+## ADE20K
 
 The training and validation set of ADE20K could be download from this [link](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip).
 We may also download test set from [here](http://data.csail.mit.edu/places/ADEchallenge/release_test.zip).
 
-### Pascal Context
+## Pascal Context
 
 The training and validation set of Pascal Context could be download from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar). You may also download test set from [here](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar) after registration.
 
@@ -223,7 +222,7 @@ If you would like to use Pascal Context dataset, please install [Detail](https:/
 python tools/dataset_converters/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
 ```
 
-### COCO Stuff 10k
+## COCO Stuff 10k
 
 The data could be downloaded [here](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip) by wget.
 
@@ -243,7 +242,7 @@ python tools/dataset_converters/coco_stuff10k.py /path/to/coco_stuff10k --nproc 
 
 By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` are used for COCO Stuff 10k training and testing.
 
-### COCO Stuff 164k
+## COCO Stuff 164k
 
 For COCO Stuff 164k dataset, please run the following commands to download and convert the augmented dataset.
 
@@ -267,7 +266,7 @@ By convention, mask labels in `/path/to/coco_stuff164k/annotations/*2017/*_label
 
 The details of this dataset could be found at [here](https://github.com/nightrome/cocostuff#downloads).
 
-### CHASE DB1
+## CHASE DB1
 
 The training and validation set of CHASE DB1 could be download from [here](https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip).
 
@@ -279,7 +278,7 @@ python tools/dataset_converters/chase_db1.py /path/to/CHASEDB1.zip
 
 The script will make directory structure automatically.
 
-### DRIVE
+## DRIVE
 
 The training and validation set of DRIVE could be download from [here](https://drive.grand-challenge.org/). Before that, you should register an account. Currently '1st_manual' is not provided officially.
 
@@ -291,7 +290,7 @@ python tools/dataset_converters/drive.py /path/to/training.zip /path/to/test.zip
 
 The script will make directory structure automatically.
 
-### HRF
+## HRF
 
 First, download [healthy.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy.zip), [glaucoma.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma.zip), [diabetic_retinopathy.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy.zip), [healthy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy_manualsegm.zip), [glaucoma_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma_manualsegm.zip) and [diabetic_retinopathy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy_manualsegm.zip).
 
@@ -303,7 +302,7 @@ python tools/dataset_converters/hrf.py /path/to/healthy.zip /path/to/healthy_man
 
 The script will make directory structure automatically.
 
-### STARE
+## STARE
 
 First, download [stare-images.tar](http://cecas.clemson.edu/~ahoover/stare/probing/stare-images.tar), [labels-ah.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-ah.tar) and [labels-vk.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-vk.tar).
 
@@ -315,15 +314,15 @@ python tools/dataset_converters/stare.py /path/to/stare-images.tar /path/to/labe
 
 The script will make directory structure automatically.
 
-### Dark Zurich
+## Dark Zurich
 
 Since we only support test models on this dataset, you may only download [the validation set](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip).
 
-### Nighttime Driving
+## Nighttime Driving
 
 Since we only support test models on this dataset, you may only download [the test set](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip).
 
-### LoveDA
+## LoveDA
 
 The data could be downloaded from Google Drive [here](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing).
 
@@ -338,25 +337,24 @@ wget https://zenodo.org/record/5706578/files/Val.zip
 wget https://zenodo.org/record/5706578/files/Test.zip
 ```
 
-For LoveDA dataset, please run the following command to download and re-organize the dataset.
+For LoveDA dataset, please run the following command to re-organize the dataset.
 
 ```shell
 python tools/dataset_converters/loveda.py /path/to/loveDA
 ```
 
-Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/3_inference.md).
+Using trained model to predict test set of LoveDA and submit it to server can be found [here](https://codalab.lisn.upsaclay.fr/competitions/421).
 
 More details about LoveDA can be found [here](https://github.com/Junjue-Wang/LoveDA).
 
-### ISPRS Potsdam
+## ISPRS Potsdam
 
-The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/)
-dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
+The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
 The '2_Ortho_RGB.zip' and '5_Labels_all_noBoundary.zip' are required.
 
-For Potsdam dataset, please run the following command to download and re-organize the dataset.
+For Potsdam dataset, please run the following command to re-organize the dataset.
 
 ```shell
 python tools/dataset_converters/potsdam.py /path/to/potsdam
@@ -364,29 +362,28 @@ python tools/dataset_converters/potsdam.py /path/to/potsdam
 
 In our default setting, it will generate 3456 images for training and 2016 images for validation.
 
-### ISPRS Vaihingen
+## ISPRS Vaihingen
 
-The [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/)
-dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
+The [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
 The 'ISPRS_semantic_labeling_Vaihingen.zip' and 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip' are required.
 
-For Vaihingen dataset, please run the following command to download and re-organize the dataset.
+For Vaihingen dataset, please run the following command to re-organize the dataset.
 
 ```shell
 python tools/dataset_converters/vaihingen.py /path/to/vaihingen
 ```
 
-In our default setting (`clip_size` =512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.
+In our default setting (`clip_size`=512, `stride_size`=256), it will generate 344 images for training and 398 images for validation.
 
-### iSAID
+## iSAID
 
 The data images could be download from [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html) (train/val/test)
 
 The data annotations could be download from [iSAID](https://captain-whu.github.io/iSAID/dataset.html) (train/val)
 
-The dataset is a Large-scale Dataset for Instance Segmentation (also have segmantic segmentation) in Aerial Images.
+The dataset is a Large-scale Dataset for Instance Segmentation (also have semantic segmentation) in Aerial Images.
 
 You may need to follow the following structure for dataset preparation after downloading iSAID dataset.
 
@@ -415,7 +412,7 @@ You may need to follow the following structure for dataset preparation after dow
 python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
-In our default setting (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
+In our default setting (`patch_width`=896, `patch_height`=896, `overlap_area`=384), it will generate 33978 images for training and 11644 images for validation.
 
 ## LIP(Look Into Person) dataset
 
@@ -435,7 +432,7 @@ mv val_segmentations ../
 cd ..
 ```
 
-The contents of  LIP datasets include:
+The contents of LIP datasets include:
 
 ```none
 ├── data
@@ -456,10 +453,9 @@ The contents of  LIP datasets include:
 
 ## Synapse dataset
 
-This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/)
+This dataset could be download from [this page](https://www.synapse.org/#!Synapse:syn3193805/wiki/).
 
-To follow the data preparation setting of [TransUNet](https://arxiv.org/abs/2102.04306), which splits original training set (30 scans)
-into new training (18 scans) and validation set (12 scans). Please run the following command to prepare the dataset.
+To follow the data preparation setting of [TransUNet](https://arxiv.org/abs/2102.04306), which splits original training set (30 scans) into new training (18 scans) and validation set (12 scans). Please run the following command to prepare the dataset.
 
 ```shell
 unzip RawData.zip
@@ -532,10 +528,9 @@ Then, use this command to convert synapse dataset.
 python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
 
-Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image,
-which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
+Noted that MMSegmentation default evaluation metric (such as mean dice value) is calculated on 2D slice image, which is not comparable to results of 3D scan in some paper such as [TransUNet](https://arxiv.org/abs/2102.04306).
 
-### REFUGE
+## REFUGE
 
 Register in [REFUGE Challenge](https://refuge.grand-challenge.org) and download [REFUGE dataset](https://refuge.grand-challenge.org/REFUGE2Download).
 
@@ -624,4 +619,4 @@ It includes 400 images for training, 400 images for validation and 400 images fo
   ```
 
 - You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
-  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and  [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)
+  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)

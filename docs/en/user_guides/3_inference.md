@@ -19,7 +19,7 @@ MMSegmentation provides several interfaces for users to easily use pre-trained m
 
 ## Inferencer
 
-We provides the most **convenient** way to use the model in MMSegmentation `MMSegInferencer`. You can get segmentation mask for an image with only 3 lines of code.
+We provide the most **convenient** way to use the model in MMSegmentation `MMSegInferencer`. You can get segmentation mask for an image with only 3 lines of code.
 
 ### Basic Usage
 
@@ -36,7 +36,7 @@ The following example shows how to use `MMSegInferencer` to perform inference on
 The visualization result should look like:
 
 <div align="center">
-https://user-images.githubusercontent.com/76149310/221507927-ae01e3a7-016f-4425-b966-7b19cbbe494e.png
+    <img src='https://user-images.githubusercontent.com/76149310/221507927-ae01e3a7-016f-4425-b966-7b19cbbe494e.png' />
 </div>
 
 Moreover, you can use `MMSegInferencer` to process a list of images:
@@ -44,7 +44,7 @@ Moreover, you can use `MMSegInferencer` to process a list of images:
 ```
 # Input a list of images
 >>> images = [image1, image2, ...] # image1 can be a file path or a np.ndarray
->>> inferencer(images, show=True, wait_time=0.5) # wait_time is delay time, and 0 means forever.
+>>> inferencer(images, show=True, wait_time=0.5) # wait_time is delay time, and 0 means forever
 
 # Or input image directory
 >>> images = $IMAGESDIR
@@ -56,13 +56,12 @@ Moreover, you can use `MMSegInferencer` to process a list of images:
 >>> inferencer(images, out_dir='outputs', img_out_dir='vis', pred_out_dir='pred')
 ```
 
-There is a optional parameter of inferencer, `return_datasamples`, whose default value is False, and
-return value of inferencer is a `dict` type by default, including 2 keys 'visualization' and 'predictions'.
+There is a optional parameter of inferencer, `return_datasamples`, whose default value is False, and return value of inferencer is a `dict` type by default, including 2 keys 'visualization' and 'predictions'.
 If `return_datasamples=True` inferencer will return [`SegDataSample`](../advanced_guides/structures.md), or list of it.
 
 ```
 result = inferencer('demo/demo.png')
-# result is a `dict` including 2 keys 'visualization' and 'predictions'.
+# result is a `dict` including 2 keys 'visualization' and 'predictions'
 # 'visualization' includes color segmentation map
 print(result['visualization'].shape)
 # (512, 683, 3)
@@ -92,18 +91,12 @@ print(type(results[0]))
 ### Initialization
 
 `MMSegInferencer` must be initialized from a `model`, which can be a model name or a `Config` even a path of config file.
-The model names can be found in models' metafile, like one model name of maskformer is `maskformer_r50-d32_8xb2-160k_ade20k-512x512`, and if input model name and the weights of the model will be download automatically. Below are other input parameters:
+The model names can be found in models' metafile (configs/xxx/metafile.yaml), like one model name of maskformer is `maskformer_r50-d32_8xb2-160k_ade20k-512x512`, and if input model name and the weights of the model will be download automatically. Below are other input parameters:
 
-- weights (str, optional) -  Path to the checkpoint. If it is not specified and model is a model name of metafile, the weights will be loaded
-  from metafile. Defaults to None.
-- classes (list, optional) - Input classes for result rendering, as the prediction of segmentation
-  model is a segment map with label indices, `classes` is a list which includes
-  items responding to the label indices. If classes is not defined, visualizer will take `cityscapes` classes by default. Defaults to None.
-- palette (list, optional) - Input palette for result rendering, which is a list of color palette
-  responding to the classes. If palette is not defined, visualizer will take `cityscapes` palette by default. Defaults to None.
-- dataset_name (str, optional)[Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317)
-  visulizer will use the meta information of the dataset i.e. classes and palette,
-  but the `classes` and `palette` have higher priority. Defaults to None.
+- weights (str, optional) -  Path to the checkpoint. If it is not specified and model is a model name of metafile, the weights will be loaded from metafile. Defaults to None.
+- classes (list, optional) - Input classes for result rendering, as the prediction of segmentation model is a segment map with label indices, `classes` is a list which includes items responding to the label indices. If classes is not defined, visualizer will take `cityscapes` classes by default. Defaults to None.
+- palette (list, optional) - Input palette for result rendering, which is a list of colors responding to the classes. If the palette is not defined, the visualizer will take the palette of `cityscapes` by default. Defaults to None.
+- dataset_name (str, optional) - [Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317), visualizer will use the meta information of the dataset i.e. classes and palette, but the `classes` and `palette` have higher priority. Defaults to None.
 - device (str, optional) - Device to run inference. If None, the available device will be automatically used. Defaults to None.
 - scope (str, optional) - The scope of the model. Defaults to 'mmseg'.
 
@@ -113,8 +106,7 @@ The model names can be found in models' metafile, like one model name of maskfor
 
 - show (bool) - Whether to display the image in a popup window. Defaults to False.
 - wait_time (float) - The interval of show (s). Defaults to 0.
-- img_out_dir (str) - Subdirectory of `out_dir`, used to save rendering color segmentation mask, so `out_dir` must be defined
-  if you would like to save predicted mask. Defaults to 'vis'.
+- img_out_dir (str) - Subdirectory of `out_dir`, used to save rendering color segmentation mask, so `out_dir` must be defined if you would like to save predicted mask. Defaults to 'vis'.
 - opacity (int, float) - The transparency of segmentation mask. Defaults to 0.8.
 
 The examples of these parameters is in [Basic Usage](#basic-usage)
@@ -245,7 +237,7 @@ vis_image = show_result_pyplot(model, img_path, result)
 # save the visualization result, the output image would be found at the path `work_dirs/result.png`
 vis_iamge = show_result_pyplot(model, img_path, result, out_file='work_dirs/result.png')
 
-# Modify the time of displaying images, note that 0 is the special value that means "forever".
+# Modify the time of displaying images, note that 0 is the special value that means "forever"
 vis_image = show_result_pyplot(model, img_path, result, wait_time=5)
 ```
 
