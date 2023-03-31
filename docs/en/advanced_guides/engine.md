@@ -185,7 +185,7 @@ class SegVisualizationHook(Hook):
 
 ```
 
-For more details about visualization, you can check [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/visualization.md).
+For more details about visualization, you can check [here](../user_guides/visualization.md).
 
 ## Optimizer
 
