@@ -51,7 +51,7 @@ mim install "mmcv>=2.0.0rc1"
 情况 a: 如果您想立刻开发和运行 mmsegmentation，您可通过源码安装：
 
 ```shell
-git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git
+git clone -b main https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -v -e .
 # '-v' 表示详细模式，更多的输出
@@ -164,7 +164,7 @@ MMSegmentation 可以在仅有 CPU 的版本上运行。在 CPU 模式，您可�
 ```shell
 !git clone https://github.com/open-mmlab/mmsegmentation.git
 %cd mmsegmentation
-!git checkout dev-1.x
+!git checkout main
 !pip install -e .
 ```
 

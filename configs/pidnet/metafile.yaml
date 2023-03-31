@@ -33,7 +33,7 @@ Models:
   Paper:
     Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
     URL: https://arxiv.org/pdf/2206.02066.pdf
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/pidnet.py
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/pidnet.py
   Framework: PyTorch
 - Name: pidnet-m_2xb6-120k_1024x1024-cityscapes
   In Collection: PIDNet
@@ -57,7 +57,7 @@ Models:
   Paper:
     Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
     URL: https://arxiv.org/pdf/2206.02066.pdf
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/pidnet.py
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/pidnet.py
   Framework: PyTorch
 - Name: pidnet-l_2xb6-120k_1024x1024-cityscapes
   In Collection: PIDNet
@@ -81,5 +81,5 @@ Models:
   Paper:
     Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
     URL: https://arxiv.org/pdf/2206.02066.pdf
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/pidnet.py
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/pidnet.py
   Framework: PyTorch

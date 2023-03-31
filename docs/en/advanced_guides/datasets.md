@@ -1,14 +1,14 @@
 # Dataset
 
-Dataset classes in MMSegmentation have two functions: (1) load data information after [data preparation](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md)
-and (2) send data into [dataset transform pipeline](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L141) to do [data augmentation](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/transforms.md).
+Dataset classes in MMSegmentation have two functions: (1) load data information after [data preparation](../user_guides/2_dataset_prepare.md)
+and (2) send data into [dataset transform pipeline](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/basesegdataset.py#L141) to do [data augmentation](./transforms.md).
 There are 2 kinds of loaded information: (1) meta information which is original dataset information such as categories (classes) of dataset and their corresponding palette information, (2) data information which includes
 the path of dataset images and labels.
 The tutorial includes some main interfaces in MMSegmentation 1.x dataset class: methods of loading data information and modifying dataset classes in base dataset class, and the relationship between dataset and the data transform pipeline.
 
 ## Main Interfaces
 
-Take Cityscapes as an example, if you want to run the example, please download and [preprocess](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
+Take Cityscapes as an example, if you want to run the example, please download and [preprocess](../user_guides/2_dataset_prepare.md#cityscapes)
 Cityscapes dataset in `data` directory, before running the demo code:
 
 Instantiate Cityscapes training dataset:
@@ -108,7 +108,7 @@ print(dataset.metainfo)
 ```
 
 The return value of dataset `__getitem__` method is the output of data samples after data augmentation, whose type is also `dict`. It has two fields: `'inputs'` corresponding to images after data augmentation,
-and `'data_samples'` corresponding to `SegDataSample`\](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/zh_cn/advanced_guides/structures.md) which is new data structures in MMSegmentation 1.x,
+and `'data_samples'` corresponding to [`SegDataSample`](./structures.md) which is new data structures in MMSegmentation 1.x,
 and `gt_sem_seg` of `SegDataSample` has labels after data augmentation operations.
 
 ```python
@@ -179,19 +179,19 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-As mentioned above, dataset classes have the same functions, we implemented  [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) to reues the common functions.
+As mentioned above, dataset classes have the same functions, we implemented  [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/main/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) to reues the common functions.
 It inherits [`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
 dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset`, the **method of loading data information** (`load_data_list`) is redefined and adds new `get_label_map` method to **modify dataset classes information**.
 
 ### Loading Dataset Information
 
 The loaded data information includes the path of images samples and annotations samples, the detailed implementation could be found in
-[`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/163277bfe0fa8fefb63ee5137917fafada1b301c/mmseg/datasets/basesegdataset.py#L231) of `BaseSegDataset` in MMSegmentation.
+[`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/basesegdataset.py#L231) of `BaseSegDataset` in MMSegmentation.
 There are two main methods to acquire the path of images and labels:
 
 1. Load file paths according to the dirictory and suffix of input images and annotations
 
-If the dataset directory structure is organized as below, the [`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/163277bfe0fa8fefb63ee5137917fafada1b301c/mmseg/datasets/basesegdataset.py#L231) can parse dataset directory Structure:
+If the dataset directory structure is organized as below, the [`load_data_list`](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/basesegdataset.py#L231) can parse dataset directory Structure:
 
 ```
 ├── data
@@ -344,7 +344,7 @@ print(dataset.metainfo)
 ```
 
 Meta information is different from default setting of Cityscapes dataset. Moreover, `label_map` field is also defined, which is used for modifying label index of each pixel on segmentation mask.
-The segmentation label would re-map class information by `label_map`, [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L151) is detailed implementation:
+The segmentation label would re-map class information by `label_map`, [here](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/basesegdataset.py#L151) is detailed implementation:
 
 ```python
 gt_semantic_seg_copy = gt_semantic_seg.copy()

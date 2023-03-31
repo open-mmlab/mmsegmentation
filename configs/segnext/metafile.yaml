@@ -33,7 +33,7 @@ Models:
   Paper:
     Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
     URL: https://arxiv.org/abs/2209.08575
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/mscan.py#L328
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
   Framework: PyTorch
 - Name: segnext_mscan-s_1xb16-adamw-160k_ade20k-512x512
   In Collection: SegNeXt
@@ -57,7 +57,7 @@ Models:
   Paper:
     Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
     URL: https://arxiv.org/abs/2209.08575
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/mscan.py#L328
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
   Framework: PyTorch
 - Name: segnext_mscan-b_1xb16-adamw-160k_ade20k-512x512
   In Collection: SegNeXt
@@ -81,7 +81,7 @@ Models:
   Paper:
     Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
     URL: https://arxiv.org/abs/2209.08575
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/mscan.py#L328
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
   Framework: PyTorch
 - Name: segnext_mscan-l_1xb16-adamw-160k_ade20k-512x512
   In Collection: SegNeXt
@@ -105,5 +105,5 @@ Models:
   Paper:
     Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
     URL: https://arxiv.org/abs/2209.08575
-  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/backbones/mscan.py#L328
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
   Framework: PyTorch
