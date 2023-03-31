@@ -106,11 +106,11 @@ class MultiImageMixDataset:
                 continue
 
             if hasattr(transform, 'get_indices'):
-                indexes = transform.get_indices(self.dataset)
-                if not isinstance(indexes, collections.abc.Sequence):
-                    indexes = [indexes]
+                indices = transform.get_indices(self.dataset)
+                if not isinstance(indices, collections.abc.Sequence):
+                    indices = [indices]
                 mix_results = [
-                    copy.deepcopy(self.dataset[index]) for index in indexes
+                    copy.deepcopy(self.dataset[index]) for index in indices
                 ]
                 results['mix_results'] = mix_results
 

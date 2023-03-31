@@ -28,7 +28,7 @@ RUN ["/bin/bash", "-c", "mim install mmengine"]
 RUN ["/bin/bash", "-c", "mim install mmcv==${MMCV}"]
 
 # Install MMSegmentation
-RUN git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git /mmsegmentation
+RUN git clone -b main https://github.com/open-mmlab/mmsegmentation.git /mmsegmentation
 WORKDIR /mmsegmentation
 ENV FORCE_CUDA="1"
 RUN pip install -r requirements.txt
