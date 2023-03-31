@@ -26,7 +26,7 @@ From the diagram above, we could see the basic dataflow. In this section, we wou
 
 DataLoader is an essential component in training and testing pipelines of MMEngine. Conceptually, it is derived from and consistent with [PyTorch](https://pytorch.org/). DataLoader loads data from filesystem and the original data passes through data preparation pipeline, then it would be sent to Data Preprocessor.
 
-MMSegmentation defines the default data format at [PackSegInputs](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/transforms/formatting.py#L12), it's the last component of `train_pipeline` and `test_pipeline`. Please refer to [data transform documentation](./transforms.md) for more information about data transform `pipeline`.
+MMSegmentation defines the default data format at [PackSegInputs](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/transforms/formatting.py#L12), it's the last component of `train_pipeline` and `test_pipeline`. Please refer to [data transform documentation](./transforms.md) for more information about data transform `pipeline`.
 
 Without any modifications, the return value of PackSegInputs is usually a `dict` and has only two keys, `inputs` and `data_samples`. The following pseudo-code shows the data types of the data loader output in mmseg, which is a batch of fetched data samples from the dataset, and data loader packs them into a dictionary of the list. `inputs` is the list of input tensors to the model and `data_samples` contains a list of input images' meta information and corresponding ground truth.
 
@@ -73,7 +73,7 @@ After inference, the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentatio
 
 The same as Data Preprocessor, loss function is also a part of the model, it's a property of [decode head](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/decode_heads/decode_head.py#L142).
 
-In MMSegmentation, the method [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/decode_head.py#L291) of `decode_head` is an unified interface used to compute loss.
+In MMSegmentation, the method [loss_by_feat](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/decode_heads/decode_head.py#L291) of `decode_head` is an unified interface used to compute loss.
 
 Parameters:
 

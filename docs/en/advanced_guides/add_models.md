@@ -166,7 +166,7 @@ loss_decode=dict(type='MyLoss', loss_weight=1.0))
 
 ### Add new data preprocessor
 
-In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/data_preprocessor.py#L13) to copy data to the target device and preprocess the data into the model input format as default. Here we show how to develop a new data preprocessor.
+In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/data_preprocessor.py#L13) to copy data to the target device and preprocess the data into the model input format as default. Here we show how to develop a new data preprocessor.
 
 1. Create a new file `mmseg/models/my_datapreprocessor.py`.
 

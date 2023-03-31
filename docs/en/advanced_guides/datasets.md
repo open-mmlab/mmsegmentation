@@ -1,7 +1,7 @@
 # Dataset
 
 Dataset classes in MMSegmentation have two functions: (1) load data information after [data preparation](../user_guides/2_dataset_prepare.md)
-and (2) send data into [dataset transform pipeline](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L141) to do [data augmentation](./transforms.md).
+and (2) send data into [dataset transform pipeline](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/basesegdataset.py#L141) to do [data augmentation](./transforms.md).
 There are 2 kinds of loaded information: (1) meta information which is original dataset information such as categories (classes) of dataset and their corresponding palette information, (2) data information which includes
 the path of dataset images and labels.
 The tutorial includes some main interfaces in MMSegmentation 1.x dataset class: methods of loading data information and modifying dataset classes in base dataset class, and the relationship between dataset and the data transform pipeline.
@@ -179,7 +179,7 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-As mentioned above, dataset classes have the same functions, we implemented  [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/dev-1.x/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) to reues the common functions.
+As mentioned above, dataset classes have the same functions, we implemented  [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/main/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) to reues the common functions.
 It inherits [`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
 dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset`, the **method of loading data information** (`load_data_list`) is redefined and adds new `get_label_map` method to **modify dataset classes information**.
 
@@ -344,7 +344,7 @@ print(dataset.metainfo)
 ```
 
 Meta information is different from default setting of Cityscapes dataset. Moreover, `label_map` field is also defined, which is used for modifying label index of each pixel on segmentation mask.
-The segmentation label would re-map class information by `label_map`, [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/datasets/basesegdataset.py#L151) is detailed implementation:
+The segmentation label would re-map class information by `label_map`, [here](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/datasets/basesegdataset.py#L151) is detailed implementation:
 
 ```python
 gt_semantic_seg_copy = gt_semantic_seg.copy()
