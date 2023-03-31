@@ -1,4 +1,62 @@
-# \[WIP\] Add New Datasets
+# Add New Datasets
+
+## Add new custom dataset
+
+Here we show how to develop a new custom dataset.
+
+1. Create a new file `mmseg/datasets/example.py`
+
+   ```python
+   from mmseg.registry import DATASETS
+   from .basesegdataset import BaseSegDataset
+
+
+   @DATASETS.register_module()
+   class ExampleDataset(BaseSegDataset):
+
+       METAINFO = dict(
+           classes=('xxx', 'xxx', ...),
+           palette=[[x, x, x], [x, x, x], ...])
+
+       def __init__(self, aeg1, arg2):
+           pass
+   ```
+
+2. Import the module in `mmseg/datasets/__init__.py`
+
+   ```python
+   from .example import ExampleDataset
+   ```
+
+3. Use it by creating a new new dataset config file `configs/_base_/datasets/example_dataset.py`
+
+   ```python
+   dataset_type = 'ExampleDataset'
+   data_root = 'data/example/'
+   ...
+   ```
+
+4. Add dataset meta information in `mmseg/utils/class_names.py`
+
+   ```python
+   def example_classes():
+       return [
+           'xxx', 'xxx',
+           ...
+       ]
+
+   def example_palette():
+       return [
+           [x, x, x], [x, x, x],
+           ...
+       ]
+   dataset_aliases ={
+       'example': ['example', ...],
+       ...
+   }
+   ```
+
+**Note:** If the new dataset does not satisfy the mmseg requirements, a data preprocessing script needs to be prepared in `tools/dataset_converters/`
 
 ## Customize datasets by reorganizing data
 
@@ -26,26 +84,12 @@ An example of file structure is as followed.
 
 A training pair will consist of the files with same suffix in img_dir/ann_dir.
 
-If `split` argument is given, only part of the files in img_dir/ann_dir will be loaded.
-We may specify the prefix of files we would like to be included in the split txt.
+Some datasets don't release the test set or don't release the ground truth of the test set, and we cannot evaluate models locally without the ground truth of the test set, so we set the validation set as the default test set in config files.
 
-More specifically, for a split txt like following,
+About how to build your own datasets or implement a new dataset class please refer to the [datasets guide](./datasets.md) for more detailed information.
 
-```none
-xxx
-zzz
-```
-
-Only
-`data/my_dataset/img_dir/train/xxx{img_suffix}`,
-`data/my_dataset/img_dir/train/zzz{img_suffix}`,
-`data/my_dataset/ann_dir/train/xxx{seg_map_suffix}`,
-`data/my_dataset/ann_dir/train/zzz{seg_map_suffix}` will be loaded.
-
-:::{note}
-The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
+**Note:** The annotations are images of shape (H, W), the value pixel should fall in range `[0, num_classes - 1]`.
 You may use `'P'` mode of [pillow](https://pillow.readthedocs.io/en/stable/handbook/concepts.html#palette) to create your annotation image with color.
-:::
 
 ## Customize datasets by mixing dataset
 
@@ -59,14 +103,14 @@ For example, suppose the original dataset is `Dataset_A`, to repeat it, the conf
 
 ```python
 dataset_A_train = dict(
-        type='RepeatDataset',
-        times=N,
-        dataset=dict(  # This is the original config of Dataset_A
-            type='Dataset_A',
-            ...
-            pipeline=train_pipeline
-        )
+    type='RepeatDataset',
+    times=N,
+    dataset=dict(  # This is the original config of Dataset_A
+        type='Dataset_A',
+        ...
+        pipeline=train_pipeline
     )
+)
 ```
 
 ### Concatenate dataset
@@ -111,7 +155,9 @@ dataset_B_train = dict(
     )
 )
 train_dataloader = dict(
-    dataset=dict('ConcatDataset', datasets=[dataset_A_train, dataset_B_train]))
+    dataset=dict(
+        type='ConcatDataset',
+        datasets=[dataset_A_train, dataset_B_train]))
 
 val_dataloader = dict(dataset=dataset_A_val)
 test_dataloader = dict(dataset=dataset_A_test)
@@ -123,8 +169,7 @@ You can refer base dataset [tutorial](https://mmengine.readthedocs.io/en/latest/
 ### Multi-image Mix Dataset
 
 We use `MultiImageMixDataset` as a wrapper to mix images from multiple datasets.
-`MultiImageMixDataset` can be used by multiple images mixed data augmentation
-like mosaic and mixup.
+`MultiImageMixDataset` can be used by multiple images mixed data augmentation like mosaic and mixup.
 
 An example of using `MultiImageMixDataset` with `Mosaic` data augmentation:
 
@@ -139,8 +184,6 @@ train_pipeline = [
 train_dataset = dict(
     type='MultiImageMixDataset',
     dataset=dict(
-        classes=classes,
-        palette=palette,
         type=dataset_type,
         reduce_zero_label=False,
         img_dir=data_root + "images/train",
