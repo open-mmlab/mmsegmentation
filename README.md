@@ -97,7 +97,7 @@ Please refer to [get_started.md](docs/en/get_started.md#installation) for instal
 Please see [Overview](docs/en/overview.md) for the general introduction of MMSegmentation.
 
 Please see [user guides](https://mmsegmentation.readthedocs.io/en/1.x/user_guides/index.html#) for the basic usage of MMSegmentation.
-There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/index.html) for in-depth understanding of mmseg design and implementation .
+There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/main/advanced_guides/index.html) for in-depth understanding of mmseg design and implementation .
 
 A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 

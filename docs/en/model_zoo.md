@@ -34,123 +34,123 @@
 
 ### FCN
 
-Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fcn) for details.
+Please refer to [FCN](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fcn) for details.
 
 ### PSPNet
 
-Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet) for details.
+Please refer to [PSPNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/pspnet) for details.
 
 ### DeepLabV3
 
-Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3) for details.
+Please refer to [DeepLabV3](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/deeplabv3) for details.
 
 ### PSANet
 
-Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/psanet) for details.
+Please refer to [PSANet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/psanet) for details.
 
 ### DeepLabV3+
 
-Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/deeplabv3plus) for details.
+Please refer to [DeepLabV3+](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/deeplabv3plus) for details.
 
 ### UPerNet
 
-Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet) for details.
+Please refer to [UPerNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/upernet) for details.
 
 ### NonLocal Net
 
-Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/nonlocal_net) for details.
+Please refer to [NonLocal Net](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/nonlocal_net) for details.
 
 ### EncNet
 
-Please refer to [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/encnet) for details.
+Please refer to [EncNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/encnet) for details.
 
 ### CCNet
 
-Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ccnet) for details.
+Please refer to [CCNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/ccnet) for details.
 
 ### DANet
 
-Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/danet) for details.
+Please refer to [DANet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/danet) for details.
 
 ### APCNet
 
-Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet) for details.
+Please refer to [APCNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/apcnet) for details.
 
 ### HRNet
 
-Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/hrnet) for details.
+Please refer to [HRNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/hrnet) for details.
 
 ### GCNet
 
-Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/gcnet) for details.
+Please refer to [GCNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/gcnet) for details.
 
 ### DMNet
 
-Please refer to [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dmnet) for details.
+Please refer to [DMNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/dmnet) for details.
 
 ### ANN
 
-Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ann) for details.
+Please refer to [ANN](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/ann) for details.
 
 ### OCRNet
 
-Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/ocrnet) for details.
+Please refer to [OCRNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/ocrnet) for details.
 
 ### Fast-SCNN
 
-Please refer to [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/fastscnn) for details.
+Please refer to [Fast-SCNN](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fastscnn) for details.
 
 ### ResNeSt
 
-Please refer to [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/resnest) for details.
+Please refer to [ResNeSt](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/resnest) for details.
 
 ### Semantic FPN
 
-Please refer to [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/sem_fpn) for details.
+Please refer to [Semantic FPN](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/sem_fpn) for details.
 
 ### PointRend
 
-Please refer to [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/point_rend) for details.
+Please refer to [PointRend](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/point_rend) for details.
 
 ### MobileNetV2
 
-Please refer to [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v2) for details.
+Please refer to [MobileNetV2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/mobilenet_v2) for details.
 
 ### MobileNetV3
 
-Please refer to [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/mobilenet_v3) for details.
+Please refer to [MobileNetV3](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/mobilenet_v3) for details.
 
 ### EMANet
 
-Please refer to [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet) for details.
+Please refer to [EMANet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/emanet) for details.
 
 ### DNLNet
 
-Please refer to [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/dnlnet) for details.
+Please refer to [DNLNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/dnlnet) for details.
 
 ### CGNet
 
-Please refer to [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/cgnet) for details.
+Please refer to [CGNet](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/cgnet) for details.
 
 ### Mixed Precision (FP16) Training
 
-Please refer [Mixed Precision (FP16) Training on BiSeNetV2](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes.py) for details.
+Please refer [Mixed Precision (FP16) Training on BiSeNetV2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/bisenetv2/bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024.py) for details.
 
 ### U-Net
 
-Please refer to [U-Net](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/unet/README.md) for details.
+Please refer to [U-Net](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/unet/README.md) for details.
 
 ### ViT
 
-Please refer to [ViT](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/vit/README.md) for details.
+Please refer to [ViT](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/vit/README.md) for details.
 
 ### Swin
 
-Please refer to [Swin](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/swin/README.md) for details.
+Please refer to [Swin](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/swin/README.md) for details.
 
 ### SETR
 
-Please refer to [SETR](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/setr/README.md) for details.
+Please refer to [SETR](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/setr/README.md) for details.
 
 ## Speed benchmark
 

@@ -96,7 +96,7 @@ print(type(results[0]))
 - weights（str，可选）- 权重的路径。如果未指定，并且模型是元文件中的模型名称，则权重将从元文件加载。默认为 None。
 - classes（list，可选）- 输入类别用于结果渲染，由于分割模型的预测结构是标签索引的分割图，`classes` 是一个相应的标签索引的类别列表。若 classes 没有定义，可视化工具将默认使用 `cityscapes` 的类别。默认为 None。
 - palette（list，可选）- 输入调色盘用于结果渲染，它是对应分类的配色列表。若 palette 没有定义，可视化工具将默认使用 `cityscapes` 的调色盘。默认为 None。
-- dataset_name（str，可选）- [数据集名称或别名](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317)，可视化工具将使用数据集的元信息，如类别和配色，但 `classes` 和 `palette` 具有更高的优先级。默认为 None。
+- dataset_name（str，可选）- [数据集名称或别名](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/utils/class_names.py#L302-L317)，可视化工具将使用数据集的元信息，如类别和配色，但 `classes` 和 `palette` 具有更高的优先级。默认为 None。
 - device（str，可选）- 运行推理的设备。如果无，则会自动使用可用的设备。默认为 None。
 - scope（str，可选）- 模型的作用域。默认为 'mmseg'。
 
