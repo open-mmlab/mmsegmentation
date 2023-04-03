@@ -2,7 +2,7 @@
 
 ## 使用方法
 
-首先，请参考[MMCV](https://mmcv.readthedocs.io/zh_CN/latest/get_started/build.html#npu-mmcv-full) 安装带有 NPU 支持的 MMCV与 [mmengine](https://mmengine.readthedocs.io/en/latest/get_started/installation.html#build-from-source) 。
+首先，请参考[MMCV](https://mmcv.readthedocs.io/zh_CN/latest/get_started/build.html#npu-mmcv-full) 安装带有 NPU 支持的 MMCV与 [MMEngine](https://mmengine.readthedocs.io/en/latest/get_started/installation.html#build-from-source) 。
 
 使用如下命令，可以利用 4 个 NPU 训练模型（以 deeplabv3为例）：
 
