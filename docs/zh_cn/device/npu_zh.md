@@ -7,8 +7,7 @@
 使用如下命令，可以利用 4 个 NPU 训练模型（以 deeplabv3为例）：
 
 ```shell
-bash tools/dist_train.sh configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-512x1024.py 4
-```
+bash tools/dist_train.sh configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py 4
 
 或者，使用如下命令，在一个 NPU 上训练模型（以 deeplabv3为例）：
 
