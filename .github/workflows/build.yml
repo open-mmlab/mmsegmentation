@@ -64,6 +64,7 @@ jobs:
       - name: Install unittest dependencies
         run: |
           pip install -r requirements.txt
+          pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
@@ -133,6 +134,7 @@ jobs:
           python -m pip install -U openmim
           mim install mmcv-full
           python -m pip install -r requirements.txt
+          python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
         run: |
@@ -200,6 +202,7 @@ jobs:
           python -m pip install openmim
           mim install mmcv-full
           python -m pip install -r requirements.txt
+          python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
         run: |
@@ -263,6 +266,7 @@ jobs:
           python -m pip install openmim
           mim install mmcv-full
           python -m pip install -r requirements.txt
+          python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
         run: |
@@ -301,7 +305,9 @@ jobs:
           pip install -U openmim
           mim install mmcv-full
       - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: |
+          pip install -r requirements/tests.txt -r requirements/optional.txt
+          pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - name: Build and install
         run: pip install -e .
       - name: Run unittests

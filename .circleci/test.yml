@@ -77,6 +77,7 @@ jobs:
           command: |
             python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch<< parameters.torch >>/index.html
             python -m pip install -r requirements.txt
+            python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - run:
           name: Build and install
           command: |
@@ -119,6 +120,8 @@ jobs:
           command: |
             docker exec mmseg pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/${MMCV_CUDA}/torch${MMCV_TORCH}/index.html
             docker exec mmseg pip install -r requirements.txt
+            docker exec mmseg pip install typing-extensions -U
+            docker exec mmseg pip install albumentations --use-pep517 qudida albumentations
       - run:
           name: Build and install
           command: |
