@@ -102,11 +102,11 @@ No changes in `model.backbone`, `model.neck`, `model.decode_head` and `model.los
 
 Add `model.data_preprocessor` field to configure the `DataPreProcessor`, including:
 
-- `mean`(Sequence, optional): The pixel mean of R, G, B channels. Defaults to None.
+- `mean` (Sequence, optional): The pixel mean of R, G, B channels. Defaults to None.
 
-- `std`(Sequence, optional): The pixel standard deviation of R, G, B channels. Defaults to None.
+- `std` (Sequence, optional): The pixel standard deviation of R, G, B channels. Defaults to None.
 
-- `size`(Sequence, optional): Fixed padding size.
+- `size` (Sequence, optional): Fixed padding size.
 
 - `size_divisor` (int, optional): The divisor of padded size.
 
