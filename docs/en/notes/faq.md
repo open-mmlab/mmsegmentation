@@ -107,7 +107,7 @@ auxiliary_head=dict(
 
 The parameter type of `reduce_zero_label` in dataset is Boolean, which is default to False. It is used to ignore the dataset label 0. The specific method is to change label 0 to 255, and subtract 1 from the corresponding number of all the remaining labels. At the same time, set 255 as ignore index in the decode head, which means that it will not participate in the loss calculation.
 
-Following is the specific implementation logic of `reduce_ zero_ Label`:
+Following is the specific implementation logic of `reduce_zero_label`:
 
 ```python
 if self.reduce_zero_label:
@@ -117,7 +117,7 @@ if self.reduce_zero_label:
     gt_semantic_seg[gt_semantic_seg == 254] = 255
 ```
 
-Whether your dataset needs to use reduce\_ zero\_ Label, there are two types of situations:
+Whether your dataset needs to use `reduce_zero_label`, there are two types of situations:
 
 - On [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam) dataset, there are six classes: 0-Impervious surfaces, 1-Building, 2-Low vegetation, 3-Tree, 4-Car, 5-Clutter/background. However, this dataset provides two types of RGB labels, one with black pixels at the edges of the images, and the other without. For labels with black edges, in [dataset_converters.py](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tools/dataset_converters/potsdam.py), it converts the black edges to label 0, and the other labels are 1-Impervious surfaces, 2-Building, 3-Low vegetation, 4-Tree, 5-Car, 6-Clutter/background. Therefore, in the dataset config [potsdam.py](https://github.com/open-mmlab/mmsegmentation/blob/ff95416c3b5ce8d62b9289f743531398efce534f/mmseg/datasets/potsdam.py#L23) `reduce_zero_label=True`。 If you are using labels without black edges, then there are only class 0-5 in the mask label. At this point, you should use `reduce_zero_label=False`. `reduce_ zero_label` usage needs to be considered with your actual situation.
 - On a dataset with class 0 as the background class, if you need to separate the background from the rest of your classes ultimately then you do not need to use `reduce_zero_label`, which in the dataset config settings should be `reduce_zero_label=False`
