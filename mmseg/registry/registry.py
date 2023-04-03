@@ -46,10 +46,7 @@ HOOKS = Registry(
 # manage data-related modules
 DATASETS = Registry(
     'dataset', parent=MMENGINE_DATASETS, locations=['mmseg.datasets'])
-DATA_SAMPLERS = Registry(
-    'data sampler',
-    parent=MMENGINE_DATA_SAMPLERS,
-    locations=['mmseg.datasets.samplers'])
+DATA_SAMPLERS = Registry('data sampler', parent=MMENGINE_DATA_SAMPLERS)
 TRANSFORMS = Registry(
     'transform',
     parent=MMENGINE_TRANSFORMS,
@@ -85,9 +82,7 @@ OPTIM_WRAPPER_CONSTRUCTORS = Registry(
     locations=['mmseg.engine.optimizers'])
 # mangage all kinds of parameter schedulers like `MultiStepLR`
 PARAM_SCHEDULERS = Registry(
-    'parameter scheduler',
-    parent=MMENGINE_PARAM_SCHEDULERS,
-    locations=['mmseg.engine.schedulers'])
+    'parameter scheduler', parent=MMENGINE_PARAM_SCHEDULERS)
 
 # manage all kinds of metrics
 METRICS = Registry(
