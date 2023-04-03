@@ -417,7 +417,7 @@ runner = dict(type='IterBasedRunner', max_iters=20000)
 <td>
 
 ```python
-# `val_interval` 是原版的 `evaluation.interval`。
+# `val_interval` 是旧版本的 `evaluation.interval`。
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=2000)
 val_cfg = dict(type='ValLoop') # 使用默认的验证循环。
 test_cfg = dict(type='TestLoop') # 使用默认的测试循环。
