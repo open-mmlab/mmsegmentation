@@ -13,7 +13,7 @@ bash tools/dist_train.sh configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_citysca
 Also, you can use only one NPU to train the model with the following command:
 
 ```shell
-python tools/train.py configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-512x1024.py
+python tools/train.py configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py
 ```
 
 ## Models Results
