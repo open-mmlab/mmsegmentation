@@ -1,7 +1,7 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch.nn as nn
-
-from mmengine.model import BaseModule
 from mmcv.cnn import ConvModule, build_norm_layer
+from mmengine.model import BaseModule
 
 from mmseg.models.utils import DAPPM, BasicBlock, Bottleneck, resize
 from mmseg.registry import MODELS
@@ -10,12 +10,12 @@ from mmseg.registry import MODELS
 @MODELS.register_module()
 class DDRNet(BaseModule):
     """DDRNet backbone.
-    
-    This backbone is the implementation of `Deep Dual-resolution Networks for 
+
+    This backbone is the implementation of `Deep Dual-resolution Networks for
     Real-time and Accurate Semantic Segmentation of Road Scenes
     <http://arxiv.org/abs/2101.06085>`_.
     Modified from https://github.com/ydhongHIT/DDRNet.
-    
+
     Args:
         in_channels
         channels:

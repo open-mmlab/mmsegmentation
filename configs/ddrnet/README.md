@@ -46,4 +46,3 @@ The pretrained weights in config files are converted from [the official repo](ht
   primaryClass={cs.CV},
 }
 ```
-

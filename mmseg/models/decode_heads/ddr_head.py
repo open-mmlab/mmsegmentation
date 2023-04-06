@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from typing import Optional, Tuple, Union
 
 import torch.nn as nn
@@ -14,7 +15,7 @@ from mmseg.utils import OptConfigType, SampleList
 @MODELS.register_module()
 class DDRHead(BaseDecodeHead):
     """Decode head forDDRNet.
-    
+
     Args:
         in_channels (int): Number of input channels.
         channels (int): Number of output channels.
