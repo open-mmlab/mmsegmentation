@@ -12,11 +12,11 @@ MMSegmentation 1.x 依赖于一些新的软件包，您可以准备一个新的�
 
 1. [MMEngine](https://github.com/open-mmlab/mmengine)：MMEngine 是 OpenMMLab 2.0 架构的核心，我们将许多与计算机视觉无关的内容从 MMCV 拆分到 MMEngine 中。
 
-2. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0rc1** 以上的版本。
+2. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0** 或以上的版本。
 
-3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc0** 以上的版本。
+3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc6** 版本。
 
-4. [MMDetection](https://github.com/open-mmlab/mmdetection)(可选): OpenMMLab 的目标检测工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **3.0.0rc0** 以上的版本。
+4. [MMDetection](https://github.com/open-mmlab/mmdetection)(可选): OpenMMLab 的目标检测工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **3.0.0** 或以上的版本。
 
 ## 启动训练
 
