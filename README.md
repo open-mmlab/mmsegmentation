@@ -88,11 +88,12 @@ MMSegmentation v1.x brings remarkable improvements over the 0.x release, offerin
 
 ## What's New
 
-v1.0.0rc6 was released on 03/03/2023.
+v1.0.0 was released on 04/06/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413), [#2658](https://github.com/open-mmlab/mmsegmentation/pull/2658))
-- Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
+- Add Mapillary Vistas Datasets support to MMSegmentation Core Package ([#2576](https://github.com/open-mmlab/mmsegmentation/pull/2576))
+- Support PIDNet ([#2609](https://github.com/open-mmlab/mmsegmentation/pull/2609))
+- Support SegNeXt ([#2654](https://github.com/open-mmlab/mmsegmentation/pull/2654))
 
 ## Installation
 
