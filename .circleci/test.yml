@@ -63,7 +63,7 @@ jobs:
             pip install -U openmim
             mim install 'mmcv>=2.0.0rc4'
             pip install mmcls==1.0.0rc6
-            pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+            pip install git+https://github.com/open-mmlab/mmdetection.git@main
             pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
