@@ -8,13 +8,14 @@ The compatible MMSegmentation, MMCV and MMEngine versions are as below. Please i
 
 | MMSegmentation version |          MMCV version          | MMEngine version  | MMClassification (optional) version | MMDetection (optional) version |
 | :--------------------: | :----------------------------: | :---------------: | :---------------------------------: | :----------------------------: |
-|     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
-|       1.x branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
+|     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
+|      main branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
+|         1.0.0          |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
 |        1.0.0rc6        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
 |        1.0.0rc5        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           |        mmdet>=3.0.0rc6         |
 |        1.0.0rc4        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
-|        1.0.0rc3        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4  \<=3.0.0rc5  |
-|        1.0.0rc2        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4  \<=3.0.0rc5  |
+|        1.0.0rc3        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
+|        1.0.0rc2        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
 |        1.0.0rc1        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 |        1.0.0rc0        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 
@@ -61,7 +62,7 @@ But in binary segmentation task, there are two solutions:
 
 In summary, to implement binary segmentation methods users should modify below parameters in the `decode_head` and `auxiliary_head` configs. Here is a modification example of [pspnet_unet_s5-d16.py](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/_base_/models/pspnet_unet_s5-d16.py):
 
-- (1) `num_classes=2`, `out_channels=2`  and `use_sigmoid=False` in `CrossEntropyLoss`.
+- (1) `num_classes=2`, `out_channels=2` and `use_sigmoid=False` in `CrossEntropyLoss`.
 
 ```python
 decode_head=dict(
