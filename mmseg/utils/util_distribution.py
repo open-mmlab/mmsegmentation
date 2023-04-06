@@ -37,6 +37,7 @@ def build_dp(model, device='cuda', dim=0, *args, **kwargs):
         assert digit_version(mmcv.__version__) >= digit_version('1.7.0'), \
                 'Please use MMCV >= 1.7.0 for NPU training!'
         from mmcv.device.npu import NPUDataParallel
+        torch.npu.set_device(kwargs['device_ids'][0])
         torch.npu.set_compile_mode(jit_compile=False)
         dp_factory['npu'] = NPUDataParallel
         model = model.npu()
