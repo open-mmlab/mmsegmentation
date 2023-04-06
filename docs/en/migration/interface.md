@@ -14,7 +14,7 @@ Or install the below packages manually.
 
 2. [MMCV](https://github.com/open-mmlab/mmcv): The computer vision package of OpenMMLab. This is not a new dependency, but you need to upgrade it to **2.0.0** version or above.
 
-3. [MMClassification](https://github.com/open-mmlab/mmclassification)(Optional): The image classification toolbox and benchmark of OpenMMLab. This is not a new dependency, but you need to upgrade it to **1.0.0** version or above.
+3. [MMClassification](https://github.com/open-mmlab/mmclassification)(Optional): The image classification toolbox and benchmark of OpenMMLab. This is not a new dependency, but you need to upgrade it to **1.0.0rc6** version.
 
 4. [MMDetection](https://github.com/open-mmlab/mmdetection)(Optional): The object detection toolbox and benchmark of OpenMMLab. This is not a new dependency, but you need to upgrade it to **3.0.0** version or above.
 

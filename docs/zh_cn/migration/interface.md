@@ -14,7 +14,7 @@ MMSegmentation 1.x 依赖于一些新的软件包，您可以准备一个新的�
 
 2. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0** 或以上的版本。
 
-3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0** 或以上的版本。
+3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc6** 版本。
 
 4. [MMDetection](https://github.com/open-mmlab/mmdetection)(可选): OpenMMLab 的目标检测工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **3.0.0** 或以上的版本。
 
