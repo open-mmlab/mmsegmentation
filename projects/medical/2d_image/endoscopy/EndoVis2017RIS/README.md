@@ -1,8 +1,8 @@
-# Bactteria detection with darkfield microscopy
+# EndoVis2017RIS
 
 ## Description
 
-This project supports **`Bactteria detection with darkfield microscopy`**, which can be downloaded from [here](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/).
+This project supports **`EndoVis2017RIS`**, which can be downloaded from [here](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/).
 
 ### Dataset Overview
 
@@ -14,9 +14,9 @@ It is highly imbalanced, so naive loss functions would work less properly
 
 ### Original Statistic Information
 
-| Dataset name                                                                                               | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| ---------------------------------------------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [Bactteria detection](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                                          | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ----------------------------------------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [EndoVis2017RIS](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 |  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -54,7 +54,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset Preparing
 
 - Download dataset from [here](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) and save it to the `data/` directory .
-- Decompress data to path `data/`. This will create a new folder named `data/Bacteria_detection_with_darkfield_microscopy_datasets/`, which contains the original image data.
+- Decompress data to path `data/`. This will create a new folder named `data/EndoVis2017RIS/`, which contains the original image data.
 - run script `python tools/prepare_dataset.py` to format data and change folder structure as below.
 - run script `python ../../tools/split_seg_dataset.py` to split dataset. For the Bacteria_detection dataset, as there is no test or validation dataset, we sample 20% samples from the whole dataset as the validation dataset and 80% samples for training data and make two filename lists `train.txt` and `val.txt`. As we set the random seed as the hard code, we eliminated the randomness, the dataset split actually can be reproducible.
 
@@ -117,7 +117,7 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ## Results
 
-### Bactteria detection with darkfield microscopy
+### EndoVis2017RIS
 
 ***Note: The following experimental results are based on the data randomly partitioned according to the above method described in the dataset preparing section.***
 
