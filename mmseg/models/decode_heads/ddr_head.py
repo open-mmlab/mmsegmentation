@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import Optional, Tuple, Union
+from typing import Tuple, Union
 
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
