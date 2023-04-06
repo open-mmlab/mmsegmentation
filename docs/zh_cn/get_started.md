@@ -43,7 +43,7 @@ conda install pytorch torchvision cpuonly -c pytorch
 ```shell
 pip install -U openmim
 mim install mmengine
-mim install "mmcv>=2.0.0rc1"
+mim install "mmcv>=2.0.0"
 ```
 
 **步骤 1.** 安装 MMSegmentation
@@ -62,7 +62,7 @@ pip install -v -e .
 情况 b: 如果您把 mmsegmentation 作为依赖库或者第三方库，可以通过 pip 安装：
 
 ```shell
-pip install "mmsegmentation>=1.0.0rc0"
+pip install "mmsegmentation>=1.0.0"
 ```
 
 ### 验证是否安装成功
@@ -87,8 +87,7 @@ python demo/image_demo.py demo/demo.png configs/pspnet/pspnet_r50-d8_4xb2-40k_ci
 
 您将在当前文件夹中看到一个新图像 `result.jpg`，其中所有目标都覆盖了分割 mask
 
-选项 (b). 如果您通过 pip 安装 mmsegmentation, 打开您的 python
-解释器，复制粘贴以下代码：
+选项 (b). 如果您通过 pip 安装 mmsegmentation, 打开您的 python 解释器，复制粘贴以下代码：
 
 ```python
 from mmseg.apis import inference_model, init_model, show_result_pyplot
@@ -137,15 +136,15 @@ MMCV 包含 C++ 和 CUDA 扩展，因此与 PyTorch 的依赖方式比较复杂�
 
 为了使用 pip 而不是 MIM 安装 MMCV, 请参考 [MMCV 安装指南](https://mmcv.readthedocs.io/en/latest/get_started/installation.html). 这需要手动指定一个基于 PyTorch 版本及其 CUDA 版本的 find-url.
 
-例如，以下命令可为 PyTorch 1.10.x and CUDA 11.3 安装 mmcv==2.0.0rc1
+例如，以下命令可为 PyTorch 1.10.x and CUDA 11.3 安装 mmcv==2.0.0
 
 ```shell
-pip install mmcv==2.0.0rc1 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10/index.html
+pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10/index.html
 ```
 
 #### 在仅有 CPU 的平台安装
 
-MMSegmentation 可以在仅有 CPU 的版本上运行。在 CPU 模式，您可以训练（需要 MMCV-Lite 版本 >= 2.0.0rc0），测试和推理模型。
+MMSegmentation 可以在仅有 CPU 的版本上运行。在 CPU 模式，您可以训练（需要 MMCV 版本 >= 2.0.0），测试和推理模型。
 
 #### 在 Google Colab 上安装
 
@@ -156,7 +155,7 @@ MMSegmentation 可以在仅有 CPU 的版本上运行。在 CPU 模式，您可�
 ```shell
 !pip3 install openmim
 !mim install mmengine
-!mim install "mmcv>=2.0.0rc1"
+!mim install "mmcv>=2.0.0"
 ```
 
 **Step 2.** 通过源码安装 MMSegmentation
@@ -173,7 +172,7 @@ MMSegmentation 可以在仅有 CPU 的版本上运行。在 CPU 模式，您可�
 ```python
 import mmseg
 print(mmseg.__version__)
-# 示例输出: 1.0.0rc0
+# 示例输出: 1.0.0
 ```
 
 **注意:**
