@@ -22,6 +22,7 @@ python tools/train.py configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes
 |     [unet](<>)      | 69.00 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/unet/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes.py)          | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes.log.json) |
 |    [apcnet](<>)     | 78.07 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes.py)               | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/apcnet_r50-d8_512x1024_40k_cityscapes.log.json)        |
 |    [upernet](<>)    | 78.22 | [config](https://github.com/open-mmlab/mmsegmentation/tree/1.x/configs/upernet/upernet_r50_4xb2-40k_cityscapes-512x1024.py)              | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/upernet_r50_512x1024_40k_cityscapes.log.json)          |
+
 **注意:**
 - 如果没有特别标记，NPU 上的结果与使用 FP32 的 GPU 上的结果结果相同。
 
