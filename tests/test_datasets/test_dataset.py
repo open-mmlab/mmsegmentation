@@ -7,8 +7,10 @@ import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
                             COCOStuffDataset, DecathlonDataset, ISPRSDataset,
-                            LIPDataset, LoveDADataset, PascalVOCDataset,
-                            PotsdamDataset, SynapseDataset, iSAIDDataset)
+                            LIPDataset, LoveDADataset, MapillaryDataset_v1,
+                            MapillaryDataset_v2, PascalVOCDataset,
+                            PotsdamDataset, REFUGEDataset, SynapseDataset,
+                            iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -26,6 +28,10 @@ def test_classes():
     assert list(PotsdamDataset.METAINFO['classes']) == get_classes('potsdam')
     assert list(ISPRSDataset.METAINFO['classes']) == get_classes('vaihingen')
     assert list(iSAIDDataset.METAINFO['classes']) == get_classes('isaid')
+    assert list(
+        MapillaryDataset_v1.METAINFO['classes']) == get_classes('mapillary_v1')
+    assert list(
+        MapillaryDataset_v2.METAINFO['classes']) == get_classes('mapillary_v2')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -79,6 +85,10 @@ def test_palette():
     assert PotsdamDataset.METAINFO['palette'] == get_palette('potsdam')
     assert COCOStuffDataset.METAINFO['palette'] == get_palette('cocostuff')
     assert iSAIDDataset.METAINFO['palette'] == get_palette('isaid')
+    assert list(
+        MapillaryDataset_v1.METAINFO['palette']) == get_palette('mapillary_v1')
+    assert list(
+        MapillaryDataset_v2.METAINFO['palette']) == get_palette('mapillary_v2')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -232,6 +242,19 @@ def test_synapse():
     assert len(test_dataset) == 2
 
 
+def test_refuge():
+    test_dataset = REFUGEDataset(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_refuge_dataset/img_dir'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_refuge_dataset/ann_dir')))
+    assert len(test_dataset) == 1
+
+
 def test_isaid():
     test_dataset = iSAIDDataset(
         pipeline=[],
@@ -287,6 +310,19 @@ def test_lip():
         data_root=data_root,
         data_prefix=dict(
             img_path='val_images', seg_map_path='val_segmentations'))
+    assert len(test_dataset) == 1
+
+
+def test_mapillary():
+    test_dataset = MapillaryDataset_v1(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_mapillary_dataset/images'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_mapillary_dataset/v1.2')))
     assert len(test_dataset) == 1
 
 

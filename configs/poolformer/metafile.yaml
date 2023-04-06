@@ -1,0 +1,116 @@
+Models:
+- Name: fpn_poolformer_s12_8xb4-40k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 36.68
+  Config: configs/poolformer/fpn_poolformer_s12_8xb4-40k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - PoolFormer-S12
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.17
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s12_8x4_512x512_40k_ade20k/fpn_poolformer_s12_8x4_512x512_40k_ade20k_20220501_115154-b5aa2f49.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s12_8x4_512x512_40k_ade20k/fpn_poolformer_s12_8x4_512x512_40k_ade20k_20220501_115154.log.json
+  Paper:
+    Title: MetaFormer is Actually What You Need for Vision
+    URL: https://arxiv.org/abs/2111.11418
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.23.0/mmcls/models/backbones/poolformer.py#L198
+  Framework: PyTorch
+- Name: fpn_poolformer_s24_8xb4-40k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.12
+  Config: configs/poolformer/fpn_poolformer_s24_8xb4-40k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - PoolFormer-S24
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 5.47
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s24_8x4_512x512_40k_ade20k/fpn_poolformer_s24_8x4_512x512_40k_ade20k_20220503_222049-394a7cf7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s24_8x4_512x512_40k_ade20k/fpn_poolformer_s24_8x4_512x512_40k_ade20k_20220503_222049.log.json
+  Paper:
+    Title: MetaFormer is Actually What You Need for Vision
+    URL: https://arxiv.org/abs/2111.11418
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.23.0/mmcls/models/backbones/poolformer.py#L198
+  Framework: PyTorch
+- Name: fpn_poolformer_s36_8xb4-40k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.61
+  Config: configs/poolformer/fpn_poolformer_s36_8xb4-40k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - PoolFormer-S36
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 6.77
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s36_8x4_512x512_40k_ade20k/fpn_poolformer_s36_8x4_512x512_40k_ade20k_20220501_151122-b47e607d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_s36_8x4_512x512_40k_ade20k/fpn_poolformer_s36_8x4_512x512_40k_ade20k_20220501_151122.log.json
+  Paper:
+    Title: MetaFormer is Actually What You Need for Vision
+    URL: https://arxiv.org/abs/2111.11418
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.23.0/mmcls/models/backbones/poolformer.py#L198
+  Framework: PyTorch
+- Name: fpn_poolformer_m36_8xb4-40k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.95
+  Config: configs/poolformer/fpn_poolformer_m36_8xb4-40k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - PoolFormer-M36
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 8.59
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_m36_8x4_512x512_40k_ade20k/fpn_poolformer_m36_8x4_512x512_40k_ade20k_20220501_164230-3dc83921.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_m36_8x4_512x512_40k_ade20k/fpn_poolformer_m36_8x4_512x512_40k_ade20k_20220501_164230.log.json
+  Paper:
+    Title: MetaFormer is Actually What You Need for Vision
+    URL: https://arxiv.org/abs/2111.11418
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.23.0/mmcls/models/backbones/poolformer.py#L198
+  Framework: PyTorch
+- Name: fpn_poolformer_m48_8xb4-40k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.43
+  Config: configs/poolformer/fpn_poolformer_m48_8xb4-40k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - PoolFormer-M48
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 10.48
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_m48_8x4_512x512_40k_ade20k/fpn_poolformer_m48_8x4_512x512_40k_ade20k_20220504_003923-64168d3b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/poolformer/fpn_poolformer_m48_8x4_512x512_40k_ade20k/fpn_poolformer_m48_8x4_512x512_40k_ade20k_20220504_003923.log.json
+  Paper:
+    Title: MetaFormer is Actually What You Need for Vision
+    URL: https://arxiv.org/abs/2111.11418
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.23.0/mmcls/models/backbones/poolformer.py#L198
+  Framework: PyTorch

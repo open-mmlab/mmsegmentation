@@ -51,7 +51,7 @@ mim install "mmcv>=2.0.0rc1"
 Case a: If you develop and run mmseg directly, install it from source:
 
 ```shell
-git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git
+git clone -b main https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -v -e .
 # '-v' means verbose, or more output
@@ -91,10 +91,8 @@ Option (b). If you install mmsegmentation with pip, open you python interpreter 
 
 ```python
 from mmseg.apis import inference_model, init_model, show_result_pyplot
-from mmseg.utils import register_all_modules
 import mmcv
 
-register_all_modules()
 config_file = 'pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_file = 'pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
@@ -166,7 +164,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 ```shell
 !git clone https://github.com/open-mmlab/mmsegmentation.git
 %cd mmsegmentation
-!git checkout dev-1.x
+!git checkout main
 !pip install -e .
 ```
 
@@ -183,7 +181,7 @@ Within Jupyter, the exclamation mark `!` is used to call external executables an
 
 ### Using MMSegmentation with Docker
 
-We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/master/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
+We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/main/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
 
 ```shell
 # build an image with PyTorch 1.11, CUDA 11.3
@@ -199,5 +197,5 @@ docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmseg
 
 ## Trouble shooting
 
-If you have some issues during the installation, please first view the [FAQ](faq.md) page.
+If you have some issues during the installation, please first view the [FAQ](notes/faq.md) page.
 You may [open an issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose) on GitHub if no solution is found.

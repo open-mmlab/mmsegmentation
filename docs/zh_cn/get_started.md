@@ -34,7 +34,7 @@ conda install pytorch torchvision cpuonly -c pytorch
 
 ## 安装
 
-我们建议用户遵循我们的最佳实践来安装 MMSegmentation 。但是整个过程是高度自定义的。更多信息请参见[自定义安装](#自定义安装)部分。
+我们建议用户遵循我们的最佳实践来安装 MMSegmentation 。但是整个过程是高度自定义的。更多信息请参见[自定义安装](##自定义安装)部分。
 
 ### 最佳实践
 
@@ -51,7 +51,7 @@ mim install "mmcv>=2.0.0rc1"
 情况 a: 如果您想立刻开发和运行 mmsegmentation，您可通过源码安装：
 
 ```shell
-git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git
+git clone -b main https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -v -e .
 # '-v' 表示详细模式，更多的输出
@@ -92,10 +92,8 @@ python demo/image_demo.py demo/demo.png configs/pspnet/pspnet_r50-d8_4xb2-40k_ci
 
 ```python
 from mmseg.apis import inference_model, init_model, show_result_pyplot
-from mmseg.utils import register_all_modules
 import mmcv
 
-register_all_modules()
 config_file = 'pspnet_r50-d8_4xb2-40k_cityscapes-512x1024.py'
 checkpoint_file = 'pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
 
@@ -166,7 +164,7 @@ MMSegmentation 可以在仅有 CPU 的版本上运行。在 CPU 模式，您可�
 ```shell
 !git clone https://github.com/open-mmlab/mmsegmentation.git
 %cd mmsegmentation
-!git checkout dev-1.x
+!git checkout main
 !pip install -e .
 ```
 
@@ -199,4 +197,4 @@ docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmseg
 
 ## 问题解答
 
-如果您在安装过程中遇到了其他问题，请第一时间查阅 [FAQ](faq.md) 文件。如果没有找到答案，您也可以在 GitHub 上提出 [issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)
+如果您在安装过程中遇到了其他问题，请第一时间查阅 [FAQ](notes/faq.md) 文件。如果没有找到答案，您也可以在 GitHub 上提出 [issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)

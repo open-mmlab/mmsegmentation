@@ -5,6 +5,7 @@ import os.path as osp
 import mmcv
 import numpy as np
 import pytest
+from mmengine.registry import init_default_scope
 from PIL import Image
 
 from mmseg.datasets.transforms import *  # noqa
@@ -12,9 +13,8 @@ from mmseg.datasets.transforms import (LoadBiomedicalData,
                                        LoadBiomedicalImageFromFile,
                                        PhotoMetricDistortion, RandomCrop)
 from mmseg.registry import TRANSFORMS
-from mmseg.utils import register_all_modules
 
-register_all_modules()
+init_default_scope('mmseg')
 
 
 def test_resize():
@@ -638,6 +638,17 @@ def test_mosaic():
     mosaic_module = TRANSFORMS.build(transform)
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)
+
+    results = dict()
+    results['img'] = np.concatenate((img, img), axis=2)
+    results['gt_semantic_seg'] = seg
+    results['seg_fields'] = ['gt_semantic_seg']
+
+    transform = dict(type='RandomMosaic', prob=1, img_scale=(10, 12))
+    mosaic_module = TRANSFORMS.build(transform)
+    results['mix_results'] = [copy.deepcopy(results)] * 3
+    results = mosaic_module(results)
+    assert results['img'].shape[2] == 6
 
 
 def test_cutout():
