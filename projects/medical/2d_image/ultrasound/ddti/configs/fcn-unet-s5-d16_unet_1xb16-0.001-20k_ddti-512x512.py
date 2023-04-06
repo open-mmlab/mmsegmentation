@@ -9,9 +9,7 @@ data_preprocessor = dict(size=img_scale)
 optimizer = dict(lr=0.001)
 optim_wrapper = dict(optimizer=optimizer)
 model = dict(
-    type='EncoderDecoder',
-    data_preprocessor=dict(size=img_scale),
-    pretrained=None,
+    data_preprocessor=data_preprocessor,
     decode_head=dict(num_classes=2),
     auxiliary_head=None,
     test_cfg=dict(mode='whole', _delete_=True))

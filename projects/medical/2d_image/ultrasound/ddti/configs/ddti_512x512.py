@@ -1,5 +1,5 @@
-dataset_type = 'DDTIDataset'
-data_root = 'data/ddti'
+dataset_type = 'ddtiDataset'
+data_root = 'data/'
 img_scale = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -34,7 +34,7 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='images/test/', seg_map_path='masks/test/'),
+        data_prefix=dict(img_path='images/val/', seg_map_path='masks/val/'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice'])
