@@ -45,7 +45,7 @@ jobs:
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install mmcls==1.0.0rc6
           pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
@@ -101,7 +101,7 @@ jobs:
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install mmcls==1.0.0rc6
           pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
@@ -158,7 +158,7 @@ jobs:
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
+          pip install mmcls==1.0.0rc6
           pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
