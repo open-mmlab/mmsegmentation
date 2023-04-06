@@ -8,13 +8,14 @@
 
 | MMSegmentation version |          MMCV version          | MMEngine version  | MMClassification (optional) version | MMDetection (optional) version |
 | :--------------------: | :----------------------------: | :---------------: | :---------------------------------: | :----------------------------: |
-|     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
-|       1.x branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
+|     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
+|      main branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
+|         1.0.0          |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
 |        1.0.0rc6        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
 |        1.0.0rc5        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           |        mmdet>=3.0.0rc6         |
 |        1.0.0rc4        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
-|        1.0.0rc3        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4  \<=3.0.0rc5  |
-|        1.0.0rc2        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4  \<=3.0.0rc5  |
+|        1.0.0rc3        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
+|        1.0.0rc2        |        mmcv == 2.0.0rc3        | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |  mmdet>=3.0.0rc4, \<=3.0.0rc5  |
 |        1.0.0rc1        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 |        1.0.0rc0        | mmcv >= 2.0.0rc1, \<=2.0.0rc3> | MMEngine >= 0.1.0 |           mmcls>=1.0.0rc0           |          Not required          |
 
@@ -112,7 +113,7 @@ if self.reduce_zero_label:
 
 关于您的数据集是否需要使用 reduce_zero_label，有以下两类情况：
 
-- 例如在 [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam) 数据集上，有 0-不透水面、1-建筑、2-低矮植被、3-树、4-汽车、5-杂乱，六类。但该数据集提供了两种RGB标签，一种为图像边缘处有黑色像素的标签，另一种是没有黑色边缘的标签。对于有黑色边缘的标签，在 [dataset_converters.py](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tools/dataset_converters/potsdam.py)中，其将黑色边缘转换为 label 0，其余标签分别为 1-不透水面、2-建筑、3-低矮植被、4-树、5-汽车、6-杂乱，那么此时，就应该在数据集 [potsdam.py](https://github.com/open-mmlab/mmsegmentation/blob/ff95416c3b5ce8d62b9289f743531398efce534f/mmseg/datasets/potsdam.py#L23) 中将`reduce_zero_label=True`。如果使用的是没有黑色边缘的标签，那么 mask label 中只有 0-5，此时就应该使`reduce_zero_label=False`。需要结合您的实际情况来使用。
-- 例如在第 0 类为background类别的数据集上，如果您最终是需要将背景和您的其余类别分开时，是不需要使用`reduce_zero_label`的，此时在数据集中应该将其设置为`reduce_zero_label=False`
+- 例如在 [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam) 数据集上，有 0-不透水面、1-建筑、2-低矮植被、3-树、4-汽车、5-杂乱，六类。但该数据集提供了两种 RGB 标签，一种为图像边缘处有黑色像素的标签，另一种是没有黑色边缘的标签。对于有黑色边缘的标签，在 [dataset_converters.py](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tools/dataset_converters/potsdam.py)中，其将黑色边缘转换为 label 0，其余标签分别为 1-不透水面、2-建筑、3-低矮植被、4-树、5-汽车、6-杂乱，那么此时，就应该在数据集 [potsdam.py](https://github.com/open-mmlab/mmsegmentation/blob/ff95416c3b5ce8d62b9289f743531398efce534f/mmseg/datasets/potsdam.py#L23) 中将`reduce_zero_label=True`。如果使用的是没有黑色边缘的标签，那么 mask label 中只有 0-5，此时就应该使`reduce_zero_label=False`。需要结合您的实际情况来使用。
+- 例如在第 0 类为 background 类别的数据集上，如果您最终是需要将背景和您的其余类别分开时，是不需要使用`reduce_zero_label`的，此时在数据集中应该将其设置为`reduce_zero_label=False`
 
 **注意:** 使用 `reduce_zero_label` 请确认数据集原始类别个数，如果只有两类，需要关闭 `reduce_zero_label` 即设置 `reduce_zero_label=False`。

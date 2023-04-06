@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   build_cpu_py:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python-version: [3.8, 3.9]
@@ -28,9 +28,9 @@ jobs:
           - torch: 1.8.1
             torchvision: 0.9.1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
@@ -45,8 +45,8 @@ jobs:
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+          pip install mmcls==1.0.0rc6
+          pip install git+https://github.com/open-mmlab/mmdetection.git@main
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
@@ -58,7 +58,7 @@ jobs:
           coverage xml
           coverage report -m
   build_cpu_pt:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python-version: [3.7]
@@ -82,9 +82,9 @@ jobs:
           # - torch: 1.13.0
           #   torchvision: 0.14.0
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
@@ -101,8 +101,8 @@ jobs:
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+          pip install mmcls==1.0.0rc6
+          pip install git+https://github.com/open-mmlab/mmdetection.git@main
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
@@ -131,93 +131,6 @@ jobs:
           env_vars: OS,PYTHON
           name: codecov-umbrella
           fail_ci_if_error: false
-
-  build_cu102:
-    runs-on: ubuntu-18.04
-    container:
-      image: pytorch/pytorch:1.8.1-cuda10.2-cudnn7-devel
-    strategy:
-      matrix:
-        python-version: [3.7]
-        include:
-          - torch: 1.8.1
-            cuda: 10.2
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Upgrade pip
-        run: |
-          pip install pip --upgrade
-          pip install wheel
-      - name: Fetch GPG keys
-        run: |
-          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
-          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
-      - name: Install Python-dev
-        run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-      - name: Install system dependencies
-        run: |
-          apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
-      - name: Install mmseg dependencies
-        run: |
-          python -V
-          pip install -U openmim
-          pip install git+https://github.com/open-mmlab/mmengine.git
-          mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
-      - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
-      - name: Build and install
-        run: |
-          python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 pip install -e .
-  build_cu116:
-    runs-on: ubuntu-18.04
-    container:
-      image: pytorch/pytorch:1.13.0-cuda11.6-cudnn8-devel
-    strategy:
-      matrix:
-        python-version: [3.7]
-        include:
-          - torch: 1.13.0
-            cuda: 11.6
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Upgrade pip
-        run: |
-          pip install pip --upgrade
-          pip install wheel
-      - name: Fetch GPG keys
-        run: |
-          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
-          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
-      - name: Install Python-dev
-        run: apt-get update && apt-get install -y python${{matrix.python-version}}-dev
-      - name: Install system dependencies
-        run: |
-          apt-get update && apt-get install -y ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
-      - name: Install mmseg dependencies
-        run: |
-          python -V
-          pip install -U openmim
-          pip install git+https://github.com/open-mmlab/mmengine.git
-          mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
-      - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
-      - name: Build and install
-        run: |
-          python setup.py check -m -s
-          TORCH_CUDA_ARCH_LIST=7.0 pip install -e .
   build_windows:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -226,9 +139,9 @@ jobs:
         python: [3.7]
         platform: [cpu, cu111]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Upgrade pip
@@ -245,8 +158,8 @@ jobs:
           pip install -U openmim
           pip install git+https://github.com/open-mmlab/mmengine.git
           mim install 'mmcv>=2.0.0rc4'
-          pip install git+https://github.com/open-mmlab/mmclassification.git@dev-1.x
-          pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+          pip install mmcls==1.0.0rc6
+          pip install git+https://github.com/open-mmlab/mmdetection.git@main
       - name: Install unittest dependencies
         run: pip install -r requirements/tests.txt -r requirements/optional.txt
       - name: Build and install
