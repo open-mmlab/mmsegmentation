@@ -1,6 +1,6 @@
 Q1: Why set up `projects/` folder?
 
-Implementing new models and features into OpenMMLab's algorithm libraries could be troublesome due to the rigorous requirements on code quality, which could hinder the fast iteration of SOTA models and might discourage our members from sharing their latest outcomes here. And that's why we have this `projects/` folder now, where some experimental features, frameworks and models are placed, only needed to satisfy the minimum requirement on the code quality, and can be used as standalone libraries. Users are welcome to use them if they [use MMSegmentation from source](https://mmsegmentation.readthedocs.io/en/main/get_started.html#best-practices).
+Implementing new models and features into OpenMMLab's algorithm libraries could be troublesome due to the rigorous requirements on code quality, which could hinder the fast iteration of SOTA models and might discourage our members from sharing their latest outcomes here. And that's why we have this `projects/` folder now, where some experimental features, frameworks and models are placed, only needed to satisfy the minimum requirement on the code quality, and can be used as standalone libraries. Users are welcome to use them if they [use MMSegmentation from source](https://mmsegmentation.readthedocs.io/en/latest/get_started.html#best-practices).
 
 Q2: Why should there be a checklist for a project?
 
