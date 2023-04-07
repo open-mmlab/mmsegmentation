@@ -30,7 +30,7 @@ class MMSegInferencer(BaseInferencer):
 
     Args:
         model (str, optional): Path to the config file or the model name
-            defined in metafile. Take the `mmseg metafile <https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fcn/fcn.yml>`_
+            defined in metafile. Take the `mmseg metafile <https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fcn/metafile.yaml>`_
             as an example the `model` could be
             "fcn_r50-d8_4xb2-40k_cityscapes-512x1024", and the weights of model
             will be download automatically. If use config file, like
@@ -48,7 +48,7 @@ class MMSegInferencer(BaseInferencer):
             a list of color palette responding to the classes. If palette is
             not defined, visualizer will take `cityscapes` palette by default.
             Defaults to None.
-        dataset_name (str, optional): `Dataset name or alias <https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317>`_
+        dataset_name (str, optional): `Dataset name or alias <https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/utils/class_names.py#L302-L317>`_
             visulizer will use the meta information of the dataset i.e. classes
             and palette, but the `classes` and `palette` have higher priority.
             Defaults to None.

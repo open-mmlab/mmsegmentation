@@ -2,7 +2,7 @@
 
 ## 引言
 
-本指南介绍了 MMSegmentation 0.x 和 MMSegmentation1.x 在行为和 API 方面的基本区别，以及这些如何都与您的迁移过程相关。
+本指南介绍了 MMSegmentation 0.x 和 MMSegmentation1.x 在表现和 API 方面的基本区别，以及这些与迁移过程的关系。
 
 ## 新的依赖
 
@@ -12,11 +12,11 @@ MMSegmentation 1.x 依赖于一些新的软件包，您可以准备一个新的�
 
 1. [MMEngine](https://github.com/open-mmlab/mmengine)：MMEngine 是 OpenMMLab 2.0 架构的核心，我们将许多与计算机视觉无关的内容从 MMCV 拆分到 MMEngine 中。
 
-2. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0rc1** 以上的版本。
+2. [MMCV](https://github.com/open-mmlab/mmcv)：OpenMMLab 的计算机视觉包。这不是一个新的依赖，但您需要将其升级到 **2.0.0** 或以上的版本。
 
-3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc0** 以上的版本。
+3. [MMClassification](https://github.com/open-mmlab/mmclassification)（可选）：OpenMMLab 的图像分类工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **1.0.0rc6** 版本。
 
-4. [MMDetection](https://github.com/open-mmlab/mmdetection)(可选): OpenMMLab 的目标检测工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **3.0.0rc0** 以上的版本。
+4. [MMDetection](https://github.com/open-mmlab/mmdetection)(可选): OpenMMLab 的目标检测工具箱和基准。这不是一个新的依赖，但您需要将其升级到 **3.0.0** 或以上的版本。
 
 ## 启动训练
 
@@ -46,7 +46,7 @@ OpenMMLab 2.0 的主要改进是发布了 MMEngine，它为启动训练任务的
 <td>--resume='auto'</td>
 </tr>
 <tr>
-<td>培训练期间是否不评估检查点</td>
+<td>训练期间是否不评估检查点</td>
 <td>--no-validate</td>
 <td>--cfg-options val_cfg=None val_dataloader=None val_evaluator=None</td>
 </tr>
@@ -65,6 +65,33 @@ OpenMMLab 2.0 的主要改进是发布了 MMEngine，它为启动训练任务的
 <td>--cfg-options randomness.deterministic=True</td>
 </table>
 
+## 测试启动
+
+与训练启动类似，MMSegmentation 1.x 的测试启动脚本在 tools/test.py 中仅提供关键命令行参数，以下是测试启动脚本的区别，更多关于测试启动的细节请参考[这里](../user_guides/4_train_test.md)。
+
+<table class="docutils">
+<tr>
+<td>功能</td>
+<td>0.x</td>
+<td>1.x</td>
+</tr>
+<tr>
+<td>指定评测指标</td>
+<td>--eval mIoU</td>
+<td>--cfg-options test_evaluator.type=IoUMetric</td>
+</tr>
+<tr>
+<td>测试时数据增强</td>
+<td>--aug-test</td>
+<td>--tta</td>
+</tr>
+<tr>
+<td>测试时是否只保存预测结果不计算评测指标</td>
+<td>--format-only</td>
+<td>--cfg-options test_evaluator.format_only=True</td>
+</tr>
+</table>
+
 ## 配置文件
 
 ### 模型设置
@@ -75,11 +102,11 @@ OpenMMLab 2.0 的主要改进是发布了 MMEngine，它为启动训练任务的
 
 - `mean`（Sequence，可选）：R、G、B 通道的像素平均值。默认为 None。
 
-- `std`（Sequence，可选）：R、G、B通道的像素标准差。默认为 None。
+- `std`（Sequence，可选）：R、G、B 通道的像素标准差。默认为 None。
 
 - `size`（Sequence，可选）：固定的填充大小。
 
-- `size_divisor`（int，可选）：填充大小的除法因子。
+- `size_divisor`（int，可选）：填充图像可以被当前值整除。
 
 - `seg_pad_val`（float，可选）：分割图的填充值。默认值：255。
 
@@ -98,7 +125,7 @@ OpenMMLab 2.0 的主要改进是发布了 MMEngine，它为启动训练任务的
 
 **data** 的更改：
 
-原版 `data` 字段被拆分为 `train_dataloader`、`val_dataloader` 和 `test_dataloader`。这允许我们以细粒度配置它们。例如，您可以在训练和测试期间指定不同的采样器和批次大小。
+原版 `data` 字段被拆分为 `train_dataloader`、`val_dataloader` 和 `test_dataloader`，允许我们以细粒度配置它们。例如，您可以在训练和测试期间指定不同的采样器和批次大小。
 `samples_per_gpu` 重命名为 `batch_size`。
 `workers_per_gpu` 重命名为 `num_workers`。
 
@@ -127,14 +154,14 @@ train_dataloader = dict(
     batch_size=4,
     num_workers=4,
     dataset=dict(...),
-    sampler=dict(type='DefaultSampler', shuffle=True)  # necessary
+    sampler=dict(type='DefaultSampler', shuffle=True)  # 必须
 )
 
 val_dataloader = dict(
     batch_size=4,
     num_workers=4,
     dataset=dict(...),
-    sampler=dict(type='DefaultSampler', shuffle=False)  # necessary
+    sampler=dict(type='DefaultSampler', shuffle=False)  # 必须
 )
 
 test_dataloader = val_dataloader
@@ -144,7 +171,7 @@ test_dataloader = val_dataloader
 </tr>
 </table>
 
-**流程**变更
+**数据增强变换流程**变更
 
 - 原始格式转换 **`ToTensor`**、**`ImageToTensor`**、**`Collect`** 组合为 [`PackSegInputs`](mmseg.datasets.transforms.PackSegInputs)
 - 我们不建议在数据集流程中执行 **`Normalize`** 和 **Pad**。请将其从流程中删除，并将其设置在 `data_preprocessor` 字段中。
@@ -390,10 +417,10 @@ runner = dict(type='IterBasedRunner', max_iters=20000)
 <td>
 
 ```python
-# The `val_interval` is the original `evaluation.interval`.
+# `val_interval` 是旧版本的 `evaluation.interval`。
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=2000)
-val_cfg = dict(type='ValLoop') # Use the default validation loop.
-test_cfg = dict(type='TestLoop') # Use the default test loop.
+val_cfg = dict(type='ValLoop') # 使用默认的验证循环。
+test_cfg = dict(type='TestLoop') # 使用默认的测试循环。
 ```
 
 </td>
@@ -411,22 +438,22 @@ test_cfg = dict(type='TestLoop') # Use the default test loop.
 
 ```python
 default_hooks = dict(
-    # record the time of every iterations.
+    # 记录每次迭代的时间。
     timer=dict(type='IterTimerHook'),
 
-    # print log every 50 iterations.
+    # 每50次迭代打印一次日志。
     logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
 
-    # enable the parameter scheduler.
+    # 启用参数调度程序。
     param_scheduler=dict(type='ParamSchedulerHook'),
 
-    # save checkpoint every 2000 iterations.
+    # 每2000次迭代保存一次检查点。
     checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=2000),
 
-    # set sampler seed in distributed environment.
+    # 在分布式环境中设置采样器种子。
     sampler_seed=dict(type='DistSamplerSeedHook'),
 
-    # validation results visualization.
+    # 验证结果可视化。
     visualization=dict(type='SegVisualizationHook'))
 ```
 
@@ -478,13 +505,13 @@ visualizer = dict(
 
 ```python
 env_cfg = dict(
-    # whether to enable cudnn benchmark
+    # 是否启用 cudnn_benchmark
     cudnn_benchmark=False,
 
-    # set multi process parameters
+    # 设置多进程参数
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0),
 
-    # set distributed parameters
+    # 设置分布式参数
     dist_cfg=dict(backend='nccl'),
 )
 ```

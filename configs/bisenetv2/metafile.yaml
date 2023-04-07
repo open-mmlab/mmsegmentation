@@ -1,0 +1,114 @@
+Collections:
+- Name: BiSeNetV2
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2004.02147
+  README: configs/bisenetv2/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.21
+      mIoU(ms+flip): 75.74
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - BiSeNetV2
+    - BiSeNetV2
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.64
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551-bcf10f09.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551.log.json
+  Paper:
+    Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2004.02147
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545
+  Framework: PyTorch
+- Name: bisenetv2_fcn_4xb4-ohem-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.57
+      mIoU(ms+flip): 75.8
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb4-ohem-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - BiSeNetV2
+    - BiSeNetV2
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.64
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947-5f8103b4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947.log.json
+  Paper:
+    Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2004.02147
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545
+  Framework: PyTorch
+- Name: bisenetv2_fcn_4xb8-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.76
+      mIoU(ms+flip): 77.79
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb8-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 32
+    Architecture:
+    - BiSeNetV2
+    - BiSeNetV2
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 15.05
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032-e1a2eed6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032.log.json
+  Paper:
+    Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2004.02147
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545
+  Framework: PyTorch
+- Name: bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV2
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.07
+      mIoU(ms+flip): 75.13
+  Config: configs/bisenetv2/bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - BiSeNetV2
+    - BiSeNetV2
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.77
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942-b979777b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942.log.json
+  Paper:
+    Title: 'Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2004.02147
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv2.py#L545
+  Framework: PyTorch

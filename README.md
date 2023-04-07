@@ -20,14 +20,14 @@
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmsegmentation)](https://pypi.org/project/mmsegmentation/)
 [![PyPI](https://img.shields.io/pypi/v/mmsegmentation)](https://pypi.org/project/mmsegmentation)
-[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/1.x/)
+[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmsegmentation.readthedocs.io/en/main/)
 [![badge](https://github.com/open-mmlab/mmsegmentation/workflows/build/badge.svg)](https://github.com/open-mmlab/mmsegmentation/actions)
 [![codecov](https://codecov.io/gh/open-mmlab/mmsegmentation/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmsegmentation)
-[![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/1.x/LICENSE)
+[![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/main/LICENSE)
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 
-Documentation: <https://mmsegmentation.readthedocs.io/en/1.x/>
+Documentation: <https://mmsegmentation.readthedocs.io/en/main/>
 
 English | [简体中文](README_zh-CN.md)
 
@@ -35,7 +35,7 @@ English | [简体中文](README_zh-CN.md)
 
 <div align="center">
   <a href="https://openmmlab.medium.com/" style="text-decoration:none;">
-    <img src="https://user-images.githubusercontent.com/25839884/218352562-cdded397-b0f3-4ca1-b8dd-a60df8dca75b.png" width="3%" alt="" /></a>
+    <img src="https://user-images.githubusercontent.com/25839884/219255827-67c1a27f-f8c5-46a9-811d-5e57448c61d1.png" width="3%" alt="" /></a>
   <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
   <a href="https://discord.gg/raweFPmdzG" style="text-decoration:none;">
     <img src="https://user-images.githubusercontent.com/25839884/218347213-c080267f-cbb6-443e-8532-8e1ed9a58ea9.png" width="3%" alt="" /></a>
@@ -45,6 +45,12 @@ English | [简体中文](README_zh-CN.md)
   <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
   <a href="https://www.youtube.com/openmmlab" style="text-decoration:none;">
     <img src="https://user-images.githubusercontent.com/25839884/218346691-ceb2116a-465a-40af-8424-9f30d2348ca9.png" width="3%" alt="" /></a>
+  <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
+  <a href="https://space.bilibili.com/1293512903" style="text-decoration:none;">
+    <img src="https://user-images.githubusercontent.com/25839884/219026751-d7d14cce-a7c9-4e82-9942-8375fca65b99.png" width="3%" alt="" /></a>
+  <img src="https://user-images.githubusercontent.com/25839884/218346358-56cc8e2f-a2b8-487f-9088-32480cceabcf.png" width="3%" alt="" />
+  <a href="https://www.zhihu.com/people/openmmlab" style="text-decoration:none;">
+    <img src="https://user-images.githubusercontent.com/25839884/219026120-ba71e48b-6e94-4bd4-b4e9-b7d175b5e362.png" width="3%" alt="" /></a>
 </div>
 
 ## Introduction
@@ -52,7 +58,13 @@ English | [简体中文](README_zh-CN.md)
 MMSegmentation is an open source semantic segmentation toolbox based on PyTorch.
 It is a part of the OpenMMLab project.
 
-The 1.x branch works with **PyTorch 1.6+**.
+The [main](https://github.com/open-mmlab/mmsegmentation/tree/main) branch works with PyTorch 1.6+.
+
+### 🎉 Introducing MMSegmentation v1.0.0 🎉
+
+We are thrilled to announce the official release of MMSegmentation's latest version! For this new release, the [main](https://github.com/open-mmlab/mmsegmentation/tree/main) branch serves as the primary branch, while the development branch is [dev-1.x](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x). The stable branch for the previous release remains as the [0.x](https://github.com/open-mmlab/mmsegmentation/tree/0.x) branch. Please note that the [master](https://github.com/open-mmlab/mmsegmentation/tree/master) branch will only be maintained for a limited time before being removed. We encourage you to be mindful of branch selection and updates during use. Thank you for your unwavering support and enthusiasm, and let's work together to make MMSegmentation even more robust and powerful! 💪
+
+MMSegmentation v1.x brings remarkable improvements over the 0.x release, offering a more flexible and feature-packed experience. To utilize the new features in v1.x, we kindly invite you to consult our detailed [📚 migration guide](https://mmsegmentation.readthedocs.io/en/main/migration/interface.html), which will help you seamlessly transition your projects. Your support is invaluable, and we eagerly await your feedback!
 
 ![demo image](resources/seg_demo.gif)
 
@@ -76,11 +88,12 @@ The 1.x branch works with **PyTorch 1.6+**.
 
 ## What's New
 
-v1.0.0rc6 was released on 03/03/2023.
+v1.0.0 was released on 04/06/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413), [#2658](https://github.com/open-mmlab/mmsegmentation/pull/2658))
-- Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
+- Add Mapillary Vistas Datasets support to MMSegmentation Core Package ([#2576](https://github.com/open-mmlab/mmsegmentation/pull/2576))
+- Support PIDNet ([#2609](https://github.com/open-mmlab/mmsegmentation/pull/2609))
+- Support SegNeXt ([#2654](https://github.com/open-mmlab/mmsegmentation/pull/2654))
 
 ## Installation
 
@@ -90,12 +103,12 @@ Please refer to [get_started.md](docs/en/get_started.md#installation) for instal
 
 Please see [Overview](docs/en/overview.md) for the general introduction of MMSegmentation.
 
-Please see [user guides](https://mmsegmentation.readthedocs.io/en/1.x/user_guides/index.html#) for the basic usage of MMSegmentation.
-There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/dev-1.x/advanced_guides/index.html) for in-depth understanding of mmseg design and implementation .
+Please see [user guides](https://mmsegmentation.readthedocs.io/en/main/user_guides/index.html#) for the basic usage of MMSegmentation.
+There are also [advanced tutorials](https://mmsegmentation.readthedocs.io/en/main/advanced_guides/index.html) for in-depth understanding of mmseg design and implementation .
 
-A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/1.x/demo/MMSegmentation_Tutorial.ipynb) on Colab.
+A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSegmentation_Tutorial.ipynb) or directly [run](https://colab.research.google.com/github/open-mmlab/mmsegmentation/blob/main/demo/MMSegmentation_Tutorial.ipynb) on Colab.
 
-To migrate from MMSegmentation 1.x, please refer to [migration](docs/en/migration).
+To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migration).
 
 ## Benchmark and model zoo
 
@@ -167,23 +180,23 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 <details open>
 <summary>Supported datasets:</summary>
 
-- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
-- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#pascal-voc)
-- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#ade20k)
-- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#pascal-context)
-- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-10k)
-- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-164k)
-- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#chase-db1)
-- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#drive)
-- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#hrf)
-- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#stare)
-- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#dark-zurich)
-- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#nighttime-driving)
-- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#loveda)
-- [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
-- [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
-- [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#isaid)
-- [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/1.x/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
+- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
+- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-voc)
+- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#ade20k)
+- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-context)
+- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-10k)
+- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-164k)
+- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#chase-db1)
+- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#drive)
+- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#hrf)
+- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#stare)
+- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#dark-zurich)
+- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nighttime-driving)
+- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#loveda)
+- [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
+- [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
+- [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isaid)
+- [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
 
 </details>
 

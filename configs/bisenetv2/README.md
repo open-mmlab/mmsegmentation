@@ -1,6 +1,6 @@
 # BiSeNetV2
 
-[Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic Segmentation](https://arxiv.org/abs/2004.02147)
+> [Bisenet v2: Bilateral Network with Guided Aggregation for Real-time Semantic Segmentation](https://arxiv.org/abs/2004.02147)
 
 ## Introduction
 
@@ -22,6 +22,23 @@ The low-level details and high-level semantics are both essential to the semanti
 <img src="https://user-images.githubusercontent.com/24582831/142898966-ec4a81da-b4b0-41ee-b083-1d964582c18a.png" width="70%"/>
 </div>
 
+## Results and models
+
+### Cityscapes
+
+| Method    | Backbone         | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device |  mIoU | mIoU(ms+flip) | config                                                                                                                                  | download                                                                                                                                                                                                                                                                                                                                                                                               |
+| --------- | ---------------- | --------- | ------: | -------- | -------------- | ------ | ----: | ------------: | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BiSeNetV2 | BiSeNetV2        | 1024x1024 |  160000 | 7.64     | 31.77          | V100   | 73.21 |         75.74 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/bisenetv2/bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551-bcf10f09.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551.log.json)                     |
+| BiSeNetV2 | BiSeNetV2 (OHEM) | 1024x1024 |  160000 | 7.64     | -              | V100   | 73.57 |         75.80 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/bisenetv2/bisenetv2_fcn_4xb4-ohem-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947-5f8103b4.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947.log.json) |
+| BiSeNetV2 | BiSeNetV2 (4x8)  | 1024x1024 |  160000 | 15.05    | -              | V100   | 75.76 |         77.79 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/bisenetv2/bisenetv2_fcn_4xb8-160k_cityscapes-1024x1024.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032-e1a2eed6.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032.log.json)                     |
+| BiSeNetV2 | BiSeNetV2 (FP16) | 1024x1024 |  160000 | 5.77     | 36.65          | V100   | 73.07 |         75.13 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/bisenetv2/bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942-b979777b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942.log.json) |
+
+Note:
+
+- `OHEM` means Online Hard Example Mining (OHEM) is adopted in training.
+- `FP16` means Mixed Precision (FP16) is adopted in training.
+- `4x8` means 4 GPUs with 8 samples per GPU in training.
+
 ## Citation
 
 ```bibtex
@@ -34,20 +51,3 @@ The low-level details and high-level semantics are both essential to the semanti
   publisher={Springer}
 }
 ```
-
-## Results and models
-
-### Cityscapes
-
-| Method           | Backbone  | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                                     | download                                                                                                                                                                                                                                                                                                                                                                                               |
-| ---------------- | --------- | --------- | ------: | -------- | -------------- | ----: | ------------: | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| BiSeNetV2        | BiSeNetV2 | 1024x1024 |  160000 | 7.64     | 31.77          | 73.21 |         75.74 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/bisenetv2/bisenetv2_fcn_4xb4-160k_cityscapes-1024x1024.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551-bcf10f09.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_4x4_1024x1024_160k_cityscapes_20210902_015551.log.json)                     |
-| BiSeNetV2 (OHEM) | BiSeNetV2 | 1024x1024 |  160000 | 7.64     | -              | 73.57 |         75.80 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/bisenetv2/bisenetv2_fcn_4xb4-ohem-160k_cityscapes-1024x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947-5f8103b4.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_ohem_4x4_1024x1024_160k_cityscapes_20210902_112947.log.json) |
-| BiSeNetV2 (4x8)  | BiSeNetV2 | 1024x1024 |  160000 | 15.05    | -              | 75.76 |         77.79 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/bisenetv2/bisenetv2_fcn_4xb8-160k_cityscapes-1024x1024.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032-e1a2eed6.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes/bisenetv2_fcn_4x8_1024x1024_160k_cityscapes_20210903_000032.log.json)                     |
-| BiSeNetV2 (FP16) | BiSeNetV2 | 1024x1024 |  160000 | 5.77     | 36.65          | 73.07 |         75.13 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/bisenetv2/bisenetv2_fcn_4xb4-amp-160k_cityscapes-1024x1024.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942-b979777b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv2/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes/bisenetv2_fcn_fp16_4x4_1024x1024_160k_cityscapes_20210902_045942.log.json) |
-
-Note:
-
-- `OHEM` means Online Hard Example Mining (OHEM) is adopted in training.
-- `FP16` means Mixed Precision (FP16) is adopted in training.
-- `4x8` means 4 GPUs with 8 samples per GPU in training.

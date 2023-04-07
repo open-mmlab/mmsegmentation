@@ -1,6 +1,6 @@
-#包结构更改
+# 包结构更改
 
-本节包含您对 MMSeg 0.x 和 1.x 之间的变化感到好奇的内容。
+本节包含您对 MMSeg 0.x 和 1.x 之间的变化可能感到好奇的内容。
 
 <table>
 <tr>
@@ -49,7 +49,7 @@
 
 ## `mmseg.ops`
 
-`ops` 包包含 `encoding` 和 `wrappers`，它们被移到了 `mmseg.models.utils` 中。
+`ops` 包含 `encoding` 和 `wrappers`，它们被移到了 `mmseg.models.utils` 中。
 
 ## 增加的包
 
@@ -110,4 +110,4 @@ OpenMMLab 2.0 将 `BaseDataset` 定义为数据集的函数和接口，MMSegment
 
 ### `mmseg.models`
 
-`models` 没有太大变化，只是从以前的 `mmseg.ops` 中添加了 `encoding` 和 `wrappers`
+`models` 没有太大变化，只是从以前的 `mmseg.ops` 添加了 `encoding` 和 `wrappers`

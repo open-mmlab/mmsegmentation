@@ -62,8 +62,8 @@ jobs:
             pip install git+https://github.com/open-mmlab/mmengine.git@main
             pip install -U openmim
             mim install 'mmcv>=2.0.0rc4'
-            pip install git+https://github.com/open-mmlab/mmclassification@dev-1.x
-            pip install git+https://github.com/open-mmlab/mmdetection.git@dev-3.x
+            pip install mmcls==1.0.0rc6
+            pip install git+https://github.com/open-mmlab/mmdetection.git@main
             pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
           name: Build and install
@@ -96,7 +96,6 @@ jobs:
           name: Clone Repos
           command: |
             git clone -b main --depth 1 https://github.com/open-mmlab/mmengine.git /home/circleci/mmengine
-            git clone -b dev-1.x --depth 1 https://github.com/open-mmlab/mmclassification.git /home/circleci/mmclassification
             git clone -b dev-3.x --depth 1 https://github.com/open-mmlab/mmdetection.git /home/circleci/mmdetection
       - run:
           name: Build Docker image
@@ -109,7 +108,7 @@ jobs:
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install -U openmim
             docker exec mmseg mim install 'mmcv>=2.0.0rc4'
-            docker exec mmseg pip install -e /mmclassification
+            docker exec mmseg pip install mmcls==1.0.0rc6
             docker exec mmseg pip install -e /mmdetection
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
       - run:
@@ -130,8 +129,7 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
-                - 1.x
-                - master
+                - main
   pr_stage_test:
     when:
       not:
@@ -143,8 +141,7 @@ workflows:
             branches:
               ignore:
                 - dev-1.x
-                - 1.x
-                - master
+                - main
       - build_cpu:
           name: minimum_version_cpu
           torch: 1.6.0
@@ -187,4 +184,4 @@ workflows:
             branches:
               only:
                 - dev-1.x
-                - 1.x
+                - main
