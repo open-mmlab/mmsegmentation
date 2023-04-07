@@ -14,6 +14,7 @@ from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
 from .lip import LIPDataset
 from .loveda import LoveDADataset
+from .mapillary import MapillaryDataset_v1, MapillaryDataset_v2
 from .night_driving import NightDrivingDataset
 from .pascal_context import PascalContextDataset, PascalContextDataset59
 from .potsdam import PotsdamDataset
@@ -49,5 +50,6 @@ __all__ = [
     'DecathlonDataset', 'LIPDataset', 'ResizeShortestEdge',
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
-    'SynapseDataset', 'REFUGEDataset'
+    'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
+    'MapillaryDataset_v2'
 ]
