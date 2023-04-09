@@ -24,11 +24,11 @@ Semantic segmentation is a key technology for autonomous vehicles to understand 
 
 ### Cityscapes
 
-| Method | Backbone      | Crop Size | Lr schd | Mem(GB) | Inf time(fps) | Device   | mIoU  | mIoU(ms+flip) | config | download     |
-| ------ | ------------- | --------- | ------- | ------- | ------------- | -------- | ----- | ------------- | ------ | ------------ |
-| DDRNet | DDRNet23-slim | 1024x1024 | 40000   |         | 85.85         | RTX 8000 | 77.84 |               |        | model \| log |
-| DDRNet | DDRNet23      | 1024x1024 | 40000   |         | 33.41         | RTX 8000 | 79.53 |               |        | model \| log |
-| DDRNet | DDRNet39      | 1024x1024 | 40000   |         |               | RTX 8000 |       |               |        | model \| log |
+| Method | Backbone      | Crop Size | Lr schd | Mem(GB) | Inf time(fps) | Device   | mIoU  | mIoU(ms+flip) | config       | download     |
+| ------ | ------------- | --------- | ------- | ------- | ------------- | -------- | ----- | ------------- | ------------ | ------------ |
+| DDRNet | DDRNet23-slim | 1024x1024 | 120000  |         | 85.85         | RTX 8000 | 77.85 | 79.80         | [config](<>) | model \| log |
+| DDRNet | DDRNet23      | 1024x1024 | 120000  |         | 33.41         | RTX 8000 | 79.53 | 80.98         | [config](<>) | model \| log |
+| DDRNet | DDRNet39      | 1024x1024 | 120000  |         |               | RTX 8000 |       |               | [config](<>) | model \| log |
 
 ## Notes
 
