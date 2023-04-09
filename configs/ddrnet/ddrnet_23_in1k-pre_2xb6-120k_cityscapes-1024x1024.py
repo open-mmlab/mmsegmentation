@@ -3,6 +3,14 @@ _base_ = [
     '../_base_/default_runtime.py',
 ]
 
+# The class_weight is borrowed from https://github.com/openseg-group/OCNet.pytorch/issues/14 # noqa
+# Licensed under the MIT License
+class_weight = [
+    0.8373, 0.918, 0.866, 1.0345, 1.0166, 0.9969, 0.9754, 1.0489, 0.8786,
+    1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955, 1.0865, 1.1529,
+    1.0507
+]
+
 crop_size = (1024, 1024)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
@@ -22,7 +30,10 @@ model = dict(
         channels=64,
         ppm_channels=128,
         norm_cfg=norm_cfg,
-        align_corners=False),
+        align_corners=False,
+        init_cfg=dict(
+            type='Pretrained',
+            checkpoint='pretrained/ddrnet23_in1k_mmseg.pth')),
     decode_head=dict(
         type='DDRHead',
         in_channels=64 * 4,
@@ -36,11 +47,13 @@ model = dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
+                class_weight=class_weight,
                 loss_weight=1.0),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
+                class_weight=class_weight,
                 loss_weight=0.4),
         ]),
 
@@ -48,7 +61,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
-train_dataloader = dict(batch_size=12)
+train_dataloader = dict(batch_size=6, num_workers=4)
 
 iters = 120000
 # optimizer
@@ -78,3 +91,5 @@ default_hooks = dict(
         type='CheckpointHook', by_epoch=False, interval=iters // 10),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
+
+randomness = dict(seed=304)
