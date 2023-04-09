@@ -108,11 +108,8 @@ class DDRHead(BaseDecodeHead):
             align_corners=self.align_corners)
         seg_label = seg_label.squeeze(1)
 
-        loss['loss_context'] = self.loss_decode[0](
-            context_logit, seg_label, ignore_index=self.ignore_index)
-
-        loss['loss_spatial'] = self.loss_decode[0](
-            spatial_logit, seg_label, ignore_index=self.ignore_index)
+        loss['loss_context'] = self.loss_decode[0](context_logit, seg_label)
+        loss['loss_spatial'] = self.loss_decode[1](spatial_logit, seg_label)
         loss['acc_seg'] = accuracy(
             context_logit, seg_label, ignore_index=self.ignore_index)
 
