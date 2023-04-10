@@ -6,23 +6,22 @@ This project supports **`EAD19`**, which can be downloaded from [here](https://e
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Endoscopic Artefact Detection (EAD) is a core challenge in facilitating diagnosis and treatment of diseases in hollow organs. Precise detection of specific artefacts like pixel saturations, motion blur, specular reflections, bubbles and debris is essential for high-quality frame restoration and is crucial for realising reliable computer-assisted tools for improved patient care. The challenge is sub-divided into three tasks:
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+- Multi-class artefact detection: Localization of bounding boxes and class labels for 6 7  artefact classes for given frames.
+- Region segmentation: Precise boundary delineation of detected artefacts.
+- Detection generalization: Detection performance independent of specific data type and source.
 
 ### Original Statistic Information
 
-| Dataset name                                       | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| -------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [EAD19](https://ead2019.grand-challenge.org/Data/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                       | Anatomical region | Task type    | Modality  | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| -------------------------------------------------- | ----------------- | ------------ | --------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [EAD19](https://ead2019.grand-challenge.org/Data/) | artefacts         | segmentation | endoscopy | 2            | 471/-/-               | yes/-/-                | 2019         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    471     |   96.04    |    -     |    -     |     -     |     -     |
+| artefacts  |    321     |    3.96    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,7 +71,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +87,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    376     |   95.74    |    95    |  97.02   |     -     |     -     |
+| artefacts  |    265     |    4.26    |    56    |   2.98   |     -     |     -     |
 
 ### Training commands
 

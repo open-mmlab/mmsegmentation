@@ -16,9 +16,7 @@ class EAD19Dataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(
-        classes=('background', 'Instrument', 'Specularity', 'Artefact',
-                 'Bubbles', 'Saturation'))
+    METAINFO = dict(classes=('background', 'artefacts'))
 
     def __init__(self,
                  img_suffix='.png',
