@@ -6,23 +6,22 @@ This project supports **`EndoCV2020EAD`**, which can be downloaded from [here](h
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Endoscopy is a widely used clinical procedure for the early detection of numerous cancers (e.g., nasopharyngeal, oesophageal adenocarcinoma, gastric, colorectal cancers, bladder cancer etc.), therapeutic procedures and minimally invasive surgery (e.g.,laparoscopy). During this procedure an endoscope is used; a long, thin, rigid or flexible tube having a light source and a camera at the tip which allows to visualise inside of affected organs on a screen. A major drawback of these video frames is that they are heavily corrupted with multiple artefacts (e.g., pixel saturations, motion blur, defocus, specular reflections, bubbles, fluid, debris etc.). These artefacts not only present difficulty in visualising the underlying tissue during diagnosis but also affect any postanalysis methods required for follow-ups (e.g., video mosaicking done for follow-ups and archival purposes, and video-frame retrieval needed for reporting).
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+Accurate detection of artefacts is a core challenge in a wide-range of endoscopic applications addressing multiple different disease areas. The importance of precise detection of these artefacts is essential for high-quality endoscopic frame restoration and crucial for realising reliable computer assisted endoscopy tools for improved patient care. Existing endoscopy workflows detect only one artefact class which is insufficient to obtain high-quality frame restoration. In general, the same video frame can be corrupted with multiple artefacts, e.g. motion blur, specular reflections, and low contrast can be present in the same frame. Further, not all artefact types contaminate the frame equally. So, unless multiple artefacts present in the frame are known with their precise spatial location, clinically relevant frame restoration quality cannot be guaranteed. Another advantage of such detection is that frame quality assessments can be guided to minimise the number of frames that gets discarded during automated video analysis.The aim of this task is to localise bounding boxes, predict class labels and pixel-wise segmentation of 8 different artefact classes for given frames and clinical endoscopy video clips.
+
+The 8 classes in this challenge include specularity, bubbles, saturation, contrast, blood, instrument, blur and imaging artefacts. The algorithms are also evaluated on generalisation of detection methods used in this category.
 
 ### Original Statistic Information
 
 | Dataset name                                               | Anatomical region | Task type    | Modality  | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | ---------------------------------------------------------- | ----------------- | ------------ | --------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [EndoCV2020EAD](https://ead2020.grand-challenge.org/Data/) | bacteria          | segmentation | endoscopy | 9            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [EndoCV2020EAD](https://ead2020.grand-challenge.org/Data/) | endoscopy         | segmentation | endoscopy | 2            | 366/-/-               | yes/-/-                | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    573     |   96.58    |    -     |    -     |     -     |     -     |
+| artefacts  |    347     |    3.42    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,7 +71,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +87,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    458     |   96.83    |   115    |  95.53   |     -     |     -     |
+| artefacts  |    273     |    3.17    |    74    |   4.47   |     -     |     -     |
 
 ### Training commands
 

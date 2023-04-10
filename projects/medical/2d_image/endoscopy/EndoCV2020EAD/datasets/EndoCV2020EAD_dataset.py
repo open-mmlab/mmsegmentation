@@ -16,10 +16,7 @@ class EndoCV2020EADDataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(
-        classes=('background', 'specularity', 'bubbles', 'saturation',
-                 'contrast', 'blood', 'instrument', 'blur',
-                 'imagingArtefacts'))
+    METAINFO = dict(classes=('background', 'artefacts'))
 
     def __init__(self,
                  img_suffix='.png',
