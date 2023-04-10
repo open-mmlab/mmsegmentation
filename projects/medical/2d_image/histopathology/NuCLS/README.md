@@ -6,17 +6,15 @@ This project supports **`NuCLS`**, which can be downloaded from [here](https://s
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
-
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+The NuCLS dataset contains over 220,000 labeled nuclei from breast cancer images from TCGA. These nuclei were annotated through the collaborative effort of pathologists, pathology residents, and medical students using the Digital Slide Archive. These data can be used in several ways to develop and validate algorithms for nuclear detection, classification, and segmentation, or as a resource to develop and evaluate methods for interrater analysis.
+Data from both single-rater and multi-rater studies are provided. For single-rater data we provide both pathologist-reviewed and uncorrected annotations. For multi-rater datasets we provide annotations generated with and without suggestions from weak segmentation and classification algorithms.
+For more details consult our GigaScience paper, or contact us directly with questions.
 
 ### Original Statistic Information
 
-| Dataset name                                      | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| ------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [NuCLS](https://sites.google.com/view/nucls/home) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                      | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [NuCLS](https://sites.google.com/view/nucls/home) | cell              | segmentation | histopathology | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 |  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
