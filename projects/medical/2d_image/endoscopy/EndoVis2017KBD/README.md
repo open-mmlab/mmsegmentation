@@ -6,23 +6,20 @@ This project supports **`EndoVis2017KBD`**, which can be downloaded from [here](
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+The dataset we are providing will be made up of 15x 100-frames sequences of stereo camera images acquired from a da Vinci Xi robot during porcine partial nephrectomies. To avoid redundancy, we sample the frames from 30 Hz video at 2 Hz. To extract the 1280x1024 camera images from the video frames, crop the image from the pixel (320, 28).
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+In each frame we have hand labelled the visible border of the kidney, skipping regions where it is fully occluded by fat and other tissue. The only exception to this rule is instrument occlusion where we provide a separate labelling and interpolate over the occlusion.
 
 ### Original Statistic Information
 
-| Dataset name                                                                                    | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [EndoVis2017KBD](https://endovissub2017-kidneyboundarydetection.grand-challenge.org/Downloads/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                                    | Anatomical region | Task type    | Modality  | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ----------------------------------------------------------------------------------------------- | ----------------- | ------------ | --------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [EndoVis2017KBD](https://endovissub2017-kidneyboundarydetection.grand-challenge.org/Downloads/) | other             | segmentation | endoscopy | 2            | 400/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+|   Class Name    | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :-------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background    |    400     |   99.73    |    -     |    -     |     -     |     -     |
+| kidney_boundary |    398     |    0.27    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,7 +69,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +85,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+|   Class Name    | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :-------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background    |    320     |   99.73    |    80    |  99.71   |     -     |     -     |
+| kidney_boundary |    318     |    0.27    |    80    |   0.29   |     -     |     -     |
 
 ### Training commands
 
