@@ -16,10 +16,7 @@ class EndoVis2017RISDataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(
-        classes=('background', 'BipolarForceps', 'PrograspForceps',
-                 'LargeNeedleDriver', 'VesselSealer', 'GraspingRetractor',
-                 'MonopolarCurvedScissors', 'Other'))
+    METAINFO = dict(classes=('background', 'shaft', 'wrist', 'clasper'))
 
     def __init__(self,
                  img_suffix='.png',

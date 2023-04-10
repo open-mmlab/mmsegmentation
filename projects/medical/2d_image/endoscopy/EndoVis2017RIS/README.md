@@ -6,23 +6,24 @@ This project supports **`EndoVis2017RIS`**, which can be downloaded from [here](
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+The dataset we are providing will be made up of 8x 225-frame videos of stereo camera images acquired from a da Vinci Xi robot during several different porcine procedures. To avoid redundancy, we sample the frames from 30 Hz video at 2 Hz. To extract the 1280x1024 camera images from the video frames, crop the image from the pixel (320, 28).
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+In each frame we have hand labelled the articulated parts of the robotic surgical instruments, where we divide the instrument up into a rigid shaft, an articulated wrist and claspers. We additionally label a further miscellaneous category for any other surgical instrument such as a laparoscopic instrument or a drop-in ultrasound probe etc. This is so you can train your algorithms not to mistake these objects for robotic surgical instruments.
+
+In the training set directory there will be a file called parts_mapping.json. This contains the mapping between the numerical value assigned to each part and the name of that part. There will also be a file called type_mapping.json. This contains a unique numerical value which maps between each instrument type and their real names.
 
 ### Original Statistic Information
 
-| Dataset name                                                                                          | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| ----------------------------------------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [EndoVis2017RIS](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                                          | Anatomical region | Task type    | Modality  | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ----------------------------------------------------------------------------------------------------- | ----------------- | ------------ | --------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [EndoVis2017RIS](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) | bacteria          | segmentation | endoscopy | 4            | 1800/-/1200           | yes/-/yes              | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    1800    |   86.95    |    -     |    -     |   1200    |   91.94   |
+|   shaft    |    1696    |    7.92    |    -     |    -     |   1163    |   5.12    |
+|   wrist    |    1721    |    2.45    |    -     |    -     |   1179    |   1.48    |
+|  clasper   |    1769    |    2.69    |    -     |    -     |   1181    |   1.47    |
 
 Note:
 
@@ -71,15 +72,22 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
-  │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
+  │   │   │   │   │   │   ├── test.txt
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── test
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── test
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
@@ -89,11 +97,12 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    1800    |   86.95    |    -     |    -     |   1200    |   91.94   |
+|   shaft    |    1696    |    7.92    |    -     |    -     |   1163    |   5.12    |
+|   wrist    |    1721    |    2.45    |    -     |    -     |   1179    |   1.48    |
+|  clasper   |    1769    |    2.69    |    -     |    -     |   1181    |   1.47    |
 
 ### Training commands
 
