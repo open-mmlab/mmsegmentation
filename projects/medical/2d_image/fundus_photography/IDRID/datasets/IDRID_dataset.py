@@ -17,8 +17,8 @@ class IDRIDDataset(BaseSegDataset):
             Default to False.
     """
     METAINFO = dict(
-        classes=('background', 'microaneurysms', 'softExudates',
-                 'hardExudates', 'hemorrhages'))
+        classes=('background', 'microaneurysms', 'haemorrhages',
+                 'hardExudates', 'softExudates', 'opticDisc'))
 
     def __init__(self,
                  img_suffix='.png',

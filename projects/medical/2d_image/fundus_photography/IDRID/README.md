@@ -6,23 +6,22 @@ This project supports **`IDRID`**, which can be downloaded from [here](https://i
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
-
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+The dataset provides expert markups of typical diabetic retinopathy lesions and normal retinal structures. Furthermore, it provides information regarding disease severity level of diabetic retinopathy, and diabetic macular edema for each image in the database based on international standards of clinical relevance. The details about available ground-truth are in following sections.
 
 ### Original Statistic Information
 
-| Dataset name                                              | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| --------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [IDRID](https://idrid.grand-challenge.org/Data_Download/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                              | Anatomical region | Task type    | Modality           | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| --------------------------------------------------------- | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [IDRID](https://idrid.grand-challenge.org/Data_Download/) | eye               | segmentation | fundus_photography | 3            | 54/-/27               | yes/-/yes              | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+|   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background   |     54     |   96.11    |    -     |    -     |    27     |   100.0   |
+| microaneurysms |     54     |    0.11    |    -     |    -     |     0     |   0.00    |
+|  haemorrhages  |     54     |    0.98    |    -     |    -     |     0     |   0.00    |
+|  hardExudates  |     54     |    0.81    |    -     |    -     |     0     |   0.00    |
+|  softExudates  |     54     |    0.19    |    -     |    -     |     0     |   0.00    |
+|   opticDisc    |     54     |    1.81    |    -     |    -     |     0     |   0.00    |
 
 Note:
 
@@ -72,7 +71,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +87,14 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+|   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background   |     54     |   96.11    |    -     |    -     |    27     |   100.0   |
+| microaneurysms |     54     |    0.11    |    -     |    -     |     0     |   0.00    |
+|  haemorrhages  |     54     |    0.98    |    -     |    -     |     0     |   0.00    |
+|  hardExudates  |     54     |    0.81    |    -     |    -     |     0     |   0.00    |
+|  softExudates  |     54     |    0.19    |    -     |    -     |     0     |   0.00    |
+|   opticDisc    |     54     |    1.81    |    -     |    -     |     0     |   0.00    |
 
 ### Training commands
 
