@@ -6,23 +6,30 @@ This project supports **`EndoCV2020EDD`**, which can be downloaded from [here](h
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Endoscopy is a widely used clinical procedure for the early detection of cancers in hollow-organs such as oesophagus, stomach, colon and bladder. Computer-assisted methods for accurate and temporally consistent localisation and segmentation of diseased region-of-interests enable precise quantification and mapping of lesions from clinical endoscopy videos which is critical for monitoring and surgical planning. Innovations have the potential to improve current medical practices and refine healthcare systems worldwide. However, well-annotated, representative publically-available datasets for disease detection for assessing reproducibility and facilitating standardised comparison of methods is still lacking. Many methods to detect diseased regions in endoscopy have been proposed however these have primarily focused on the task of polyp detection in the gastrointestinal tract with demonstration on datasets acquired from at most a few data centres and single modality imaging, most commonly white light. Here, we present our multi-class disease detection and segmentation challenge in clinical endoscopy. With this sub-challenge we aim to establish a comprehensive dataset to benchmark algorithms for disease detection.
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+Specifically we aim to assess: Precise spatio-temporal localisation of disease regions using bounding boxes and exact pixel-level segmentation. Clinical applicability by assessing the online sequential for real-time monitoring and offline performance of algorithms for improved accuracy and better quantitative reporting. Participants will be provided with a large annotated dataset labelled by medical experts and experienced post doctoral researchers with videos and frames from 5 different international centres and 4 organs targeting multiple populations and varied endoscopy video modalities associated with pre-malignant and diseased regions as follows:
+
+Organ 1: Colon, associated disease: polyp, cancer
+Organ 2: Oesophagus, associated disease: Barrett’s, dysplasia and cancer
+Organ 3: Stomach, associated disease: pyloric inflammation, dysplasia
+Organ 4: Bladder, associated disease: scars, cancer
 
 ### Original Statistic Information
 
 | Dataset name                                               | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | ---------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [EndoCV2020EDD](https://edd2020.grand-challenge.org/Data/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [EndoCV2020EDD](https://edd2020.grand-challenge.org/Data/) | bacteria          | segmentation | microscopy | 7            | 386/-/-               | yes/-/-                | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    386     |   77.87    |    -     |    -     |     -     |     -     |
+|     BE     |    160     |    4.80    |    -     |    -     |     -     |     -     |
+| suspicious |     67     |    1.81    |    -     |    -     |     -     |     -     |
+|    HGD     |     72     |    2.00    |    -     |    -     |     -     |     -     |
+|   cancer   |     49     |    1.34    |    -     |    -     |     -     |     -     |
+|   polyp    |    127     |   11.18    |    -     |    -     |     -     |     -     |
+| ambiguous  |     91     |    1.00    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,7 +79,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +95,15 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    308     |   77.21    |    78    |  80.20   |     -     |     -     |
+|     BE     |    132     |    5.00    |    28    |   4.08   |     -     |     -     |
+| suspicious |     53     |    1.90    |    14    |   1.51   |     -     |     -     |
+|    HGD     |     57     |    2.03    |    15    |   1.89   |     -     |     -     |
+|   cancer   |     41     |    1.36    |    8     |   1.30   |     -     |     -     |
+|   polyp    |     99     |   11.39    |    28    |  10.46   |     -     |     -     |
+| ambiguous  |     76     |    1.12    |    15    |   0.56   |     -     |     -     |
 
 ### Training commands
 

@@ -17,9 +17,7 @@ class EndoCV2020EDDDataset(BaseSegDataset):
             Default to False.
     """
     METAINFO = dict(
-        classes=('background', 'specularity', 'bubbles', 'saturation',
-                 'contrast', 'blood', 'instrument', 'blur',
-                 'imagingArtefacts'))
+        classes=('background', 'BE', 'suspicious', 'HGD', 'cancer', 'polyp'))
 
     def __init__(self,
                  img_suffix='.png',
