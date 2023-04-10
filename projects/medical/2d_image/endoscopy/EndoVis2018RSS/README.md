@@ -6,23 +6,44 @@ This project supports **`EndoVis2018RSS`**, which can be downloaded from [here](
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Our training dataset is made up of 16 robotic nephrectomy procedures recorded using da Vinci Xi systems in porcine labs. The original video data was recorded at 60 Hz and to reduce labelling cost we subsample this to 2 Hz. Sequences with little or no motion are manually removed to leave 149 frames per procedure. Video frames are 1280x1024 and we provide the left and right eye camera image as well as the stereo camera calibration parameters. Labels are only provided for the left image.
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+In each frame we hand label several man-made and anatomical objects. The annotations were performed by hand by several Intuitive Surgical employees with knowledge of porcine anatomy. Only a single annotator worked on each dataset. Best efforts will be made to ensure anatomical correctness of all labels however we cannot guarantee that some errors do not occur, particularly in cases where tissue type is ambiguous. The classes found in the training and test will be:
+
+- da Vinci robotic surgical instrument parts
+  - Shaft
+  - Wrist
+  - Jaws
+- Drop in Ultrasound Probe
+- Suturing Needles
+- Suturing thread
+- Clips/clamps
+- Kidney parenchyma
+  - Fascia covered
+  - Uncovered
+- Small bowel
+- Background tissue
+- Each class will have a distinct numerical label in a ground truth image. A supplied json file will contain the class name to numerical label mapping.
 
 ### Original Statistic Information
 
-| Dataset name                                                                                     | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| ------------------------------------------------------------------------------------------------ | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [EndoVis2018RSS](https://endovissub2018-roboticscenesegmentation.grand-challenge.org/Downloads/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                                     | Anatomical region | Task type    | Modality  | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ------------------------------------------------------------------------------------------------ | ----------------- | ------------ | --------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [EndoVis2018RSS](https://endovissub2018-roboticscenesegmentation.grand-challenge.org/Downloads/) | other             | segmentation | endoscopy | 11           | 2235/-/319            | yes/-/no               | 2018         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+|    Class Name     | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :---------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|    background     |    2235    |   45.35    |    -     |    -     |     -     |     -     |
+|  instrumentShaft  |    1012    |    8.11    |    -     |    -     |     -     |     -     |
+| instrumentClasper |    268     |    0.41    |    -     |    -     |     -     |     -     |
+|  instrumentWrist  |    372     |    0.50    |    -     |    -     |     -     |     -     |
+| kidneyParenchyma  |    156     |    0.52    |    -     |    -     |     -     |     -     |
+|   coveredKidney   |    1396    |   17.21    |    -     |    -     |     -     |     -     |
+|      thread       |     12     |    0.00    |    -     |    -     |     -     |     -     |
+|      clamps       |    2194    |    4.66    |    -     |    -     |     -     |     -     |
+|  suturingNeedle   |    2157    |    9.42    |    -     |    -     |     -     |     -     |
+| suctionInstrument |    1391    |   11.69    |    -     |    -     |     -     |     -     |
+|  smallIntestine   |    1645    |    2.13    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,7 +93,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +109,19 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+|    Class Name     | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :---------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|    background     |    1788    |   45.43    |   447    |  45.01   |     -     |     -     |
+|  instrumentShaft  |    812     |    8.02    |   200    |   8.48   |     -     |     -     |
+| instrumentClasper |    218     |    0.43    |    50    |   0.36   |     -     |     -     |
+|  instrumentWrist  |    294     |    0.51    |    78    |   0.47   |     -     |     -     |
+| kidneyParenchyma  |    122     |    0.53    |    34    |   0.47   |     -     |     -     |
+|   coveredKidney   |    1124    |   17.21    |   272    |  17.20   |     -     |     -     |
+|      thread       |     10     |    0.00    |    2     |   0.00   |     -     |     -     |
+|      clamps       |    1757    |    4.65    |   437    |   4.67   |     -     |     -     |
+|  suturingNeedle   |    1728    |    9.46    |   429    |   9.26   |     -     |     -     |
+| suctionInstrument |    1102    |   11.61    |   289    |  11.97   |     -     |     -     |
+|  smallIntestine   |    1309    |    2.14    |   336    |   2.10   |     -     |     -     |
 
 ### Training commands
 

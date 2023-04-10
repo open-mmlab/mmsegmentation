@@ -20,7 +20,7 @@ class EndoVis2018RSSDataset(BaseSegDataset):
         classes=('background', 'instrumentShaft', 'instrumentClasper',
                  'instrumentWrist', 'kidneyParenchyma', 'coveredKidney',
                  'thread', 'clamps', 'suturingNeedle', 'suctionInstrument',
-                 'intestine', 'ultrasoundProbe'))
+                 'smallIntestine'))
 
     def __init__(self,
                  img_suffix='.png',
