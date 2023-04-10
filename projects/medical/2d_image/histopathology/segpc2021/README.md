@@ -6,11 +6,10 @@ This project supports **`SegPC2021`**, which can be downloaded from [here](https
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Microscopic images were captured from bone marrow aspirate slides of patients diagnosed with Multiple Myeloma (MM), a type of white blood cancer. Slides were stained using Jenner-Giemsa stain, and plasma cells, which are cells of interest, must be segmented. Images were captured in raw BMP format using two cameras-
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+1. with a size of 2040x1536 pixels using cellSens software Version 2.1 (Olympus) attached to the microscope and
+2. at a size of 1920x2560pixels from a Nikon camera attached to the microscope.
 
 ### Original Statistic Information
 
