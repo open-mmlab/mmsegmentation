@@ -6,23 +6,21 @@ This project supports **`PALM19`**, which can be downloaded from [here](https://
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Manual pixel-wise annotations of the optic disc were obtained by SEVEN independent  OPHTHALMOLOGISTS from Zhongshan Ophthalmic Center, Sun Yat-sen University, China. The reference standard for the segmentation task was created from the seven annotations, which were merged into single annotation by another SENIOR SPECIALIST. It is stored as a BMP image with the same size as the corresponding fundus image with the following labels:
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+- 0: Others
+- 1: Optic Disc
 
 ### Original Statistic Information
 
-| Dataset name                                                          | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| --------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [PALM19](https://tianchi.aliyun.com/dataset/dataDetail?dataId=127459) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                          | Anatomical region | Task type    | Modality           | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| --------------------------------------------------------------------- | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [PALM19](https://tianchi.aliyun.com/dataset/dataDetail?dataId=127459) | eye               | segmentation | fundus_photography | 2            | 400/379/400           | yes/yes/yes            | 2019         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    400     |   98.31    |   379    |  98.21   |    400    |   98.4    |
+| opticDisc  |    381     |    1.69    |   379    |   1.79   |    384    |    1.6    |
 
 Note:
 
@@ -71,15 +69,31 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
+  │   │   │   │   │   │   ├── test.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── test
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── test
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── val
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
@@ -89,11 +103,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    400     |   98.31    |   379    |  98.21   |    400    |   98.4    |
+| opticDisc  |    381     |    1.69    |   379    |   1.79   |    384    |    1.6    |
 
 ### Training commands
 

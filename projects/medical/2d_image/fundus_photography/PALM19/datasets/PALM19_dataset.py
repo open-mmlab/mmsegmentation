@@ -16,7 +16,7 @@ class PALM19Dataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(classes=('background', 'OpticDisc'))
+    METAINFO = dict(classes=('background', 'opticDisc'))
 
     def __init__(self,
                  img_suffix='.png',
