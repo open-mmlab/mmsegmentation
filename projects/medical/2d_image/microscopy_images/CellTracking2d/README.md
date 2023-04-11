@@ -6,23 +6,18 @@ This project supports **`CellTracking2d`**, which can be downloaded from [here](
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
-
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+Segmenting and tracking moving cells in time-lapse video sequences is a challenging task, required for many applications in both scientific and industrial settings. Properly characterizing how cells change shapes and move as they interact with their surrounding environment is key to understanding the mechanobiology of cell migration and its multiple implications in both normal tissue development and many diseases. In this challenge, we objectively compare and evaluate state-of-the-art whole-cell and nucleus segmentation and tracking methods using both real (2D and 3D) time-lapse microscopy videos of cells and nuclei, along with computer-generated (2D and 3D) video sequences simulating whole cells and nuclei moving in realistic environments.
 
 ### Original Statistic Information
 
 | Dataset name                                        | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | --------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [CellTracking2d](http://celltrackingchallenge.net/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [CellTracking2d](http://celltrackingchallenge.net/) | cell              | segmentation | microscopy | 2            | 3871/-/4070           | yes/-/no               | 2019         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    3871    |   97.91    |    -     |    -     |     -     |     -     |
+|    cell    |    3871    |    2.09    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,9 +67,12 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── test
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
@@ -89,11 +87,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    3096    |    97.9    |   775    |  97.97   |     -     |     -     |
+|    cell    |    3096    |    2.1     |   775    |   2.03   |     -     |     -     |
 
 ### Training commands
 
