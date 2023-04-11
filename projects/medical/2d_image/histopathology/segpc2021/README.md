@@ -13,15 +13,15 @@ Microscopic images were captured from bone marrow aspirate slides of patients di
 
 ### Original Statistic Information
 
-| Dataset name                                                    | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| --------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [SegPC2021](https://segpc-2021.grand-challenge.org/SegPC-2021/) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                    | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| --------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [SegPC2021](https://segpc-2021.grand-challenge.org/SegPC-2021/) | bacteria          | segmentation | histopathology | 3            | 298/199/277           | yes/yes/no             | 2021         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    298     |   86.83    |   199    |  87.70   |     -     |     -     |
+| cytoplasm  |    298     |    7.60    |   199    |   7.16   |     -     |     -     |
+|  nucleus   |    298     |    5.57    |   199    |   5.14   |     -     |     -     |
 
 Note:
 
@@ -71,14 +71,25 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── test
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── val
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
@@ -88,11 +99,11 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background |    298     |   86.83    |   199    |  87.70   |     -     |     -     |
+| cytoplasm  |    298     |    7.60    |   199    |   7.16   |     -     |     -     |
+|  nucleus   |    298     |    5.57    |   199    |   5.14   |     -     |     -     |
 
 ### Training commands
 
