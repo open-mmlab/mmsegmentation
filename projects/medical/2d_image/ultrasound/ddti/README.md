@@ -16,13 +16,12 @@ It is highly imbalanced, so naive loss functions would work less properly
 
 | Dataset name                                                                   | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | ------------------------------------------------------------------------------ | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [ddti](https://drive.google.com/file/d/1wwlsEhwfSyvQsJBRjeDLhUjqZh8eaH2R/view) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [ddti](https://drive.google.com/file/d/1wwlsEhwfSyvQsJBRjeDLhUjqZh8eaH2R/view) | other             | segmentation | ultrasound | 2            | 831/-/278             | yes/-/yes              | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+|   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background   |    831     |   97.28    |    -     |    -     |    278    |   97.21   |
+| nodularThyroid |    779     |    2.72    |    -     |    -     |    261    |   2.79    |
 
 Note:
 
@@ -72,7 +71,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +87,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+|   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|   background   |    831     |   97.28    |    -     |    -     |    278    |   97.21   |
+| nodularThyroid |    779     |    2.72    |    -     |    -     |    261    |   2.79    |
 
 ### Training commands
 
