@@ -1,28 +1,37 @@
-# Bactteria detection with darkfield microscopy
+# QUBIQ2020
 
 ## Description
 
-This project supports **`Bactteria detection with darkfield microscopy`**, which can be downloaded from [here](https://syncandshare.lrz.de/public?folderID=MlJqWDRqTk1yOVBDUzd6UTNvdkhm).
+This project supports **`QUBIQ2020`**, which can be downloaded from [here](https://syncandshare.lrz.de/public?folderID=MlJqWDRqTk1yOVBDUzd6UTNvdkhm).
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
+Training and test data will comprise 7 binary segmentation tasks in four different CT and MR data sets. Some of the data sets contain more than one binary segmentation (sub-)task, e.g., different sub-structures of tumor or anatomy need to be segmented.
 
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+All data sets have about 50 to 100 cases featuring one selected 2D slice each. Each structure of interest is segmented between three and seven times by different experts, and individual segmentations are made available. The task is to delineate structures in a given slice, and to match the distribution – or spread – of the expert's annotations well.
+
+The data is split accordingly in four different image sets, and for each case in those sets, binary labels are given for each segmentation task.
+
+The following data and tasks are available:
+
+- Prostate images (MRI): 55 cases, two segmentation tasks, six annotations (except one subject has only 5 annotations);
+- Brain growth images (MRI): 39 cases, one segmentation task, seven annotations;
+- Brain tumor images (multimodal MRI): 32 cases, three segmentations tasks, three annotations \[Please note: this data set will receive the additional case in the near future\];
+- Kidney images (CT): 24 cases, one segmentation task, three annotations;
+
+Data is available as .nii files with 2D slices. For “Brain tumor” the file contains slices of all four MR modalities.
 
 ### Original Statistic Information
 
-| Dataset name                                                                                    | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| ----------------------------------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [Bactteria detection](https://syncandshare.lrz.de/public?folderID=MlJqWDRqTk1yOVBDUzd6UTNvdkhm) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                          | Anatomical region | Task type    | Modality | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| ------------------------------------------------------------------------------------- | ----------------- | ------------ | -------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [QUBIQ2020](https://syncandshare.lrz.de/public?folderID=MlJqWDRqTk1yOVBDUzd6UTNvdkhm) | tumor             | segmentation | CT       | 3            | 162/18/-              | yes/yes/-              | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+| Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :---------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background  |    162     |   95.76    |    18    |  96.29   |     -     |     -     |
+| brainGrowth |    102     |    2.94    |    10    |   2.22   |     -     |     -     |
+|   kidney    |     60     |    1.30    |    8     |   1.49   |     -     |     -     |
 
 Note:
 
@@ -54,9 +63,9 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset Preparing
 
 - Download dataset from [here](https://syncandshare.lrz.de/public?folderID=MlJqWDRqTk1yOVBDUzd6UTNvdkhm) and save it to the `data/` directory .
-- Decompress data to path `data/`. This will create a new folder named `data/Bacteria_detection_with_darkfield_microscopy_datasets/`, which contains the original image data.
+- Decompress data to path `data/`. This will create a new folder named `data/QUBIQ2020/`, which contains the original image data.
 - run script `python tools/prepare_dataset.py` to format data and change folder structure as below.
-- run script `python ../../tools/split_seg_dataset.py` to split dataset. For the Bacteria_detection dataset, as there is no test or validation dataset, we sample 20% samples from the whole dataset as the validation dataset and 80% samples for training data and make two filename lists `train.txt` and `val.txt`. As we set the random seed as the hard code, we eliminated the randomness, the dataset split actually can be reproducible.
+- run script `python ../../tools/split_seg_dataset.py` to split dataset. For the QUBIQ2020 dataset, as there is no test or validation dataset, we sample 20% samples from the whole dataset as the validation dataset and 80% samples for training data and make two filename lists `train.txt` and `val.txt`. As we set the random seed as the hard code, we eliminated the randomness, the dataset split actually can be reproducible.
 
 ```none
   mmsegmentation
@@ -72,14 +81,21 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── val
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
   │   │   │   │   │   │   ├── masks
   │   │   │   │   │   │   │   ├── train
+  │   │   │   │   |   │   │   │   ├── xxx.png
+  │   │   │   │   |   │   │   │   ├── ...
+  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   │   ├── val
   │   │   │   │   |   │   │   │   ├── xxx.png
   │   │   │   │   |   │   │   │   ├── ...
   │   │   │   │   |   │   │   │   └── xxx.png
@@ -89,11 +105,11 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+| Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :---------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+| background  |    162     |   95.76    |    18    |  96.29   |     -     |     -     |
+| brainGrowth |    102     |    2.94    |    10    |   2.22   |     -     |     -     |
+|   kidney    |     60     |    1.30    |    8     |   1.49   |     -     |     -     |
 
 ### Training commands
 
@@ -117,7 +133,7 @@ You should claim whether this is based on the pre-trained weights, which are con
 
 ## Results
 
-### Bactteria detection with darkfield microscopy
+### QUBIQ2020
 
 ***Note: The following experimental results are based on the data randomly partitioned according to the above method described in the dataset preparing section.***
 

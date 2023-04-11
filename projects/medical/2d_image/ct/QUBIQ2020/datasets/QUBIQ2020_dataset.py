@@ -16,7 +16,7 @@ class QUBIQ2020Dataset(BaseSegDataset):
         reduce_zero_label (bool): Whether to mark label zero as ignored.
             Default to False.
     """
-    METAINFO = dict(classes=('background', 'kidney', 'brain'))
+    METAINFO = dict(classes=('background', 'brainGrowth', 'kidney'))
 
     def __init__(self,
                  img_suffix='.png',
