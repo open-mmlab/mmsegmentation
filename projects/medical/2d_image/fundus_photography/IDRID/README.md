@@ -12,7 +12,7 @@ The dataset provides expert markups of typical diabetic retinopathy lesions and 
 
 | Dataset name                                              | Anatomical region | Task type    | Modality           | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | --------------------------------------------------------- | ----------------- | ------------ | ------------------ | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [IDRID](https://idrid.grand-challenge.org/Data_Download/) | eye               | segmentation | fundus_photography | 3            | 54/-/27               | yes/-/yes              | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [IDRID](https://idrid.grand-challenge.org/Data_Download/) | eye               | segmentation | fundus_photography | 6            | 54/-/27               | yes/-/yes              | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 |   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
