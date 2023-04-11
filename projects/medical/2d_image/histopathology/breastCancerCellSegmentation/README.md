@@ -6,23 +6,20 @@ This project supports **`breastCancerCellSegmentation`**, which can be downloade
 
 ### Dataset Overview
 
-Spirochaeta is a genus of bacteria classified within the phylum Spirochaetes. Included in this dataset are 366 darkfield microscopy images and manually annotated masks which can be used for classification and segmentation purposes. Detecting bacteria in blood could have a huge significance for research in both the medical and computer science field.
-
-It was gathered and annotated by students (hand-on experience)
-It has more than just one targeted class (blood cell and bacteria were annotated)
-It is highly imbalanced, so naive loss functions would work less properly
+This dataset, with 58 H&E-stained histopathology images was used for breast cancer cell detection and associated real-world data.
+Conventional histology uses a combination of hematoxylin and eosin stains, commonly referred to as H&E. These images are stained because most cells are inherently transparent with little or no intrinsic pigment.
+Certain special stains selectively bind to specific components and can be used to identify biological structures such as cells.
 
 ### Original Statistic Information
 
-| Dataset name                                                                                 | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
-| -------------------------------------------------------------------------------------------- | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [breastCancerCellSegmentation](https://www.heywhale.com/mw/dataset/5e9e9b35ebb37f002c625423) | bacteria          | segmentation | microscopy | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dataset name                                                                                 | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
+| -------------------------------------------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| [breastCancerCellSegmentation](https://www.heywhale.com/mw/dataset/5e9e9b35ebb37f002c625423) | cell              | segmentation | histopathology | 2            | 58/-/-                | yes/-/-                | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+|    Class Name    | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|    background    |     58     |   98.37    |    -     |    -     |     -     |     -     |
+| breastCancerCell |     58     |    1.63    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -72,7 +69,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -89,11 +85,10 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+|    Class Name    | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :--------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|    background    |     46     |   98.36    |    12    |  98.41   |     -     |     -     |
+| breastCancerCell |     46     |    1.64    |    12    |   1.59   |     -     |     -     |
 
 ### Training commands
 
