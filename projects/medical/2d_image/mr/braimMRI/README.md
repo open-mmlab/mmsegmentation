@@ -29,7 +29,7 @@ Note:
 
 ### Visualization
 
-![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/mr/braimMRI/braimMRI_dataset.png)
+![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/mr/brainMRI/brainMRI_dataset.png)
 
 ## Usage
 
