@@ -4,8 +4,10 @@ from .embed import PatchEmbed
 from .encoding import Encoding
 from .inverted_residual import InvertedResidual, InvertedResidualV3
 from .make_divisible import make_divisible
+from .norm import LayerNorm2d
 from .ppm import DAPPM, PAPPM
 from .res_layer import ResLayer
+from .sam_modules import MaskDecoder, PromptEncoder, TwoWayTransformer
 from .se_layer import SELayer
 from .self_attention_block import SelfAttentionBlock
 from .shape_convert import (nchw2nlc2nchw, nchw_to_nlc, nlc2nchw2nlc,
@@ -17,5 +19,6 @@ __all__ = [
     'ResLayer', 'SelfAttentionBlock', 'make_divisible', 'InvertedResidual',
     'UpConvBlock', 'InvertedResidualV3', 'SELayer', 'PatchEmbed',
     'nchw_to_nlc', 'nlc_to_nchw', 'nchw2nlc2nchw', 'nlc2nchw2nlc', 'Encoding',
-    'Upsample', 'resize', 'DAPPM', 'PAPPM', 'BasicBlock', 'Bottleneck'
+    'Upsample', 'resize', 'DAPPM', 'PAPPM', 'BasicBlock', 'Bottleneck',
+    'LayerNorm2d', 'MaskDecoder', 'PromptEncoder', 'TwoWayTransformer'
 ]
