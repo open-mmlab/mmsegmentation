@@ -179,7 +179,7 @@ print(dataset[0])
 
 ## BaseSegDataset
 
-As mentioned above, dataset classes have the same functions, we implemented  [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/main/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) to reues the common functions.
+As mentioned above, dataset classes have the same functions, we implemented  [`BaseSegDataset`](https://mmsegmentation.readthedocs.io/en/latest/api.html?highlight=BaseSegDataset#mmseg.datasets.BaseSegDataset) to reues the common functions.
 It inherits [`BaseDataset` of MMEngine](https://github.com/open-mmlab/mmengine/blob/main/docs/en/advanced_tutorials/basedataset.md) and follows unified initialization process of OpenMMLab. It supports the highly effective interior storing format, some functions like
 dataset concatenation and repeatedly sampling. In MMSegmentation `BaseSegDataset`, the **method of loading data information** (`load_data_list`) is redefined and adds new `get_label_map` method to **modify dataset classes information**.
 
