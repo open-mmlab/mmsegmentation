@@ -30,8 +30,9 @@ from .transforms import (CLAHE, AdjustGamma, BioMedical3DPad,
                          LoadBiomedicalImageFromFile, LoadImageFromNDArray,
                          PackSegInputs, PhotoMetricDistortion, RandomCrop,
                          RandomCutOut, RandomMosaic, RandomRotate,
-                         RandomRotFlip, Rerange, ResizeShortestEdge,
-                         ResizeToMultiple, RGB2Gray, SegRescale)
+                         RandomRotFlip, Rerange, ResizeLongestSide,
+                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
+                         SegRescale)
 from .voc import PascalVOCDataset
 
 # yapf: enable
@@ -51,5 +52,5 @@ __all__ = [
     'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
     'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
-    'MapillaryDataset_v2'
+    'MapillaryDataset_v2', 'ResizeLongestSide'
 ]

@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# Borrowed from https://github.com/facebookresearch/segment-anything
 import math
 from typing import Any, List, Optional, Tuple, Type
 
@@ -27,6 +28,8 @@ class MaskDecoder(nn.Module):
     ) -> None:
         """Predicts masks given an image and prompt embeddings, using a
         tranformer architecture.
+
+        Borrowed from https://github.com/facebookresearch/segment-anything
 
         Arguments:
           transformer_dim (int): the channel dimension of the transformer
@@ -81,6 +84,8 @@ class MaskDecoder(nn.Module):
         multimask_output: bool,
     ) -> Tuple[Tensor, Tensor]:
         """Predict masks given image and prompt embeddings.
+
+        Borrowed from https://github.com/facebookresearch/segment-anything
 
         Arguments:
           image_embeddings (Tensor): the embeddings from the image encoder
@@ -173,6 +178,8 @@ class PromptEncoder(nn.Module):
         activation: Type[nn.Module] = nn.GELU,
     ) -> None:
         """Encodes prompts for input to SAM's mask decoder.
+
+        Borrowed from https://github.com/facebookresearch/segment-anything
 
         Arguments:
           embed_dim (int): The prompts' embedding dimension
@@ -510,6 +517,8 @@ class TwoWayAttentionBlock(nn.Module):
         block on sparse inputs, and (4) cross attention of dense inputs to
         sparse inputs.
 
+        Borrowed from https://github.com/facebookresearch/segment-anything
+
         Arguments:
           embedding_dim (int): the channel dimension of the embeddings
           num_heads (int): the number of heads in the attention layers
@@ -572,7 +581,10 @@ class TwoWayAttentionBlock(nn.Module):
 
 class Attention(nn.Module):
     """An attention layer that allows for downscaling the size of the embedding
-    after projection to queries, keys, and values."""
+    after projection to queries, keys, and values.
+
+    Borrowed from https://github.com/facebookresearch/segment-anything
+    """
 
     def __init__(
         self,
@@ -629,6 +641,7 @@ class Attention(nn.Module):
 
 
 class MLPBlock(nn.Module):
+    """Borrowed from https://github.com/facebookresearch/segment-anything."""
 
     def __init__(
             self,

@@ -11,7 +11,6 @@ from torch import nn
 from torch.nn import functional as F
 
 from mmseg.registry import MODELS
-from ..backbones import ViTSAM
 from ..utils import MaskDecoder, PromptEncoder
 
 
@@ -28,7 +27,8 @@ class SAM(nn.Module):
         pixel_mean: List[float] = [123.675, 116.28, 103.53],
         pixel_std: List[float] = [58.395, 57.12, 57.375],
     ) -> None:
-        """SAM predicts object masks from an image and input prompts.
+        """SAM predicts object masks from an image and input prompts. Borrowed
+        from https://github.com/facebookresearch/segment-anything.
 
         Arguments:
           image_encoder (ViTSAM): The backbone used to encode the
@@ -44,7 +44,7 @@ class SAM(nn.Module):
             input image.
         """
         super().__init__()
-        self.image_encoder: ViTSAM = MODELS.build(image_encoder_cfg)
+        self.image_encoder = MODELS.build(image_encoder_cfg)
         self.prompt_encoder: PromptEncoder = MODELS.build(prompt_encoder_cfg)
         self.mask_decoder: MaskDecoder = MODELS.build(mask_decoder_cfg)
         self.register_buffer('pixel_mean',
@@ -65,6 +65,8 @@ class SAM(nn.Module):
         """Predicts masks end-to-end from provided images and prompts. If
         prompts are not known in advance, using SamPredictor is recommended
         over calling the model directly.
+
+        Borrowed from https://github.com/facebookresearch/segment-anything
 
         Arguments:
           batched_input (list(dict)): A list over input images, each a
@@ -144,6 +146,8 @@ class SAM(nn.Module):
     ) -> torch.Tensor:
         """Remove padding and upscale masks to the original image size.
 
+        Borrowed from https://github.com/facebookresearch/segment-anything
+
         Arguments:
           masks (torch.Tensor): Batched masks from the mask_decoder,
             in BxCxHxW format.
@@ -158,7 +162,7 @@ class SAM(nn.Module):
         """
         masks = F.interpolate(
             masks,
-            (self.image_encoder.img_size, self.image_encoder.img_size),
+            self.image_encoder.img_size,
             mode='bilinear',
             align_corners=False,
         )
@@ -174,7 +178,8 @@ class SAM(nn.Module):
 
         # Pad
         h, w = x.shape[-2:]
-        padh = self.image_encoder.img_size - h
-        padw = self.image_encoder.img_size - w
+        img_size = max(self.image_encoder.img_size)
+        padh = img_size - h
+        padw = img_size - w
         x = F.pad(x, (0, padw, 0, padh))
         return x
