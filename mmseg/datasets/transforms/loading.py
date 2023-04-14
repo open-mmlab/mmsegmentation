@@ -2,6 +2,7 @@
 import warnings
 from typing import Dict, Optional, Union
 
+from osgeo import gdal
 import mmcv
 import mmengine.fileio as fileio
 import numpy as np
@@ -61,10 +62,10 @@ class LoadAnnotations(MMCV_LoadAnnotations):
     """
 
     def __init__(
-        self,
-        reduce_zero_label=None,
-        backend_args=None,
-        imdecode_backend='pillow',
+            self,
+            reduce_zero_label=None,
+            backend_args=None,
+            imdecode_backend='pillow',
     ) -> None:
         super().__init__(
             with_bbox=False,
@@ -493,3 +494,136 @@ class InferencerLoader(BaseTransform):
         if 'img' in inputs:
             return self.from_ndarray(inputs)
         return self.from_file(inputs)
+
+
+@TRANSFORMS.register_module()
+class LoadSingleRSImageFromFile(BaseTransform):
+    """Load a Remote Sensing mage from file.
+
+    Required Keys:
+
+    - img_path
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - ori_shape
+
+    Args:
+        imdecode_backend (str): The image decoding backend type.
+            The image backend decoding type is switched from cv2 to GDAL.
+            Notes: GDAL>=3.4.2 required.
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is a float64 array.
+            Defaults to True.
+    """
+
+    def __init__(self,
+                 imdecode_backend: str = 'gdal',
+                 to_float32: bool = True):
+        self.imdecode_backend = imdecode_backend
+        self.to_float32 = to_float32
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+
+        filename = results['img_path']
+        ds = gdal.Open(filename)
+        if ds is None:
+            raise Exception(f'Unable to open file: {filename}')
+        img = np.einsum('ijk->jki', ds.ReadAsArray())
+
+        if self.to_float32:
+            img = img.astype(np.float32)
+
+        results['img'] = img
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f"imdecode_backend='{self.decode_backend}', "
+                    f'to_float32={self.to_float32})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadMultipleRSImageFromFile(BaseTransform):
+    """Load two Remote Sensing mage from file.
+
+    Required Keys:
+
+    - img_path
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - ori_shape
+
+    Args:
+        imdecode_backend (str): The image decoding backend type.
+            The image backend decoding type is switched from cv2 to GDAL.
+            Notes: GDAL>=3.4.2 required.
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is a float64 array.
+            Defaults to True.
+    """
+
+    def __init__(self,
+                 imdecode_backend: str = 'gdal',
+                 to_float32: bool = True):
+        self.imdecode_backend = imdecode_backend
+        self.to_float32 = to_float32
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+
+        filename = results['img_path']
+        filename2 = results['img_path2']
+
+        ds = gdal.Open(filename)
+        ds2 = gdal.Open(filename2)
+
+        if ds is None:
+            raise Exception(f'Unable to open file: {filename}')
+        if ds2 is None:
+            raise Exception(f'Unable to open file: {filename2}')
+
+        img = np.einsum('ijk->jki', ds.ReadAsArray())
+        img2 = np.einsum('ijk->jki', ds2.ReadAsArray())
+
+        if self.to_float32:
+            img = img.astype(np.float32)
+            img2 = img2.astype(np.float32)
+
+        if img.shape != img2.shape:
+            raise Exception(f'Image shapes do not match: {img.shape} vs {img2.shape}')
+
+        results['img'] = img
+        results['img2'] = img2
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f"imdecode_backend='{self.decode_backend}', "
+                    f'to_float32={self.to_float32})')
+        return repr_str
