@@ -16,7 +16,7 @@ It is highly imbalanced, so naive loss functions would work less properly
 
 | Dataset name                                                                   | Anatomical region | Task type    | Modality   | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | ------------------------------------------------------------------------------ | ----------------- | ------------ | ---------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [ddti](https://drive.google.com/file/d/1wwlsEhwfSyvQsJBRjeDLhUjqZh8eaH2R/view) | other             | segmentation | dermoscopy | 2            | 831/-/278             | yes/-/yes              | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [ddti](https://drive.google.com/file/d/1wwlsEhwfSyvQsJBRjeDLhUjqZh8eaH2R/view) | other             | segmentation | ultrasound | 2            | 831/-/278             | yes/-/yes              | 2020         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
 |   Class Name   | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -29,7 +29,7 @@ Note:
 
 ### Visualization
 
-![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/dermoscopy/ddti/ddti_dataset.png)
+![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/ultrasound/ddti/ddti_dataset.png)
 
 ## Usage
 
@@ -63,7 +63,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   ├── projects
   │   ├── medical
   │   │   ├── 2d_image
-  │   │   │   ├── dermoscopy
+  │   │   │   ├── ultrasound
   │   │   │   │   ├── ddti
   │   │   │   │   │   ├── configs
   │   │   │   │   │   ├── datasets
