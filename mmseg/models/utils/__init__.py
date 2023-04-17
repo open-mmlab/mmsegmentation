@@ -14,23 +14,8 @@ from .up_conv_block import UpConvBlock
 from .wrappers import Upsample, resize
 
 __all__ = [
-    'ResLayer',
-    'SelfAttentionBlock',
-    'make_divisible',
-    'InvertedResidual',
-    'UpConvBlock',
-    'InvertedResidualV3',
-    'SELayer',
-    'PatchEmbed',
-    'nchw_to_nlc',
-    'nlc_to_nchw',
-    'nchw2nlc2nchw',
-    'nlc2nchw2nlc',
-    'Encoding',
-    'Upsample',
-    'resize',
-    'DAPPM',
-    'PAPPM',
-    'BasicBlock',
-    'Bottleneck',
+    'ResLayer', 'SelfAttentionBlock', 'make_divisible', 'InvertedResidual',
+    'UpConvBlock', 'InvertedResidualV3', 'SELayer', 'PatchEmbed',
+    'nchw_to_nlc', 'nlc_to_nchw', 'nchw2nlc2nchw', 'nlc2nchw2nlc', 'Encoding',
+    'Upsample', 'resize', 'DAPPM', 'PAPPM', 'BasicBlock', 'Bottleneck'
 ]
