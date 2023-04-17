@@ -14,13 +14,22 @@ For more details consult our GigaScience paper, or contact us directly with ques
 
 | Dataset name                                      | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                         |
 | ------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | --------------------------------------------------------------- |
-| [NuCLS](https://sites.google.com/view/nucls/home) | cell              | segmentation | histopathology | 3            | 366/-/-               | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [NuCLS](https://sites.google.com/view/nucls/home) | cell              | segmentation | histopathology | 3            | 1337/-/-              | yes/-/-                | 2017         | [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    366     |    85.9    |    -     |    -     |     -     |     -     |
-| erythrocytes |    345     |   13.03    |    -     |    -     |     -     |     -     |
-| spirochaete  |    288     |    1.07    |    -     |    -     |     -     |     -     |
+|      Class Name      | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|      background      |    1337    |   73.03    |    -     |    -     |     -     |     -     |
+|      lymphocyte      |    877     |    3.83    |    -     |    -     |     -     |     -     |
+|      fibroblast      |    909     |    5.48    |    -     |    -     |     -     |     -     |
+|     plasma_cell      |    382     |    0.83    |    -     |    -     |     -     |     -     |
+|        tumor         |    1074    |   14.42    |    -     |    -     |     -     |     -     |
+|      macrophage      |     65     |    0.15    |    -     |    -     |     -     |     -     |
+| vascular_endothelium |    105     |    0.39    |    -     |    -     |     -     |     -     |
+|    myoepithelium     |     1      |    0.00    |    -     |    -     |     -     |     -     |
+|    mitotic_figure    |     20     |    0.03    |    -     |    -     |     -     |     -     |
+|      neutrophil      |     8      |    0.01    |    -     |    -     |     -     |     -     |
+|    apoptotic_body    |     27     |    0.02    |    -     |    -     |     -     |     -     |
+|      unlabeled       |    601     |    1.81    |    -     |    -     |     -     |     -     |
 
 Note:
 
@@ -87,11 +96,20 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ***Note: The table information below is divided by ourselves.***
 
-|  Class Name  | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :----------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|  background  |    292     |   85.66    |    74    |   86.7   |     -     |     -     |
-| erythrocytes |    274     |   13.25    |    71    |  12.29   |     -     |     -     |
-| spirochaete  |    231     |    1.09    |    57    |   1.01   |     -     |     -     |
+|      Class Name      | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
+| :------------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
+|      background      |    1069    |   73.07    |    -     |    -     |     -     |     -     |
+|      lymphocyte      |    692     |    3.79    |    -     |    -     |     -     |     -     |
+|      fibroblast      |    730     |    5.47    |    -     |    -     |     -     |     -     |
+|     plasma_cell      |    295     |    0.76    |    -     |    -     |     -     |     -     |
+|        tumor         |    858     |   14.44    |    -     |    -     |     -     |     -     |
+|      macrophage      |     56     |    0.16    |    -     |    -     |     -     |     -     |
+| vascular_endothelium |     84     |    0.40    |    -     |    -     |     -     |     -     |
+|    myoepithelium     |     1      |    0.00    |    -     |    -     |     -     |     -     |
+|    mitotic_figure    |     19     |    0.03    |    -     |    -     |     -     |     -     |
+|      neutrophil      |     8      |    0.01    |    -     |    -     |     -     |     -     |
+|    apoptotic_body    |     22     |    0.02    |    -     |    -     |     -     |     -     |
+|      unlabeled       |    485     |    1.85    |    -     |    -     |     -     |     -     |
 
 ### Training commands
 
