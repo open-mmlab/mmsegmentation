@@ -2,10 +2,8 @@
 from .base import BaseSegmentor
 from .cascade_encoder_decoder import CascadeEncoderDecoder
 from .encoder_decoder import EncoderDecoder
-from .sam import SAM
 from .seg_tta import SegTTAModel
 
 __all__ = [
-    'BaseSegmentor', 'EncoderDecoder', 'CascadeEncoderDecoder', 'SegTTAModel',
-    'SAM'
+    'BaseSegmentor', 'EncoderDecoder', 'CascadeEncoderDecoder', 'SegTTAModel'
 ]

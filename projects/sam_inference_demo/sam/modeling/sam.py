@@ -13,7 +13,8 @@ from torch import nn
 from torch.nn import functional as F
 
 from mmseg.registry import MODELS
-from ..utils import MaskDecoder, PromptEncoder
+from .mask_decoder import MaskDecoder
+from .prompt_encoder import PromptEncoder
 
 
 @MODELS.register_module()
