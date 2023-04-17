@@ -37,7 +37,7 @@ Note:
 
 ### Visualization
 
-![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/NuCLS/NuCLS_dataset.png)
+![bac](https://raw.githubusercontent.com/uni-medical/medical-datasets-visualization/main/2d/semantic_seg/histopathology/NuCLS/NuCLS_multi_dataset.png)
 
 ## Usage
 
@@ -79,7 +79,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── data
   │   │   │   │   │   │   ├── train.txt
   │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── Bacteria_detection_with_darkfield_microscopy_datasets
   │   │   │   │   │   │   ├── images
   │   │   │   │   │   │   │   ├── train
   │   │   │   │   |   │   │   │   ├── xxx.png
@@ -98,18 +97,18 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 |      Class Name      | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :------------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|      background      |    1069    |   73.07    |    -     |    -     |     -     |     -     |
-|      lymphocyte      |    692     |    3.79    |    -     |    -     |     -     |     -     |
-|      fibroblast      |    730     |    5.47    |    -     |    -     |     -     |     -     |
-|     plasma_cell      |    295     |    0.76    |    -     |    -     |     -     |     -     |
-|        tumor         |    858     |   14.44    |    -     |    -     |     -     |     -     |
-|      macrophage      |     56     |    0.16    |    -     |    -     |     -     |     -     |
-| vascular_endothelium |     84     |    0.40    |    -     |    -     |     -     |     -     |
-|    myoepithelium     |     1      |    0.00    |    -     |    -     |     -     |     -     |
-|    mitotic_figure    |     19     |    0.03    |    -     |    -     |     -     |     -     |
-|      neutrophil      |     8      |    0.01    |    -     |    -     |     -     |     -     |
-|    apoptotic_body    |     22     |    0.02    |    -     |    -     |     -     |     -     |
-|      unlabeled       |    485     |    1.85    |    -     |    -     |     -     |     -     |
+|      background      |    1069    |   73.07    |   268    |  72.83   |     -     |     -     |
+|      lymphocyte      |    692     |    3.79    |   185    |   3.99   |     -     |     -     |
+|      fibroblast      |    730     |    5.47    |   179    |   5.53   |     -     |     -     |
+|     plasma_cell      |    295     |    0.76    |    87    |   1.14   |     -     |     -     |
+|        tumor         |    858     |   14.44    |   216    |  14.36   |     -     |     -     |
+|      macrophage      |     56     |    0.16    |    9     |   0.11   |     -     |     -     |
+| vascular_endothelium |     84     |    0.40    |    21    |   0.35   |     -     |     -     |
+|    myoepithelium     |     1      |    0.00    |    0     |   0.00   |     -     |     -     |
+|    mitotic_figure    |     19     |    0.03    |    1     |   0.01   |     -     |     -     |
+|      neutrophil      |     8      |    0.01    |    0     |   0.00   |     -     |     -     |
+|    apoptotic_body    |     22     |    0.02    |    5     |   0.03   |     -     |     -     |
+|      unlabeled       |    485     |    1.85    |   116    |   1.66   |     -     |     -     |
 
 ### Training commands
 
