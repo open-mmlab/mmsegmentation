@@ -8,6 +8,8 @@ With this inference demo, you can explore the capabilities of the Segment Anythi
 
 - Python 3.10
 - PyTorch 1.13
+- MMEngine >= v0.7.2
+- MMCV >= v2.0.0
 
 ### Installation
 
@@ -18,7 +20,7 @@ We assume that you have already installed PyTorch. If not, please follow the ins
 ```shell
 pip install openmim
 mim install mmengine
-mim install 'mmcv>=1.0.0'
+mim install 'mmcv>=2.0.0'
 ```
 
 **2. Install MMPretrain**
