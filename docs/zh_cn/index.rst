@@ -47,6 +47,11 @@
    faq.md
 
 .. toctree::
+   :caption: 设备支持
+
+   device/npu_zh.md
+
+.. toctree::
    :caption: 语言切换
 
    switch_language.md
