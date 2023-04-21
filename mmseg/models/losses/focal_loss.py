@@ -275,6 +275,7 @@ class FocalLoss(nn.Module):
                         target, num_classes=num_classes + 1)
                     if num_classes == 1:
                         one_hot_target = one_hot_target[:, 1]
+                        target = 1 - target
                     else:
                         one_hot_target = one_hot_target[:, :num_classes]
                 else:

@@ -334,10 +334,6 @@ class EncoderDecoder(BaseSegmentor):
             seg_logit = self.slide_inference(inputs, batch_img_metas)
         else:
             seg_logit = self.whole_inference(inputs, batch_img_metas)
-        if self.out_channels == 1:
-            seg_logit = F.sigmoid(seg_logit)
-        else:
-            seg_logit = F.softmax(seg_logit, dim=1)
 
         return seg_logit
 
