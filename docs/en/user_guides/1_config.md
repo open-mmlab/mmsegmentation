@@ -521,7 +521,7 @@ if __name__ == '__main__':
     main()
 ```
 
-A example config file `demo_config.py` as follows:
+An example config file `demo_config.py` as follows:
 
 ```python
 backbone = dict(
