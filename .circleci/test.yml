@@ -112,7 +112,7 @@ jobs:
             docker exec mmseg pip install mmcls==1.0.0rc6
             docker exec mmseg pip install -e /mmdetection
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
-            python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
+            docker exec mmseg python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - run:
           name: Build and install
           command: |
