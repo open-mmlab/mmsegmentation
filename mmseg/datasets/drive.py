@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import mmengine.fileio as fileio
 
 from mmseg.registry import DATASETS
 from .basesegdataset import BaseSegDataset
@@ -27,4 +28,5 @@ class DRIVEDataset(BaseSegDataset):
             seg_map_suffix=seg_map_suffix,
             reduce_zero_label=reduce_zero_label,
             **kwargs)
-        assert self.file_client.exists(self.data_prefix['img_path'])
+        assert fileio.exists(
+            self.data_prefix['img_path'], backend_args=self.backend_args)
