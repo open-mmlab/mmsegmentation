@@ -14,15 +14,15 @@ from mmseg.utils import OptConfigType, SampleList
 
 @MODELS.register_module()
 class DDRHead(BaseDecodeHead):
-    """Decode head forDDRNet.
+    """Decode head for DDRNet.
 
     Args:
         in_channels (int): Number of input channels.
         channels (int): Number of output channels.
         num_classes (int): Number of classes.
-        norm_cfg (dict): Config dict for normalization layer.
+        norm_cfg (dict, optional): Config dict for normalization layer.
             Default: dict(type='BN').
-        act_cfg (dict): Config dict for activation layer.
+        act_cfg (dict, optional): Config dict for activation layer.
             Default: dict(type='ReLU', inplace=True).
     """
 

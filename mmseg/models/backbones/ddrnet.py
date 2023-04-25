@@ -5,6 +5,7 @@ from mmengine.model import BaseModule
 
 from mmseg.models.utils import DAPPM, BasicBlock, Bottleneck, resize
 from mmseg.registry import MODELS
+from mmseg.utils import OptConfigType
 
 
 @MODELS.register_module()
@@ -17,13 +18,17 @@ class DDRNet(BaseModule):
     Modified from https://github.com/ydhongHIT/DDRNet.
 
     Args:
-        in_channels
-        channels:
-        ppm_channels
-        align_corners
-        norm_cfg
-        act_cfg
-        init_cfg
+        in_channels (int): Number of input image channels. Default: 3.
+        channels: (int): The base channels of DDRNet. Default: 32.
+        ppm_channels (int): The channels of PPM module. Default: 128.
+        align_corners (bool): align_corners argument of F.interpolate.
+            Default: False.
+        norm_cfg (dict): Config dict to build norm layer.
+            Default: dict(type='BN', requires_grad=True).
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU', inplace=True).
+        init_cfg (dict, optional): Initialization config dict.
+            Default: None.
     """
 
     def __init__(self,
@@ -31,9 +36,9 @@ class DDRNet(BaseModule):
                  channels: int = 32,
                  ppm_channels: int = 128,
                  align_corners: bool = False,
-                 norm_cfg=dict(type='BN', requires_grad=True),
-                 act_cfg=dict(type='ReLU', inplace=True),
-                 init_cfg=None):
+                 norm_cfg: OptConfigType = dict(type='BN', requires_grad=True),
+                 act_cfg: OptConfigType = dict(type='ReLU', inplace=True),
+                 init_cfg: OptConfigType = None):
         super().__init__(init_cfg)
 
         self.in_channels = in_channels
