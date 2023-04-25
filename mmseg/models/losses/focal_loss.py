@@ -271,7 +271,13 @@ class FocalLoss(nn.Module):
             num_classes = pred.size(1)
             if torch.cuda.is_available() and pred.is_cuda:
                 if target.dim() == 1:
-                    one_hot_target = F.one_hot(target, num_classes=num_classes)
+                    one_hot_target = F.one_hot(
+                        target, num_classes=num_classes + 1)
+                    if num_classes == 1:
+                        one_hot_target = one_hot_target[:, 1]
+                        target = 1 - target
+                    else:
+                        one_hot_target = one_hot_target[:, :num_classes]
                 else:
                     one_hot_target = target
                     target = target.argmax(dim=1)
@@ -280,7 +286,11 @@ class FocalLoss(nn.Module):
             else:
                 one_hot_target = None
                 if target.dim() == 1:
-                    target = F.one_hot(target, num_classes=num_classes)
+                    target = F.one_hot(target, num_classes=num_classes + 1)
+                    if num_classes == 1:
+                        target = target[:, 1]
+                    else:
+                        target = target[:, num_classes]
                 else:
                     valid_mask = (target.argmax(dim=1) != ignore_index).view(
                         -1, 1)
