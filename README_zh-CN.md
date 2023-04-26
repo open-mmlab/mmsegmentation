@@ -246,7 +246,7 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 - [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab 光流估计工具箱与测试基准
 - [MMDeploy](https://github.com/open-mmlab/mmdeploy): OpenMMLab 模型部署框架
 - [MMRazor](https://github.com/open-mmlab/mmrazor): OpenMMLab 模型压缩工具箱与测试基准
-- [MIM](https://github.com/open-mmlab/mim): OpenMMlab 项目、算法、模型的统一入口
+- [MIM](https://github.com/open-mmlab/mim): OpenMMLab 项目、算法、模型的统一入口
 - [Playground](https://github.com/open-mmlab/playground): 收集和展示 OpenMMLab 相关的前沿、有趣的社区项目
 
 ## 欢迎加入 OpenMMLab 社区
