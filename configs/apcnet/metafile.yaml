@@ -1,0 +1,296 @@
+Collections:
+- Name: APCNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  README: configs/apcnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: apcnet_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.02
+      mIoU(ms+flip): 79.26
+  Config: configs/apcnet/apcnet_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes/apcnet_r50-d8_512x1024_40k_cityscapes_20201214_115717-5e88fa33.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes/apcnet_r50-d8_512x1024_40k_cityscapes-20201214_115717.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.08
+      mIoU(ms+flip): 80.34
+  Config: configs/apcnet/apcnet_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x1024_40k_cityscapes/apcnet_r101-d8_512x1024_40k_cityscapes_20201214_115716-abc9d111.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x1024_40k_cityscapes/apcnet_r101-d8_512x1024_40k_cityscapes-20201214_115716.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.89
+      mIoU(ms+flip): 79.75
+  Config: configs/apcnet/apcnet_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_769x769_40k_cityscapes/apcnet_r50-d8_769x769_40k_cityscapes_20201214_115717-2a2628d7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_769x769_40k_cityscapes/apcnet_r50-d8_769x769_40k_cityscapes-20201214_115717.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.96
+      mIoU(ms+flip): 79.24
+  Config: configs/apcnet/apcnet_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_769x769_40k_cityscapes/apcnet_r101-d8_769x769_40k_cityscapes_20201214_115718-b650de90.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_769x769_40k_cityscapes/apcnet_r101-d8_769x769_40k_cityscapes-20201214_115718.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.96
+      mIoU(ms+flip): 79.94
+  Config: configs/apcnet/apcnet_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x1024_80k_cityscapes/apcnet_r50-d8_512x1024_80k_cityscapes_20201214_115716-987f51e3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x1024_80k_cityscapes/apcnet_r50-d8_512x1024_80k_cityscapes-20201214_115716.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.64
+      mIoU(ms+flip): 80.61
+  Config: configs/apcnet/apcnet_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x1024_80k_cityscapes/apcnet_r101-d8_512x1024_80k_cityscapes_20201214_115705-b1ff208a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x1024_80k_cityscapes/apcnet_r101-d8_512x1024_80k_cityscapes-20201214_115705.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.79
+      mIoU(ms+flip): 80.35
+  Config: configs/apcnet/apcnet_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_769x769_80k_cityscapes/apcnet_r50-d8_769x769_80k_cityscapes_20201214_115718-7ea9fa12.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_769x769_80k_cityscapes/apcnet_r50-d8_769x769_80k_cityscapes-20201214_115718.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.45
+      mIoU(ms+flip): 79.91
+  Config: configs/apcnet/apcnet_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_769x769_80k_cityscapes/apcnet_r101-d8_769x769_80k_cityscapes_20201214_115716-a7fbc2ab.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_769x769_80k_cityscapes/apcnet_r101-d8_769x769_80k_cityscapes-20201214_115716.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.2
+      mIoU(ms+flip): 43.3
+  Config: configs/apcnet/apcnet_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x512_80k_ade20k/apcnet_r50-d8_512x512_80k_ade20k_20201214_115705-a8626293.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x512_80k_ade20k/apcnet_r50-d8_512x512_80k_ade20k-20201214_115705.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.54
+      mIoU(ms+flip): 46.65
+  Config: configs/apcnet/apcnet_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 13.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x512_80k_ade20k/apcnet_r101-d8_512x512_80k_ade20k_20201214_115704-c656c3fb.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x512_80k_ade20k/apcnet_r101-d8_512x512_80k_ade20k-20201214_115704.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.4
+      mIoU(ms+flip): 43.94
+  Config: configs/apcnet/apcnet_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x512_160k_ade20k/apcnet_r50-d8_512x512_160k_ade20k_20201214_115706-25fb92c2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r50-d8_512x512_160k_ade20k/apcnet_r50-d8_512x512_160k_ade20k-20201214_115706.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: apcnet_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: APCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.41
+      mIoU(ms+flip): 46.63
+  Config: configs/apcnet/apcnet_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - APCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x512_160k_ade20k/apcnet_r101-d8_512x512_160k_ade20k_20201214_115705-73f9a8d7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/apcnet/apcnet_r101-d8_512x512_160k_ade20k/apcnet_r101-d8_512x512_160k_ade20k-20201214_115705.log.json
+  Paper:
+    Title: Adaptive Pyramid Context Network for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_CVPR_2019/html/He_Adaptive_Pyramid_Context_Network_for_Semantic_Segmentation_CVPR_2019_paper.html
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
