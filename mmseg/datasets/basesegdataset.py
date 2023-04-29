@@ -236,9 +236,8 @@ class BaseSegDataset(BaseDataset):
         img_dir = self.data_prefix.get('img_path', None)
         ann_dir = self.data_prefix.get('seg_map_path', None)
         if not osp.isdir(self.ann_file):
-            assert osp.isfile(self.ann_file), (
-                f'Failed to load `ann_file` {self.ann_file}'
-            )
+            assert osp.isfile(
+                self.ann_file), (f'Failed to load `ann_file` {self.ann_file}')
             lines = mmengine.list_from_file(
                 self.ann_file, backend_args=self.backend_args)
             for line in lines:
