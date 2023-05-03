@@ -32,8 +32,8 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          RandomCutOut, RandomMosaic, RandomRotate,
                          RandomRotFlip, Rerange, ResizeShortestEdge,
                          ResizeToMultiple, RGB2Gray, SegRescale,
-                         LoadMultipleRSImageFromFile, LoadSingleRSImageFromFile,
-                         ConcatCDInput)
+                         LoadMultipleRSImageFromFile, ConcatCDInput,
+                         LoadSingleRSImageFromFile)
 from .voc import PascalVOCDataset
 from .levir import LEVIRCDDataset
 
@@ -55,5 +55,6 @@ __all__ = [
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
     'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
-    'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile', 'ConcatCDInput'
+    'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile', 'ConcatCDInput',
+    'BaseCDDataset'
 ]

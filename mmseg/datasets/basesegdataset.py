@@ -352,7 +352,9 @@ class BaseCDDataset(BaseDataset):
                  seg_map_suffix='.png',
                  metainfo: Optional[dict] = None,
                  data_root: Optional[str] = None,
-                 data_prefix: dict = dict(img_path='', img_path2='', seg_map_path=''),
+                 data_prefix: dict = dict(img_path='',
+                                          img_path2='',
+                                          seg_map_path=''),
                  filter_cfg: Optional[dict] = None,
                  indices: Optional[Union[int, Sequence[int]]] = None,
                  serialize_data: bool = True,
@@ -534,8 +536,9 @@ class BaseCDDataset(BaseDataset):
                     img, img_ext = osp.splitext(img)
                     self.img_suffix = img_ext
                     self.img_suffix2 = img_ext
-                data_info = dict(img_path=osp.join(img_dir, img + self.img_suffix),
-                                 img_path2=osp.join(img_dir2, img + self.img_suffix2))
+                data_info = dict(
+                    img_path=osp.join(img_dir, img + self.img_suffix),
+                    img_path2=osp.join(img_dir2, img + self.img_suffix2))
                 if ann_dir is not None:
                     seg_map = img + self.seg_map_suffix
                     data_info['seg_map_path'] = osp.join(ann_dir, seg_map)

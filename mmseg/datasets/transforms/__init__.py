@@ -23,6 +23,6 @@ __all__ = [
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
     'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedical3DRandomFlip', 'BioMedicalRandomGamma', 'BioMedical3DPad',
-    'RandomRotFlip', 'Albu', 'LoadSingleRSImageFromFile', 'LoadMultipleRSImageFromFile',
-    'ConcatCDInput'
+    'RandomRotFlip', 'Albu', 'LoadSingleRSImageFromFile', 'ConcatCDInput',
+    'LoadMultipleRSImageFromFile'
 ]

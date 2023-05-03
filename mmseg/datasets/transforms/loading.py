@@ -614,7 +614,9 @@ class LoadMultipleRSImageFromFile(BaseTransform):
             img2 = img2.astype(np.float32)
 
         if img.shape != img2.shape:
-            raise Exception(f'Image shapes do not match: {img.shape} vs {img2.shape}')
+            raise Exception(
+                f'Image shapes do not match:'
+                f' {img.shape} vs {img2.shape}')
 
         results['img'] = img
         results['img2'] = img2

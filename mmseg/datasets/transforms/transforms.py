@@ -698,9 +698,10 @@ class PhotoMetricDistortion(BaseTransform):
 
         if random.randint(2):
             img = mmcv.bgr2hsv(img)
-            img[:, :,
-            0] = (img[:, :, 0].astype(int) +
-                  random.randint(-self.hue_delta, self.hue_delta)) % 180
+            img[:, :, 0] = (img[:, :, 0].astype(int) +
+                            random.randint(-self.hue_delta,
+                                           self.hue_delta)
+                            ) % 180
             img = mmcv.hsv2bgr(img)
         return img
 
@@ -1163,8 +1164,8 @@ class RandomMosaic(BaseTransform):
                 x1_c, y1_c, x2_c, y2_c = crop_coord
 
                 # crop and paste image
-                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = gt_seg_i[y1_c:y2_c,
-                                                   x1_c:x2_c]
+                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = \
+                    gt_seg_i[y1_c:y2_c, x1_c:x2_c]
 
             results[key] = mosaic_seg
 

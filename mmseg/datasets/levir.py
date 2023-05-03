@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import List
 
 from mmseg.registry import DATASETS
 from .basesegdataset import BaseCDDataset
