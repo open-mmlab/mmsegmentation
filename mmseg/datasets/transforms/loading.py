@@ -66,10 +66,10 @@ class LoadAnnotations(MMCV_LoadAnnotations):
     """
 
     def __init__(
-            self,
-            reduce_zero_label=None,
-            backend_args=None,
-            imdecode_backend='pillow',
+        self,
+        reduce_zero_label=None,
+        backend_args=None,
+        imdecode_backend='pillow',
     ) -> None:
         super().__init__(
             with_bbox=False,
@@ -520,8 +520,7 @@ class LoadSingleRSImageFromFile(BaseTransform):
             Defaults to True.
     """
 
-    def __init__(self,
-                 to_float32: bool = True):
+    def __init__(self, to_float32: bool = True):
         self.to_float32 = to_float32
 
     if gdal is None:
@@ -579,8 +578,7 @@ class LoadMultipleRSImageFromFile(BaseTransform):
             Defaults to True.
     """
 
-    def __init__(self,
-                 to_float32: bool = True):
+    def __init__(self, to_float32: bool = True):
         if gdal is None:
             raise RuntimeError('gdal is not installed')
         self.to_float32 = to_float32
@@ -614,9 +612,8 @@ class LoadMultipleRSImageFromFile(BaseTransform):
             img2 = img2.astype(np.float32)
 
         if img.shape != img2.shape:
-            raise Exception(
-                f'Image shapes do not match:'
-                f' {img.shape} vs {img2.shape}')
+            raise Exception(f'Image shapes do not match:'
+                            f' {img.shape} vs {img2.shape}')
 
         results['img'] = img
         results['img2'] = img2

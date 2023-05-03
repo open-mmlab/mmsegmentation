@@ -234,7 +234,7 @@ class RandomCrop(BaseTransform):
                  ignore_index: int = 255):
         super().__init__()
         assert isinstance(crop_size, int) or (
-                isinstance(crop_size, tuple) and len(crop_size) == 2
+            isinstance(crop_size, tuple) and len(crop_size) == 2
         ), 'The expected crop_size is an integer, or a tuple containing two '
         'intergers'
 
@@ -518,7 +518,7 @@ class AdjustGamma(BaseTransform):
         assert gamma > 0
         self.gamma = gamma
         inv_gamma = 1.0 / gamma
-        self.table = np.array([(i / 255.0) ** inv_gamma * 255
+        self.table = np.array([(i / 255.0)**inv_gamma * 255
                                for i in np.arange(256)]).astype('uint8')
 
     def transform(self, results: dict) -> dict:
@@ -698,10 +698,9 @@ class PhotoMetricDistortion(BaseTransform):
 
         if random.randint(2):
             img = mmcv.bgr2hsv(img)
-            img[:, :, 0] = (img[:, :, 0].astype(int) +
-                            random.randint(-self.hue_delta,
-                                           self.hue_delta)
-                            ) % 180
+            img[:, :,
+                0] = (img[:, :, 0].astype(int) +
+                      random.randint(-self.hue_delta, self.hue_delta)) % 180
             img = mmcv.hsv2bgr(img)
         return img
 
@@ -1198,7 +1197,7 @@ class RandomMosaic(BaseTransform):
                              center_position_xy[0], \
                              center_position_xy[1]
             crop_coord = img_shape_wh[0] - (x2 - x1), img_shape_wh[1] - (
-                    y2 - y1), img_shape_wh[0], img_shape_wh[1]
+                y2 - y1), img_shape_wh[0], img_shape_wh[1]
 
         elif loc == 'top_right':
             # index1 to top right part of image
@@ -1437,7 +1436,7 @@ class BioMedical3DRandomCrop(BaseTransform):
                  keep_foreground: bool = True):
         super().__init__()
         assert isinstance(crop_shape, int) or (
-                isinstance(crop_shape, tuple) and len(crop_shape) == 3
+            isinstance(crop_shape, tuple) and len(crop_shape) == 3
         ), 'The expected crop_shape is an integer, or a tuple containing '
         'three integers'
 

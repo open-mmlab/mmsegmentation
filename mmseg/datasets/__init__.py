@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # yapf: disable
 from .ade import ADE20KDataset
-from .basesegdataset import BaseSegDataset, BaseCDDataset
+from .basesegdataset import BaseCDDataset, BaseSegDataset
 from .chase_db1 import ChaseDB1Dataset
 from .cityscapes import CityscapesDataset
 from .coco_stuff import COCOStuffDataset
@@ -12,6 +12,7 @@ from .drive import DRIVEDataset
 from .hrf import HRFDataset
 from .isaid import iSAIDDataset
 from .isprs import ISPRSDataset
+from .levir import LEVIRCDDataset
 from .lip import LIPDataset
 from .loveda import LoveDADataset
 from .mapillary import MapillaryDataset_v1, MapillaryDataset_v2
@@ -25,17 +26,16 @@ from .synapse import SynapseDataset
 from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          BioMedical3DRandomCrop, BioMedical3DRandomFlip,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
-                         BioMedicalRandomGamma, GenerateEdge, LoadAnnotations,
-                         LoadBiomedicalAnnotation, LoadBiomedicalData,
-                         LoadBiomedicalImageFromFile, LoadImageFromNDArray,
-                         PackSegInputs, PhotoMetricDistortion, RandomCrop,
-                         RandomCutOut, RandomMosaic, RandomRotate,
-                         RandomRotFlip, Rerange, ResizeShortestEdge,
-                         ResizeToMultiple, RGB2Gray, SegRescale,
-                         LoadMultipleRSImageFromFile, ConcatCDInput,
-                         LoadSingleRSImageFromFile)
+                         BioMedicalRandomGamma, ConcatCDInput, GenerateEdge,
+                         LoadAnnotations, LoadBiomedicalAnnotation,
+                         LoadBiomedicalData, LoadBiomedicalImageFromFile,
+                         LoadImageFromNDArray, LoadMultipleRSImageFromFile,
+                         LoadSingleRSImageFromFile, PackSegInputs,
+                         PhotoMetricDistortion, RandomCrop, RandomCutOut,
+                         RandomMosaic, RandomRotate, RandomRotFlip, Rerange,
+                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
+                         SegRescale)
 from .voc import PascalVOCDataset
-from .levir import LEVIRCDDataset
 
 # yapf: enable
 __all__ = [

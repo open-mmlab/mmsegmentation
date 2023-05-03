@@ -30,8 +30,7 @@ tta_pipeline = [
         type='TestTimeAug',
         transforms=[[dict(type='LoadAnnotations')],
                     [dict(type='ConcatCDInput')],
-                    [dict(type='PackSegInputs')]
-                    ])
+                    [dict(type='PackSegInputs')]])
 ]
 train_dataloader = dict(
     batch_size=4,
@@ -42,8 +41,7 @@ train_dataloader = dict(
         type=dataset_type,
         ann_file='list/train.txt',
         data_root=data_root,
-        data_prefix=dict(
-            img_path='A', img_path2='B', seg_map_path='label'),
+        data_prefix=dict(img_path='A', img_path2='B', seg_map_path='label'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -54,8 +52,7 @@ val_dataloader = dict(
         type=dataset_type,
         ann_file='list/val.txt',
         data_root=data_root,
-        data_prefix=dict(
-            img_path='A', img_path2='B', seg_map_path='label'),
+        data_prefix=dict(img_path='A', img_path2='B', seg_map_path='label'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 

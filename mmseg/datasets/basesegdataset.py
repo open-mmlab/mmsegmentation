@@ -270,8 +270,8 @@ class BaseSegDataset(BaseDataset):
 
 @DATASETS.register_module()
 class BaseCDDataset(BaseDataset):
-    """Custom dataset for change detection. An example of file structure
-    is as followed.
+    """Custom dataset for change detection. An example of file structure is as
+    followed.
 
     .. code-block:: none
 
@@ -352,9 +352,8 @@ class BaseCDDataset(BaseDataset):
                  seg_map_suffix='.png',
                  metainfo: Optional[dict] = None,
                  data_root: Optional[str] = None,
-                 data_prefix: dict = dict(img_path='',
-                                          img_path2='',
-                                          seg_map_path=''),
+                 data_prefix: dict = dict(
+                     img_path='', img_path2='', seg_map_path=''),
                  filter_cfg: Optional[dict] = None,
                  indices: Optional[Union[int, Sequence[int]]] = None,
                  serialize_data: bool = True,
@@ -510,7 +509,7 @@ class BaseCDDataset(BaseDataset):
                 self.ann_file, backend_args=self.backend_args)
             for line in lines:
                 img_name = line.strip()
-                if "." in osp.basename(img_name):
+                if '.' in osp.basename(img_name):
                     img_name, img_ext = osp.splitext(img_name)
                     self.img_suffix = img_ext
                     self.img_suffix2 = img_ext
@@ -532,7 +531,7 @@ class BaseCDDataset(BaseDataset):
                     suffix=self.img_suffix,
                     recursive=True,
                     backend_args=self.backend_args):
-                if "." in osp.basename(img):
+                if '.' in osp.basename(img):
                     img, img_ext = osp.splitext(img)
                     self.img_suffix = img_ext
                     self.img_suffix2 = img_ext

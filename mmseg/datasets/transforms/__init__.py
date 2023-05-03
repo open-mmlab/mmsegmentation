@@ -2,17 +2,17 @@
 from .formatting import PackSegInputs
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
-                      LoadImageFromNDArray, LoadSingleRSImageFromFile,
-                      LoadMultipleRSImageFromFile)
+                      LoadImageFromNDArray, LoadMultipleRSImageFromFile,
+                      LoadSingleRSImageFromFile)
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          BioMedical3DRandomCrop, BioMedical3DRandomFlip,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
-                         BioMedicalRandomGamma, GenerateEdge,
+                         BioMedicalRandomGamma, ConcatCDInput, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, RandomRotFlip, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale, ConcatCDInput)
+                         SegRescale)
 
 # yapf: enable
 __all__ = [
