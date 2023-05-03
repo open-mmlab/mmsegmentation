@@ -2,7 +2,6 @@
 import warnings
 from typing import Dict, Optional, Union
 
-from osgeo import gdal
 import mmcv
 import mmengine.fileio as fileio
 import numpy as np
@@ -12,6 +11,11 @@ from mmcv.transforms import LoadImageFromFile
 
 from mmseg.registry import TRANSFORMS
 from mmseg.utils import datafrombytes
+
+try:
+    from osgeo import gdal
+except ImportError:
+    gdal = None
 
 
 @TRANSFORMS.register_module()
@@ -511,19 +515,17 @@ class LoadSingleRSImageFromFile(BaseTransform):
     - ori_shape
 
     Args:
-        imdecode_backend (str): The image decoding backend type.
-            The image backend decoding type is switched from cv2 to GDAL.
-            Notes: GDAL>=3.4.2 required.
         to_float32 (bool): Whether to convert the loaded image to a float32
             numpy array. If set to False, the loaded image is a float64 array.
             Defaults to True.
     """
 
     def __init__(self,
-                 imdecode_backend: str = 'gdal',
                  to_float32: bool = True):
-        self.imdecode_backend = imdecode_backend
         self.to_float32 = to_float32
+
+    if gdal is None:
+        raise RuntimeError('gdal is not installed')
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
@@ -551,7 +553,6 @@ class LoadSingleRSImageFromFile(BaseTransform):
 
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
-                    f"imdecode_backend='{self.decode_backend}', "
                     f'to_float32={self.to_float32})')
         return repr_str
 
@@ -563,26 +564,25 @@ class LoadMultipleRSImageFromFile(BaseTransform):
     Required Keys:
 
     - img_path
+    - img_path2
 
     Modified Keys:
 
     - img
+    - img2
     - img_shape
     - ori_shape
 
     Args:
-        imdecode_backend (str): The image decoding backend type.
-            The image backend decoding type is switched from cv2 to GDAL.
-            Notes: GDAL>=3.4.2 required.
         to_float32 (bool): Whether to convert the loaded image to a float32
             numpy array. If set to False, the loaded image is a float64 array.
             Defaults to True.
     """
 
     def __init__(self,
-                 imdecode_backend: str = 'gdal',
                  to_float32: bool = True):
-        self.imdecode_backend = imdecode_backend
+        if gdal is None:
+            raise RuntimeError('gdal is not installed')
         self.to_float32 = to_float32
 
     def transform(self, results: Dict) -> Dict:
@@ -624,6 +624,5 @@ class LoadMultipleRSImageFromFile(BaseTransform):
 
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
-                    f"imdecode_backend='{self.decode_backend}', "
                     f'to_float32={self.to_float32})')
         return repr_str
