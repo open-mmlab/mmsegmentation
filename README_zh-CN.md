@@ -168,6 +168,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 - [x] [PIDNet (ArXiv'2022)](configs/pidnet)
+- [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
 
 </details>
 
