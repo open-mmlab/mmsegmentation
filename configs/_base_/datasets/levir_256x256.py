@@ -1,7 +1,6 @@
 # dataset settings
 dataset_type = 'LEVIRCDDataset'
 data_root = r'data/LEVIRCD'
-crop_size = (256, 256)
 
 albu_train_transforms = [
     dict(type='RandomRotate90', p=1),
@@ -39,9 +38,8 @@ train_dataloader = dict(
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
         type=dataset_type,
-        ann_file='list/train.txt',
         data_root=data_root,
-        data_prefix=dict(img_path='A', img_path2='B', seg_map_path='label'),
+        data_prefix=dict(img_path='train/A', img_path2='train/B', seg_map_path='train/label'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -50,9 +48,8 @@ val_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type=dataset_type,
-        ann_file='list/val.txt',
         data_root=data_root,
-        data_prefix=dict(img_path='A', img_path2='B', seg_map_path='label'),
+        data_prefix=dict(img_path='test/A', img_path2='test/B', seg_map_path='test/label'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
