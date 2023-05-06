@@ -100,6 +100,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 Train models on a single server with one GPU.
 
 ```shell
+export PYTHONPATH=`pwd`:$PYTHONPATH
 mim train mmseg ./configs/${CONFIG_FILE}
 ```
 
@@ -108,6 +109,7 @@ mim train mmseg ./configs/${CONFIG_FILE}
 Test models on a single server with one GPU.
 
 ```shell
+export PYTHONPATH=`pwd`:$PYTHONPATH
 mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
 
