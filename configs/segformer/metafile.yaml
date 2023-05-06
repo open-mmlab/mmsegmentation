@@ -1,0 +1,340 @@
+Collections:
+- Name: Segformer
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - ADE20K
+    - Cityscapes
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  README: configs/segformer/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: segformer_mit-b0_8xb2-160k_ade20k-512x512
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 37.41
+      mIoU(ms+flip): 38.34
+  Config: configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B0
+    - Segformer
+    Training Resources: 8x 1080 Ti GPUS
+    Memory (GB): 2.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530-8ffa8fda.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_512x512_160k_ade20k/segformer_mit-b0_512x512_160k_ade20k_20210726_101530.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b1_8xb2-160k_ade20k-512x512
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.97
+      mIoU(ms+flip): 42.54
+  Config: configs/segformer/segformer_mit-b1_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B1
+    - Segformer
+    Training Resources: 8x TITAN Xp GPUS
+    Memory (GB): 2.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106-d70e859d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_512x512_160k_ade20k/segformer_mit-b1_512x512_160k_ade20k_20210726_112106.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b2_8xb2-160k_ade20k-512x512
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.58
+      mIoU(ms+flip): 47.03
+  Config: configs/segformer/segformer_mit-b2_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B2
+    - Segformer
+    Training Resources: 8x TITAN Xp GPUS
+    Memory (GB): 3.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103-cbd414ac.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_512x512_160k_ade20k/segformer_mit-b2_512x512_160k_ade20k_20210726_112103.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b3_8xb2-160k_ade20k-512x512
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.82
+      mIoU(ms+flip): 48.81
+  Config: configs/segformer/segformer_mit-b3_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B3
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410-962b98d2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_512x512_160k_ade20k/segformer_mit-b3_512x512_160k_ade20k_20210726_081410.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b4_8xb2-160k_ade20k-512x512
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.46
+      mIoU(ms+flip): 49.76
+  Config: configs/segformer/segformer_mit-b4_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B4
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 6.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055-7f509d7d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_512x512_160k_ade20k/segformer_mit-b4_512x512_160k_ade20k_20210728_183055.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b5_8xb2-160k_ade20k-512x512
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.13
+      mIoU(ms+flip): 50.22
+  Config: configs/segformer/segformer_mit-b5_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B5
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 7.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235-94cedf59.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_512x512_160k_ade20k/segformer_mit-b5_512x512_160k_ade20k_20210726_145235.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b5_8xb2-160k_ade20k-640x640
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.62
+      mIoU(ms+flip): 50.36
+  Config: configs/segformer/segformer_mit-b5_8xb2-160k_ade20k-640x640.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MIT-B5
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 11.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243-41d2845b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_640x640_160k_ade20k/segformer_mit-b5_640x640_160k_ade20k_20210801_121243.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b0_8xb1-160k_cityscapes-1024x1024
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.54
+      mIoU(ms+flip): 78.22
+  Config: configs/segformer/segformer_mit-b0_8xb1-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - MIT-B0
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 3.64
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857-e7f88502.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b0_8x1_1024x1024_160k_cityscapes/segformer_mit-b0_8x1_1024x1024_160k_cityscapes_20211208_101857.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b1_8xb1-160k_cityscapes-1024x1024
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.56
+      mIoU(ms+flip): 79.73
+  Config: configs/segformer/segformer_mit-b1_8xb1-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - MIT-B1
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.49
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213-655c7b3f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b1_8x1_1024x1024_160k_cityscapes/segformer_mit-b1_8x1_1024x1024_160k_cityscapes_20211208_064213.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b2_8xb1-160k_cityscapes-1024x1024
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 81.08
+      mIoU(ms+flip): 82.18
+  Config: configs/segformer/segformer_mit-b2_8xb1-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - MIT-B2
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 7.42
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205-6096669a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b2_8x1_1024x1024_160k_cityscapes/segformer_mit-b2_8x1_1024x1024_160k_cityscapes_20211207_134205.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b3_8xb1-160k_cityscapes-1024x1024
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 81.94
+      mIoU(ms+flip): 83.14
+  Config: configs/segformer/segformer_mit-b3_8xb1-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - MIT-B3
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 10.86
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823-a8f8a177.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b3_8x1_1024x1024_160k_cityscapes/segformer_mit-b3_8x1_1024x1024_160k_cityscapes_20211206_224823.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b4_8xb1-160k_cityscapes-1024x1024
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 81.89
+      mIoU(ms+flip): 83.38
+  Config: configs/segformer/segformer_mit-b4_8xb1-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - MIT-B4
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 15.07
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709-07f6c333.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b4_8x1_1024x1024_160k_cityscapes/segformer_mit-b4_8x1_1024x1024_160k_cityscapes_20211207_080709.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
+- Name: segformer_mit-b5_8xb1-160k_cityscapes-1024x1024
+  In Collection: Segformer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 82.25
+      mIoU(ms+flip): 83.48
+  Config: configs/segformer/segformer_mit-b5_8xb1-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - MIT-B5
+    - Segformer
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 18.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934-87a052ec.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segformer/segformer_mit-b5_8x1_1024x1024_160k_cityscapes/segformer_mit-b5_8x1_1024x1024_160k_cityscapes_20211206_072934.log.json
+  Paper:
+    Title: 'SegFormer: Simple and Efficient Design for Semantic Segmentation with
+      Transformers'
+    URL: https://arxiv.org/abs/2105.15203
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mit.py#L246
+  Framework: PyTorch
