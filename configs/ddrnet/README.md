@@ -36,12 +36,11 @@ The pretrained weights in config files are converted from [the official repo](ht
 ## Citation
 
 ```bibtex
-@misc{hong2021ddrnet,
-  title={Deep Dual-resolution Networks for Real-time and Accurate Semantic Segmentation of Road Scenes},
-  author={Hong, Yuanduo and Pan, Huihui and Sun, Weichao and Jia, Yisong},
-  year={2021},
-  eprint={2101.06085},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV},
+@article{pan2022deep,
+  title={Deep Dual-Resolution Networks for Real-Time and Accurate Semantic Segmentation of Traffic Scenes},
+  author={Pan, Huihui and Hong, Yuanduo and Sun, Weichao and Jia, Yisong},
+  journal={IEEE Transactions on Intelligent Transportation Systems},
+  year={2022},
+  publisher={IEEE}
 }
 ```
