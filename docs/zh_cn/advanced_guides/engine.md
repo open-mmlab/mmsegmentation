@@ -61,21 +61,21 @@ OpenMMLab 将模型训练和测试过程抽象为 `Runner`, 插入钩子可以�
 
 - 默认钩子 (default hooks)
 
-它们实现了训练时所必需的功能, 在配置文件中用 `default_hooks` 定义传给 `Runner`, `Runner` 通过 [`register_default_hooks`](https://github.com/open-mmlab/mmengine/blob/090104df21acd05a8aadae5a0d743a7da3314f6f/mmengine/runner/runner.py#L1780) 方法注册.
+它们实现了训练时所必需的功能, 在配置文件中用 `default_hooks` 定义传给 `Runner`, `Runner` 通过 [`register_default_hooks`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L1780) 方法注册.
 钩子有对应的优先级, 优先级越高, 越早被执行器调用. 如果优先级一样, 被调用的顺序和钩子注册的顺序一致.
 不建议用户修改默认钩子的优先级, 可以参考 [mmengine hooks 文档](https://github.com/open-mmlab/mmengine/blob/main/docs/zh_cn/tutorials/hook.md) 了解钩子优先级的定义.
 下面是 MMSegmentation 中所用到的默认钩子：
 
-|                                                           钩子                                                            |                                              功能                                               |      优先级       |
-| :-----------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------: |
-|            [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)            |                                   记录 iteration 花费的时间.                                    |    NORMAL (50)    |
-|               [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)                | 从 `Runner` 里不同的组件中收集日志记录, 并将其输出到终端, JSON 文件, tensorboard, wandb 等下游. | BELOW_NORMAL (60) |
-|       [ParamSchedulerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/param_scheduler_hook.py)       |                          更新优化器里面的一些超参数, 例如学习率的动量.                          |     LOW (70)      |
-|           [CheckpointHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py)            |                                  规律性地保存 checkpoint 文件.                                  |   VERY_LOW (90)   |
-|        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                               确保分布式采样器 shuffle 是打开的.                                |    NORMAL (50)    |
-| [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                                可视化验证和测试过程里的预测结果.                                |    NORMAL (50)    |
+|                                                          钩子                                                          |                                              功能                                               |      优先级       |
+| :--------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :---------------: |
+|          [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)           |                                   记录 iteration 花费的时间.                                    |    NORMAL (50)    |
+|              [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)              | 从 `Runner` 里不同的组件中收集日志记录, 并将其输出到终端, JSON 文件, tensorboard, wandb 等下游. | BELOW_NORMAL (60) |
+|     [ParamSchedulerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/param_scheduler_hook.py)      |                          更新优化器里面的一些超参数, 例如学习率的动量.                          |     LOW (70)      |
+|          [CheckpointHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py)          |                                  规律性地保存 checkpoint 文件.                                  |   VERY_LOW (90)   |
+|      [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)       |                               确保分布式采样器 shuffle 是打开的.                                |    NORMAL (50)    |
+| [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/visualization/local_visualizer.py) |                                可视化验证和测试过程里的预测结果.                                |    NORMAL (50)    |
 
-MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子::
+MMSegmentation 会在 [`defualt_hooks`](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/schedules/schedule_160k.py#L19-L25) 里面注册一些训练所必需功能的钩子::
 
 ```python
 default_hooks = dict(
@@ -94,6 +94,7 @@ default_hooks = dict(
 以 `default_hooks` 里面的 `logger` 和 `checkpoint` 为例, 我们来介绍如何修改 `default_hooks` 中默认的钩子.
 
 (1) 模型保存配置
+
 `default_hooks` 使用 `checkpoint` 字段来初始化[模型保存钩子 (CheckpointHook)](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py#L19).
 
 ```python
@@ -104,6 +105,7 @@ checkpoint = dict(type='CheckpointHook', interval=1)
 更多相关参数的细节可以参考[这里](https://mmengine.readthedocs.io/zh_CN/latest/api/generated/mmengine.hooks.CheckpointHook.html#checkpointhook).
 
 (2) 日志配置
+
 `日志钩子 (LoggerHook)` 被用来收集 `执行器 (Runner)` 里面不同组件的日志信息然后写入终端, JSON 文件, tensorboard 和 wandb 等地方.
 
 ```python
@@ -126,7 +128,7 @@ visualizer = dict(
 
 - 自定义钩子 (custom hooks)
 
-自定义钩子在配置通过 `custom_hooks` 定义, `Runner` 通过 [`register_custom_hooks`](https://github.com/open-mmlab/mmengine/blob/090104df21acd05a8aadae5a0d743a7da3314f6f/mmengine/runner/runner.py#L1852) 方法注册.
+自定义钩子在配置通过 `custom_hooks` 定义, `Runner` 通过 [`register_custom_hooks`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/runner/runner.py#L1820) 方法注册.
 自定义钩子优先级需要在配置文件里设置, 如果没有设置, 则会被默认设置为 `NORMAL`. 下面是部分 MMEngine 中实现的自定义钩子:
 
 |                                                  钩子                                                  |                                             用法                                             |
@@ -145,7 +147,7 @@ custom_hooks = [
 
 ### SegVisualizationHook
 
-MMSegmentation 实现了 [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/hooks/visualization_hook.py#L17), 用来在验证和测试时可视化预测结果.
+MMSegmentation 实现了 [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/engine/hooks/visualization_hook.py#L17), 用来在验证和测试时可视化预测结果.
 `SegVisualizationHook` 重写了基类 `Hook` 中的 `_after_iter` 方法, 在验证或测试时, 根据指定的迭代次数间隔调用 `visualizer` 的 `add_datasample` 方法绘制语义分割结果, 具体实现如下:
 
 ```python
@@ -181,7 +183,7 @@ class SegVisualizationHook(Hook):
 
 ```
 
-关于可视化更多的细节可以查看[这里](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/visualization.md).
+关于可视化更多的细节可以查看[这里](../user_guides/visualization.md).
 
 ## 优化器
 
@@ -234,7 +236,7 @@ optim_wrapper = dict(type='AmpOptimWrapper', optimizer=optimizer)
 
 在模型训练中, 如果想在优化器里为不同参数分别设置优化策略, 例如设置不同的学习率、权重衰减等超参数, 可以通过设置配置文件里 `optim_wrapper` 中的 `paramwise_cfg` 来实现.
 
-下面的配置文件以 [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) 为例介绍 `paramwise_cfg` 参数使用.
+下面的配置文件以 [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) 为例介绍 `paramwise_cfg` 参数使用.
 训练时将 `pos_embed`, `mask_token`, `norm` 模块的 weight decay 参数的系数设置成 0.
 即: 在训练时, 这些模块的 weight decay 将被变为 `weight_decay * decay_mult`=0.
 
@@ -257,9 +259,9 @@ optim_wrapper = dict(
 
 ### 优化器封装构造器
 
-默认的优化器封装构造器 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/376251961da47ea8254ab808ae5c51e1430f18dc/mmengine/optim/optimizer/default_constructor.py#L19) 根据输入的 `optim_wrapper` 和 `optim_wrapper` 中定义的 `paramwise_cfg` 来构建训练中使用的优化器. 当 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/376251961da47ea8254ab808ae5c51e1430f18dc/mmengine/optim/optimizer/default_constructor.py#L19) 功能不能满足需求时, 可以自定义优化器封装构造器来实现超参数的配置.
+默认的优化器封装构造器 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) 根据输入的 `optim_wrapper` 和 `optim_wrapper` 中定义的 `paramwise_cfg` 来构建训练中使用的优化器. 当 [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) 功能不能满足需求时, 可以自定义优化器封装构造器来实现超参数的配置.
 
-MMSegmentation 中的实现了 [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/b21df463d47447f33c28d9a4f46136ad64d34a40/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), 可以对以 ConvNeXt, BEiT 和 MAE 为骨干网络的模型训练时, 骨干网络的模型参数的学习率按照定义的衰减比例（`decay_rate`）逐层递减, 在配置文件中的配置如下:
+MMSegmentation 中的实现了 [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), 可以对以 ConvNeXt, BEiT 和 MAE 为骨干网络的模型训练时, 骨干网络的模型参数的学习率按照定义的衰减比例（`decay_rate`）逐层递减, 在配置文件中的配置如下:
 
 ```python
 optim_wrapper = dict(

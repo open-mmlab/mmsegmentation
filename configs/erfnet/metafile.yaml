@@ -1,0 +1,37 @@
+Collections:
+- Name: ERFNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: 'ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation'
+    URL: http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf
+  README: configs/erfnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: erfnet_fcn_4xb4-160k_cityscapes-512x1024
+  In Collection: ERFNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 72.5
+      mIoU(ms+flip): 74.75
+  Config: configs/erfnet/erfnet_fcn_4xb4-160k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - ERFNet
+    - ERFNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.04
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145-dc90157a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/erfnet/erfnet_fcn_4x4_512x1024_160k_cityscapes/erfnet_fcn_4x4_512x1024_160k_cityscapes_20220704_162145.log.json
+  Paper:
+    Title: 'ERFNet: Efficient Residual Factorized ConvNet for Real-time Semantic Segmentation'
+    URL: http://www.robesafe.uah.es/personal/eduardo.romera/pdfs/Romera17tits.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/erfnet.py#L321
+  Framework: PyTorch
