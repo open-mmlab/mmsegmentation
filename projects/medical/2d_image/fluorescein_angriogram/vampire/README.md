@@ -74,6 +74,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 - download dataset from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html) and decompression data to path `'data/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
+- run script `python ../../tools/split_seg_dataset.py` to split dataset. For the Bacteria_detection dataset, as there is no test or validation dataset, we sample 20% samples from the whole dataset as the validation dataset and 80% samples for training data and make two filename lists `train.txt` and `val.txt`. As we set the random seed as the hard code, we eliminated the randomness, the dataset split actually can be reproducible.
 
 ```none
   mmsegmentation
