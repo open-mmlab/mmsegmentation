@@ -21,7 +21,6 @@ def map_func(num_map={255: 1, 0: 0}, im_path='./masks/train', suffix='png'):
 
 if __name__ == '__main__':
     num_map = {255: 1, 0: 0}
-    im_path = './masks/train'
     suffix = 'png'
-    map_func(num_map, im_path, suffix)
-    map_func(num_map, './masks/test', suffix)
+    map_func(num_map, 'path/to/data/masks/train', suffix)
+    map_func(num_map, 'path/to/data/masks/test', suffix)
