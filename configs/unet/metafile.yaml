@@ -1,0 +1,642 @@
+Collections:
+- Name: UNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - DRIVE
+    - STARE
+    - CHASE_DB1
+    - HRF
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  README: configs/unet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: unet-s5-d16_fcn_4xb4-160k_cityscapes-512x1024
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 69.1
+      mIoU(ms+flip): 71.05
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-160k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 17.91
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes_20211210_145204-6860854e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes_20211210_145204.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-40k_drive-64x64
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: DRIVE
+    Metrics:
+      mDice: 88.38
+      Dice: 78.67
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-40k_drive-64x64.py
+  Metadata:
+    Training Data: DRIVE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.68
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_64x64_40k_drive/fcn_unet_s5-d16_64x64_40k_drive_20201223_191051-5daf6d3b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_64x64_40k_drive/unet_s5-d16_64x64_40k_drive-20201223_191051.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_drive-64x64
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: DRIVE
+    Metrics:
+      mDice: 88.71
+      Dice: 79.32
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_drive-64x64.py
+  Metadata:
+    Training Data: DRIVE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.582
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive/fcn_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive_20211210_201820-785de5c2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive/fcn_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive_20211210_201820.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-40k_drive-64x64
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: DRIVE
+    Metrics:
+      mDice: 88.35
+      Dice: 78.62
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-40k_drive-64x64.py
+  Metadata:
+    Training Data: DRIVE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.599
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_64x64_40k_drive/pspnet_unet_s5-d16_64x64_40k_drive_20201227_181818-aac73387.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_64x64_40k_drive/pspnet_unet_s5-d16_64x64_40k_drive-20201227_181818.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_drive-64x64
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: DRIVE
+    Metrics:
+      mDice: 88.76
+      Dice: 79.42
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_drive-64x64.py
+  Metadata:
+    Training Data: DRIVE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.585
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive/pspnet_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive_20211210_201821-22b3e3ba.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive/pspnet_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive_20211210_201821.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-40k_drive-64x64
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: DRIVE
+    Metrics:
+      mDice: 88.38
+      Dice: 78.69
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-40k_drive-64x64.py
+  Metadata:
+    Training Data: DRIVE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.596
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_64x64_40k_drive/deeplabv3_unet_s5-d16_64x64_40k_drive_20201226_094047-0671ff20.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_64x64_40k_drive/deeplabv3_unet_s5-d16_64x64_40k_drive-20201226_094047.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_drive-64x64
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: DRIVE
+    Metrics:
+      mDice: 88.84
+      Dice: 79.56
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_drive-64x64.py
+  Metadata:
+    Training Data: DRIVE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.582
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive_20211210_201825-6bf0efd7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_64x64_40k_drive_20211210_201825.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-40k_stare-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: STARE
+    Metrics:
+      mDice: 89.78
+      Dice: 81.02
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-40k_stare-128x128.py
+  Metadata:
+    Training Data: STARE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.968
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_stare/fcn_unet_s5-d16_128x128_40k_stare_20201223_191051-7d77e78b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_128x128_40k_stare/unet_s5-d16_128x128_40k_stare-20201223_191051.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_stare-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: STARE
+    Metrics:
+      mDice: 90.65
+      Dice: 82.7
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_stare-128x128.py
+  Metadata:
+    Training Data: STARE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.986
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare_20211210_201821-f75705a9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare_20211210_201821.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-40k_stare-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: STARE
+    Metrics:
+      mDice: 89.89
+      Dice: 81.22
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-40k_stare-128x128.py
+  Metadata:
+    Training Data: STARE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.982
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_128x128_40k_stare/pspnet_unet_s5-d16_128x128_40k_stare_20201227_181818-3c2923c4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_128x128_40k_stare/pspnet_unet_s5-d16_128x128_40k_stare-20201227_181818.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_stare-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: STARE
+    Metrics:
+      mDice: 90.72
+      Dice: 82.84
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_stare-128x128.py
+  Metadata:
+    Training Data: STARE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.028
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare_20211210_201823-f1063ef7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare_20211210_201823.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-40k_stare-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: STARE
+    Metrics:
+      mDice: 89.73
+      Dice: 80.93
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-40k_stare-128x128.py
+  Metadata:
+    Training Data: STARE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.999
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_128x128_40k_stare/deeplabv3_unet_s5-d16_128x128_40k_stare_20201226_094047-93dcb93c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_128x128_40k_stare/deeplabv3_unet_s5-d16_128x128_40k_stare-20201226_094047.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_stare-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: STARE
+    Metrics:
+      mDice: 90.65
+      Dice: 82.71
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_stare-128x128.py
+  Metadata:
+    Training Data: STARE
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.01
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare_20211210_201825-21db614c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_stare_20211210_201825.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-40k_chase-db1-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: CHASE_DB1
+    Metrics:
+      mDice: 89.46
+      Dice: 80.24
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-40k_chase-db1-128x128.py
+  Metadata:
+    Training Data: CHASE_DB1
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.968
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_128x128_40k_chase_db1/fcn_unet_s5-d16_128x128_40k_chase_db1_20201223_191051-11543527.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_128x128_40k_chase_db1/unet_s5-d16_128x128_40k_chase_db1-20201223_191051.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: CHASE_DB1
+    Metrics:
+      mDice: 89.52
+      Dice: 80.4
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128.py
+  Metadata:
+    Training Data: CHASE_DB1
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.986
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1_20211210_201821-1c4eb7cf.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1/fcn_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1_20211210_201821.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-40k_chase-db1-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: CHASE_DB1
+    Metrics:
+      mDice: 89.52
+      Dice: 80.36
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-40k_chase-db1-128x128.py
+  Metadata:
+    Training Data: CHASE_DB1
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.982
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_128x128_40k_chase_db1/pspnet_unet_s5-d16_128x128_40k_chase_db1_20201227_181818-68d4e609.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_128x128_40k_chase_db1/pspnet_unet_s5-d16_128x128_40k_chase_db1-20201227_181818.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: CHASE_DB1
+    Metrics:
+      mDice: 89.45
+      Dice: 80.28
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128.py
+  Metadata:
+    Training Data: CHASE_DB1
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.028
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1_20211210_201823-c0802c4d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1/pspnet_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1_20211210_201823.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet_s5-d16_deeplabv3_4xb4-40k_chase-db1-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: CHASE_DB1
+    Metrics:
+      mDice: 89.57
+      Dice: 80.47
+  Config: configs/unet/unet_s5-d16_deeplabv3_4xb4-40k_chase-db1-128x128.py
+  Metadata:
+    Training Data: CHASE_DB1
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 0.999
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_128x128_40k_chase_db1/deeplabv3_unet_s5-d16_128x128_40k_chase_db1_20201226_094047-4c5aefa3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_128x128_40k_chase_db1/deeplabv3_unet_s5-d16_128x128_40k_chase_db1-20201226_094047.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: CHASE_DB1
+    Metrics:
+      mDice: 89.49
+      Dice: 80.37
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_chase-db1-128x128.py
+  Metadata:
+    Training Data: CHASE_DB1
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.01
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1_20211210_201825-4ef29df5.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_128x128_40k_chase-db1_20211210_201825.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-40k_hrf-256x256
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: HRF
+    Metrics:
+      mDice: 88.92
+      Dice: 79.45
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-40k_hrf-256x256.py
+  Metadata:
+    Training Data: HRF
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.525
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_256x256_40k_hrf/fcn_unet_s5-d16_256x256_40k_hrf_20201223_173724-d89cf1ed.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/unet_s5-d16_256x256_40k_hrf/unet_s5-d16_256x256_40k_hrf-20201223_173724.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: HRF
+    Metrics:
+      mDice: 89.64
+      Dice: 80.87
+  Config: configs/unet/unet-s5-d16_fcn_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256.py
+  Metadata:
+    Training Data: HRF
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.623
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_201821-c314da8a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/fcn_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_201821.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-40k_hrf-256x256
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: HRF
+    Metrics:
+      mDice: 89.24
+      Dice: 80.07
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-40k_hrf-256x256.py
+  Metadata:
+    Training Data: HRF
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.588
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_256x256_40k_hrf/pspnet_unet_s5-d16_256x256_40k_hrf_20201227_181818-fdb7e29b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_256x256_40k_hrf/pspnet_unet_s5-d16_256x256_40k_hrf-20201227_181818.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: HRF
+    Metrics:
+      mDice: 89.69
+      Dice: 80.96
+  Config: configs/unet/unet-s5-d16_pspnet_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256.py
+  Metadata:
+    Training Data: HRF
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.798
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/pspnet_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_201823-53d492fa.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/pspnet_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/pspnet_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_201823.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-40k_hrf-256x256
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: HRF
+    Metrics:
+      mDice: 89.32
+      Dice: 80.21
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-40k_hrf-256x256.py
+  Metadata:
+    Training Data: HRF
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.604
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_256x256_40k_hrf/deeplabv3_unet_s5-d16_256x256_40k_hrf_20201226_094047-3a1fdf85.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_256x256_40k_hrf/deeplabv3_unet_s5-d16_256x256_40k_hrf-20201226_094047.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch
+- Name: unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256
+  In Collection: UNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: HRF
+    Metrics:
+      mDice: 89.56
+      Dice: 80.71
+  Config: configs/unet/unet-s5-d16_deeplabv3_4xb4-ce-1.0-dice-3.0-40k_hrf-256x256.py
+  Metadata:
+    Training Data: HRF
+    Batch Size: 16
+    Architecture:
+    - UNet-S5-D16
+    - UNet
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.607
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_202032-59daf7a4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/unet/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf/deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_256x256_40k_hrf_20211210_202032.log.json
+  Paper:
+    Title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+    URL: https://arxiv.org/abs/1505.04597
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/unet.py#L225
+  Framework: PyTorch

@@ -1,0 +1,145 @@
+Models:
+- Name: convnext-tiny_upernet_8xb2-amp-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.11
+      mIoU(ms+flip): 46.62
+  Config: configs/convnext/convnext-tiny_upernet_8xb2-amp-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ConvNeXt-T
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.23
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553-cad485de.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553.log.json
+  Paper:
+    Title: A ConvNet for the 2020s
+    URL: https://arxiv.org/abs/2201.03545
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
+- Name: convnext-small_upernet_8xb2-amp-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.56
+      mIoU(ms+flip): 49.02
+  Config: configs/convnext/convnext-small_upernet_8xb2-amp-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ConvNeXt-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 5.16
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208-1b1e394f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208.log.json
+  Paper:
+    Title: A ConvNet for the 2020s
+    URL: https://arxiv.org/abs/2201.03545
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
+- Name: convnext-base_upernet_8xb2-amp-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.71
+      mIoU(ms+flip): 49.54
+  Config: configs/convnext/convnext-base_upernet_8xb2-amp-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ConvNeXt-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 6.33
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227-02a24fc6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227.log.json
+  Paper:
+    Title: A ConvNet for the 2020s
+    URL: https://arxiv.org/abs/2201.03545
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
+- Name: convnext-base_upernet_8xb2-amp-160k_ade20k-640x640
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 52.13
+      mIoU(ms+flip): 52.66
+  Config: configs/convnext/convnext-base_upernet_8xb2-amp-160k_ade20k-640x640.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ConvNeXt-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 8.53
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859-9280e39b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859.log.json
+  Paper:
+    Title: A ConvNet for the 2020s
+    URL: https://arxiv.org/abs/2201.03545
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
+- Name: convnext-large_upernet_8xb2-amp-160k_ade20k-640x640
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 53.16
+      mIoU(ms+flip): 53.38
+  Config: configs/convnext/convnext-large_upernet_8xb2-amp-160k_ade20k-640x640.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ConvNeXt-L
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 12.08
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532-e57aa54d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532.log.json
+  Paper:
+    Title: A ConvNet for the 2020s
+    URL: https://arxiv.org/abs/2201.03545
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch
+- Name: convnext-xlarge_upernet_8xb2-amp-160k_ade20k-640x640
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 53.58
+      mIoU(ms+flip): 54.11
+  Config: configs/convnext/convnext-xlarge_upernet_8xb2-amp-160k_ade20k-640x640.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ConvNeXt-XL
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 26.16
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344-95fc38c2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344.log.json
+  Paper:
+    Title: A ConvNet for the 2020s
+    URL: https://arxiv.org/abs/2201.03545
+  Code: https://github.com/open-mmlab/mmclassification/blob/v0.20.1/mmcls/models/backbones/convnext.py#L133
+  Framework: PyTorch

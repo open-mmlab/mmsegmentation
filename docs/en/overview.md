@@ -72,8 +72,8 @@ Here is a detailed step-by-step guide to learn more about MMSegmentation:
    please refer to the below guides to build your own segmentation project:
 
    - [Add new models](advanced_guides/add_models.md)
-   - [Add new datasets](advanced_guides/add_dataset.md)
-   - [Add new transforms](advanced_guides/add_transform.md)
+   - [Add new datasets](advanced_guides/add_datasets.md)
+   - [Add new transforms](advanced_guides/add_transforms.md)
    - [Customize runtime](advanced_guides/customize_runtime.md)
 
 5. If you are more familiar with MMSegmentation v0.x, there is documentation about migration from MMSegmentation v0.x to v1.x
@@ -82,4 +82,4 @@ Here is a detailed step-by-step guide to learn more about MMSegmentation:
 
 ## References
 
-- https://paperswithcode.com/task/semantic-segmentation/codeless#task-home
+- [Paper with code](https://paperswithcode.com/task/semantic-segmentation/codeless#task-home)
