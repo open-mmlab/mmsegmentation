@@ -1,5 +1,5 @@
 dataset_type = 'VampireDataset'
-data_root = 'data/vampire'
+data_root = 'data'
 img_scale = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
