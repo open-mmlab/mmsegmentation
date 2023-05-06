@@ -73,6 +73,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 ### Dataset preparing
 
 - download dataset from [here](https://vampire.computing.dundee.ac.uk/vesselseg.html) and decompression data to path `'data/'`.
+- run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 
 ```none
   mmsegmentation
