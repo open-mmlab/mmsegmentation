@@ -39,7 +39,10 @@ train_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='train/A', img_path2='train/B', seg_map_path='train/label'),
+        data_prefix=dict(
+            img_path='train/A',
+            img_path2='train/B',
+            seg_map_path='train/label'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -49,9 +52,9 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='test/A', img_path2='test/B', seg_map_path='test/label'),
+        data_prefix=dict(
+            img_path='test/A', img_path2='test/B', seg_map_path='test/label'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
-
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
 test_evaluator = val_evaluator
