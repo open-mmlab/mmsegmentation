@@ -1,13 +1,14 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import math
+import warnings
+
 import torch
 import torch.nn as nn
-import warnings
-from mmseg.registry import MODELS
 from mmengine.model import BaseModule
-from mmseg.models.backbones.mscan import (OverlapPatchEmbed,
-                                          MSCASpatialAttention, MSCABlock,
-                                          MSCAN)
+
+from mmseg.models.backbones.mscan import (MSCAN, MSCABlock,
+                                          MSCASpatialAttention,
+                                          OverlapPatchEmbed)
+from mmseg.registry import MODELS
 
 
 class VANAttentionModule(BaseModule):

@@ -13,7 +13,6 @@ data_preprocessor = dict(
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
-    pretrained=None,
     backbone=dict(
         type='VAN',
         embed_dims=[32, 64, 160, 256],
@@ -21,7 +20,8 @@ model = dict(
         drop_path_rate=0.1,
         depths=[3, 3, 5, 2],
         act_cfg=dict(type='GELU'),
-        norm_cfg=norm_cfg),
+        norm_cfg=norm_cfg,
+        init_cfg=dict()),
     decode_head=dict(
         type='UPerHead',
         in_channels=[32, 64, 160, 256],

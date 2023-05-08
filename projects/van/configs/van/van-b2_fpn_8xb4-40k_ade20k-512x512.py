@@ -5,23 +5,17 @@ _base_ = [
 ]
 custom_imports = dict(imports=['projects.van.backbones'])
 
-
-# checkpoint_file = 'https://cloud.tsinghua.edu.cn/d/0100f0cea37d41ba8d08/files/?p=%2Fvan_b2.pth&dl=1'
-checkpoint_file = 'pretrained/van_b2.pth'
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
         embed_dims=[64, 128, 320, 512],
         depths=[3, 3, 12, 3],
-        init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
+        init_cfg=dict(type='Pretrained', checkpoint='pretrained/van_b2.pth'),
         drop_path_rate=0.2),
     neck=dict(in_channels=[64, 128, 320, 512]),
     decode_head=dict(num_classes=150))
 
-train_dataloader = dict(
-    batch_size=4
-)
-
+train_dataloader = dict(batch_size=4)
 
 # we use 8 gpu instead of 4 in mmsegmentation, so lr*2 and max_iters/2
 gpu_multiples = 2
@@ -30,12 +24,12 @@ interval = 8000 // gpu_multiples
 optim_wrapper = dict(
     _delete_=True,
     type='OptimWrapper',
-    optimizer=dict(type='AdamW',
-                   lr=0.0001 * gpu_multiples,
-                   betas=(0.9, 0.999),
-                   weight_decay=0.0001),
-    clip_grad=None
-)
+    optimizer=dict(
+        type='AdamW',
+        lr=0.0001 * gpu_multiples,
+        # betas=(0.9, 0.999),
+        weight_decay=0.0001),
+    clip_grad=None)
 # learning policy
 param_scheduler = [
     dict(
