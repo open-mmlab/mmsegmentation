@@ -10,7 +10,7 @@ This project implements **`KITTI STEP Dataset`**
 
 ### Dataset preparing
 
-Preparing `KITTI STEP Dataset` dataset following [Mapillary Vistas Dataset Preparing Guide](https://github.com/open-mmlab/mmsegmentation/tree/master/projects/kitti_step_dataset/docs/en/dataset_prepare.md)
+Preparing `KITTI STEP Dataset` dataset following [KITTI STEP Dataset Preparing Guide](docs/en/dataset_prepare.md)
 
 ```none
   mmsegmentation
