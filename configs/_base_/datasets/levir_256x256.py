@@ -3,7 +3,6 @@ dataset_type = 'LEVIRCDDataset'
 data_root = r'data/LEVIRCD'
 
 albu_train_transforms = [
-    dict(type='RandomRotate90', p=1),
     dict(type='RandomBrightnessContrast', p=0.2),
     dict(type='HorizontalFlip', p=0.5),
     dict(type='VerticalFlip', p=0.5)
