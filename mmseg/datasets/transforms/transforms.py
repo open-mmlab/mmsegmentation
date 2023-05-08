@@ -20,7 +20,6 @@ from mmseg.registry import TRANSFORMS
 try:
     import albumentations
     from albumentations import Compose
-
     ALBU_INSTALLED = True
 except ImportError:
     albumentations = None

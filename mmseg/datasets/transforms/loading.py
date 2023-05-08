@@ -523,8 +523,8 @@ class LoadSingleRSImageFromFile(BaseTransform):
     def __init__(self, to_float32: bool = True):
         self.to_float32 = to_float32
 
-    if gdal is None:
-        raise RuntimeError('gdal is not installed')
+        if gdal is None:
+            raise RuntimeError('gdal is not installed')
 
     def transform(self, results: Dict) -> Dict:
         """Functions to load image.
