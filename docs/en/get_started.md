@@ -195,6 +195,16 @@ Run it with
 docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmsegmentation
 ```
 
+### Optional Dependencies
+
+#### Install GDAL
+
+[GDAL](https://gdal.org/) is a translator library for raster and vector geospatial data formats. Install GDAL to read complex formats and extremely large remote sensing images.
+
+```shell
+conda install GDAL
+```
+
 ## Trouble shooting
 
 If you have some issues during the installation, please first view the [FAQ](notes/faq.md) page.
