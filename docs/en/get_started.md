@@ -195,7 +195,7 @@ Run it with
 docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmsegmentation
 ```
 
-## Optional Dependencies
+### Optional Dependencies
 
 #### Install GDAL
 
