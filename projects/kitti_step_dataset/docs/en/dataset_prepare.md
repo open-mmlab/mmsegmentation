@@ -174,6 +174,10 @@ mmsegmentation
 │   │   │   ├── validation
 │   │   │   ├── validation-segmentation
 │   │   │   ├── test
+│   ├── kitti_step
+│   │   ├── testing
+│   │   ├── training
+│   │   ├── panoptic_maps
 ```
 
 ### Cityscapes

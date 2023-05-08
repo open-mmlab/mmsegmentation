@@ -1,6 +1,8 @@
 _base_ = [
-    '../_base_/models/segformer_mit-b0.py', '../_base_/datasets/kittistep.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../../../../configs/_base_/models/segformer_mit-b0.py',
+    '../_base_/datasets/kittistep.py',
+    '../../../../configs/_base_/default_runtime.py',
+    '../../../../configs/_base_/schedules/schedule_160k.py'
 ]
 
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segformer/mit_b0_20220624-7e0fe6dd.pth'  # noqa
