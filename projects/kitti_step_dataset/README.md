@@ -12,7 +12,7 @@ This project implements **`KITTI STEP Dataset`**
 
 After registration, the data images could be download from [KITTI-STEP](http://www.cvlibs.net/datasets/kitti/eval_step.php)
 
-You may need to follow the following structure for dataset preparation after downloading iSAID dataset.
+You may need to follow the following structure for dataset preparation after downloading KITTI-STEP dataset.
 
 ```
 │   ├── kitti_step
