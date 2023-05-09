@@ -40,10 +40,12 @@ def binary_dice_loss(pred, target, valid_mask, smooth=1, exponent=2, **kwargs):
     pred = pred.reshape(pred.shape[0], -1)
     target = target.reshape(target.shape[0], -1)
     valid_mask = valid_mask.reshape(valid_mask.shape[0], -1)
-
+    # A quick check. When valid_mask is all 0, dice loss should also be 0,
+    #  regardless of pred and target.
     num = torch.sum(torch.mul(pred, target) * valid_mask, dim=1) * 2 + smooth
-    den = torch.sum(pred.pow(exponent) + target.pow(exponent), dim=1) + smooth
-
+    den = torch.sum(
+        (pred.pow(exponent) + target.pow(exponent)) * valid_mask,
+        dim=1) + smooth
     return 1 - num / den
 
 
@@ -105,9 +107,16 @@ class DiceLoss(nn.Module):
 
         pred = F.softmax(pred, dim=1)
         num_classes = pred.shape[1]
+
+        # Convert target from B x H x W to B x H x W x (C + 1)
+        # For example, given one batch of labels [0, 1, 255] with C = 2
+        # The one_hot label should be [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        # Note that the last dim is not used. Therefore, the final one-hot
+        # label is [[1, 0, 0], [0, 1, 0]]
         one_hot_target = F.one_hot(
-            torch.clamp(target.long(), 0, num_classes - 1),
-            num_classes=num_classes)
+            torch.clamp(target.long(), 0, num_classes),
+            num_classes=num_classes + 1)
+        one_hot_target = one_hot_target[..., :num_classes]
         valid_mask = (target != self.ignore_index).long()
 
         loss = self.loss_weight * dice_loss(
