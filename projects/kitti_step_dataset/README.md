@@ -15,6 +15,11 @@ After registration, the data images could be download from [KITTI-STEP](http://w
 You may need to follow the following structure for dataset preparation after downloading KITTI-STEP dataset.
 
 ```
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
 │   ├── kitti_step
 │   │   ├── testing
 │   │   ├── training
@@ -30,6 +35,11 @@ python tools/convert_datasets/kitti_step.py /path/to/kitti_step
 After executing the script, your directory should look like
 
 ```
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
 │   ├── kitti_step
 │   │   ├── testing
 │   │   ├── training
