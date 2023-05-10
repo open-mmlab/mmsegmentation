@@ -3,19 +3,21 @@ import torch
 import torch.nn as nn
 
 from mmseg.registry import MODELS
-from .utils import get_class_weight, weight_reduce_loss
+from .utils import weight_reduce_loss
 
 
-def dice_loss(pred,
-              target,
-              weight,
-              valid_mask,
-              eps=1e-3,
-              reduction='mean',
-              naive_dice=False,
-              avg_factor=None,
-              class_weight=None,
-              ignore_index=255):
+def dice_loss(
+    pred,
+    target,
+    weight,
+    #   valid_mask,
+    eps=1e-3,
+    reduction='mean',
+    naive_dice=False,
+    avg_factor=None,
+    #   class_weight=None,
+    #   ignore_index=255
+):
     """Calculate dice loss, there are two forms of dice loss is supported:
 
         - the one proposed in `V-Net: Fully Convolutional Neural
@@ -31,8 +33,8 @@ def dice_loss(pred,
             shape (n, *), same shape of pred.
         weight (torch.Tensor, optional): The weight of loss for each
             prediction, has a shape (n,). Defaults to None.
-        valid_mask (torch.Tensor, optional): A mask uses 1 to mark the valid
-            samples and uses 0 to mark the ignored samples. Default: None.
+        # valid_mask (torch.Tensor, optional): A mask uses 1 to mark the valid
+        #     samples and uses 0 to mark the ignored samples. Default: None.
         eps (float): Avoid dividing by zero. Default: 1e-3.
         reduction (str, optional): The method used to reduce the loss into
             a scalar. Defaults to 'mean'.
@@ -44,9 +46,10 @@ def dice_loss(pred,
             power.Defaults to False.
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
-        class_weight (list[float] | str, optional): Weight of each class. If in
-            str format, read them from a file. Defaults to None.
-        ignore_index (int | None): The label index to be ignored. Default: 255.
+        # class_weight (list[float] | str, optional): Weight of each class.
+        #     If in str format, read them from a file. Defaults to None.
+        # ignore_index (int | None): The label index to be ignored.
+        #     Default: 255.
     """
 
     input = pred.flatten(1)
@@ -73,16 +76,17 @@ def dice_loss(pred,
 @MODELS.register_module()
 class DiceLoss(nn.Module):
 
-    def __init__(self,
-                 use_sigmoid=True,
-                 activate=True,
-                 reduction='mean',
-                 class_weight=None,
-                 naive_dice=False,
-                 loss_weight=1.0,
-                 ignore_index=255,
-                 eps=1e-3,
-                 loss_name='loss_dice'):
+    def __init__(
+            self,
+            use_sigmoid=True,
+            activate=True,
+            reduction='mean',
+            #  class_weight=None,
+            naive_dice=False,
+            loss_weight=1.0,
+            ignore_index=255,
+            eps=1e-3,
+            loss_name='loss_dice'):
         """Compute dice loss.
 
         Args:
@@ -94,8 +98,8 @@ class DiceLoss(nn.Module):
             reduction (str, optional): The method used
                 to reduce the loss. Options are "none",
                 "mean" and "sum". Defaults to 'mean'.
-            class_weight (list[float] | str, optional): Weight of each class.
-                If in str format, read them from a file. Defaults to None.
+            # class_weight (list[float] | str, optional): Weight of each class.
+            #     If in str format, read them from a file. Defaults to None.
             naive_dice (bool, optional): If false, use the dice
                 loss defined in the V-Net paper, otherwise, use the
                 naive dice loss in which the power of the number in the
@@ -113,7 +117,7 @@ class DiceLoss(nn.Module):
         super().__init__()
         self.use_sigmoid = use_sigmoid
         self.reduction = reduction
-        self.class_weight = get_class_weight(class_weight)
+        # self.class_weight = get_class_weight(class_weight)
         self.naive_dice = naive_dice
         self.loss_weight = loss_weight
         self.eps = eps
@@ -148,11 +152,11 @@ class DiceLoss(nn.Module):
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
-        if self.class_weight is not None:
-            class_weight = pred.new_tensor(self.class_weight)
-        else:
-            class_weight = None
-        valid_mask = (target != self.ignore_index).long()
+        # if self.class_weight is not None:
+        #     class_weight = pred.new_tensor(self.class_weight)
+        # else:
+        #     class_weight = None
+        # valid_mask = (target != self.ignore_index).long()
 
         if self.activate:
             if self.use_sigmoid:
@@ -164,13 +168,14 @@ class DiceLoss(nn.Module):
             pred,
             target,
             weight,
-            valid_mask=valid_mask,
+            # valid_mask=valid_mask,
             eps=self.eps,
             reduction=reduction,
             naive_dice=self.naive_dice,
             avg_factor=avg_factor,
-            class_weight=class_weight,
-            ignore_index=self.ignore_index)
+            # class_weight=class_weight,
+            # ignore_index=self.ignore_index
+        )
 
         return loss
 
