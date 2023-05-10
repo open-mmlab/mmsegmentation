@@ -57,5 +57,5 @@ __all__ = [
     'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
-    'ConcatCDInput', 'BaseCDDataset', 'MapillaryDataset_v2', 'DSDLSegDataset'
+    'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset'
 ]
