@@ -2,6 +2,7 @@
 
 我们建议将数据集根目录符号链接到 `$MMSEGMENTATION/data`。
 如果您的目录结构不同，您可能需要更改配置文件中相应的路径。
+对于中国境内的用户，我们也推荐通过开源数据平台 [OpenDataLab](https://opendatalab.com/) 来下载dsdl标准数据，以获得更好的下载和使用体验，这里有一个下载dsdl数据集并进行训练的案例[DSDLReadme](../../../configs/dsdl/README.md)，欢迎尝试。
 
 ```none
 mmsegmentation
