@@ -2,6 +2,7 @@
 
 It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
 If your folder structure is different, you may need to change the corresponding paths in config files.
+For users in China, we also recommend you get the dsdl dataset from our opensource platform [OpenDataLab](https://opendatalab.com/), for better download and use experience，here is an example: [DSDLReadme](../../../configs/dsdl/README.md)， welcome to try.
 
 ```none
 mmsegmentation
