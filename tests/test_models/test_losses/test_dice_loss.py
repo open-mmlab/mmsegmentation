@@ -18,6 +18,20 @@ def test_dice_lose():
     labels = (torch.rand(8, 4, 4) * 3).long()
     dice_loss(logits, labels)
 
+    # test dice loss with ignore_index
+    loss_cfg = dict(
+        type='DiceLoss',
+        reduction='mean',
+        class_weight=[1.0, 2.0, 3.0],
+        loss_weight=1.0,
+        ignore_index=255,
+        loss_name='loss_dice')
+    dice_loss = build_loss(loss_cfg)
+    logits = torch.rand(8, 3, 4, 4)
+    # all labels are ignored
+    labels = (torch.ones(8, 4, 4) * 255).long()
+    assert dice_loss(logits, labels).item() == 0
+
     # test loss with class weights from file
     import os
     import tempfile
