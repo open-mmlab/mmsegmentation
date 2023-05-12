@@ -20,6 +20,21 @@ def test_tversky_lose():
         labels = (torch.rand(8, 4, 4) * 3).long()
         tversky_loss(logits, labels, ignore_index=1)
 
+    # test gamma < 1.0
+    with pytest.raises(AssertionError):
+        loss_cfg = dict(
+            type='TverskyLoss',
+            class_weight=[1.0, 2.0, 3.0],
+            loss_weight=1.0,
+            alpha=0.4,
+            beta=0.7,
+            gamma=0.9999,
+            loss_name='loss_tversky')
+        tversky_loss = build_loss(loss_cfg)
+        logits = torch.rand(8, 3, 4, 4)
+        labels = (torch.rand(8, 4, 4) * 3).long()
+        tversky_loss(logits, labels, ignore_index=1)
+
     # test tversky loss
     loss_cfg = dict(
         type='TverskyLoss',
