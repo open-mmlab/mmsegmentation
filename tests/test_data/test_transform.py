@@ -1,14 +1,18 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import os.path as osp
+import random
 
 import mmcv
 import numpy as np
 import pytest
+import torchvision
 from mmcv.utils import build_from_cfg
 from PIL import Image
 
 from mmseg.datasets.builder import PIPELINES
+from mmseg.datasets.pipelines import Compose
+from mmseg.datasets.pipelines.transforms import RandomResizedCrop
 
 
 def test_resize_to_multiple():
@@ -214,6 +218,254 @@ def test_random_crop():
     assert results['img'].shape[:2] == (h - 20, w - 20)
     assert results['img_shape'][:2] == (h - 20, w - 20)
     assert results['gt_semantic_seg'].shape[:2] == (h - 20, w - 20)
+
+
+def test_random_resized_crop():
+    filename = osp.join(osp.dirname(__file__), "../../../data/frames/color.jpg")
+    ori_img = mmcv.imread(filename, "color")
+    ori_mask = np.zeros((ori_img.shape[0], ori_img.shape[1]), dtype=np.uint8)
+    ori_mask[100:200, 100:200] = 1
+    ori_img_pil = Image.open(filename)
+    ori_mask_pil = Image.fromarray(ori_mask)
+
+    seed = random.randint(0, 100)
+
+    # test when scale is not of kind (min, max)
+    with pytest.raises(ValueError):
+        kwargs = dict(size=(200, 300), scale=(1.0, 0.08), ratio=(3.0 / 4.0, 4.0 / 3.0))
+        aug = []
+        aug.extend([RandomResizedCrop(**kwargs)])
+        composed_transform = Compose(aug)
+        results = dict()
+        results["img"] = ori_img
+        results["seg_fields"] = ["mask"]
+        results["mask"] = ori_mask
+        composed_transform(results)["img"]
+
+    # test when ratio is not of kind (min, max)
+    with pytest.raises(ValueError):
+        kwargs = dict(size=(200, 300), scale=(0.08, 1.0), ratio=(4.0 / 3.0, 3.0 / 4.0))
+        aug = []
+        aug.extend([RandomResizedCrop(**kwargs)])
+        composed_transform = Compose(aug)
+        results = dict()
+        results["img"] = ori_img
+        results["seg_fields"] = ["mask"]
+        results["mask"] = ori_mask
+        composed_transform(results)["img"]
+
+    # test nothing happens when p=0
+    kwargs = dict(size=(200, 200), scale=(0.08, 0.08), ratio=(1.0, 1.0), p=0)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    np.testing.assert_equal(img, ori_img)
+    np.testing.assert_equal(mask, ori_mask)
+
+    # test crop size is int
+    kwargs = dict(size=200, scale=(0.08, 1.0), ratio=(3.0 / 4.0, 4.0 / 3.0))
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([torchvision.transforms.RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    baseline = composed_transform(ori_img_pil)
+    baseline_mask = composed_transform(ori_mask_pil)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    assert all(np.array(x).shape == (200, 200, 3) for x in [img, baseline])
+    assert all(np.array(x).shape == (200, 200) for x in [mask, baseline_mask])
+    nonzero = len((ori_img - np.array(ori_img_pil)[:, :, ::-1]).nonzero())
+    nonzero_transform = len((img - np.array(baseline)[:, :, ::-1]).nonzero())
+    assert nonzero == nonzero_transform
+    nonzero_mask = len((ori_mask - np.array(ori_mask_pil)).nonzero())
+    nonzero_transform_mask = len((mask - np.array(baseline_mask)).nonzero())
+    assert nonzero_mask == nonzero_transform_mask
+
+    # test __repr__()
+    print(composed_transform)
+
+    # test crop size < image size
+    kwargs = dict(size=(200, 300), scale=(0.08, 1.0), ratio=(3.0 / 4.0, 4.0 / 3.0))
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([torchvision.transforms.RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    baseline = composed_transform(ori_img_pil)
+    baseline_mask = composed_transform(ori_mask_pil)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    assert all(np.array(x).shape == (200, 300, 3) for x in [img, baseline])
+    assert all(np.array(x).shape == (200, 300) for x in [mask, baseline_mask])
+    nonzero = len((ori_img - np.array(ori_img_pil)[:, :, ::-1]).nonzero())
+    nonzero_transform = len((img - np.array(baseline)[:, :, ::-1]).nonzero())
+    assert nonzero == nonzero_transform
+    nonzero_mask = len((ori_mask - np.array(ori_mask_pil)).nonzero())
+    nonzero_transform_mask = len((mask - np.array(baseline_mask)).nonzero())
+    assert nonzero_mask == nonzero_transform_mask
+
+    # test crop size > image size
+    kwargs = dict(size=(600, 700), scale=(0.08, 1.0), ratio=(3.0 / 4.0, 4.0 / 3.0))
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([torchvision.transforms.RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    baseline = composed_transform(ori_img_pil)
+    baseline_mask = composed_transform(ori_mask_pil)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    assert all(np.array(x).shape == (600, 700, 3) for x in [img, baseline])
+    assert all(np.array(x).shape == (600, 700) for x in [mask, baseline_mask])
+    nonzero = len((ori_img - np.array(ori_img_pil)[:, :, ::-1]).nonzero())
+    nonzero_transform = len((img - np.array(baseline)[:, :, ::-1]).nonzero())
+    assert nonzero == nonzero_transform
+    nonzero_mask = len((ori_mask - np.array(ori_mask_pil)).nonzero())
+    nonzero_transform_mask = len((mask - np.array(baseline_mask)).nonzero())
+    assert nonzero_mask == nonzero_transform_mask
+
+    # test cropping the whole image
+    kwargs = dict(size=(ori_img.shape[0], ori_img.shape[1]), scale=(1.0, 2.0), ratio=(1.0, 2.0))
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([torchvision.transforms.RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    baseline = composed_transform(ori_img_pil)
+    baseline_mask = composed_transform(ori_mask_pil)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    assert all(np.array(x).shape == (ori_img.shape[0], ori_img.shape[1], 3) for x in [img, baseline])
+    assert all(np.array(x).shape == (ori_img.shape[0], ori_img.shape[1]) for x in [mask, baseline_mask])
+    nonzero = len((ori_img - np.array(ori_img_pil)[:, :, ::-1]).nonzero())
+    nonzero_transform = len((img - np.array(baseline)[:, :, ::-1]).nonzero())
+    assert nonzero == nonzero_transform
+    nonzero_mask = len((ori_mask - np.array(ori_mask_pil)).nonzero())
+    nonzero_transform_mask = len((mask - np.array(baseline_mask)).nonzero())
+    assert nonzero_mask == nonzero_transform_mask
+
+    # test central crop when in_ratio < min(ratio)
+    kwargs = dict(size=(ori_img.shape[0], ori_img.shape[1]), scale=(1.0, 2.0), ratio=(2.0, 3.0))
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([torchvision.transforms.RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    baseline = composed_transform(ori_img_pil)
+    baseline_mask = composed_transform(ori_mask_pil)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    assert all(np.array(x).shape == (ori_img.shape[0], ori_img.shape[1], 3) for x in [img, baseline])
+    assert all(np.array(x).shape == (ori_img.shape[0], ori_img.shape[1]) for x in [mask, baseline_mask])
+    nonzero = len((ori_img - np.array(ori_img_pil)[:, :, ::-1]).nonzero())
+    nonzero_transform = len((img - np.array(baseline)[:, :, ::-1]).nonzero())
+    assert nonzero == nonzero_transform
+    nonzero_mask = len((ori_mask - np.array(ori_mask_pil)).nonzero())
+    nonzero_transform_mask = len((mask - np.array(baseline_mask)).nonzero())
+    assert nonzero_mask == nonzero_transform_mask
+
+    # test central crop when in_ratio > max(ratio)
+    kwargs = dict(size=(ori_img.shape[0], ori_img.shape[1]), scale=(1.0, 2.0), ratio=(3.0 / 4.0, 1))
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([torchvision.transforms.RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    baseline = composed_transform(ori_img_pil)
+    baseline_mask = composed_transform(ori_mask_pil)
+
+    random.seed(seed)
+    np.random.seed(seed)
+    aug = []
+    aug.extend([RandomResizedCrop(**kwargs)])
+    composed_transform = Compose(aug)
+    results = dict()
+    results["img"] = ori_img
+    results["seg_fields"] = ["mask"]
+    results["mask"] = ori_mask
+    out_results = composed_transform(results)
+    img, mask = out_results["img"], out_results["mask"]
+    assert all(np.array(x).shape == (ori_img.shape[0], ori_img.shape[1], 3) for x in [img, baseline])
+    assert all(np.array(x).shape == (ori_img.shape[0], ori_img.shape[1]) for x in [mask, baseline_mask])
+    nonzero = len((ori_img - np.array(ori_img_pil)[:, :, ::-1]).nonzero())
+    nonzero_transform = len((img - np.array(baseline)[:, :, ::-1]).nonzero())
+    assert nonzero == nonzero_transform
+    nonzero_mask = len((ori_mask - np.array(ori_mask_pil)).nonzero())
+    nonzero_transform_mask = len((mask - np.array(baseline_mask)).nonzero())
+    assert nonzero_mask == nonzero_transform_mask
+
+    # test different interpolation types
+    for mode in ["nearest", "bilinear", "bicubic", "area", "lanczos"]:
+        kwargs = dict(size=(600, 700), scale=(0.08, 1.0), ratio=(3.0 / 4.0, 4.0 / 3.0), interpolation=mode)
+        aug = []
+        aug.extend([RandomResizedCrop(**kwargs)])
+        composed_transform = Compose(aug)
+        results = dict()
+        results["img"] = ori_img
+        results["seg_fields"] = ["mask"]
+        results["mask"] = ori_mask
+        out_results = composed_transform(results)
+        img, mask = out_results["img"], out_results["mask"]
+        assert img.shape == (600, 700, 3)
+        assert mask.shape == (600, 700)
 
 
 def test_pad():
