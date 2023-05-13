@@ -240,7 +240,10 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             dict[str, Tensor]: a dictionary of loss components
         """
         seg_logits = self(inputs)
-        losses = self.losses(seg_logits, gt_semantic_seg)
+        weight = None
+        if "weight" in img_metas[0]:
+            weight = torch.Tensor([meta["weight"] for meta in img_metas])
+        losses = self.losses(seg_logits, gt_semantic_seg, weight)
         return losses
 
     def forward_test(self, inputs, img_metas, test_cfg):
@@ -268,7 +271,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return output
 
     @force_fp32(apply_to=('seg_logit', ))
-    def losses(self, seg_logit, seg_label):
+    def losses(self, seg_logit, seg_label, weight=None):
         """Compute segmentation loss."""
         loss = dict()
         if self.downsample_label_ratio > 0:
@@ -283,11 +286,25 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             size=seg_label.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
+        
+
+        # seg weight mask from sampler
+        seg_weight = None
         if self.sampler is not None:
             seg_weight = self.sampler.sample(seg_logit, seg_label)
-        else:
-            seg_weight = None
         seg_label = seg_label.squeeze(1)
+
+        # item weight
+        if weight is not None:
+            # make dimensionality compatible (given )
+            for _ in range(seg_label.dim() - 1):
+                weight = weight.unsqueeze(-1)
+
+        # combine them
+        if weight is not None and seg_weight is not None:
+            seg_weight = seg_weight * weight
+        elif seg_weight is None:
+            seg_weight = weight
 
         if not isinstance(self.loss_decode, nn.ModuleList):
             losses_decode = [self.loss_decode]
