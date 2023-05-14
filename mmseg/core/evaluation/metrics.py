@@ -72,17 +72,24 @@ def intersect_and_union(pred_label,
         for old_id, new_id in label_map.items():
             label[label_copy == old_id] = new_id
 
+    # Remove ignore_index related pixelx.
     mask = (label != ignore_index)
     pred_label = pred_label[mask]
     label = label[mask]
 
     intersect = pred_label[pred_label == label]
-    area_intersect = torch.histc(
-        intersect.float(), bins=(num_classes), min=0, max=num_classes - 1)
-    area_pred_label = torch.histc(
-        pred_label.float(), bins=(num_classes), min=0, max=num_classes - 1)
-    area_label = torch.histc(
-        label.float(), bins=(num_classes), min=0, max=num_classes - 1)
+
+    # Remove those pixels which have larger value than num_classes - 1.
+    # Those pixels will cause error when use `torch.bincount`, because
+    # `torch.bincount` can only restrict min length of count vector and
+    # can't restrict max length of count vector.
+    pred_label = pred_label[pred_label < num_classes]
+    label = label[label < num_classes]
+    intersect = intersect[intersect < num_classes]
+
+    area_intersect = torch.bincount(intersect, minlength=num_classes)
+    area_pred_label = torch.bincount(pred_label, minlength=num_classes)
+    area_label = torch.bincount(label, minlength=num_classes)
     area_union = area_pred_label + area_label - area_intersect
     return area_intersect, area_union, area_pred_label, area_label
 
