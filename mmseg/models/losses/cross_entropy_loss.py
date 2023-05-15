@@ -146,7 +146,7 @@ def binary_cross_entropy(pred,
         avg_factor = valid_mask.sum().item()
 
     loss = F.binary_cross_entropy_with_logits(
-        pred, label.float(), pos_weight=class_weight, reduction='none')
+        pred, label.float(), weight=class_weight, reduction='none')
     # do the reduction for the weighted loss
     loss = weight_reduce_loss(
         loss, weight, reduction=reduction, avg_factor=avg_factor)
