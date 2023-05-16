@@ -15,7 +15,7 @@ os.system('mkdir -p ' + tgt_mask_dir)
 
 
 def read_single_array_from_pil(path):
-    return np.asarray(Image.open(path)(path))
+    return np.asarray(Image.open(path))
 
 
 def save_png_from_array(arr, save_path, mode=None):
