@@ -8,8 +8,7 @@ data_preprocessor = dict(
     bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=255,
-    size=(512, 512),
-    test_cfg=dict(size_divisor=32))
+    size=(512, 512))
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
