@@ -1,7 +1,5 @@
 _base_ = ['../_base_/default_runtime.py', '../_base_/datasets/cityscapes.py']
 
-custom_imports = dict(imports='mmdet.models', allow_failed_imports=False)
-
 crop_size = (512, 1024)
 data_preprocessor = dict(
     type='SegDataPreProcessor',

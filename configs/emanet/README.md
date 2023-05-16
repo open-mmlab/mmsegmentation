@@ -1,6 +1,6 @@
 # EMANet
 
-[Expectation-Maximization Attention Networks for Semantic Segmentation](https://arxiv.org/abs/1907.13426)
+> [Expectation-Maximization Attention Networks for Semantic Segmentation](https://arxiv.org/abs/1907.13426)
 
 ## Introduction
 
@@ -22,6 +22,17 @@ Self-attention mechanism has been widely used for various tasks. It is designed 
 <img src="https://user-images.githubusercontent.com/24582831/142901186-7bfe15e2-805a-420e-81b0-74f214f20a36.png" width="80%"/>
 </div>
 
+## Results and models
+
+### Cityscapes
+
+| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device |  mIoU | mIoU(ms+flip) | config                                                                                                                           | download                                                                                                                                                                                                                                                                                                                                                 |
+| ------ | -------- | --------- | ------: | -------: | -------------- | ------ | ----: | ------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| EMANet | R-50-D8  | 512x1024  |   80000 |      5.4 | 4.58           | V100   | 77.59 | 79.44         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/eemanet_r50-d8_4xb2-80k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes-20200901_100301.log.json)     |
+| EMANet | R-101-D8 | 512x1024  |   80000 |      6.2 | 2.87           | V100   | 79.10 | 81.21         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/emanet_r101-d8_4xb2-80k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes_20200901_100301-2d970745.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes-20200901_100301.log.json) |
+| EMANet | R-50-D8  | 769x769   |   80000 |      8.9 | 1.97           | V100   | 79.33 | 80.49         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/emanet_r50-d8_4xb2-80k_cityscapes-769x769.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes_20200901_100301-16f8de52.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes-20200901_100301.log.json)         |
+| EMANet | R-101-D8 | 769x769   |   80000 |     10.1 | 1.22           | V100   | 79.62 | 81.00         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/emanet_r101-d8_4xb2-80k_cityscapes-769x769.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes_20200901_100301-47a324ce.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes-20200901_100301.log.json)     |
+
 ## Citation
 
 ```bibtex
@@ -33,14 +44,3 @@ Self-attention mechanism has been widely used for various tasks. It is designed 
   year={2019}
 }
 ```
-
-## Results and models
-
-### Cityscapes
-
-| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                           | download                                                                                                                                                                                                                                                                                                                                                 |
-| ------ | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| EMANet | R-50-D8  | 512x1024  |   80000 |      5.4 | 4.58           | 77.59 | 79.44         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/eemanet_r50-d8_4xb2-80k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes-20200901_100301.log.json)     |
-| EMANet | R-101-D8 | 512x1024  |   80000 |      6.2 | 2.87           | 79.10 | 81.21         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/emanet_r101-d8_4xb2-80k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes_20200901_100301-2d970745.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes-20200901_100301.log.json) |
-| EMANet | R-50-D8  | 769x769   |   80000 |      8.9 | 1.97           | 79.33 | 80.49         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/emanet_r50-d8_4xb2-80k_cityscapes-769x769.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes_20200901_100301-16f8de52.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes-20200901_100301.log.json)         |
-| EMANet | R-101-D8 | 769x769   |   80000 |     10.1 | 1.22           | 79.62 | 81.00         | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/emanet/emanet_r101-d8_4xb2-80k_cityscapes-769x769.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes_20200901_100301-47a324ce.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes-20200901_100301.log.json)     |
