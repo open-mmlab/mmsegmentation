@@ -62,7 +62,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://ravir.grand-challenge.org/) and decompression data to path `'data/'`.
+- download dataset from [here](https://ravir.grand-challenge.org/) and decompression data to path `'data/ravir/'`.
 - run script `"python tools/prepare_dataset.py"` to split dataset and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
