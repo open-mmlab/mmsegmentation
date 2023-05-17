@@ -326,7 +326,7 @@ class EncoderDecoder(BaseSegmentor):
             Tensor: The segmentation results, seg_logits from model of each
                 input image.
         """
-        if isinstance(self.test_cfg.mode,dict):
+        if isinstance(self.test_cfg.mode, dict):
             assert self.test_cfg['mode'] in ['slide', 'whole']
         else:
             assert self.test_cfg.mode in ['slide', 'whole']
