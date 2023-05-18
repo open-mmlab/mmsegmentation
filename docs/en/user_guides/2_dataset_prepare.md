@@ -2,6 +2,7 @@
 
 It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
 If your folder structure is different, you may need to change the corresponding paths in config files.
+For users in China, we also recommend you get the dsdl dataset from our opensource platform [OpenDataLab](https://opendatalab.com/), for better download and use experience，here is an example: [DSDLReadme](../../../configs/dsdl/README.md)， welcome to try.
 
 ```none
 mmsegmentation
@@ -619,4 +620,34 @@ It includes 400 images for training, 400 images for validation and 400 images fo
   ```
 
 - You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
-  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) and [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py)
+  View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) and [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py)
+
+## LEVIR-CD
+
+[LEVIR-CD](https://justchenhao.github.io/LEVIR/) Large-scale Remote Sensing Change Detection Dataset for Building.
+
+Download the dataset from [here](https://justchenhao.github.io/LEVIR/).
+
+The supplement version of the dataset can be requested on the [homepage](https://github.com/S2Looking/Dataset)
+
+Please download the supplement version of the dataset, then unzip `LEVIR-CD+.zip`, the contents of original datasets include:
+
+```none
+│   ├── LEVIR-CD+
+│   │   ├── train
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+│   │   ├── test
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+```
+
+For LEVIR-CD dataset, please run the following command to crop images without overlap:
+
+```shell
+python tools/dataset_converters/levircd.py --dataset-path /path/to/LEVIR-CD+ --out_dir /path/to/LEVIR-CD
+```
+
+The size of cropped image is 256x256, which is consistent with the original paper.

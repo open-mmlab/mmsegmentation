@@ -1160,3 +1160,61 @@ def test_biomedical_3d_flip():
     results = transform(results)
     assert np.equal(original_img, results['img']).all()
     assert np.equal(original_seg, results['gt_seg_map']).all()
+
+
+def test_albu_transform():
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/color.jpg'))
+
+    # Define simple pipeline
+    load = dict(type='LoadImageFromFile')
+    load = TRANSFORMS.build(load)
+
+    albu_transform = dict(
+        type='Albu', transforms=[dict(type='ChannelShuffle', p=1)])
+    albu_transform = TRANSFORMS.build(albu_transform)
+
+    normalize = dict(type='Normalize', mean=[0] * 3, std=[0] * 3, to_rgb=True)
+    normalize = TRANSFORMS.build(normalize)
+
+    # Execute transforms
+    results = load(results)
+    results = albu_transform(results)
+    results = normalize(results)
+
+    assert results['img'].dtype == np.float32
+
+
+def test_albu_channel_order():
+    results = dict(
+        img_path=osp.join(osp.dirname(__file__), '../data/color.jpg'))
+
+    # Define simple pipeline
+    load = dict(type='LoadImageFromFile')
+    load = TRANSFORMS.build(load)
+
+    # Transform is modifying B channel
+    albu_transform = dict(
+        type='Albu',
+        transforms=[
+            dict(
+                type='RGBShift',
+                r_shift_limit=0,
+                g_shift_limit=0,
+                b_shift_limit=200,
+                p=1)
+        ])
+    albu_transform = TRANSFORMS.build(albu_transform)
+
+    # Execute transforms
+    results_load = load(results)
+    results_albu = albu_transform(results_load)
+
+    # assert only Green and Red channel are not modified
+    np.testing.assert_array_equal(results_albu['img'][..., 1:],
+                                  results_load['img'][..., 1:])
+
+    # assert Blue channel is modified
+    with pytest.raises(AssertionError):
+        np.testing.assert_array_equal(results_albu['img'][..., 0],
+                                      results_load['img'][..., 0])

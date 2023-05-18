@@ -2,6 +2,7 @@
 
 我们建议将数据集根目录符号链接到 `$MMSEGMENTATION/data`。
 如果您的目录结构不同，您可能需要更改配置文件中相应的路径。
+对于中国境内的用户，我们也推荐通过开源数据平台 [OpenDataLab](https://opendatalab.com/) 来下载dsdl标准数据，以获得更好的下载和使用体验，这里有一个下载dsdl数据集并进行训练的案例[DSDLReadme](../../../configs/dsdl/README.md)，欢迎尝试。
 
 ```none
 mmsegmentation
@@ -615,4 +616,34 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
   ```
 
 - 您可以在配置中使用 `MapillaryDataset_v1` 和 `Mapillary Dataset_v2` 设置数据集版本。
-  在此处 [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v1.py) 和 [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/_base_/datasets/mapillary_v2.py) 查看 Mapillary Vistas 数据集配置文件
+  在此处 [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) 和 [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py) 查看 Mapillary Vistas 数据集配置文件
+
+## LEVIR-CD
+
+[LEVIR-CD](https://justchenhao.github.io/LEVIR/) 大规模遥感建筑变化检测数据集。
+
+数据集可以在[主页](https://justchenhao.github.io/LEVIR/)上请求获得。
+
+数据集的补充版本可以在[主页](https://github.com/S2Looking/Dataset)上请求获得。
+
+请下载数据集的补充版本，然后解压 `LEVIR-CD+.zip`，数据集的内容包括：
+
+```none
+│   ├── LEVIR-CD+
+│   │   ├── train
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+│   │   ├── test
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+```
+
+对于 LEVIR-CD 数据集，请运行以下命令无重叠裁剪影像：
+
+```shell
+python tools/dataset_converters/levircd.py --dataset-path /path/to/LEVIR-CD+ --out_dir /path/to/LEVIR-CD
+```
+
+裁剪后的影像大小为256x256，与原论文保持一致。

@@ -70,14 +70,14 @@ It is not recommended for users to modify the default hook priorities. Please re
 
 The following are the default hooks used in MMSegmentation:
 
-|                                                           Hook                                                            |                                                          Function                                                          |     Priority      |
-| :-----------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------: | :---------------: |
-|            [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)            |                                          Record the time spent on each iteration.                                          |    NORMAL (50)    |
-|               [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)                | Collect log records from different components in `Runner` and output them to terminal, JSON file, tensorboard, wandb, etc. | BELOW_NORMAL (60) |
-|       [ParamSchedulerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/param_scheduler_hook.py)       |                       Update some hyperparameters in the optimizer, such as learning rate momentum.                        |     LOW (70)      |
-|           [CheckpointHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py)            |                                              Regularly save checkpoint files.                                              |   VERY_LOW (90)   |
-|        [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)        |                                     Ensure the distributed sampler shuffle is enabled.                                     |    NORMAL (50)    |
-| [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/visualization/local_visualizer.py) |                                Visualize prediction results during validation and testing.                                 |    NORMAL (50)    |
+|                                                          Hook                                                          |                                                          Function                                                          |     Priority      |
+| :--------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------: | :---------------: |
+|          [IterTimerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/iter_timer_hook.py)           |                                          Record the time spent on each iteration.                                          |    NORMAL (50)    |
+|              [LoggerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/logger_hook.py)              | Collect log records from different components in `Runner` and output them to terminal, JSON file, tensorboard, wandb, etc. | BELOW_NORMAL (60) |
+|     [ParamSchedulerHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/param_scheduler_hook.py)      |                       Update some hyperparameters in the optimizer, such as learning rate momentum.                        |     LOW (70)      |
+|          [CheckpointHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/checkpoint_hook.py)          |                                              Regularly save checkpoint files.                                              |   VERY_LOW (90)   |
+|      [DistSamplerSeedHook](https://github.com/open-mmlab/mmengine/blob/main/mmengine/hooks/sampler_seed_hook.py)       |                                     Ensure the distributed sampler shuffle is enabled.                                     |    NORMAL (50)    |
+| [SegVisualizationHook](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/visualization/local_visualizer.py) |                                Visualize prediction results during validation and testing.                                 |    NORMAL (50)    |
 
 MMSegmentation registers some hooks with essential training functions in `default_hooks`:
 
@@ -149,7 +149,7 @@ custom_hooks = [
 
 ### SegVisualizationHook
 
-MMSegmentation implemented [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/hooks/visualization_hook.py#L17), which is used to visualize prediction results during validation and testing.
+MMSegmentation implemented [`SegVisualizationHook`](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/engine/hooks/visualization_hook.py#L17), which is used to visualize prediction results during validation and testing.
 `SegVisualizationHook` overrides the `_after_iter` method in the base class `Hook`. During validation or testing, it calls the `add_datasample` method of `visualizer` to draw semantic segmentation results according to the specified iteration interval. The specific implementation is as follows:
 
 ```python
@@ -185,7 +185,7 @@ class SegVisualizationHook(Hook):
 
 ```
 
-For more details about visualization, you can check [here](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/docs/en/user_guides/visualization.md).
+For more details about visualization, you can check [here](../user_guides/visualization.md).
 
 ## Optimizer
 
@@ -237,7 +237,7 @@ The default setting for `loss_scale` in [`AmpOptimWrapper`](https://github.com/o
 
 In model training, if you want to set different optimization strategies for different parameters in the optimizer, such as setting different learning rates, weight decay, and other hyperparameters, you can achieve this by setting `paramwise_cfg` in the `optim_wrapper` of the configuration file.
 
-The following config file uses the [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) as an example to introduce the use of `paramwise_cfg` parameters. During training, the weight decay parameter coefficients for the `pos_embed`, `mask_token`, and `norm` modules are set to 0. That is, during training, the weight decay for these modules will be changed to `weight_decay * decay_mult`=0.
+The following config file uses the [ViT `optim_wrapper`](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py#L15-L27) as an example to introduce the use of `paramwise_cfg` parameters. During training, the weight decay parameter coefficients for the `pos_embed`, `mask_token`, and `norm` modules are set to 0. That is, during training, the weight decay for these modules will be changed to `weight_decay * decay_mult`=0.
 
 ```python
 optimizer = dict(
@@ -259,7 +259,7 @@ Here, `decay_mult` refers to the weight decay coefficient for the corresponding 
 
 The default optimizer wrapper constructor [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) builds the optimizer used in training based on the input `optim_wrapper` and `paramwise_cfg` defined in the `optim_wrapper`. When the functionality of [`DefaultOptimWrapperConstructor`](https://github.com/open-mmlab/mmengine/blob/main/mmengine/optim/optimizer/default_constructor.py#L19) does not meet the requirements, you can customize the optimizer wrapper constructor to implement the configuration of hyperparameters.
 
-MMSegmentation has implemented the [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), which can decay the learning rate of model parameters in the backbone networks of ConvNeXt, BEiT, and MAE models during training according to the defined decay ratio (`decay_rate`). The configuration in the configuration file is as follows:
+MMSegmentation has implemented the [`LearningRateDecayOptimizerConstructor`](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py#L104), which can decay the learning rate of model parameters in the backbone networks of ConvNeXt, BEiT, and MAE models during training according to the defined decay ratio (`decay_rate`). The configuration in the configuration file is as follows:
 
 ```python
 optim_wrapper = dict(

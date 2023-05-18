@@ -8,11 +8,13 @@ Import:
 - configs/cgnet/metafile.yaml
 - configs/convnext/metafile.yaml
 - configs/danet/metafile.yaml
+- configs/ddrnet/metafile.yaml
 - configs/deeplabv3/metafile.yaml
 - configs/deeplabv3plus/metafile.yaml
 - configs/dmnet/metafile.yaml
 - configs/dnlnet/metafile.yaml
 - configs/dpt/metafile.yaml
+- configs/dsdl/metafile.yaml
 - configs/emanet/metafile.yaml
 - configs/encnet/metafile.yaml
 - configs/erfnet/metafile.yaml

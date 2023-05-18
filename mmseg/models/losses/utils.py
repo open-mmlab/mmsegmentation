@@ -25,7 +25,7 @@ def get_class_weight(class_weight):
     return class_weight
 
 
-def reduce_loss(loss, reduction):
+def reduce_loss(loss, reduction) -> torch.Tensor:
     """Reduce loss as specified.
 
     Args:
@@ -45,7 +45,10 @@ def reduce_loss(loss, reduction):
         return loss.sum()
 
 
-def weight_reduce_loss(loss, weight=None, reduction='mean', avg_factor=None):
+def weight_reduce_loss(loss,
+                       weight=None,
+                       reduction='mean',
+                       avg_factor=None) -> torch.Tensor:
     """Apply element-wise weight and reduce loss.
 
     Args:

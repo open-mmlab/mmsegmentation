@@ -96,7 +96,7 @@ The model names can be found in models' metafile (configs/xxx/metafile.yaml), li
 - weights (str, optional) -  Path to the checkpoint. If it is not specified and model is a model name of metafile, the weights will be loaded from metafile. Defaults to None.
 - classes (list, optional) - Input classes for result rendering, as the prediction of segmentation model is a segment map with label indices, `classes` is a list which includes items responding to the label indices. If classes is not defined, visualizer will take `cityscapes` classes by default. Defaults to None.
 - palette (list, optional) - Input palette for result rendering, which is a list of colors responding to the classes. If the palette is not defined, the visualizer will take the palette of `cityscapes` by default. Defaults to None.
-- dataset_name (str, optional) - [Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/class_names.py#L302-L317), visualizer will use the meta information of the dataset i.e. classes and palette, but the `classes` and `palette` have higher priority. Defaults to None.
+- dataset_name (str, optional) - [Dataset name or alias](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/utils/class_names.py#L302-L317), visualizer will use the meta information of the dataset i.e. classes and palette, but the `classes` and `palette` have higher priority. Defaults to None.
 - device (str, optional) - Device to run inference. If None, the available device will be automatically used. Defaults to None.
 - scope (str, optional) - The scope of the model. Defaults to 'mmseg'.
 
