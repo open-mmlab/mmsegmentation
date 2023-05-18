@@ -1,6 +1,5 @@
 _base_ = [
-    '../_base_/models/van_upernet.py',
-    '../_base_/datasets/ade20k.py',
+    '../_base_/models/van_upernet.py', '../_base_/datasets/ade20k.py',
     '../../../../configs/_base_/default_runtime.py',
     '../../../../configs/_base_/schedules/schedule_160k.py'
 ]
