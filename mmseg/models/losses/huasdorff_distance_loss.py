@@ -11,7 +11,7 @@ from mmseg.registry import MODELS
 from .utils import get_class_weight, weighted_loss
 
 
-def compute_dtm(img_gt, pred):
+def compute_dtm(img_gt: Tensor, pred: Tensor) -> Tensor:
     """
     compute the distance transform map of foreground in mask
     Args:
@@ -37,12 +37,12 @@ def compute_dtm(img_gt, pred):
 
 
 @weighted_loss
-def hd_loss(seg_soft,
-            gt,
-            seg_dtm,
-            gt_dtm,
+def hd_loss(seg_soft: Tensor,
+            gt: Tensor,
+            seg_dtm: Tensor,
+            gt_dtm: Tensor,
             class_weight=None,
-            ignore_index=255):
+            ignore_index=255) -> Tensor:
     """
     compute huasdorff distance loss for segmentation
     Args:
@@ -106,7 +106,7 @@ class HuasdorffDisstanceLoss(nn.Module):
                 target: Tensor,
                 avg_factor=None,
                 reduction_override=None,
-                **kwargs):
+                **kwargs) -> Tensor:
         """Forward function.
 
         Args:
