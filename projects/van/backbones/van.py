@@ -119,3 +119,6 @@ class VAN(MSCAN):
             setattr(self, f'patch_embed{i + 1}', patch_embed)
             setattr(self, f'block{i + 1}', block)
             setattr(self, f'norm{i + 1}', norm)
+
+    def init_weights(self):
+        return super().init_weights()

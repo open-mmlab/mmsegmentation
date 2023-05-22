@@ -4,13 +4,13 @@ _base_ = [
     '../../../../configs/_base_/schedules/schedule_160k.py'
 ]
 custom_imports = dict(imports=['projects.van.backbones'])
-
+ckpt_path = 'https://download.openmmlab.com/mmsegmentation/v0.5/van_3rdparty/van-b2_3rdparty_20230522-636fac93.pth'  # noqa
 model = dict(
     type='EncoderDecoder',
     backbone=dict(
         embed_dims=[64, 128, 320, 512],
         depths=[3, 3, 12, 3],
-        init_cfg=dict(type='Pretrained', checkpoint='pretrained/van_b2.pth')),
+        init_cfg=dict(type='Pretrained', checkpoint=ckpt_path)),
     decode_head=dict(in_channels=[64, 128, 320, 512], num_classes=150),
     auxiliary_head=dict(in_channels=320, num_classes=150))
 
