@@ -22,7 +22,6 @@ gpu_multiples = 2
 max_iters = 80000 // gpu_multiples
 interval = 8000 // gpu_multiples
 optim_wrapper = dict(
-    _delete_=True,
     type='OptimWrapper',
     optimizer=dict(
         type='AdamW',
