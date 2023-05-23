@@ -45,7 +45,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         in_channels (int|Sequence[int]): Input channels.
         channels (int): Channels after modules, before conv_seg.
         num_classes (int): Number of classes.
-        out_channels (int): Output channels of conv_seg.
+        out_channels (int): Output channels of conv_seg. Default: None.
         threshold (float): Threshold for binary segmentation in the case of
             `num_classes==1`. Default: None.
         dropout_ratio (float): Ratio of dropout layer. Default: 0.1.

@@ -1,0 +1,110 @@
+Collections:
+- Name: FPN
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+  Paper:
+    Title: Panoptic Feature Pyramid Networks
+    URL: https://arxiv.org/abs/1901.02446
+  README: configs/sem_fpn/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: fpn_r50_4xb2-80k_cityscapes-512x1024
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.52
+      mIoU(ms+flip): 76.08
+  Config: configs/sem_fpn/fpn_r50_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50
+    - FPN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes_20200717_021437-94018a0d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes-20200717_021437.log.json
+  Paper:
+    Title: Panoptic Feature Pyramid Networks
+    URL: https://arxiv.org/abs/1901.02446
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch
+- Name: fpn_r101_4xb2-80k_cityscapes-512x1024
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.8
+      mIoU(ms+flip): 77.4
+  Config: configs/sem_fpn/fpn_r101_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - FPN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 3.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes_20200717_012416-c5800d4c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes-20200717_012416.log.json
+  Paper:
+    Title: Panoptic Feature Pyramid Networks
+    URL: https://arxiv.org/abs/1901.02446
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch
+- Name: fpn_r50_4xb4-160k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 37.49
+      mIoU(ms+flip): 39.09
+  Config: configs/sem_fpn/fpn_r50_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50
+    - FPN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 4.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k_20200718_131734-5b5a6ab9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k-20200718_131734.log.json
+  Paper:
+    Title: Panoptic Feature Pyramid Networks
+    URL: https://arxiv.org/abs/1901.02446
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch
+- Name: fpn_r101_4xb4-160k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 39.35
+      mIoU(ms+flip): 40.72
+  Config: configs/sem_fpn/fpn_r101_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101
+    - FPN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k_20200718_131734-306b5004.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k-20200718_131734.log.json
+  Paper:
+    Title: Panoptic Feature Pyramid Networks
+    URL: https://arxiv.org/abs/1901.02446
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/fpn_head.py#L12
+  Framework: PyTorch

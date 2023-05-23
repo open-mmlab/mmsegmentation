@@ -96,11 +96,11 @@ A project does not necessarily have to be finished in a single PR, but it's esse
 
   - [ ] Type hints and docstrings
 
-  <!-- Ideally *all* the methods should have [type hints](https://www.pythontutorial.net/python-basics/python-type-hints/) and [docstrings](https://google.github.io/styleguide/pyguide.html#381-docstrings). [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/io.py#L9) -->
+  <!-- Ideally *all* the methods should have [type hints](https://www.pythontutorial.net/python-basics/python-type-hints/) and [docstrings](https://google.github.io/styleguide/pyguide.html#381-docstrings). [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/utils/io.py#L9) -->
 
   - [ ] Unit tests
 
-  <!-- Unit tests for each module are required. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tests/test_utils/test_io.py#L14) -->
+  <!-- Unit tests for each module are required. [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/tests/test_utils/test_io.py#L14) -->
 
   - [ ] Code polishing
 
@@ -108,10 +108,10 @@ A project does not necessarily have to be finished in a single PR, but it's esse
 
   - [ ] Metafile.yml
 
-  <!-- It will be parsed by MIM and Inferencer. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fcn/fcn.yml) -->
+  <!-- It will be parsed by MIM and Inferencer. [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fcn/fcn.yml) -->
 
 - [ ] Move your modules into the core package following the codebase's file hierarchy structure.
 
-  <!-- In particular, you may have to refactor this README into a standard one. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fcn/README.md) -->
+  <!-- In particular, you may have to refactor this README into a standard one. [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fcn/README.md) -->
 
 - [ ] Refactor your modules into the core package following the codebase's file hierarchy structure.

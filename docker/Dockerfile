@@ -1,7 +1,7 @@
 ARG PYTORCH="1.11.0"
 ARG CUDA="11.3"
 ARG CUDNN="8"
-ARG MMCV="2.0.0rc4"
+ARG MMCV="2.0.0"
 
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
@@ -28,7 +28,7 @@ RUN ["/bin/bash", "-c", "mim install mmengine"]
 RUN ["/bin/bash", "-c", "mim install mmcv==${MMCV}"]
 
 # Install MMSegmentation
-RUN git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git /mmsegmentation
+RUN git clone -b main https://github.com/open-mmlab/mmsegmentation.git /mmsegmentation
 WORKDIR /mmsegmentation
 ENV FORCE_CUDA="1"
 RUN pip install -r requirements.txt

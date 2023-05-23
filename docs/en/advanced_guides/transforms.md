@@ -6,19 +6,16 @@ The structure of this guide is as follows:
 
 - [Data Transforms](#data-transforms)
   - [Design of Data pipelines](#design-of-data-pipelines)
-  - [Customization data transformation](#customization-data-transformation)
+    - [Data loading](#data-loading)
+    - [Pre-processing](#pre-processing)
+    - [Formatting](#formatting)
 
 ## Design of Data pipelines
 
-Following typical conventions, we use `Dataset` and `DataLoader` for data loading
-with multiple workers. `Dataset` returns a dict of data items corresponding
-the arguments of models' forward method.
-Since the data in semantic segmentation may not be the same size,
-we introduce a new `DataContainer` type in MMCV to help collect and distribute
-data of different size.
-See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
+Following typical conventions, we use `Dataset` and `DataLoader` for data loading with multiple workers. `Dataset` returns a dict of data items corresponding the arguments of models' forward method. Since the data in semantic segmentation may not be the same size, we introduce a new `DataContainer` type in MMCV to help collect and distribute data of different size. See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
 
 In 1.x version of MMSegmentation, all data transformations are inherited from [`BaseTransform`](https://github.com/open-mmlab/mmcv/blob/2.x/mmcv/transforms/base.py#L6).
+
 The input and output types of transformations are both dict. A simple example is as follows:
 
 ```python
@@ -36,13 +33,11 @@ The input and output types of transformations are both dict. A simple example is
 dict_keys(['img_path', 'seg_map_path', 'reduce_zero_label', 'seg_fields', 'gt_seg_map'])
 ```
 
-The data preparation pipeline and the dataset are decomposed. Usually a dataset
-defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict.
-A pipeline consists of a sequence of operations. Each operation takes a dict as input and also outputs a dict for the next transform.
+The data preparation pipeline and the dataset are decomposed. Usually a dataset defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict. A pipeline consists of a sequence of operations. Each operation takes a dict as input and also outputs a dict for the next transform.
 
 The operations are categorized into data loading, pre-processing, formatting and test-time augmentation.
 
-Here is a pipeline example for PSPNet.
+Here is a pipeline example for PSPNet:
 
 ```python
 crop_size = (512, 1024)
@@ -69,8 +64,7 @@ test_pipeline = [
 ]
 ```
 
-For each operation, we list the related dict fields that are `added`/`updated`/`removed`.
-Before pipelines, the information we can directly obtain from the datasets are `img_path` and `seg_map_path`.
+For each operation, we list the related dict fields that are `added`/`updated`/`removed`. Before pipelines, the information we can directly obtain from the datasets are `img_path` and `seg_map_path`.
 
 ### Data loading
 
@@ -96,16 +90,14 @@ Before pipelines, the information we can directly obtain from the datasets are `
 
 `RandomCrop`: Random crop image & segmentation map.
 
-- update: `img`, `gt_seg_map`, `img_shape`.
+- update: `img`, `gt_seg_map`, `img_shape`
 
 `RandomFlip`: Flip the image & segmentation map.
 
 - add: `flip`, `flip_direction`
 - update: `img`, `gt_seg_map`
 
-`PhotoMetricDistortion`: Apply photometric distortion to image sequentially,
-every transformation is applied with a probability of 0.5.
-The position of random contrast is in second or second to last(mode 0 or 1 below, respectively).
+`PhotoMetricDistortion`: Apply photometric distortion to image sequentially, every transformation is applied with a probability of 0.5. The position of random contrast is in second or second to last(mode 0 or 1 below, respectively).
 
 ```
 1. random brightness
@@ -125,48 +117,3 @@ The position of random contrast is in second or second to last(mode 0 or 1 below
 
 - add: `inputs`, `data_sample`
 - remove: keys specified by `meta_keys` (merged into the metainfo of data_sample), all other keys
-
-## Customization data transformation
-
-The customized data transformation must inherited from `BaseTransform` and implement `transform` function.
-Here we use a simple flipping transformation as example:
-
-```python
-import random
-import mmcv
-from mmcv.transforms import BaseTransform, TRANSFORMS
-
-@TRANSFORMS.register_module()
-class MyFlip(BaseTransform):
-    def __init__(self, direction: str):
-        super().__init__()
-        self.direction = direction
-
-    def transform(self, results: dict) -> dict:
-        img = results['img']
-        results['img'] = mmcv.imflip(img, direction=self.direction)
-        return results
-```
-
-Thus, we can instantiate a `MyFlip` object and use it to process the data dict.
-
-```python
-import numpy as np
-
-transform = MyFlip(direction='horizontal')
-data_dict = {'img': np.random.rand(224, 224, 3)}
-data_dict = transform(data_dict)
-processed_img = data_dict['img']
-```
-
-Or, we can use `MyFlip` transformation in data pipeline in our config file.
-
-```python
-pipeline = [
-    ...
-    dict(type='MyFlip', direction='horizontal'),
-    ...
-]
-```
-
-Note that if you want to use `MyFlip` in config, you must ensure the file containing `MyFlip` is imported during runtime.
