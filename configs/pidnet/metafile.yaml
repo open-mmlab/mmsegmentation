@@ -1,0 +1,85 @@
+Collections:
+- Name: PIDNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
+    URL: https://arxiv.org/pdf/2206.02066.pdf
+  README: configs/pidnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: pidnet-s_2xb6-120k_1024x1024-cityscapes
+  In Collection: PIDNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.74
+      mIoU(ms+flip): 80.87
+  Config: configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 12
+    Architecture:
+    - PIDNet-S
+    - PIDNet
+    Training Resources: 2x A100 GPUS
+    Memory (GB): 3.38
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes/pidnet-s_2xb6-120k_1024x1024-cityscapes_20230302_191700-bb8e3bcc.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes/pidnet-s_2xb6-120k_1024x1024-cityscapes_20230302_191700.json
+  Paper:
+    Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
+    URL: https://arxiv.org/pdf/2206.02066.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/pidnet.py
+  Framework: PyTorch
+- Name: pidnet-m_2xb6-120k_1024x1024-cityscapes
+  In Collection: PIDNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.22
+      mIoU(ms+flip): 82.05
+  Config: configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 12
+    Architecture:
+    - PIDNet-M
+    - PIDNet
+    Training Resources: 2x A100 GPUS
+    Memory (GB): 5.14
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes/pidnet-m_2xb6-120k_1024x1024-cityscapes_20230301_143452-f9bcdbf3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes/pidnet-m_2xb6-120k_1024x1024-cityscapes_20230301_143452.json
+  Paper:
+    Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
+    URL: https://arxiv.org/pdf/2206.02066.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/pidnet.py
+  Framework: PyTorch
+- Name: pidnet-l_2xb6-120k_1024x1024-cityscapes
+  In Collection: PIDNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.89
+      mIoU(ms+flip): 82.37
+  Config: configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 12
+    Architecture:
+    - PIDNet-L
+    - PIDNet
+    Training Resources: 2x A100 GPUS
+    Memory (GB): 5.83
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes/pidnet-l_2xb6-120k_1024x1024-cityscapes_20230303_114514-0783ca6b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes/pidnet-l_2xb6-120k_1024x1024-cityscapes_20230303_114514.json
+  Paper:
+    Title: 'PIDNet: A Real-time Semantic Segmentation Network Inspired from PID Controller'
+    URL: https://arxiv.org/pdf/2206.02066.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/pidnet.py
+  Framework: PyTorch
