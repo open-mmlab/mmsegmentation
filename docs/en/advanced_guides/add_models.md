@@ -49,7 +49,7 @@ Here we show how to develop a new backbone with an example of MobileNet.
 
 ### Add new heads
 
-In MMSegmentation, we provide a [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/decode_heads/decode_head.py#L17) for developing all segmentation heads.
+In MMSegmentation, we provide a [BaseDecodeHead](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/decode_heads/decode_head.py#L17) for developing all segmentation heads.
 All newly implemented decode heads should be derived from it.
 Here we show how to develop a new head with the example of [PSPNet](https://arxiv.org/abs/1612.01105) as the following.
 
@@ -166,7 +166,7 @@ loss_decode=dict(type='MyLoss', loss_weight=1.0))
 
 ### Add new data preprocessor
 
-In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/data_preprocessor.py#L13) to copy data to the target device and preprocess the data into the model input format as default. Here we show how to develop a new data preprocessor.
+In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/data_preprocessor.py#L13) to copy data to the target device and preprocess the data into the model input format as default. Here we show how to develop a new data preprocessor.
 
 1. Create a new file `mmseg/models/my_datapreprocessor.py`.
 
@@ -204,7 +204,7 @@ In MMSegmentation 1.x versions, we use [SegDataPreProcessor](https://github.com/
 
 The segmentor is an algorithmic architecture in which users can customize their algorithms by adding customized components and defining the logic of algorithm execution. Please refer to [the model document](./models.md) for more details.
 
-Since the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) in MMSegmentation unifies three modes for a forward process, to develop a new segmentor, users need to overwrite `loss`, `predict` and `_forward` methods corresponding to the `loss`, `predict` and `tensor` modes.
+Since the [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/segmentors/base.py#L15) in MMSegmentation unifies three modes for a forward process, to develop a new segmentor, users need to overwrite `loss`, `predict` and `_forward` methods corresponding to the `loss`, `predict` and `tensor` modes.
 
 Here we show how to develop a new segmentor.
 

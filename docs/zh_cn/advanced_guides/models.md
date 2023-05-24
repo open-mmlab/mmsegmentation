@@ -30,17 +30,17 @@
 
 ## 基本接口
 
-MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) 类，主要提供 `forward`、`train_step`、`val_step` 和 `test_step` 接口。接下来将详细介绍这些接口。
+MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmentor](https://github.com/open-mmlab/mmsegmentation/blob/1.x/mmseg/models/segmentors/base.py#L15) 类，主要提供 `forward`、`train_step`、`val_step` 和 `test_step` 接口。接下来将详细介绍这些接口。
 
 ### forward
 
 <center>
-  <img src='../../../resources/encoder_decoder_dataflow.png' />
+  <img src='https://user-images.githubusercontent.com/15952744/228827860-c0e34875-d370-4736-84f0-9560c26c9576.png' />
   <center>编码器解码器数据流</center>
 </center>
 
 <center>
-  <center><img src='../../../resources/cascade_encoder_decoder_dataflow.png' /></center>
+  <center><img src='https://user-images.githubusercontent.com/15952744/228827987-aa214507-0c6d-4a08-8ce4-679b2b200b79.png' /></center>
   <center>级联编码器解码器数据流</center>
 </center>
 
@@ -115,7 +115,7 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
 -Dict\[str, `torch.Tensor`\]：用于记录日志的张量的`字典`。
 
 <center>
-  <img src='../../../resources/train_step.png' />
+  <img src='https://user-images.githubusercontent.com/15952744/228828089-a9ae1225-958d-4cf7-99af-9af8576f7ef7.png' />
   <center>train_step 数据流</center>
 </center>
 
@@ -132,7 +132,7 @@ MMSegmentation 封装 `BaseModel` 并实现了 [BaseSegmenter](https://github.co
 - `list` - 给定数据的预测结果。
 
 <center>
-  <img src='../../../resources/test_step.png' />
+  <img src='https://user-images.githubusercontent.com/15952744/228828179-3269baa3-bebd-4c9a-9787-59e7d785fbcf.png' />
   <center>test_step/val_step 数据流</center>
 </center>
 

@@ -1,0 +1,111 @@
+Collections:
+- Name: MaskFormer
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Usage
+    - ADE20K
+  Paper:
+    Title: 'MaskFormer: Per-Pixel Classification is Not All You Need for Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2107.06278
+  README: configs/maskformer/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: maskformer_r50-d32_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.29
+  Config: configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D32
+    - MaskFormer
+    Training Resources: 8x 42.20 GPUS
+    Memory (GB): 3.29
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512/maskformer_r50-d32_8xb2-160k_ade20k-512x512_20221030_182724-3a9cfe45.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512/maskformer_r50-d32_8xb2-160k_ade20k-512x512_20221030_182724.json
+  Paper:
+    Title: 'MaskFormer: Per-Pixel Classification is Not All You Need for Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2107.06278
+  Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch
+- Name: maskformer_r101-d32_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.11
+  Config: configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D32
+    - MaskFormer
+    Training Resources: 8x 34.90 GPUS
+    Memory (GB): 4.12
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512/maskformer_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053-84adbfcb.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512/maskformer_r101-d32_8xb2-160k_ade20k-512x512_20221031_223053.json
+  Paper:
+    Title: 'MaskFormer: Per-Pixel Classification is Not All You Need for Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2107.06278
+  Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch
+- Name: maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.69
+  Config: configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - Swin-T
+    - MaskFormer
+    Training Resources: 8x 40.53 GPUS
+    Memory (GB): 3.73
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221114_232813-f14e7ce0.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512_20221114_232813.json
+  Paper:
+    Title: 'MaskFormer: Per-Pixel Classification is Not All You Need for Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2107.06278
+  Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch
+- Name: maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512
+  In Collection: MaskFormer
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.36
+  Config: configs/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - Swin-S
+    - MaskFormer
+    Training Resources: 8x 26.98 GPUS
+    Memory (GB): 5.33
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221115_114710-723512c7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/maskformer/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512/maskformer_swin-s_upernet_8xb2-160k_ade20k-512x512_20221115_114710.json
+  Paper:
+    Title: 'MaskFormer: Per-Pixel Classification is Not All You Need for Semantic
+      Segmentation'
+    URL: https://arxiv.org/abs/2107.06278
+  Code: https://github.com/open-mmlab/mmdetection/blob/dev-3.x/mmdet/models/dense_heads/maskformer_head.py#L21
+  Framework: PyTorch

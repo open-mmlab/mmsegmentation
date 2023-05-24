@@ -6,13 +6,18 @@ import tempfile
 import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
-                            COCOStuffDataset, DecathlonDataset, ISPRSDataset,
-                            LIPDataset, LoveDADataset, MapillaryDataset_v1,
-                            MapillaryDataset_v2, PascalVOCDataset,
-                            PotsdamDataset, REFUGEDataset, SynapseDataset,
-                            iSAIDDataset)
+                            COCOStuffDataset, DecathlonDataset, DSDLSegDataset,
+                            ISPRSDataset, LIPDataset, LoveDADataset,
+                            MapillaryDataset_v1, MapillaryDataset_v2,
+                            PascalVOCDataset, PotsdamDataset, REFUGEDataset,
+                            SynapseDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
+
+try:
+    from dsdl.dataset import DSDLDataset
+except ImportError:
+    DSDLDataset = None
 
 
 def test_classes():
@@ -433,3 +438,13 @@ def test_custom_dataset_custom_palette():
             ann_file=tempfile.mkdtemp(),
             metainfo=dict(classes=('bus', 'car'), palette=[[200, 200, 200]]),
             lazy_init=True)
+
+
+def test_dsdlseg_dataset():
+    if DSDLDataset is not None:
+        dataset = DSDLSegDataset(
+            data_root='tests/data/dsdl_seg', ann_file='set-train/train.yaml')
+        assert len(dataset) == 3
+        assert len(dataset.metainfo['classes']) == 21
+    else:
+        ImportWarning('Package `dsdl` is not installed.')

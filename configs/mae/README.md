@@ -1,6 +1,6 @@
 # MAE
 
-[Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377)
+> [Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377)
 
 ## Introduction
 
@@ -21,17 +21,6 @@ This paper shows that masked autoencoders (MAE) are scalable self-supervised lea
 <div align=center>
 <img src="https://user-images.githubusercontent.com/24582831/165456416-1cba54bf-b1b5-4bdf-ad86-d6390de7f342.png" width="70%"/>
 </div>
-
-## Citation
-
-```bibtex
-@article{he2021masked,
-  title={Masked autoencoders are scalable vision learners},
-  author={He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Doll{\'a}r, Piotr and Girshick, Ross},
-  journal={arXiv preprint arXiv:2111.06377},
-  year={2021}
-}
-```
 
 ## Usage
 
@@ -77,6 +66,17 @@ upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth $GPUS
 
 ### ADE20K
 
-| Method  | Backbone | Crop Size | pretrain    | pretrain img size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config                                                                                                                           | download                                                                                                                                                                                                                                                                                                                                                                       |
-| ------- | -------- | --------- | ----------- | ----------------- | ---------- | ------- | -------- | -------------- | ----- | ------------: | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| UPerNet | ViT-B    | 512x512   | ImageNet-1K | 224x224           | 16         | 160000  | 9.96     | 7.14           | 48.13 |         48.70 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/mae/mae-base_upernet_8xb2-amp-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752.log.json) |
+| Method  | Backbone | Crop Size | pretrain    | pretrain img size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | Device | mIoU  | mIoU(ms+flip) | config                                                                                                                        | download                                                                                                                                                                                                                                                                                                                                                                       |
+| ------- | -------- | --------- | ----------- | ----------------- | ---------- | ------- | -------- | -------------- | ------ | ----- | ------------: | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| UPerNet | ViT-B    | 512x512   | ImageNet-1K | 224x224           | 16         | 160000  | 9.96     | 7.14           | V100   | 48.13 |         48.70 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/mae/mae-base_upernet_8xb2-amp-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752.log.json) |
+
+## Citation
+
+```bibtex
+@article{he2021masked,
+  title={Masked autoencoders are scalable vision learners},
+  author={He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Doll{\'a}r, Piotr and Girshick, Ross},
+  journal={arXiv preprint arXiv:2111.06377},
+  year={2021}
+}
+```

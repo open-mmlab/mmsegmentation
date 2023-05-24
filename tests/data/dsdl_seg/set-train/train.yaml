@@ -1,0 +1,15 @@
+$dsdl-version: "0.5.0"
+$import:
+    - ../defs/segmentation-def
+    - ../defs/class-dom
+meta:
+    dataset_name: "VOC2012"
+    sub_dataset_name: "train"
+    task_type: "Segmentation"
+    dataset_homepage: "http://host.robots.ox.ac.uk/pascal/VOC/voc2012/index.html"
+    dataset_publisher: "University of Leeds | ETHZ, Zurich | University of Edinburgh\
+        \ |Microsoft Research Cambridge | University of Oxford"
+    OpenDataLab_address: "https://opendatalab.com/PASCAL_VOC2012/download"
+data:
+    sample-type: SegmentationSample[cdom=VOCClassDom]
+    sample-path: train_samples.json

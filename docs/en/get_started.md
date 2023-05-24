@@ -43,7 +43,7 @@ We recommend that users follow our best practices to install MMSegmentation. How
 ```shell
 pip install -U openmim
 mim install mmengine
-mim install "mmcv>=2.0.0rc1"
+mim install "mmcv>=2.0.0"
 ```
 
 **Step 1.** Install MMSegmentation.
@@ -51,7 +51,7 @@ mim install "mmcv>=2.0.0rc1"
 Case a: If you develop and run mmseg directly, install it from source:
 
 ```shell
-git clone -b dev-1.x https://github.com/open-mmlab/mmsegmentation.git
+git clone -b main https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -v -e .
 # '-v' means verbose, or more output
@@ -62,7 +62,7 @@ pip install -v -e .
 Case b: If you use mmsegmentation as a dependency or third-party package, install it with pip:
 
 ```shell
-pip install "mmsegmentation>=1.0.0rc0"
+pip install "mmsegmentation>=1.0.0"
 ```
 
 ### Verify the installation
@@ -136,15 +136,15 @@ MMCV contains C++ and CUDA extensions, thus depending on PyTorch in a complex wa
 
 To install MMCV with pip instead of MIM, please follow [MMCV installation guides](https://mmcv.readthedocs.io/en/latest/get_started/installation.html). This requires manually specifying a find-url based on PyTorch version and its CUDA version.
 
-For example, the following command install mmcv==2.0.0rc1 built for PyTorch 1.10.x and CUDA 11.3.
+For example, the following command install mmcv==2.0.0 built for PyTorch 1.10.x and CUDA 11.3.
 
 ```shell
-pip install mmcv==2.0.0rc1 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10/index.html
+pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10/index.html
 ```
 
 #### Install on CPU-only platforms
 
-MMSegmentation can be built for CPU only environment. In CPU mode you can train (requires MMCV-Lite version >= 2.0.0rc0), test or inference a model.
+MMSegmentation can be built for CPU only environment. In CPU mode you can train (requires MMCV version >= 2.0.0), test or inference a model.
 
 #### Install on Google Colab
 
@@ -156,7 +156,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 ```shell
 !pip3 install openmim
 !mim install mmengine
-!mim install "mmcv>=2.0.0rc1"
+!mim install "mmcv>=2.0.0"
 ```
 
 **Step 2.** Install MMSegmentation from the source.
@@ -164,7 +164,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 ```shell
 !git clone https://github.com/open-mmlab/mmsegmentation.git
 %cd mmsegmentation
-!git checkout dev-1.x
+!git checkout main
 !pip install -e .
 ```
 
@@ -173,7 +173,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 ```python
 import mmseg
 print(mmseg.__version__)
-# Example output: 1.0.0rc0
+# Example output: 1.0.0
 ```
 
 **Note:**
@@ -181,7 +181,7 @@ Within Jupyter, the exclamation mark `!` is used to call external executables an
 
 ### Using MMSegmentation with Docker
 
-We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/master/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
+We provide a [Dockerfile](https://github.com/open-mmlab/mmsegmentation/blob/main/docker/Dockerfile) to build an image. Ensure that your [docker version](https://docs.docker.com/engine/install/) >=19.03.
 
 ```shell
 # build an image with PyTorch 1.11, CUDA 11.3
@@ -193,6 +193,16 @@ Run it with
 
 ```shell
 docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmsegmentation
+```
+
+### Optional Dependencies
+
+#### Install GDAL
+
+[GDAL](https://gdal.org/) is a translator library for raster and vector geospatial data formats. Install GDAL to read complex formats and extremely large remote sensing images.
+
+```shell
+conda install GDAL
 ```
 
 ## Trouble shooting
