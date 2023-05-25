@@ -94,6 +94,15 @@ def is_npu_available():
     return hasattr(torch, 'npu') and torch.npu.is_available()
 
 
+def is_npu_support_full_precision() -> bool:
+    """Returns True if npu devices support full precision training."""
+    if not is_npu_available():
+        return False
+    import torch_npu.npu.utils as npu_utils
+    version_of_support_full_precision = 220
+    return npu_utils.get_soc_version() >= version_of_support_full_precision
+
+
 def get_device():
     """Returns an available device, cpu, npu, cuda or mlu."""
     is_device_available = {
