@@ -15,7 +15,7 @@ from mmseg import digit_version
 from mmseg.core import DistEvalHook, EvalHook, build_optimizer
 from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.utils import (build_ddp, build_dp, find_latest_checkpoint,
-                         get_root_logger)
+                         get_root_logger, is_npu_support_full_precision)
 
 
 def init_random_seed(seed=None, device='cuda'):
@@ -136,7 +136,7 @@ def train_segmentor(model,
             logger=logger,
             meta=meta))
 
-    if cfg.device == 'npu':
+    if cfg.device == 'npu' and not is_npu_support_full_precision():
         optimiter_config = dict(type='Fp16OptimizerHook', loss_scale='dynamic')
         cfg.optimizer_config = optimiter_config if \
             not cfg.optimizer_config else cfg.optimizer_config
