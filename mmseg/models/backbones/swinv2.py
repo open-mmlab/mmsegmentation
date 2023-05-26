@@ -3,6 +3,7 @@ import warnings
 from collections import OrderedDict
 from copy import deepcopy
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -315,8 +316,6 @@ class SwinBlock(BaseModule):
         window_size (int, optional): The local window scale. Default: 7.
         shift (bool, optional): whether to shift window or not. Default False.
         qkv_bias (bool, optional): enable bias for qkv if True. Default: True.
-        qk_scale (float | None, optional): Override default qk scale of
-            head_dim ** -0.5 if set. Default: None.
         drop_rate (float, optional): Dropout rate. Default: 0.
         attn_drop_rate (float, optional): Attention dropout rate. Default: 0.
         drop_path_rate (float, optional): Stochastic depth rate. Default: 0.
@@ -338,14 +337,14 @@ class SwinBlock(BaseModule):
                  window_size=7,
                  shift=False,
                  qkv_bias=True,
-                 qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='LN'),
                  with_cp=False,
-                 init_cfg=None):
+                 init_cfg=None,
+                 pretrained_window_size=0):
 
         super().__init__(init_cfg=init_cfg)
 
@@ -358,12 +357,12 @@ class SwinBlock(BaseModule):
             window_size=window_size,
             shift_size=window_size // 2 if shift else 0,
             qkv_bias=qkv_bias,
-            qk_scale=qk_scale,
             attn_drop_rate=attn_drop_rate,
             proj_drop_rate=drop_rate,
             norm_cfg=norm_cfg,
             dropout_layer=dict(type='DropPath', drop_prob=drop_path_rate),
-            init_cfg=None)
+            init_cfg=None,
+            pretrained_window_size=pretrained_window_size)
 
         self.norm2 = build_norm_layer(norm_cfg, embed_dims)[1]
         self.ffn = FFN(
@@ -433,7 +432,6 @@ class SwinBlockSequence(BaseModule):
                  depth,
                  window_size=7,
                  qkv_bias=True,
-                 qk_scale=None,
                  drop_rate=0.,
                  attn_drop_rate=0.,
                  drop_path_rate=0.,
@@ -547,7 +545,6 @@ class SwinTransformerV2(BaseModule):
                  strides=(4, 2, 2, 2),
                  out_indices=(0, 1, 2, 3),
                  qkv_bias=True,
-                 qk_scale=None,
                  patch_norm=True,
                  drop_rate=0.,
                  attn_drop_rate=0.,
@@ -641,7 +638,7 @@ class SwinTransformerV2(BaseModule):
                 downsample=downsample,
                 act_cfg=act_cfg,
                 norm_cfg=norm_cfg,
-                pretrained_window_sizes=pretrained_window_sizes,
+                pretrained_window_size=pretrained_window_sizes[i],
                 with_cp=with_cp,
                 init_cfg=None)
             self.stages.append(stage)
