@@ -484,7 +484,7 @@ class SwinBlockSequence(BaseModule):
 
 
 @MODELS.register_module()
-class SwinTransformer(BaseModule):
+class SwinTransformerV2(BaseModule):
     """Swin Transformer backbone.
 
     This backbone is the implementation of `Swin Transformer:
