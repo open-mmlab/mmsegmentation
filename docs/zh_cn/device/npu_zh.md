@@ -26,7 +26,7 @@ python tools/train.py configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes
 |    [pspnet](<>)     | 78.07 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/pspnet/pspnet_r50-d8_512x1024_80k_cityscapes.py)               | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/pspnet_r50-d8_512x1024_80k_cityscapes.log.json)        |
 |     [unet](<>)      | 69.00 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/unet/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes.py)          | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/fcn_unet_s5-d16_4x4_512x1024_160k_cityscapes.log.json) |
 |    [apcnet](<>)     | 78.07 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes.py)               | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/apcnet_r50-d8_512x1024_40k_cityscapes.log.json)        |
-|    [upernet](<>)    | 78.22 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet/upernet_r50_512x1024_40k_cityscapes.py)                | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/20230525_064810.log.json)                              |
+|    [upernet](<>)    | 78.15 | [config](https://github.com/open-mmlab/mmsegmentation/blob/master/configs/upernet/upernet_r50_512x1024_40k_cityscapes.py)                | [log](https://download.openmmlab.com/mmsegmentation/v0.5/device/npu/20230525_064810.log.json)                              |
 
 **注意:**
 
