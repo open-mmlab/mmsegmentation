@@ -53,7 +53,6 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 - Download dataset from [here](https://www.heywhale.com/mw/dataset/5e9e9b35ebb37f002c625423) and save it to the `data/` directory .
 - Decompress data to path `data/`. This will create a new folder named `data/breastCancerCellSegmentation/`, which contains the original image data.
 - run script `python tools/prepare_dataset.py` to format data and change folder structure as below.
-- run script `python ../../tools/split_seg_dataset.py` to split dataset. For the Bacteria_detection dataset, as there is no test or validation dataset, we sample 20% samples from the whole dataset as the validation dataset and 80% samples for training data and make two filename lists `train.txt` and `val.txt`. As we set the random seed as the hard code, we eliminated the randomness, the dataset split actually can be reproducible.
 
 ```none
   mmsegmentation
@@ -67,28 +66,15 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
   │   │   │   │   │   ├── datasets
   │   │   │   │   │   ├── tools
   │   │   │   │   │   ├── data
-  │   │   │   │   │   │   ├── train.txt
-  │   │   │   │   │   │   ├── val.txt
-  │   │   │   │   │   │   ├── images
-  │   │   │   │   │   │   │   ├── train
-  │   │   │   │   |   │   │   │   ├── xxx.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── xxx.png
-  │   │   │   │   │   │   ├── masks
-  │   │   │   │   │   │   │   ├── train
-  │   │   │   │   |   │   │   │   ├── xxx.png
-  │   │   │   │   |   │   │   │   ├── ...
-  │   │   │   │   |   │   │   │   └── xxx.png
+  │   │   │   │   │   │   ├── breastCancerCellSegmentation
+  |   │   │   │   │   │   │   ├── train.txt
+  |   │   │   │   │   │   │   ├── val.txt
+  |   │   │   │   │   │   │   ├── images
+  |   │   │   │   │   │   │   |   ├── xxx.tif
+  |   │   │   │   │   │   │   ├── masks
+  |   │   │   │   │   │   │   |   ├── xxx.TIF
+
 ```
-
-### Divided Dataset Information
-
-***Note: The table information below is divided by ourselves.***
-
-|    Class Name    | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
-| :--------------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
-|    background    |     46     |   98.36    |    12    |  98.41   |     -     |     -     |
-| breastCancerCell |     46     |    1.64    |    12    |   1.59   |     -     |     -     |
 
 ### Training commands
 
@@ -105,22 +91,6 @@ Test models on a single server with one GPU.
 ```shell
 mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 ```
-
-<!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
-
-You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
-
-## Results
-
-### breastCancerCellSegmentation
-
-***Note: The following experimental results are based on the data randomly partitioned according to the above method described in the dataset preparing section.***
-
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                              config                                               |         download         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------------: | :----------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_breastCancerCellSegmentation-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_breastCancerCellSegmentation-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_breastCancerCellSegmentation-512x512.py) | [model](<>) \| [log](<>) |
 
 ## Checklist
 

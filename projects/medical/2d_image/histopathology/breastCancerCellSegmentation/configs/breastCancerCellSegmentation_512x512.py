@@ -1,18 +1,18 @@
 dataset_type = 'breastCancerCellSegmentationDataset'
-data_root = 'data/'
+data_root = 'data/breastCancerCellSegmentation'
 img_scale = (512, 512)
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
-    dict(type='LoadAnnotations'),
+    dict(type='LoadImageFromFile', imdecode_backend='tifffile'),
+    dict(type='LoadAnnotations', imdecode_backend='tifffile'),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', imdecode_backend='tifffile'),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
-    dict(type='LoadAnnotations'),
+    dict(type='LoadAnnotations', imdecode_backend='tifffile'),
     dict(type='PackSegInputs')
 ]
 train_dataloader = dict(
@@ -23,8 +23,7 @@ train_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(
-            img_path='images/train/', seg_map_path='masks/train/'),
+        ann_file='train.txt',
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -34,7 +33,7 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='images/val/', seg_map_path='masks/val/'),
+        ann_file='val.txt',
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice'])
