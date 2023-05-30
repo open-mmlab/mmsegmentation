@@ -14,7 +14,7 @@ class GID_Dataset(BaseSegDataset):
 
     GID  6 classes: others, built-up, farmland, forest, meadow, water
 
-    In This example, select 15 images from GID dataset as training set,
+    In this example, select 15 images from GID dataset as training set,
     and select 5 images as validation set.
     The selected images are listed as follows:
 
