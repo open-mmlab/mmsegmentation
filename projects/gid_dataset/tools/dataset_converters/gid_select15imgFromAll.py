@@ -1,3 +1,5 @@
+import argparse
+import os
 import shutil
 
 # select 15 images from GID dataset
@@ -31,15 +33,43 @@ labels_list = [
     'GF2_PMS2__L1A0001838560-MSS2_label.tif'
 ]
 
-img_root_path = r'\image_RGB'
-label_root_path = r'\label_5classes'
 
-dest_img_dir = r'D:\ATL\AI_work\Datasets\GID\15\images'
-dest_label_dir = r'D:\ATL\AI_work\Datasets\GID\15\labels'
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='From 150 images of GID dataset to select 15 images')
+    parser.add_argument('dataset_img_dir', help='150 GID images folder path')
+    parser.add_argument('dataset_label_dir', help='150 GID labels folder path')
 
-# 把img_list的文件复制到 desr_dir
-for img in img_list:
-    shutil.copy(img_root_path + '\\' + img, dest_img_dir)
+    parser.add_argument('dest_img_dir', help='15 GID images folder path')
+    parser.add_argument('dest_label_dir', help='15 GID labels folder path')
 
-for label in labels_list:
-    shutil.copy(label_root_path + '\\' + label, dest_label_dir)
+    args = parser.parse_args()
+
+    return args
+
+
+def main():
+    """This script is used to select 15 images from GID dataset, According to
+    paper: https://ieeexplore.ieee.org/document/9343296/"""
+    args = parse_args()
+
+    img_path = args.dataset_img_dir
+    label_path = args.dataset_label_dir
+
+    dest_img_dir = args.dest_img_dir
+    dest_label_dir = args.dest_label_dir
+
+    # copy images of 'img_list' to 'desr_dir'
+    print('Copy images of img_list to desr_dir ing...')
+    for img in img_list:
+        shutil.copy(os.path.join(img_path, img), dest_img_dir)
+    print('Done!')
+
+    print('copy labels of labels_list to desr_dir ing...')
+    for label in labels_list:
+        shutil.copy(os.path.join(label_path, label), dest_label_dir)
+    print('Done!')
+
+
+if __name__ == '__main__':
+    main()

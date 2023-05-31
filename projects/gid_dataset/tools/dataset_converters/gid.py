@@ -43,7 +43,7 @@ palette = list(GID_COLORMAP.values())
 classes = list(GID_COLORMAP.keys())
 
 
-# ############用列表来存一个 RGB 和一个类别的对应################
+# 用列表来存一个 RGB 和一个类别的对应
 def colormap2label(palette):
     colormap2label_list = np.zeros(256**3, dtype=np.longlong)
     for i, colormap in enumerate(palette):
@@ -52,12 +52,11 @@ def colormap2label(palette):
     return colormap2label_list
 
 
-# ############给定那个列表，和vis_png然后生成masks_png################
+# 给定那个列表，和vis_png然后生成masks_png
 def label_indices(RGB_label, colormap2label_list):
     RGB_label = RGB_label.astype('int32')
     idx = (RGB_label[:, :, 0] * 256 +
            RGB_label[:, :, 1]) * 256 + RGB_label[:, :, 2]
-    # print(idx.shape)
     return colormap2label_list[idx]
 
 
@@ -144,8 +143,6 @@ def main():
     According to this paper: https://ieeexplore.ieee.org/document/9343296/
     select 15 images contained in GID, , which cover the whole six
     categories, to generate train set and validation set.
-
-    According to Paper: https://ieeexplore.ieee.org/document/9343296/
 
     """
 
