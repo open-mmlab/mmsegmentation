@@ -4,6 +4,11 @@ import logging
 import os
 import os.path as osp
 
+import capture
+device = os.getenv('ONE_ITER_TOOL_DEVICE', None)
+if device == 'dipu':
+    import torch_dipu
+
 from mmengine.config import Config, DictAction
 from mmengine.logging import print_log
 from mmengine.runner import Runner
@@ -91,6 +96,7 @@ def main():
     if 'runner_type' not in cfg:
         # build the default runner
         runner = Runner.from_cfg(cfg)
+        capture.insert_capture(runner)
     else:
         # build customized runner from the registry
         # if 'runner_type' is set in the cfg
