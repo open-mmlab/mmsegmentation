@@ -90,3 +90,15 @@ class SegDataSample(BaseDataElement):
     @seg_logits.deleter
     def seg_logits(self) -> None:
         del self._seg_logits
+
+    @property
+    def img_path(self) -> str:
+        return self._img_path
+    
+    @img_path.setter
+    def img_path(self, value: str) -> None:
+        self.set_field(value, '_img_path', dtype=str)
+
+    @img_path.deleter
+    def img_path(self) -> None:
+        del self._img_path
