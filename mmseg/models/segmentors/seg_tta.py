@@ -42,7 +42,8 @@ class SegTTAModel(BaseTTAModel):
             data_sample = SegDataSample(
                 **{
                     'pred_sem_seg': PixelData(data=seg_pred),
-                    'gt_sem_seg': data_samples[0].gt_sem_seg
+                    'gt_sem_seg': data_samples[0].gt_sem_seg,
+                    'img_path': data_samples[0].img_path
                 })
             predictions.append(data_sample)
         return predictions
