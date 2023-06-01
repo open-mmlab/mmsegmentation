@@ -11,6 +11,7 @@ class SegDataSample(BaseDataElement):
         - ``gt_sem_seg``(PixelData): Ground truth of semantic segmentation.
         - ``pred_sem_seg``(PixelData): Prediction of semantic segmentation.
         - ``seg_logits``(PixelData): Predicted logits of semantic segmentation.
+        - ``img_path``(str): Filename of the image.
 
     Examples:
          >>> import torch
@@ -94,7 +95,7 @@ class SegDataSample(BaseDataElement):
     @property
     def img_path(self) -> str:
         return self._img_path
-    
+
     @img_path.setter
     def img_path(self, value: str) -> None:
         self.set_field(value, '_img_path', dtype=str)
