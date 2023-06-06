@@ -111,6 +111,7 @@ A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSe
 To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migration).
 
 ## Tutorial
+
 <details>
 <summary>Get Started</summary>
 
@@ -127,10 +128,11 @@ To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migratio
 - [Tutorial 2: Prepare datasets](docs/en/user_guides/2_dataset_prepare.md)
 - [Tutorial 3: Inference with existing models](docs/en/user_guides/3_inference.md)
 - [Tutorial 4: Train and test with existing models](docs/en/user_guides/4_train_test.md)
-- [Tutorial 4: Model deployment](docs/en/user_guides/5_deployment.md)
+- [Tutorial 5: Model deployment](docs/en/user_guides/5_deployment.md)
 - [Useful Tools](docs/en/user_guides/useful_tools.md)
 - [Feature Map Visualization](docs/en/user_guides/visualization_feature_map.md)
 - [Visualization](docs/en/user_guides/visualization.md)
+
 </details>
 
 <details>
@@ -159,6 +161,7 @@ To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migratio
 - [Contribute a standard dataset in projects](docs/zh_cn/advanced_guides/contribute_dataset.md)
 - [NPU (HUAWEI Ascend)](docs/en/device/npu.md)
 - [0.x → 1.x migration](docs/en/migration/interface.md)，[0.x → 1.x package](docs/en/migration/package.md)
+
 </details>
 
 ## Benchmark and model zoo

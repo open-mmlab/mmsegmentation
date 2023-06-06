@@ -105,6 +105,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 若需要将 0.x 版本的代码迁移至新版，请参考[迁移文档](docs/zh_cn/migration)。
 
 ## 教程文档
+
 <details>
 <summary>开启 MMSeg 之旅</summary>
 
@@ -125,6 +126,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [常用工具](docs/zh_cn/user_guides/useful_tools.md)
 - [特征图可视化](docs/zh_cn/user_guides/visualization_feature_map.md)
 - [可视化](docs/zh_cn/user_guides/visualization.md)
+
 </details>
 
 <details>
@@ -153,6 +155,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [在 projects 给 MMSeg 贡献一个标准数据集](docs/zh_cn/advanced_guides/contribute_dataset.md)
 - [NPU (华为 昇腾)](docs/zh_cn/device/npu.md)
 - [0.x → 1.x 迁移文档](docs/zh_cn/migration/interface.md)，[0.x → 1.x 库变更文档](docs/zh_cn/migration/package.md)
+
 </details>
 
 ## 基准测试和模型库
