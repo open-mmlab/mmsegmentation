@@ -110,6 +110,57 @@ A Colab tutorial is also provided. You may preview the notebook [here](demo/MMSe
 
 To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migration).
 
+## Tutorial
+<details>
+<summary>Get Started</summary>
+
+- [MMSeg overview](docs/en/overview.md)
+- [MMSeg Installation](docs/en/get_started.md)
+- [FAQ](docs/en/notes/faq.md)
+
+</details>
+
+<details>
+<summary>MMSeg Basic Tutorial</summary>
+
+- [Tutorial 1: Learn about Configs](docs/en/user_guides/1_config.md)
+- [Tutorial 2: Prepare datasets](docs/en/user_guides/2_dataset_prepare.md)
+- [Tutorial 3: Inference with existing models](docs/en/user_guides/3_inference.md)
+- [Tutorial 4: Train and test with existing models](docs/en/user_guides/4_train_test.md)
+- [Tutorial 4: Model deployment](docs/en/user_guides/5_deployment.md)
+- [Useful Tools](docs/en/user_guides/useful_tools.md)
+- [Feature Map Visualization](docs/en/user_guides/visualization_feature_map.md)
+- [Visualization](docs/en/user_guides/visualization.md)
+</details>
+
+<details>
+<summary>MMSeg Detail Tutorial</summary>
+
+- [MMSeg Dataset](docs/en/advanced_guides/datasets.md)
+- [MMSeg Models](docs/en/advanced_guides/models.md)
+- [MMSeg Dataset Structures](docs/en/advanced_guides/structures.md)
+- [MMSeg Data Transforms](docs/en/advanced_guides/transforms.md)
+- [MMSeg Dataflow](docs/en/advanced_guides/data_flow.md)
+- [MMSeg Training Engine](docs/en/advanced_guides/engine.md)
+- [MMSeg Evaluation](docs/en/advanced_guides/evaluation.md)
+
+</details>
+
+<details>
+<summary>MMSeg Development Tutorial</summary>
+
+- [Add New Datasets](docs/en/advanced_guides/add_datasets.md)
+- [Add New Metrics](docs/en/advanced_guides/add_metrics.md)
+- [Add New Modules](docs/en/advanced_guides/add_models.md)
+- [Add New Data Transforms](docs/en/advanced_guides/add_transforms.md)
+- [Customize Runtime Settings](docs/en/advanced_guides/customize_runtime.md)
+- [Training Tricks](docs/en/advanced_guides/training_tricks.md)
+- [Contribute code to MMSeg](.github/CONTRIBUTING.md)
+- [Contribute a standard dataset in projects](docs/zh_cn/advanced_guides/contribute_dataset.md)
+- [NPU (HUAWEI Ascend)](docs/en/device/npu.md)
+- [0.x → 1.x migration](docs/en/migration/interface.md)，[0.x → 1.x package](docs/en/migration/package.md)
+</details>
+
 ## Benchmark and model zoo
 
 Results and models are available in the [model zoo](docs/en/model_zoo.md).
