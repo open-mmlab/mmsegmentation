@@ -197,7 +197,7 @@ class CLAHE(BaseTransform):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(clip_limit={self.clip_limit}, '\
+        repr_str += f'(clip_limit={self.clip_limit}, ' \
                     f'tile_grid_size={self.tile_grid_size})'
         return repr_str
 
@@ -1162,8 +1162,8 @@ class RandomMosaic(BaseTransform):
                 x1_c, y1_c, x2_c, y2_c = crop_coord
 
                 # crop and paste image
-                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = gt_seg_i[y1_c:y2_c,
-                                                            x1_c:x2_c]
+                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = \
+                    gt_seg_i[y1_c:y2_c, x1_c:x2_c]
 
             results[key] = mosaic_seg
 
@@ -1771,9 +1771,9 @@ class BioMedicalGaussianBlur(BaseTransform):
         repr_str += f'(prob={self.prob}, '
         repr_str += f'prob_per_channel={self.prob_per_channel}, '
         repr_str += f'sigma_range={self.sigma_range}, '
-        repr_str += 'different_sigma_per_channel='\
+        repr_str += 'different_sigma_per_channel=' \
                     f'{self.different_sigma_per_channel}, '
-        repr_str += 'different_sigma_per_axis='\
+        repr_str += 'different_sigma_per_axis=' \
                     f'{self.different_sigma_per_axis})'
         return repr_str
 
@@ -2290,4 +2290,34 @@ class Albu(BaseTransform):
 
     def __repr__(self):
         repr_str = self.__class__.__name__ + f'(transforms={self.transforms})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class ConcatCDInput(BaseTransform):
+    """Concat images for change detection.
+
+    Required Keys:
+
+    - img
+    - img2
+
+    Args:
+        input_keys (tuple):  Input image keys for change detection.
+            Default: ('img', 'img2').
+    """
+
+    def __init__(self, input_keys=('img', 'img2')):
+        self.input_keys = input_keys
+
+    def transform(self, results: dict) -> dict:
+        img = []
+        for input_key in self.input_keys:
+            img.append(results.pop(input_key))
+        results['img'] = np.concatenate(img, axis=2)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(input_keys={self.input_keys}, '
         return repr_str

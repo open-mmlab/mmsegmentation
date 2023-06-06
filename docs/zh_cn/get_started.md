@@ -194,6 +194,16 @@ docker build -t mmsegmentation docker/
 docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmsegmentation
 ```
 
+### 可选依赖
+
+#### 安装 GDAL
+
+[GDAL](https://gdal.org/) 是一个用于栅格和矢量地理空间数据格式的转换库。安装 GDAL 可以读取复杂格式和极大的遥感图像。
+
+```shell
+conda install GDAL
+```
+
 ## 问题解答
 
 如果您在安装过程中遇到了其他问题，请第一时间查阅 [FAQ](notes/faq.md) 文件。如果没有找到答案，您也可以在 GitHub 上提出 [issue](https://github.com/open-mmlab/mmsegmentation/issues/new/choose)
