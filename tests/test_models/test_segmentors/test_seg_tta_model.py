@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import tempfile
+
 import torch
 from mmengine import ConfigDict
 from mmengine.model import BaseTTAModel
@@ -37,7 +39,8 @@ def test_encoder_decoder_tta():
                     ori_shape=(10, 10),
                     img_shape=(10 + i, 10 + i),
                     flip=(i % 2 == 0),
-                    flip_direction=flip_direction),
+                    flip_direction=flip_direction,
+                    img_path=tempfile.mktemp()),
                 gt_sem_seg=PixelData(data=torch.randint(0, 19, (1, 10, 10))))
         ])
 
