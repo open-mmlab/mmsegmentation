@@ -104,6 +104,60 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 
 若需要将 0.x 版本的代码迁移至新版，请参考[迁移文档](docs/zh_cn/migration)。
 
+## 教程文档
+
+<details>
+<summary>开启 MMSeg 之旅</summary>
+
+- [MMSeg 概述](docs/zh_cn/overview.md)
+- [安装和验证](docs/zh_cn/get_started.md)
+- [常见问题解答](docs/zh_cn/notes/faq.md)
+
+</details>
+
+<details>
+<summary>MMSeg 快速入门教程</summary>
+
+- [教程1：了解配置文件](docs/zh_cn/user_guides/1_config.md)
+- [教程2：准备数据集](docs/zh_cn/user_guides/2_dataset_prepare.md)
+- [教程3：使用预训练模型推理](docs/zh_cn/user_guides/3_inference.md)
+- [教程4：使用现有模型进行训练和测试](docs/zh_cn/user_guides/4_train_test.md)
+- [教程5：模型部署](docs/zh_cn/user_guides/5_deployment.md)
+- [常用工具](docs/zh_cn/user_guides/useful_tools.md)
+- [特征图可视化](docs/zh_cn/user_guides/visualization_feature_map.md)
+- [可视化](docs/zh_cn/user_guides/visualization.md)
+
+</details>
+
+<details>
+<summary>MMSeg 细节介绍</summary>
+
+- [MMSeg 数据集介绍](docs/zh_cn/advanced_guides/datasets.md)
+- [MMSeg 模型介绍](docs/zh_cn/advanced_guides/models.md)
+- [MMSeg 数据结构介绍](docs/zh_cn/advanced_guides/structures.md)
+- [MMSeg 数据增强介绍](docs/zh_cn/advanced_guides/transforms.md)
+- [MMSeg 数据流介绍](docs/zh_cn/advanced_guides/data_flow.md)
+- [MMSeg 训练引擎介绍](docs/zh_cn/advanced_guides/engine.md)
+- [MMSeg 模型评测介绍](docs/zh_cn/advanced_guides/evaluation.md)
+
+</details>
+
+<details>
+<summary>MMSeg 开发教程</summary>
+
+- [新增自定义数据集](docs/zh_cn/advanced_guides/add_datasets.md)
+- [新增评测指标](docs/zh_cn/advanced_guides/add_metrics.md)
+- [新增自定义模型](docs/zh_cn/advanced_guides/add_models.md)
+- [新增自定义数据增强](docs/zh_cn/advanced_guides/add_transforms.md)
+- [自定义运行设定](docs/zh_cn/advanced_guides/customize_runtime.md)
+- [训练技巧](docs/zh_cn/advanced_guides/training_tricks.md)
+- [如何给 MMSeg贡献代码](.github/CONTRIBUTING.md)
+- [在 projects 给 MMSeg 贡献一个标准数据集](docs/zh_cn/advanced_guides/contribute_dataset.md)
+- [NPU (华为 昇腾)](docs/zh_cn/device/npu.md)
+- [0.x → 1.x 迁移文档](docs/zh_cn/migration/interface.md)，[0.x → 1.x 库变更文档](docs/zh_cn/migration/package.md)
+
+</details>
+
 ## 基准测试和模型库
 
 测试结果和模型可以在[模型库](docs/zh_cn/model_zoo.md)中找到。
