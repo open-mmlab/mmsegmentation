@@ -106,9 +106,7 @@ class CATSegHead(BaseDecodeHead):
 
         # decoder layers
         B = inputs['corr_embed'].size(0)
-        corr_embed = inputs['corr_embed'].transpose(1,
-                                                    2).flatten(0,
-                                                               1)  # BT C H W
+        corr_embed = inputs['corr_embed'].transpose(1, 2).flatten(0, 1)
         corr_embed = self.decoder1(corr_embed, projected_decoder_guidance[0])
         corr_embed = self.decoder2(corr_embed, projected_decoder_guidance[1])
 
