@@ -42,6 +42,8 @@ class CLIPOVCATSeg(BaseModule):
                  train_class_json,
                  test_class_json,
                  clip_pretrained,
+                 clip_finetune,
+                 backbone_multiplier=0.01,
                  prompt_depth=0,
                  prompt_length=0,
                  prompt_ensemble_type='imagenet',
@@ -50,9 +52,8 @@ class CLIPOVCATSeg(BaseModule):
                  clip_pixel_mean=[122.7709383, 116.7460125, 104.09373615],
                  clip_pixel_std=[68.5005327, 66.6321579, 70.3231630],
                  clip_img_feat_size=(24, 24),
-                 init_cfg=None,
-                 **kwargs):
-        super().__init__(init_cfg=init_cfg, **kwargs)
+                 init_cfg=None):
+        super().__init__(init_cfg=init_cfg)
         # normalization parameters
         self.register_buffer('pixel_mean',
                              torch.Tensor(pixel_mean).view(1, -1, 1, 1), False)
@@ -69,10 +70,24 @@ class CLIPOVCATSeg(BaseModule):
         # modified clip image encoder with fixed size dense output
         self.clip_img_feat_size = clip_img_feat_size
 
+        # prepare clip templates
+        self.prompt_ensemble_type = prompt_ensemble_type
+        if self.prompt_ensemble_type == 'imagenet_select':
+            prompt_templates = clip_templates.IMAGENET_TEMPLATES_SELECT
+        elif self.prompt_ensemble_type == 'imagenet':
+            prompt_templates = clip_templates.IMAGENET_TEMPLATES
+        elif self.prompt_ensemble_type == 'single':
+            prompt_templates = [
+                'A photo of a {} in the scene',
+            ]
+        else:
+            raise NotImplementedError
+        self.prompt_templates = prompt_templates
+
         # build the feature extractor
         self.feature_extractor = MODELS.build(feature_extractor)
 
-        # prepare CLIP model
+        # build CLIP model
         with open(train_class_json) as f_in:
             self.class_texts = json.load(f_in)
         with open(test_class_json) as f_in:
@@ -81,7 +96,6 @@ class CLIPOVCATSeg(BaseModule):
         if self.test_class_texts is None:
             self.test_class_texts = self.class_texts
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
         self.tokenizer = None
         if clip_pretrained == 'ViT-G' or clip_pretrained == 'ViT-H':
             # for OpenCLIP models
@@ -107,28 +121,45 @@ class CLIPOVCATSeg(BaseModule):
                 prompt_depth=prompt_depth,
                 prompt_length=prompt_length)
 
-        self.prompt_ensemble_type = prompt_ensemble_type
+        # pre-encode classes text prompts
+        text_features = self.class_embeddings(self.class_texts,
+                                              prompt_templates,
+                                              clip_model).permute(1, 0,
+                                                                  2).float()
+        text_features_test = self.class_embeddings(self.test_class_texts,
+                                                   prompt_templates,
+                                                   clip_model).permute(
+                                                       1, 0, 2).float()
+        self.register_buffer('text_features', text_features, False)
+        self.register_buffer('text_features_test', text_features_test, False)
 
-        if self.prompt_ensemble_type == 'imagenet_select':
-            prompt_templates = clip_templates.IMAGENET_TEMPLATES_SELECT
-        elif self.prompt_ensemble_type == 'imagenet':
-            prompt_templates = clip_templates.IMAGENET_TEMPLATES
-        elif self.prompt_ensemble_type == 'single':
-            prompt_templates = [
-                'A photo of a {} in the scene',
-            ]
-        else:
-            raise NotImplementedError
-
-        self.text_features = self.class_embeddings(
-            self.class_texts, prompt_templates, clip_model).permute(1, 0,
-                                                                    2).float()
-        self.text_features_test = self.class_embeddings(
-            self.test_class_texts, prompt_templates,
-            clip_model).permute(1, 0, 2).float()
-
+        # prepare CLIP model finetune
+        self.clip_finetune = clip_finetune
         self.clip_model = clip_model.float()
         self.clip_preprocess = clip_preprocess
+
+        for name, params in self.clip_model.named_parameters():
+            if 'visual' in name:
+                if clip_finetune == 'prompt':
+                    params.requires_grad = True if 'prompt' in name else False
+                elif clip_finetune == 'attention':
+                    if 'attn' in name or 'position' in name:
+                        params.requires_grad = True
+                    else:
+                        params.requires_grad = False
+                elif clip_finetune == 'full':
+                    params.requires_grad = True
+                else:
+                    params.requires_grad = False
+            else:
+                params.requires_grad = False
+
+        finetune_backbone = backbone_multiplier > 0.
+        for name, params in self.feature_extractor.named_parameters():
+            if 'norm0' in name:
+                params.requires_grad = False
+            else:
+                params.requires_grad = finetune_backbone
 
     @torch.no_grad()
     def class_embeddings(self, classnames, templates, clip_model):

@@ -17,7 +17,6 @@ class UpBlock(nn.Module):
             in_channels - guidance_channels,
             kernel_size=2,
             stride=2)
-        # self.conv = DoubleConv(in_channels, out_channels)
         self.conv1 = ConvModule(
             in_channels,
             out_channels,
