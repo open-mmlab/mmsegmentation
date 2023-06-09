@@ -392,7 +392,8 @@ class AGSwinBlock(BaseModule):
         return x
 
 
-class SpatialAggregrateLayer(nn.Module):
+@MODELS.register_module()
+class SpatialAggregateLayer(BaseModule):
     """Spatial aggregation layer of CAT-Seg.
 
     Args:
@@ -417,8 +418,9 @@ class SpatialAggregrateLayer(nn.Module):
                  num_heads,
                  mlp_ratios,
                  window_size=7,
-                 qk_scale=None):
-        super().__init__()
+                 qk_scale=None,
+                 init_cfg=None):
+        super().__init__(init_cfg=init_cfg)
         self.block_1 = AGSwinBlock(
             embed_dims,
             appearance_dims,
@@ -449,6 +451,7 @@ class SpatialAggregrateLayer(nn.Module):
         if appearance_guidance is not None:
             appearance_guidance = appearance_guidance.repeat(
                 T, 1, 1, 1).permute(0, 2, 3, 1)  # BT, HW, C
+            appearance_guidance = self.guidance_norm(appearance_guidance)
         else:
             assert self.appearance_dims == 0
         x = self.block_1((x, appearance_guidance), (H, W))
@@ -504,7 +507,8 @@ class AttentionLayer(nn.Module):
         return out
 
 
-class ClassAggregrateLayer(nn.Module):
+@MODELS.register_module()
+class ClassAggregateLayer(BaseModule):
     """Class aggregation layer of CAT-Seg.
 
     Args:
@@ -517,13 +521,16 @@ class ClassAggregrateLayer(nn.Module):
             Default: None.
     """
 
-    def __init__(self,
-                 hidden_dims=64,
-                 guidance_dims=64,
-                 num_heads=8,
-                 attention_type='linear',
-                 pooling_size=(4, 4)):
-        super().__init__()
+    def __init__(
+            self,
+            hidden_dims=64,
+            guidance_dims=64,
+            num_heads=8,
+            attention_type='linear',
+            pooling_size=(4, 4),
+            init_cfg=None,
+    ):
+        super().__init__(init_cfg=init_cfg)
         self.pool = nn.AvgPool2d(pooling_size)
         self.attention = AttentionLayer(
             hidden_dims,
@@ -581,7 +588,8 @@ class ClassAggregrateLayer(nn.Module):
         return x
 
 
-class AggregatorLayer(nn.Module):
+@MODELS.register_module()
+class AggregatorLayer(BaseModule):
     """Single Aggregator Layer of CAT-Seg."""
 
     def __init__(self,
@@ -592,15 +600,16 @@ class AggregatorLayer(nn.Module):
                  mlp_ratios=4,
                  window_size=7,
                  attention_type='linear',
-                 pooling_size=(2, 2)) -> None:
-        super().__init__()
-        self.spatial_agg = SpatialAggregrateLayer(
+                 pooling_size=(2, 2),
+                 init_cfg=None) -> None:
+        super().__init__(init_cfg=init_cfg)
+        self.spatial_agg = SpatialAggregateLayer(
             embed_dims,
             appearance_guidance_dims,
             num_heads=num_heads,
             mlp_ratios=mlp_ratios,
             window_size=window_size)
-        self.class_agg = ClassAggregrateLayer(
+        self.class_agg = ClassAggregateLayer(
             embed_dims,
             text_guidance_dims,
             num_heads=num_heads,
