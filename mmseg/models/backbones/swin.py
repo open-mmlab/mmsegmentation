@@ -726,7 +726,8 @@ class SwinTransformer(BaseModule):
                         S1 = int(L1**0.5)
                         S2 = int(L2**0.5)
                         table_pretrained_resized = F.interpolate(
-                            table_pretrained.permute(1, 0).reshape(1, nH1, S1, S1),
+                            table_pretrained.permute(1, 0).reshape(
+                                1, nH1, S1, S1),
                             size=(S2, S2),
                             mode='bicubic')
                         state_dict[table_key] = table_pretrained_resized.view(
