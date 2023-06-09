@@ -57,6 +57,8 @@ def hd_loss(seg_soft: Tensor,
     assert seg_soft.shape[0] == gt.shape[0]
     total_loss = 0
     num_class = seg_soft.shape[1]
+    if class_weight is not None:
+        assert class_weight.ndim == num_class
     for i in range(1, num_class):
         if i != ignore_index:
             delta_s = (seg_soft[:, i, ...] - gt.float())**2
