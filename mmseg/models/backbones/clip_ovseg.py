@@ -212,11 +212,6 @@ class CLIPOVCATSeg(BaseModule):
             align_corners=False)
         # feature extractor images
         batched = (inputs - self.pixel_mean) / self.pixel_std
-        batched = F.interpolate(
-            batched,
-            size=self.clip_resolution,
-            mode='bilinear',
-            align_corners=False)
         return batched, batched_clip
 
     def forward(self, inputs):
