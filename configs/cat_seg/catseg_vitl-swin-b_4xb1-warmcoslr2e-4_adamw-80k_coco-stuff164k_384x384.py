@@ -37,15 +37,14 @@ model = dict(
 # dataset settings
 train_dataloader = dict(
     batch_size=1,
-    num_workers=4,
+    num_workers=2,
 )
 
 # training schedule for 80k
-train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=160000, val_interval=8000)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=4000)
 
 default_hooks = dict(
-    visualization=dict(type='SegVisualizationHook', draw=True, interval=8000))
+    visualization=dict(type='SegVisualizationHook', draw=True, interval=4000))
 
 # optimizer
 optim_wrapper = dict(
@@ -67,8 +66,8 @@ param_scheduler = [
     # Use a cosine learning rate at [100, 900) iterations
     dict(
         type='CosineAnnealingLR',
-        T_max=159000,
+        T_max=79500,
         by_epoch=False,
-        begin=1000,
-        end=160000),
+        begin=500,
+        end=80000),
 ]

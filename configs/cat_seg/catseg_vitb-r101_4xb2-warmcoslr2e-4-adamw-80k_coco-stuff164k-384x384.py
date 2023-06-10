@@ -60,7 +60,7 @@ model = dict(
             avg_non_ignore=True)),
     # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='whole'))
+    test_cfg=dict(mode='slide', stride=crop_size, crop_size=crop_size))
 
 # dataset settings
 train_dataloader = dict(
