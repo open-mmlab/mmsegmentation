@@ -4,6 +4,7 @@ Import:
 - configs/beit/metafile.yaml
 - configs/bisenetv1/metafile.yaml
 - configs/bisenetv2/metafile.yaml
+- configs/cat_seg/metafile.yaml
 - configs/ccnet/metafile.yaml
 - configs/cgnet/metafile.yaml
 - configs/convnext/metafile.yaml

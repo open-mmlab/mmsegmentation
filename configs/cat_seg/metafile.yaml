@@ -1,0 +1,656 @@
+Collections:
+- Name: CAT-Seg
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - COCO-stuff 164k
+    - PASCAL-Context-459-ZeroShot
+    - PASCAL-Context-59-ZeroShot
+    - PASCAL VOC-20-ZeroShot
+    - PASCAL VOC-20b-ZeroShot
+    - ADE20K-847-ZeroShot
+    - ADE20K-150-ZeroShot
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  README: configs/cat_seg/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-stuff 164k
+    Metrics:
+      mIoU: 42.19
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: COCO-stuff 164k
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-stuff 164k
+    Metrics:
+      mIoU: 47.3
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: COCO-stuff 164k
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-stuff 164k
+    Metrics:
+      mIoU: 0.0
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: COCO-stuff 164k
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-stuff 164k
+    Metrics:
+      mIoU: 0.0
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: COCO-stuff 164k
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x - GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-459-ZeroShot
+    Metrics:
+      mIoU: 16.6
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-459-ZeroShot
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-459-ZeroShot
+    Metrics:
+      mIoU: 20.4
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-459-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-459-ZeroShot
+    Metrics:
+      mIoU: 20.1
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-459-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-459-ZeroShot
+    Metrics:
+      mIoU: 21.4
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-459-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-59-ZeroShot
+    Metrics:
+      mIoU: 57.5
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-59-ZeroShot
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-59-ZeroShot
+    Metrics:
+      mIoU: 62.0
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-59-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-59-ZeroShot
+    Metrics:
+      mIoU: 61.2
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-59-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL-Context-59-ZeroShot
+    Metrics:
+      mIoU: 61.5
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL-Context-59-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20-ZeroShot
+    Metrics:
+      mIoU: 93.7
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20-ZeroShot
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20-ZeroShot
+    Metrics:
+      mIoU: 96.6
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20-ZeroShot
+    Metrics:
+      mIoU: 96.7
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20-ZeroShot
+    Metrics:
+      mIoU: 97.1
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20b-ZeroShot
+    Metrics:
+      mIoU: 78.3
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20b-ZeroShot
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20b-ZeroShot
+    Metrics:
+      mIoU: 81.8
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20b-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20b-ZeroShot
+    Metrics:
+      mIoU: 80.2
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20b-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: PASCAL VOC-20b-ZeroShot
+    Metrics:
+      mIoU: 81.4
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: PASCAL VOC-20b-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-847-ZeroShot
+    Metrics:
+      mIoU: 8.9
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: ADE20K-847-ZeroShot
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-847-ZeroShot
+    Metrics:
+      mIoU: 11.4
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: ADE20K-847-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-847-ZeroShot
+    Metrics:
+      mIoU: 13.1
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: ADE20K-847-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-847-ZeroShot
+    Metrics:
+      mIoU: 14.1
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: ADE20K-847-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-150-ZeroShot
+    Metrics:
+      mIoU: 27.2
+  Config: configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py
+  Metadata:
+    Training Data: ADE20K-150-ZeroShot
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-150-ZeroShot
+    Metrics:
+      mIoU: 31.5
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: ADE20K-150-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 18.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-150-ZeroShot
+    Metrics:
+      mIoU: 34.4
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: ADE20K-150-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+    Memory (GB): 20.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
+- Name: catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384
+  In Collection: CAT-Seg
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K-150-ZeroShot
+    Metrics:
+      mIoU: 36.2
+  Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
+  Metadata:
+    Training Data: ADE20K-150-ZeroShot
+    Batch Size: 4
+    Architecture:
+    - Swin-B
+    - CAT-Seg
+    Training Resources: 4x RTX3090 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json
+  Paper:
+    Title: 'CAT-Seg: Cost Aggregation for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2303.11797
+  Code: https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/mmseg/models/necks/cat_aggregator.py
+  Framework: PyTorch
