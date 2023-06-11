@@ -25,12 +25,10 @@ CAT-Seg model structure
 
 ## Usage
 
-CAT-Seg model training needs pretrained `CLIP` model. We have implemented `ViT-B` and `ViT-L` based `CLIP` model. To further use `ViT-bigG` or `ViT-H` ones, you need additional dependencies. Please install [open_clip](https://github.com/mlfoundations/open_clip) first. The pretrained `CLIP` model state dicts are loaded from [Huggingface](https://huggingface.co/models?library=open_clip). Related tools are as follows:
+CAT-Seg model training needs pretrained `CLIP` model. We have implemented `ViT-B` and `ViT-L` based `CLIP` model. To further use `ViT-bigG` or `ViT-H` ones, you need additional dependencies. Please install [open_clip](https://github.com/mlfoundations/open_clip) first. The pretrained `CLIP` model state dicts are loaded from [Huggingface](https://huggingface.co/models?library=open_clip). Related tools are as shown in [requirements/optional.txt](requirements/optional.txt):
 
 ```shell
-pip install open_clip_torch
-pip install ftfy==6.0.1
-pip install huggingface-hub
+pip install -r requirements/optional.txt
 ```
 
 ## Results and models
