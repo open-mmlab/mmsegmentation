@@ -8,6 +8,7 @@ from torch import nn
 
 
 class Bottleneck(nn.Module):
+    """Custom implementation of Bottleneck in ResNet."""
     expansion = 4
 
     def __init__(self, inplanes, planes, stride=1):
@@ -44,6 +45,10 @@ class Bottleneck(nn.Module):
                              ('1', nn.BatchNorm2d(planes * self.expansion))]))
 
     def forward(self, x: torch.Tensor):
+        """
+        Args:
+            x (torch.Tensor): the input feature.
+        """
         identity = x
 
         out = self.relu(self.bn1(self.conv1(x)))
@@ -60,6 +65,7 @@ class Bottleneck(nn.Module):
 
 
 class AttentionPool2d(nn.Module):
+    """Attention Pool2d."""
 
     def __init__(self,
                  spacial_dim: int,
@@ -76,6 +82,10 @@ class AttentionPool2d(nn.Module):
         self.num_heads = num_heads
 
     def forward(self, x):
+        """
+        Args:
+            x (torch.Tensor): the input feature.
+        """
         x = x.flatten(start_dim=2).permute(2, 0, 1)  # NCHW -> (HW)NC
         x = torch.cat([x.mean(dim=0, keepdim=True), x], dim=0)  # (HW+1)NC
         x = x + self.positional_embedding[:, None, :].to(x.dtype)  # (HW+1)NC
@@ -152,6 +162,7 @@ class ModifiedResNet(nn.Module):
                                         heads, output_dim)
 
     def _make_layer(self, planes, blocks, stride=1):
+        """Build resnet layers."""
         layers = [Bottleneck(self._inplanes, planes, stride)]
 
         self._inplanes = planes * Bottleneck.expansion
@@ -161,6 +172,10 @@ class ModifiedResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        """
+        Args:
+            x (torch.Tensor): the input mini-batch images.
+        """
 
         def stem(x):
             x = self.relu1(self.bn1(self.conv1(x)))
@@ -184,18 +199,28 @@ class LayerNorm(nn.LayerNorm):
     """Subclass torch's LayerNorm to handle fp16."""
 
     def forward(self, x: torch.Tensor):
+        """
+        Args:
+            x (torch.Tensor): the input feature.
+        """
         orig_type = x.dtype
         ret = super().forward(x.type(torch.float32))
         return ret.type(orig_type)
 
 
 class QuickGELU(nn.Module):
+    """Wrapper of GELU activation layer."""
 
     def forward(self, x: torch.Tensor):
+        """
+        Args:
+            x (torch.Tensor): the input feature.
+        """
         return x * torch.sigmoid(1.702 * x)
 
 
 class ResidualAttentionBlock(nn.Module):
+    """Attention block with residual connection."""
 
     def __init__(self,
                  d_model: int,
@@ -214,6 +239,7 @@ class ResidualAttentionBlock(nn.Module):
         self.mask_pre_mlp = True
 
     def attention(self, x: torch.Tensor):
+        """Calculate mask multi-head-attention."""
         self.attn_mask = self.attn_mask.to(
             dtype=x.dtype,
             device=x.device) if self.attn_mask is not None else None
@@ -221,11 +247,21 @@ class ResidualAttentionBlock(nn.Module):
             x, x, x, need_weights=False, attn_mask=self.attn_mask)[0]
 
     def forward(self, x: torch.Tensor):
+        """
+        Args:
+            x (torch.Tensor): the input feature.
+        """
         x = x + self.attention(self.ln_1(x))
         x = x + self.mlp(self.ln_2(x))
         return x
 
     def forward_dense(self, x: torch.Tensor):
+        """Reinplementation of forward function for dense prediction of image
+        encoder in CLIP model.
+
+        Args:
+            x (torch.Tensor): the input feature.
+        """
         y = self.ln_1(x)
         y = F.linear(y, self.attn.in_proj_weight, self.attn.in_proj_bias)
         L, N, D = y.shape  # L N 3D
@@ -242,6 +278,7 @@ class ResidualAttentionBlock(nn.Module):
 
 
 class Transformer(nn.Module):
+    """General Transformer Architecture for both image and text encoder."""
 
     def __init__(self,
                  width: int,
@@ -267,6 +304,12 @@ class Transformer(nn.Module):
             nn.init.xavier_uniform_(self.prompt_tokens)
 
     def forward(self, x: torch.Tensor, dense=False):
+        """
+        Args:
+            x (torch.Tensor): input features.
+            dense (bool): whether use reimplemented dense forward
+                function in the last layer.
+        """
         for i, resblock in enumerate(self.resblocks):
             if self.prompt_length > 0 and i < self.prompt_depth:
                 length = self.prompt_length + 1 if i > 0 else 1
@@ -284,6 +327,7 @@ class Transformer(nn.Module):
 
 
 class VisualTransformer(nn.Module):
+    """Visual encoder for CLIP model."""
 
     def __init__(self, input_resolution: int, patch_size: int, width: int,
                  layers: int, heads: int, output_dim: int, prompt_depth: int,
@@ -317,6 +361,12 @@ class VisualTransformer(nn.Module):
         self.input_resolution = input_resolution
 
     def forward(self, x: torch.Tensor, dense=False):
+        """
+        Args:
+            x (torch.Tensor): input features.
+            dense (bool): whether use reimplemented dense forward
+                function in the last layer.
+        """
         x = self.conv1(x)  # shape = [*, width, grid, grid]
         x = x.reshape(x.shape[0], x.shape[1],
                       -1)  # shape = [*, width, grid ** 2]
@@ -350,6 +400,7 @@ class VisualTransformer(nn.Module):
         return x
 
     def resized_pos_embed(self, in_res, tgt_res, mode='bicubic'):
+        """Resize the position embedding."""
         # assert L == (input_resolution // self.patch_size) ** 2 + 1
         L, D = self.positional_embedding.shape
 
@@ -373,6 +424,10 @@ class VisualTransformer(nn.Module):
 
 
 class CLIP(nn.Module):
+    """Custom implementation of CLIP model.
+
+    Refer to: https://github.com/openai/CLIP
+    """
 
     def __init__(
         self,
@@ -437,6 +492,7 @@ class CLIP(nn.Module):
         self.logit_scale = nn.Parameter(torch.ones([]))
 
     def build_attention_mask(self):
+        """Create causal attention mask."""
         # lazily create causal attention mask, with full attention between
         # the vision tokens pytorch uses additive attention mask; fill with
         # -inf
@@ -447,9 +503,11 @@ class CLIP(nn.Module):
 
     @property
     def dtype(self):
+        """Return the dtype of the model."""
         return self.visual.conv1.weight.dtype
 
     def encode_image(self, image, masks=None, pool_mask=None, dense=False):
+        """Image encoding."""
         if pool_mask is not None:
             return self.visual(
                 image.type(self.dtype), mask=pool_mask, dense=dense)
@@ -459,6 +517,7 @@ class CLIP(nn.Module):
             return self.visual(image.type(self.dtype), masks.type(self.dtype))
 
     def encode_text(self, text):
+        """Texts encoding."""
         x = self.token_embedding(text).type(
             self.dtype)  # [batch_size, n_ctx, d_model]
 
@@ -477,6 +536,11 @@ class CLIP(nn.Module):
         return x
 
     def forward(self, image, text):
+        """
+        Args:
+            image (torch.Tensor): input images.
+            text (torch.Tensor): input text.
+        """
         image_features = self.encode_image(image)
         text_features = self.encode_text(text)
         # import pdb; pdb.set_trace()
@@ -524,6 +588,7 @@ def convert_weights(model: nn.Module):
 
 
 def build_model(state_dict: dict, prompt_depth=0, prompt_length=0):
+    """Build a CLIP model from given pretrained weights."""
     vit = 'visual.proj' in state_dict
 
     if vit:

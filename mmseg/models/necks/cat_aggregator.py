@@ -118,6 +118,7 @@ class AGWindowMSA(BaseModule):
 
     @staticmethod
     def double_step_seq(step1, len1, step2, len2):
+        """Double step sequence."""
         seq1 = torch.arange(0, step1 * len1, step1)
         seq2 = torch.arange(0, step2 * len2, step2)
         return (seq1[:, None] + seq2[None, :]).reshape(1, -1)
@@ -179,6 +180,11 @@ class AGShiftWindowMSA(BaseModule):
         self.drop = build_dropout(dropout_layer)
 
     def forward(self, query, hw_shape):
+        """
+        Args:
+            query: The input query.
+            hw_shape: The shape of the feature height and width.
+        """
         B, L, C = query.shape
         H, W = hw_shape
         assert L == H * W, 'input feature has wrong size'
@@ -697,6 +703,10 @@ class CATSegAggregator(BaseModule):
         ) if text_guidance_dim > 0 else None
 
     def feature_map(self, img_feats, text_feats):
+        """Concatenation type cost volume.
+
+        For ablation study of cost volume type.
+        """
         img_feats = F.normalize(img_feats, dim=1)  # B C H W
         img_feats = img_feats.unsqueeze(2).repeat(1, 1, text_feats.shape[1], 1,
                                                   1)
@@ -708,31 +718,18 @@ class CATSegAggregator(BaseModule):
         return torch.cat((img_feats, text_feats), dim=1)  # B 2C T H W
 
     def correlation(self, img_feats, text_feats):
+        """Correlation of image features and text features."""
         img_feats = F.normalize(img_feats, dim=1)  # B C H W
         text_feats = F.normalize(text_feats, dim=-1)  # B T P C
         corr = torch.einsum('bchw, btpc -> bpthw', img_feats, text_feats)
         return corr
 
     def corr_embed(self, x):
+        """Correlation embeddings encoding."""
         B = x.shape[0]
         corr_embed = x.permute(0, 2, 1, 3, 4).flatten(0, 1)
         corr_embed = self.conv1(corr_embed)
         corr_embed = corr_embed.reshape(B, -1, self.embed_dims, x.shape[-2],
-                                        x.shape[-1]).transpose(1, 2)
-        return corr_embed
-
-    def corr_projection(self, x, proj):
-        corr_embed = x.permute(0, 2, 3, 4, 1)
-        corr_embed = proj(corr_embed)
-        corr_embed = corr_embed.permute(0, 4, 1, 2, 3)
-        return corr_embed
-
-    def upsample(self, x):
-        B = x.shape[0]
-        corr_embed = x.transpose(1, 2).flatten(0, 1)
-        corr_embed = F.interpolate(
-            corr_embed, scale_factor=2, mode='bilinear', align_corners=True)
-        corr_embed = corr_embed.reshape(B, -1, x.shape[-4], x.shape[-2],
                                         x.shape[-1]).transpose(1, 2)
         return corr_embed
 

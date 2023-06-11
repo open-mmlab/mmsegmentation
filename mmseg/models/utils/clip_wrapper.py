@@ -40,6 +40,7 @@ _MODELS = {
 
 
 def _download(url: str, root: str = os.path.expanduser('~/.cache/clip')):
+    """Download clip pretrained weights."""
     os.makedirs(root, exist_ok=True)
     filename = os.path.basename(url)
 
@@ -82,6 +83,7 @@ def _download(url: str, root: str = os.path.expanduser('~/.cache/clip')):
 
 
 def available_models():
+    """Returns a list of available models."""
     return list(_MODELS.keys())
 
 
@@ -91,6 +93,7 @@ def load(name: str,
          jit=True,
          prompt_depth=0,
          prompt_length=0):
+    """Load target clip model."""
     if name not in _MODELS:
         raise RuntimeError(
             f'Model {name} not found; available models = {available_models()}')
@@ -172,6 +175,7 @@ def load_custom(name: str,
                 if torch.cuda.is_available() else 'cpu',
                 jit=True,
                 n_px=224):
+    """Load a customized clip model."""
     if name not in _MODELS:
         raise RuntimeError(
             f'Model {name} not found; available models = {available_models()}')
@@ -249,6 +253,7 @@ def load_custom(name: str,
 
 
 def tokenize(texts: Union[str, List[str]], context_length: int = 77):
+    """Convert texts to tokens."""
     if isinstance(texts, str):
         texts = [texts]
 

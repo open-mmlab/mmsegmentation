@@ -33,6 +33,7 @@ class UpBlock(nn.Module):
             norm_cfg=dict(type='GN', num_groups=out_channels // 16))
 
     def forward(self, x, guidance=None):
+        """Forward function with visual guidance."""
         x = self.up(x)
         if guidance is not None:
             T = x.size(0) // guidance.size(0)

@@ -10,6 +10,7 @@ import regex as re
 
 @lru_cache()
 def default_bpe():
+    """Return default BPE vocabulary path."""
     return os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         'bpe_vocab/bpe_simple_vocab_16e6.txt.gz')
@@ -58,18 +59,21 @@ def get_pairs(word):
 
 
 def basic_clean(text):
+    """Clean string."""
     text = ftfy.fix_text(text)
     text = html.unescape(html.unescape(text))
     return text.strip()
 
 
 def whitespace_clean(text):
+    """Clean whitespace in string."""
     text = re.sub(r'\s+', ' ', text)
     text = text.strip()
     return text
 
 
 class SimpleTokenizer:
+    """Customized Tokenizer implementation."""
 
     def __init__(self, bpe_path: str = default_bpe()):
         self.byte_encoder = bytes_to_unicode()
@@ -94,6 +98,7 @@ class SimpleTokenizer:
                 'll|'d|[\p{L}]+|[\p{N}]|[^\s\p{L}\p{N}]+""", re.IGNORECASE)
 
     def bpe(self, token):
+        """Refer to bpe vocabulary dictionary."""
         if token in self.cache:
             return self.cache[token]
         word = tuple(token[:-1]) + (token[-1] + '</w>', )
@@ -137,6 +142,7 @@ class SimpleTokenizer:
         return word
 
     def encode(self, text):
+        """Encode text strings."""
         bpe_tokens = []
         text = whitespace_clean(basic_clean(text)).lower()
         for token in re.findall(self.pat, text):
@@ -147,6 +153,7 @@ class SimpleTokenizer:
         return bpe_tokens
 
     def decode(self, tokens):
+        """Decoder tokens to strings."""
         text = ''.join([self.decoder[token] for token in tokens])
         text = bytearray([self.byte_decoder[c] for c in text]).decode(
             'utf-8', errors='replace').replace('</w>', ' ')
