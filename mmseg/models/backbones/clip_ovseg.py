@@ -1,10 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import json
+import os
 
 import open_clip
 import torch
 import torch.nn.functional as F
+from huggingface_hub.utils import LocalEntryNotFoundError
 from mmengine.model import BaseModule
+from open_clip import load_checkpoint
 
 from mmseg.models.utils import clip_wrapper
 from mmseg.registry import MODELS
@@ -25,6 +28,12 @@ class CLIPOVCATSeg(BaseModule):
         train_class_json (str): The training class json file.
         test_class_json (str): The path to test class json file.
         clip_pretrained (str): The pre-trained clip type.
+        clip_finetune (str): The finetuning settings of clip model.
+        custom_clip_weights (str): The custmized clip weights directory. When
+            encountering huggingface model download errors, you can manually
+            download the pretrained weights.
+        backbone_multiplier (float): The learning rate multiplier.
+            Default: 0.01.
         prompt_depth (int): The prompt depth. Default: 0.
         prompt_length (int): The prompt length. Default: 0.
         prompt_ensemble_type (str): The prompt ensemble type.
@@ -33,6 +42,8 @@ class CLIPOVCATSeg(BaseModule):
         pxiel_std (list[float]): The pixel std for feature extractor.
         clip_pixel_mean (list[float]): The pixel mean for clip model.
         clip_pxiel_std (list[float]): The pixel std for clip model.
+        clip_img_feat_size: (tuple[int]): Clip image embedding size from
+            image encoder.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
@@ -43,6 +54,7 @@ class CLIPOVCATSeg(BaseModule):
                  test_class_json,
                  clip_pretrained,
                  clip_finetune,
+                 custom_clip_weights=None,
                  backbone_multiplier=0.01,
                  prompt_depth=0,
                  prompt_length=0,
@@ -103,13 +115,33 @@ class CLIPOVCATSeg(BaseModule):
                 'ViT-H-14',
                 'laion2b_s32b_b79k') if clip_pretrained == 'ViT-H' else (
                     'ViT-bigG-14', 'laion2b_s39b_b160k')
-            open_clip_model = open_clip.create_model_and_transforms(
-                name,
-                pretrained=pretrain,
-                device=device,
-                force_image_size=336,
-            )
-            clip_model, _, clip_preprocess = open_clip_model
+            try:
+                open_clip_model = open_clip.create_model_and_transforms(
+                    name,
+                    pretrained=pretrain,
+                    device=device,
+                    force_image_size=336,
+                )
+                clip_model, _, clip_preprocess = open_clip_model
+            except ConnectionError or LocalEntryNotFoundError:
+                open_clip_model = open_clip.create_model_and_transforms(
+                    name,
+                    pretrained=None,
+                    device='cpu',
+                    force_image_size=336,
+                )
+                clip_model, _, clip_preprocess = open_clip_model
+                assert os.path.exists(
+                    os.path.join(custom_clip_weights,
+                                 'open_clip_pytorch_model.bin')
+                ), 'Please provide a valid directory for manually downloaded model.'  # noqa
+                print(f'Load {pretrain} weights from {custom_clip_weights}.')
+                load_checkpoint(
+                    clip_model,
+                    os.path.expanduser(
+                        os.path.join(custom_clip_weights,
+                                     'open_clip_pytorch_model.bin')))
+                clip_model.to(torch.device(device))
 
             self.tokenizer = open_clip.get_tokenizer(name)
         else:
