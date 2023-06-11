@@ -2,7 +2,6 @@
 import json
 import os
 
-import open_clip
 import torch
 import torch.nn.functional as F
 from huggingface_hub.utils import LocalEntryNotFoundError
@@ -111,6 +110,7 @@ class CLIPOVCATSeg(BaseModule):
         self.tokenizer = None
         if clip_pretrained == 'ViT-G' or clip_pretrained == 'ViT-H':
             # for OpenCLIP models
+            import open_clip
             name, pretrain = (
                 'ViT-H-14',
                 'laion2b_s32b_b79k') if clip_pretrained == 'ViT-H' else (
