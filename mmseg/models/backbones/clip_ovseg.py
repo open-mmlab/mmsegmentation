@@ -6,7 +6,6 @@ import torch
 import torch.nn.functional as F
 from huggingface_hub.utils import LocalEntryNotFoundError
 from mmengine.model import BaseModule
-from open_clip import load_checkpoint
 
 from mmseg.models.utils import clip_wrapper
 from mmseg.registry import MODELS
@@ -136,7 +135,7 @@ class CLIPOVCATSeg(BaseModule):
                                  'open_clip_pytorch_model.bin')
                 ), 'Please provide a valid directory for manually downloaded model.'  # noqa
                 print(f'Load {pretrain} weights from {custom_clip_weights}.')
-                load_checkpoint(
+                open_clip.load_checkpoint(
                     clip_model,
                     os.path.expanduser(
                         os.path.join(custom_clip_weights,
