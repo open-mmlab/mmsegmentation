@@ -61,8 +61,7 @@ optim_wrapper = dict(
 # learning policy
 param_scheduler = [
     # Use a linear warm-up at [0, 100) iterations
-    dict(
-        type='LinearLR', start_factor=0.01, by_epoch=False, begin=0, end=1000),
+    dict(type='LinearLR', start_factor=0.01, by_epoch=False, begin=0, end=500),
     # Use a cosine learning rate at [100, 900) iterations
     dict(
         type='CosineAnnealingLR',

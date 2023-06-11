@@ -72,6 +72,7 @@ train_dataloader = dict(
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=80000, val_interval=4000)
 
 default_hooks = dict(
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=4000),
     visualization=dict(type='SegVisualizationHook', draw=True, interval=4000))
 
 # optimizer
