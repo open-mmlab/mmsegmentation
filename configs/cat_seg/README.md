@@ -31,6 +31,29 @@ CAT-Seg model training needs pretrained `CLIP` model. We have implemented `ViT-B
 pip install -r requirements/optional.txt
 ```
 
+In addition to the necessary [data preparation](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md), you also need class texts for clip text encoder. Please download the class text json file first [cls_texts](https://github.com/open-mmlab/mmsegmentation/files/11714914/cls_texts.zip) and arrange the folder as follows:
+
+```none
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── VOCdevkit
+│   │   ├── VOC2012
+│   │   ├── VOC2010
+│   │   ├── VOCaug
+│   ├── ade
+│   ├── coco_stuff164k
+│   ├── coco.json
+│   ├── pc59.json
+│   ├── pc459.json
+│   ├── ade150.json
+│   ├── ade847.json
+│   ├── voc20b.json
+│   ├── voc20.json
+```
+
 ## Results and models
 
 ### COCO-stuff 164k
@@ -39,7 +62,7 @@ pip install -r requirements/optional.txt
 | ------- | -------------- | --------- | ------- | -------: | -------------- | ------- | ----- | ------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | CAT-Seg | R-101 & ViT-B  | 384x384   | 80000   |     20.3 | -              | RTX3090 | 42.19 |             - |   [config](https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json) |
 | CAT-Seg | Swin-B & ViT-L | 384x384   | 80000   |     18.4 | -              | RTX3090 | 47.3  |             - | [config](https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json) |
-| CAT-Seg | Swin-B & ViT-H | 384x384   | 80000   |     20.3 | -              | RTX3090 | 42.21 |             - | [config](https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json) |
+| CAT-Seg | Swin-B & ViT-H | 384x384   | 80000   |     20.3 | -              | RTX3090 | 45.89 |             - | [config](https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json) |
 | CAT-Seg | Swin-B & ViT-G | 384x384   | 80000   |        - | -              | -       | 0     |             - | [config](https://github.com/SheffieldCao/mmsegmentation/blob/support-cat-seg/configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933-7120c214.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/mask2former/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640/mask2former_swin-l-in22k-384x384-pre_8xb2-160k_ade20k-640x640_20221203_235933.json) |
 
 ### PASCAL-Context-459-ZeroShot
