@@ -64,10 +64,8 @@ class CATSegHead(BaseDecodeHead):
                  decoder_dims=(64, 32),
                  decoder_guidance_dims=(256, 128),
                  decoder_guidance_proj_dims=(32, 16),
-                 prediction_size=(384, 384),
                  **kwargs):
         super().__init__(**kwargs)
-        self.prediction_size = prediction_size
         self.decoder_guidance_projection = nn.ModuleList([
             nn.Sequential(
                 nn.Conv2d(

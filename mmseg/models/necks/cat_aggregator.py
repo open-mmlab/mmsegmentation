@@ -313,9 +313,6 @@ class AGSwinBlock(BaseModule):
             Default: dict(type='GELU').
         norm_cfg (dict, optional): The config dict of normalization.
             Default: dict(type='LN').
-        with_cp (bool, optional): Use checkpoint or not. Using checkpoint
-            will save some memory while slowing down the training speed.
-            Default: False.
         init_cfg (dict | list | None, optional): The init config.
             Default: None.
     """
@@ -405,9 +402,6 @@ class SpatialAggregateLayer(BaseModule):
         window_size (int, optional): The local window scale. Default: 7.
         qk_scale (float | None, optional): Override default qk scale of
             head_dim ** -0.5 if set. Default: None.
-        with_cp (bool, optional): Use checkpoint or not. Using checkpoint
-            will save some memory while slowing down the training speed.
-            Default: False.
         init_cfg (dict | list | None, optional): The init config.
             Default: None.
     """
