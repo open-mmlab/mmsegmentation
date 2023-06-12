@@ -69,7 +69,7 @@ Models:
     Task: Semantic Segmentation
     Dataset: COCO-stuff 164k
     Metrics:
-      mIoU: 45.89
+      mIoU: 46.78
   Config: configs/cat_seg/catseg_vitl-swin-b_4xb1-warmcoslr2e-4_adamw-80k_coco-stuff164k_384x384.py
   Metadata:
     Training Data: COCO-stuff 164k
