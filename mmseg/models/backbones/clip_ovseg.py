@@ -4,7 +4,7 @@ import os
 
 import torch
 import torch.nn.functional as F
-from huggingface_hub.utils import LocalEntryNotFoundError
+from huggingface_hub.utils._errors import LocalEntryNotFoundError
 from mmengine.model import BaseModule
 
 from mmseg.models.utils import clip_wrapper
@@ -122,7 +122,16 @@ class CLIPOVCATSeg(BaseModule):
                     force_image_size=336,
                 )
                 clip_model, _, clip_preprocess = open_clip_model
-            except ConnectionError or LocalEntryNotFoundError:
+            except ConnectionError or LocalEntryNotFoundError as e:
+                print(f'Has {e} when loading weights from huggingface!')
+                print(
+                    f'Will load {pretrain} weights from {custom_clip_weights}.'
+                )
+                assert custom_clip_weights is not None, 'Please specify custom weights directory.'  # noqa
+                assert os.path.exists(
+                    os.path.join(custom_clip_weights,
+                                 'open_clip_pytorch_model.bin')
+                ), 'Please provide a valid directory for manually downloaded model.'  # noqa
                 open_clip_model = open_clip.create_model_and_transforms(
                     name,
                     pretrained=None,
@@ -130,11 +139,7 @@ class CLIPOVCATSeg(BaseModule):
                     force_image_size=336,
                 )
                 clip_model, _, clip_preprocess = open_clip_model
-                assert os.path.exists(
-                    os.path.join(custom_clip_weights,
-                                 'open_clip_pytorch_model.bin')
-                ), 'Please provide a valid directory for manually downloaded model.'  # noqa
-                print(f'Load {pretrain} weights from {custom_clip_weights}.')
+
                 open_clip.load_checkpoint(
                     clip_model,
                     os.path.expanduser(
