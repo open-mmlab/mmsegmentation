@@ -1,6 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import platform
 from os.path import dirname, join
 
+import pytest
 import torch
 from mmengine import Config
 from mmengine.registry import init_default_scope
@@ -8,6 +10,9 @@ from mmengine.registry import init_default_scope
 from mmseg.registry import MODELS
 
 
+@pytest.mark.skipif(
+    'win' in platform.system().lower(),
+    reason='skip on windows due to limited RAM.')
 def test_fpn():
     init_default_scope('mmseg')
     repo_dpath = dirname(dirname(dirname(dirname(__file__))))
