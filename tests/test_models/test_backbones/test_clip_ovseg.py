@@ -32,20 +32,13 @@ def test_clip_ov_catseg():
         test_class_json,
         clip_pretrained,
         clip_finetune,
-        backbone_multiplier=0)
+        backbone_multiplier=0).to(device)
     model.train()
     for p in model.feature_extractor.parameters():
         assert not p.requires_grad
 
     # Test normal inference
     temp = torch.randn((1, 3, 384, 384)).to(device)
-    model = CLIPOVCATSeg(
-        feature_extractor,
-        train_class_json,
-        test_class_json,
-        clip_pretrained,
-        clip_finetune,
-        backbone_multiplier=0).to(device)
     outputs = model(temp)
     assert outputs['appearance_feat'][0].shape == (1, 256, 96, 96)
     assert outputs['appearance_feat'][1].shape == (1, 512, 48, 48)
@@ -55,16 +48,12 @@ def test_clip_ov_catseg():
     assert outputs['clip_img_feat'].shape == (1, 512, 24, 24)
 
     # Test finetune CLIP Visual encoder
-    model = CLIPOVCATSeg(feature_extractor, train_class_json, test_class_json,
-                         clip_pretrained, clip_finetune)
     model.train()
     for n, p in model.clip_model.visual.named_parameters():
         if clip_finetune in n:
             assert p.requires_grad
 
     # Test frozen CLIP text encoder
-    model = CLIPOVCATSeg(feature_extractor, train_class_json, test_class_json,
-                         clip_pretrained, clip_finetune)
     model.train()
     for p in model.clip_model.transformer.parameters():
         assert not p.requires_grad
