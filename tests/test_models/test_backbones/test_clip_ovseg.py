@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import pytest
 import torch
 
 from mmseg.models.backbones.clip_ovseg import CLIPOVCATSeg
@@ -19,6 +20,8 @@ clip_pretrained = 'ViT-B/16'
 clip_finetune = 'attention'
 
 
+@pytest.mark.skipif(
+    torch.__version__ < '1.7.0', reason='Jit load requirements.')
 def test_clip_ov_catseg():
     """Test CLIPOVCATSeg backbone."""
 
