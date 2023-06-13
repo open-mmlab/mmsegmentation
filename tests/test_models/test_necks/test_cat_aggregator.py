@@ -10,11 +10,11 @@ from mmseg.registry import MODELS
 
 def test_fpn():
     init_default_scope('mmseg')
-    repo_dpath = dirname(dirname(__file__))
+    repo_dpath = dirname(dirname(dirname(dirname(__file__))))
     cfg = Config.fromfile(
         join(
             repo_dpath,
-            '../../configs/cat_seg/catseg_vitb-r101_4xb1-warmcoslr2e-4-adamw-80k_ade20k-384x384.py'  # noqa
+            'configs/cat_seg/catseg_vitb-r101_4xb2-warmcoslr2e-4-adamw-80k_coco-stuff164k-384x384.py'  # noqa
         ))
     inputs = dict(
         appearance_feat=[

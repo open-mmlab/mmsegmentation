@@ -13,8 +13,8 @@ feature_extractor = dict(
     norm_eval=False,
     style='pytorch',
     contract_dilation=True)
-train_class_json = 'tests/data/coco.json'
-test_class_json = 'tests/data/coco.json'
+train_class_json = 'tests/data/coco_classes_text.json'
+test_class_json = 'tests/data/coco_classes_text.json'
 clip_pretrained = 'ViT-B/16'
 clip_finetune = 'attention'
 
