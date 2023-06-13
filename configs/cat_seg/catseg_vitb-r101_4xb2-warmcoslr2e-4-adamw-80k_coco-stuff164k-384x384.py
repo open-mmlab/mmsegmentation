@@ -52,7 +52,6 @@ model = dict(
         decoder_dims=(64, 32),
         decoder_guidance_dims=(512, 256),
         decoder_guidance_proj_dims=(32, 16),
-        prediction_size=crop_size,
         loss_decode=dict(
             type='CrossEntropyLoss',
             use_sigmoid=False,
