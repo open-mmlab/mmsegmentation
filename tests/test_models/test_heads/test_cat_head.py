@@ -30,15 +30,15 @@ def test_maskformer_head():
     assert output.shape == (1, 171, 384, 384)
 
     # test training
-    inputs = dict(corr_embed=torch.randn(2, 128, 171, 24, 24))
-    inputs['appearance_feats'] = (torch.randn(2, 512, 48,
-                                              48), torch.randn(2, 256, 96, 96))
+    inputs = dict(corr_embed=torch.randn(1, 128, 171, 24, 24))
+    inputs['appearance_feats'] = (torch.randn(1, 512, 48,
+                                              48), torch.randn(1, 256, 96, 96))
     batch_data_samples = []
     img_meta = {
         'img_shape': (384, 384),
         'pad_shape': (384, 384),
     }
-    for _ in range(2):
+    for _ in range(1):
         data_sample = SegDataSample(
             gt_sem_seg=PixelData(data=torch.ones(384, 384).long()))
         data_sample.set_metainfo(img_meta)

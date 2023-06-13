@@ -6,15 +6,13 @@ from mmseg.models.backbones.clip_ovseg import CLIPOVCATSeg
 feature_extractor = dict(
     type='ResNet',
     depth=101,
-    # only use the first three layers
     num_stages=3,
     out_indices=(0, 1, 2),
     dilations=(1, 1, 1),
     strides=(1, 2, 2),
     norm_eval=False,
     style='pytorch',
-    contract_dilation=True,
-    init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet101'))
+    contract_dilation=True)
 train_class_json = 'tests/data/coco.json'
 test_class_json = 'tests/data/coco.json'
 clip_pretrained = 'ViT-B/16'
