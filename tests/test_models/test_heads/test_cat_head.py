@@ -12,11 +12,11 @@ from mmseg.structures import SegDataSample
 
 def test_maskformer_head():
     init_default_scope('mmseg')
-    repo_dpath = dirname(dirname(__file__))
+    repo_dpath = dirname(dirname(dirname(dirname(__file__))))
     cfg = Config.fromfile(
         join(
             repo_dpath,
-            '../../configs/cat_seg/catseg_vitb-r101_4xb1-warmcoslr2e-4-adamw-80k_ade20k-384x384.py'  # noqa
+            'configs/cat_seg/catseg_vitb-r101_4xb1-warmcoslr2e-4-adamw-80k_ade20k-384x384.py'  # noqa
         ))
     cfg.model.train_cfg = None
     decode_head = MODELS.build(cfg.model.decode_head)
@@ -27,7 +27,6 @@ def test_maskformer_head():
     batch_img_metas = [dict(img_shape=(384, 384))]
     test_cfg = cfg.model.test_cfg
     output = decode_head.predict(inputs, batch_img_metas, test_cfg)
-    print(output.shape)
     assert output.shape == (1, 171, 384, 384)
 
     # test training
