@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import platform
 from os.path import dirname, join
 
 import pytest
@@ -11,8 +10,7 @@ from mmseg.registry import MODELS
 
 
 @pytest.mark.skipif(
-    'win' in platform.system().lower(),
-    reason='skip on windows due to limited RAM.')
+    not torch.cuda.is_available(), reason='skip on cpu due to limited RAM.')
 def test_fpn():
     init_default_scope('mmseg')
     repo_dpath = dirname(dirname(dirname(dirname(__file__))))
