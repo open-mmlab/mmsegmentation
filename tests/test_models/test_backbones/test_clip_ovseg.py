@@ -21,6 +21,9 @@ clip_finetune = 'attention'
 
 
 @pytest.mark.skipif(
+    not torch.cuda.is_available(),
+    reason='skip on cpu due to limited running time.')
+@pytest.mark.skipif(
     torch.__version__ < '1.7.0', reason='Jit load requirements.')
 def test_clip_ov_catseg():
     """Test CLIPOVCATSeg backbone."""
