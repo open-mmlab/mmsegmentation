@@ -159,13 +159,13 @@ class CLIPOVCATSeg(BaseModule):
 
         # pre-encode classes text prompts
         text_features = self.class_embeddings(self.class_texts,
-                                              prompt_templates,
-                                              clip_model).permute(1, 0,
-                                                                  2).float()
+                                              prompt_templates, clip_model,
+                                              device).permute(1, 0, 2).float()
         text_features_test = self.class_embeddings(self.test_class_texts,
                                                    prompt_templates,
-                                                   clip_model).permute(
-                                                       1, 0, 2).float()
+                                                   clip_model,
+                                                   device).permute(1, 0,
+                                                                   2).float()
         self.register_buffer('text_features', text_features, False)
         self.register_buffer('text_features_test', text_features_test, False)
 
@@ -198,13 +198,19 @@ class CLIPOVCATSeg(BaseModule):
                 params.requires_grad = finetune_backbone
 
     @torch.no_grad()
-    def class_embeddings(self, classnames, templates, clip_model):
+    def class_embeddings(self,
+                         classnames,
+                         templates,
+                         clip_model,
+                         device='cpu'):
         """Convert class names to text embeddings by clip model.
 
         Args:
             classnames (list): loaded from json file.
             templates (dict): text template.
             clip_model (nn.Module): prepared clip model.
+            device (str | torch.device): loading device of text
+                encoder results.
         """
         zeroshot_weights = []
         for classname in classnames:
@@ -218,9 +224,9 @@ class CLIPOVCATSeg(BaseModule):
                 texts = [template.format(classname)
                          for template in templates]  # format with class
             if self.tokenizer is not None:
-                texts = self.tokenizer(texts).cuda()
+                texts = self.tokenizer(texts).to(device)
             else:
-                texts = clip_wrapper.tokenize(texts).cuda()
+                texts = clip_wrapper.tokenize(texts).to(device)
             class_embeddings = clip_model.encode_text(texts)
             class_embeddings /= class_embeddings.norm(dim=-1, keepdim=True)
             if len(templates) != class_embeddings.shape[0]:
@@ -229,7 +235,7 @@ class CLIPOVCATSeg(BaseModule):
                 class_embeddings /= class_embeddings.norm(dim=-1, keepdim=True)
             class_embedding = class_embeddings
             zeroshot_weights.append(class_embedding)
-        zeroshot_weights = torch.stack(zeroshot_weights, dim=1).cuda()
+        zeroshot_weights = torch.stack(zeroshot_weights, dim=1).to(device)
         return zeroshot_weights
 
     def custom_normalize(self, inputs):
