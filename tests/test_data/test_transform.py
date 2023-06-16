@@ -688,3 +688,63 @@ def test_mosaic():
     mosaic_module = build_from_cfg(transform, PIPELINES)
     results = mosaic_module(results)
     assert results['img'].shape[:2] == (20, 24)
+
+
+def test_albu_transform():
+    results = dict(
+        img_prefix=osp.join(osp.dirname(__file__), '../data'),
+        img_info=dict(filename='color.jpg'))
+
+    # Define simple pipeline
+    load = dict(type='LoadImageFromFile')
+    load = build_from_cfg(load, PIPELINES)
+
+    albu_transform = dict(
+        type='Albu', transforms=[dict(type='ChannelShuffle', p=1)])
+    albu_transform = build_from_cfg(albu_transform, PIPELINES)
+
+    normalize = dict(type='Normalize', mean=[0] * 3, std=[0] * 3, to_rgb=True)
+    normalize = build_from_cfg(normalize, PIPELINES)
+
+    # Execute transforms
+    results = load(results)
+    results = albu_transform(results)
+    results = normalize(results)
+
+    assert results['img'].dtype == np.float32
+
+
+def test_albu_channel_order():
+    results = dict(
+        img_prefix=osp.join(osp.dirname(__file__), '../data'),
+        img_info=dict(filename='color.jpg'))
+
+    # Define simple pipeline
+    load = dict(type='LoadImageFromFile')
+    load = build_from_cfg(load, PIPELINES)
+
+    # Transform is modifying B channel
+    albu_transform = dict(
+        type='Albu',
+        transforms=[
+            dict(
+                type='RGBShift',
+                r_shift_limit=0,
+                g_shift_limit=0,
+                b_shift_limit=200,
+                p=1)
+        ])
+    albu_transform = build_from_cfg(albu_transform, PIPELINES)
+
+    # Execute transforms
+    results_load = load(results)
+    results_albu = albu_transform(results_load)
+
+    # assert only Green and Red channel are not modified
+    np.testing.assert_array_equal(results_albu['img'][..., 1:],
+                                  results_load['img'][..., 1:])
+
+    # assert Blue channel is modified
+    with pytest.raises(AssertionError):
+        np.testing.assert_array_equal(results_albu['img'][..., 0],
+                                      results_load['img'][..., 0])

@@ -177,6 +177,61 @@ class TestLoading(object):
         assert gt_array.dtype == np.uint8
         np.testing.assert_array_equal(gt_array, true_mask)
 
+        # test with removing a class and reducing zero label simultaneously
+        results = dict(
+            img_info=dict(filename=img_path),
+            ann_info=dict(seg_map=gt_path),
+            # since reduce_zero_label is True, there are only 4 real classes.
+            # if the full set of classes is ["A", "B", "C", "D"], the
+            # following label map simulates the dataset option
+            # classes=["A", "C", "D"] which removes class "B".
+            label_map={
+                0: 0,
+                1: 255,  # simulate removing class 1
+                2: 1,
+                3: 2
+            },
+            seg_fields=[])
+
+        load_imgs = LoadImageFromFile()
+        results = load_imgs(copy.deepcopy(results))
+
+        # reduce zero label
+        load_anns = LoadAnnotations(reduce_zero_label=True)
+        results = load_anns(copy.deepcopy(results))
+
+        gt_array = results['gt_semantic_seg']
+
+        true_mask = np.ones_like(gt_array) * 255  # all zeros get mapped to 255
+        true_mask[2:4, 2:4] = 0  # 1s are reduced to class 0 mapped to class 0
+        true_mask[2:4, 6:8] = 255  # 2s are reduced to class 1 which is removed
+        true_mask[6:8, 2:4] = 1  # 3s are reduced to class 2 mapped to class 1
+        true_mask[6:8, 6:8] = 2  # 4s are reduced to class 3 mapped to class 2
+
+        assert results['seg_fields'] == ['gt_semantic_seg']
+        assert gt_array.shape == (10, 10)
+        assert gt_array.dtype == np.uint8
+        np.testing.assert_array_equal(gt_array, true_mask)
+
+        # test no custom classes
+        results = dict(
+            img_info=dict(filename=img_path),
+            ann_info=dict(seg_map=gt_path),
+            seg_fields=[])
+
+        load_imgs = LoadImageFromFile()
+        results = load_imgs(copy.deepcopy(results))
+
+        load_anns = LoadAnnotations()
+        results = load_anns(copy.deepcopy(results))
+
+        gt_array = results['gt_semantic_seg']
+
+        assert results['seg_fields'] == ['gt_semantic_seg']
+        assert gt_array.shape == (10, 10)
+        assert gt_array.dtype == np.uint8
+        np.testing.assert_array_equal(gt_array, test_gt)
+
         # test no custom classes
         results = dict(
             img_info=dict(filename=img_path),

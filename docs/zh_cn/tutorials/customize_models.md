@@ -83,7 +83,7 @@ MMSegmentation 里主要有2种组件：
 ```python
 import torch.nn as nn
 
-from ..registry import BACKBONES
+from ..builder import BACKBONES
 
 
 @BACKBONES.register_module

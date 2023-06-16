@@ -140,8 +140,7 @@ def test_beit_init():
         }
     }
     model = BEiT(img_size=(512, 512))
-    with pytest.raises(AttributeError):
-        model.resize_rel_pos_embed(ckpt)
+    ckpt = model.resize_rel_pos_embed(ckpt)
 
     # pretrained=None
     # init_cfg=123, whose type is unsupported

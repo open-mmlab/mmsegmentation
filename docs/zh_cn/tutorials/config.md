@@ -11,7 +11,7 @@
 对于所有在同一个文件夹下的配置文件，推荐**只有一个**对应的**原始配置**文件。所有其他的配置文件都应该继承自这个**原始配置**文件。这样就能保证配置文件的最大继承深度为 3。
 
 为了便于理解，我们推荐社区贡献者继承已有的方法配置文件。
-例如，如果一些修改是基于 DeepLabV3，使用者首先首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容以完成继承。
+例如，如果一些修改是基于 DeepLabV3，使用者首先应该通过指定 `_base_ = ../deeplabv3/deeplabv3_r50_512x1024_40ki_cityscapes.py`来继承基础 DeepLabV3 结构，再去修改配置文件里其他内容以完成继承。
 
 如果您正在构建一个完整的新模型，它完全没有和已有的方法共享一些结构，您可能需要在 `configs` 下面创建一个文件夹 `xxxnet`。
 更详细的文档，请参照 [mmcv](https://mmcv.readthedocs.io/en/latest/understand_mmcv/config.html) 。
@@ -214,10 +214,15 @@ data = dict(
         ]))
 log_config = dict(  # 注册日志钩 (register logger hook) 的配置文件。
     interval=50,  # 打印日志的间隔
-    hooks=[
-        # dict(type='TensorboardLoggerHook')  # 同样支持 Tensorboard 日志
-        dict(type='TextLoggerHook', by_epoch=False)
+      hooks=[ # 训练期间执行的钩子
+        dict(type='TextLoggerHook', by_epoch=False),
+        dict(type='TensorboardLoggerHook', by_epoch=False),
+        dict(type='MMSegWandbHook', by_epoch=False, # 还支持 Wandb 记录器，它需要安装 `wandb`。
+             init_kwargs={'entity': "OpenMMLab", # 用于登录wandb的实体
+                          'project': "mmseg", # WandB中的项目名称
+                          'config': cfg_dict}), # 检查 https://docs.wandb.ai/ref/python/init 以获取更多初始化参数
     ])
+
 dist_params = dict(backend='nccl')  # 用于设置分布式训练的参数，端口也同样可被设置。
 log_level = 'INFO'  # 日志的级别。
 load_from = None  # 从一个给定路径里加载模型作为预训练模型，它并不会消耗训练时间。

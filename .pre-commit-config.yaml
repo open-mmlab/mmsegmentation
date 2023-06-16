@@ -1,18 +1,18 @@
 repos:
-  - repo: https://gitlab.com/pycqa/flake8.git
-    rev: 3.8.3
+  - repo: https://github.com/PYCQA/flake8.git
+    rev: 5.0.4
     hooks:
       - id: flake8
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+  - repo: https://github.com/zhouzaida/isort
+    rev: 5.12.1
     hooks:
       - id: isort
   - repo: https://github.com/pre-commit/mirrors-yapf
-    rev: v0.30.0
+    rev: v0.32.0
     hooks:
       - id: yapf
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.1.0
+    rev: v4.3.0
     hooks:
       - id: trailing-whitespace
       - id: check-yaml
@@ -34,7 +34,7 @@ repos:
           - mdformat_frontmatter
           - linkify-it-py
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.1.0
+    rev: v2.2.1
     hooks:
       - id: codespell
   - repo: https://github.com/myint/docformatter
@@ -42,16 +42,16 @@ repos:
     hooks:
       - id: docformatter
         args: ["--in-place", "--wrap-descriptions", "79"]
-  - repo: local
-    hooks:
-      - id: update-model-index
-        name: update-model-index
-        description: Collect model information and update model-index.yml
-        entry: .dev/md2yml.py
-        additional_dependencies: [mmcv, lxml, opencv-python]
-        language: python
-        files: ^configs/.*\.md$
-        require_serial: true
+  # - repo: local
+  #   hooks:
+  #     - id: update-model-index
+  #       name: update-model-index
+  #       description: Collect model information and update model-index.yml
+  #       entry: .dev/md2yml.py
+  #       additional_dependencies: [mmcv, lxml, opencv-python]
+  #       language: python
+  #       files: ^configs/.*\.md$
+  #       require_serial: true
   - repo: https://github.com/open-mmlab/pre-commit-hooks
     rev: v0.2.0  # Use the rev to fix revision
     hooks:

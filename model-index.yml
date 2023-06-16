@@ -30,11 +30,13 @@ Import:
 - configs/nonlocal_net/nonlocal_net.yml
 - configs/ocrnet/ocrnet.yml
 - configs/point_rend/point_rend.yml
+- configs/poolformer/poolformer.yml
 - configs/psanet/psanet.yml
 - configs/pspnet/pspnet.yml
 - configs/resnest/resnest.yml
 - configs/segformer/segformer.yml
 - configs/segmenter/segmenter.yml
+- configs/segnext/segnext.yml
 - configs/sem_fpn/sem_fpn.yml
 - configs/setr/setr.yml
 - configs/stdc/stdc.yml
@@ -43,3 +45,4 @@ Import:
 - configs/unet/unet.yml
 - configs/upernet/upernet.yml
 - configs/vit/vit.yml
+- configs/imagenets/imagenets.yml

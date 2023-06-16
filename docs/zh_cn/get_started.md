@@ -58,7 +58,7 @@ git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
 pip install -v -e .
 # "-v "指详细说明，或更多的输出
-# "-e" 表示在可编辑模式下安装项目，因此对代码所做的任何本地修改都会生效，从而无需重新安# 装。
+# "-e" 表示在可编辑模式下安装项目，因此对代码所做的任何本地修改都会生效，从而无需重新安装。
 ```
 
 ### 作为 Python 包安装
@@ -66,6 +66,9 @@ pip install -v -e .
 ```shell
 pip install mmsegmentation
 ```
+
+**注意：**
+如果你想使用 albumentations，我们建议使用 pip install-U albumentations --no-binary qudida,albumentations 进行安装。如果您仅使用 pip install albumentations>=0.3.2 进行安装，它将同时安装 opencv-python-headless（即使您已经安装了 opencv-python）。我们建议在安装了 albumentations 后检查环境，以确保没有同时安装 opencv-python 和 opencv-python-headless，因为如果两者都安装了，可能会导致意外问题。请参阅[官方文档](https://albumentations.ai/docs/getting_started/installation/#note-on-opencv-dependencies)了解更多详细信息。
 
 ## 验证安装
 
@@ -153,11 +156,11 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.1
 
 ### 在 CPU 环境中安装
 
-MMPose 可以仅在 CPU 环境中安装，在 CPU 模式下，您可以完成训练（需要 MMCV 版本 >= 1.4.4）、测试和模型推理等所有操作。
+MMSegmentation 可以仅在 CPU 环境中安装，在 CPU 模式下，您可以完成训练（需要 MMCV 版本 >= 1.4.4）、测试和模型推理等所有操作。
 
 ### 在 Google Colab 中安装
 
-[Google Colab](https://colab.research.google.com/) 通常已经包含了 PyTorch 环境，因此我们只需要安装 MMCV 和 MMPose 即可，命令如下：
+[Google Colab](https://colab.research.google.com/) 通常已经包含了 PyTorch 环境，因此我们只需要安装 MMCV 和 MMSegmentation 即可，命令如下：
 
 **第一步** 使用 [MIM](https://github.com/open-mmlab/mim) 安装 [MMCV](https://github.com/open-mmlab/mmcv)
 

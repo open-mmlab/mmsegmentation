@@ -326,7 +326,7 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 76.63
+      mIoU: 75.63
       mIoU(ms+flip): 77.51
   Config: configs/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes.py
   Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3/deeplabv3_r18b-d8_769x769_80k_cityscapes/deeplabv3_r18b-d8_769x769_80k_cityscapes_20201225_094144-fdc985d9.pth

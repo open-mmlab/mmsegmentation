@@ -17,9 +17,10 @@ Models:
   - Task: Semantic Segmentation
     Dataset: Cityscapes
     Metrics:
-      mIoU: 61.54
+      mIoU: 70.16
+      mIoU(ms+flip): 72.1
   Config: configs/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes.py
-  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes/fcn_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-d24c28c1.pth
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x1024_80k_cityscapes/fcn_m-v2-d8_512x1024_80k_cityscapes_20230227-144821-0d3a4e51.pth
 - Name: pspnet_m-v2-d8_512x1024_80k_cityscapes
   In Collection: PSPNet
   Metadata:

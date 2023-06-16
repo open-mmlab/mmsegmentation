@@ -1,4 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import warnings
 from abc import ABCMeta, abstractmethod
 
 import torch
@@ -18,6 +19,9 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         in_channels (int|Sequence[int]): Input channels.
         channels (int): Channels after modules, before conv_seg.
         num_classes (int): Number of classes.
+        out_channels (int): Output channels of conv_seg.
+        threshold (float): Threshold for binary segmentation in the case of
+            `out_channels==1`. Default: None.
         dropout_ratio (float): Ratio of dropout layer. Default: 0.1.
         conv_cfg (dict|None): Config of conv layers. Default: None.
         norm_cfg (dict|None): Config of norm layers. Default: None.
@@ -48,6 +52,10 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             Default: None.
         align_corners (bool): align_corners argument of F.interpolate.
             Default: False.
+        downsample_label_ratio (int): The ratio to downsample seg_label
+            in losses. downsample_label_ratio > 1 will reduce memory usage.
+            Disabled if downsample_label_ratio = 0.
+            Default: 0.
         init_cfg (dict or list[dict], optional): Initialization config dict.
     """
 
@@ -56,6 +64,8 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                  channels,
                  *,
                  num_classes,
+                 out_channels=None,
+                 threshold=None,
                  dropout_ratio=0.1,
                  conv_cfg=None,
                  norm_cfg=None,
@@ -69,12 +79,12 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
                  ignore_index=255,
                  sampler=None,
                  align_corners=False,
+                 downsample_label_ratio=0,
                  init_cfg=dict(
                      type='Normal', std=0.01, override=dict(name='conv_seg'))):
         super(BaseDecodeHead, self).__init__(init_cfg)
         self._init_inputs(in_channels, in_index, input_transform)
         self.channels = channels
-        self.num_classes = num_classes
         self.dropout_ratio = dropout_ratio
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
@@ -83,6 +93,35 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         self.ignore_index = ignore_index
         self.align_corners = align_corners
+        self.downsample_label_ratio = downsample_label_ratio
+        if not isinstance(self.downsample_label_ratio, int) or \
+           self.downsample_label_ratio < 0:
+            warnings.warn('downsample_label_ratio should '
+                          'be set as an integer equal or larger than 0.')
+
+        if out_channels is None:
+            if num_classes == 2:
+                warnings.warn('For binary segmentation, we suggest using'
+                              '`out_channels = 1` to define the output'
+                              'channels of segmentor, and use `threshold`'
+                              'to convert seg_logist into a prediction'
+                              'applying a threshold')
+            out_channels = num_classes
+
+        if out_channels != num_classes and out_channels != 1:
+            raise ValueError(
+                'out_channels should be equal to num_classes,'
+                'except binary segmentation set out_channels == 1 and'
+                f'num_classes == 2, but got out_channels={out_channels}'
+                f'and num_classes={num_classes}')
+
+        if out_channels == 1 and threshold is None:
+            threshold = 0.3
+            warnings.warn('threshold is not defined for binary, and defaults'
+                          'to 0.3')
+        self.num_classes = num_classes
+        self.out_channels = out_channels
+        self.threshold = threshold
 
         if isinstance(loss_decode, dict):
             self.loss_decode = build_loss(loss_decode)
@@ -99,7 +138,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         else:
             self.sampler = None
 
-        self.conv_seg = nn.Conv2d(channels, num_classes, kernel_size=1)
+        self.conv_seg = nn.Conv2d(channels, self.out_channels, kernel_size=1)
         if dropout_ratio > 0:
             self.dropout = nn.Dropout2d(dropout_ratio)
         else:
@@ -200,7 +239,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-        seg_logits = self.forward(inputs)
+        seg_logits = self(inputs)
         losses = self.losses(seg_logits, gt_semantic_seg)
         return losses
 
@@ -232,6 +271,13 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
     def losses(self, seg_logit, seg_label):
         """Compute segmentation loss."""
         loss = dict()
+        if self.downsample_label_ratio > 0:
+            seg_label = seg_label.float()
+            target_size = (seg_label.shape[2] // self.downsample_label_ratio,
+                           seg_label.shape[3] // self.downsample_label_ratio)
+            seg_label = resize(
+                input=seg_label, size=target_size, mode='nearest')
+            seg_label = seg_label.long()
         seg_logit = resize(
             input=seg_logit,
             size=seg_label.shape[2:],

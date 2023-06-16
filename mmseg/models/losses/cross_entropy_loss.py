@@ -199,7 +199,7 @@ class CrossEntropyLoss(nn.Module):
 
     Args:
         use_sigmoid (bool, optional): Whether the prediction uses sigmoid
-            of softmax. Defaults to False.
+            instead of softmax. Defaults to False.
         use_mask (bool, optional): Whether to use mask cross entropy loss.
             Defaults to False.
         reduction (str, optional): . Defaults to 'mean'.

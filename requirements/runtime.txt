@@ -3,3 +3,4 @@ mmcls>=0.20.1
 numpy
 packaging
 prettytable
+scipy

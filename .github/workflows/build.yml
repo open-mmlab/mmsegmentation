@@ -8,6 +8,7 @@ on:
       - 'docker/**'
       - 'tools/**'
       - '**.md'
+      - 'projects/**'
 
   pull_request:
     paths-ignore:
@@ -17,6 +18,7 @@ on:
       - 'tools/**'
       - 'docs/**'
       - '**.md'
+      - 'projects/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -62,6 +64,7 @@ jobs:
       - name: Install unittest dependencies
         run: |
           pip install -r requirements.txt
+          pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - name: Build and install
         run: rm -rf .eggs && pip install -e .
       - name: Run unittests and generate coverage report
@@ -70,13 +73,14 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        if: ${{matrix.torch >= '1.5.0'}}
+        # timm from v0.6.11 requires torch>=1.7
+        if: ${{matrix.torch != '1.5.1' && matrix.torch != '1.6.0'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.5.0'}}
+        if: ${{matrix.torch == '1.5.1' || matrix.torch == '1.6.0'}}
 
   build_cuda101:
     runs-on: ubuntu-18.04
@@ -122,16 +126,15 @@ jobs:
           apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 python${{matrix.python-version}}-dev
           apt-get clean
           rm -rf /var/lib/apt/lists/*
-      - name: Install Pillow
-        run: python -m pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/${{matrix.torch_version}}/index.html
+          python -m pip install -U openmim
+          mim install mmcv-full
           python -m pip install -r requirements.txt
+          python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
         run: |
@@ -144,13 +147,14 @@ jobs:
           coverage run --branch --source mmseg -m pytest tests/
           coverage xml
           coverage report -m
-        if: ${{matrix.torch >= '1.5.0'}}
+        # timm from v0.6.11 requires torch>=1.7
+        if: ${{matrix.torch != '1.5.1+cu101' && matrix.torch != '1.6.0+cu101'}}
       - name: Skip timm unittests and generate coverage report
         run: |
           coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
           coverage xml
           coverage report -m
-        if: ${{matrix.torch < '1.5.0'}}
+        if: ${{matrix.torch == '1.5.1+cu101' || matrix.torch == '1.6.0+cu101'}}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.10
         with:
@@ -161,10 +165,12 @@ jobs:
           fail_ci_if_error: false
 
   build_cuda102:
+    env:
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
     runs-on: ubuntu-18.04
     container:
       image: pytorch/pytorch:1.9.0-cuda10.2-cudnn7-devel
-
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
@@ -173,7 +179,6 @@ jobs:
           - torch: 1.9.0+cu102
             torch_version: torch1.9
             torchvision: 0.10.0+cu102
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -189,16 +194,15 @@ jobs:
           apt-get update && apt-get install -y libgl1-mesa-glx ffmpeg libsm6 libxext6 git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6
           apt-get clean
           rm -rf /var/lib/apt/lists/*
-      - name: Install Pillow
-        run: python -m pip install Pillow==6.2.2
-        if: ${{matrix.torchvision < 0.5}}
       - name: Install PyTorch
         run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
       - name: Install mmseg dependencies
         run: |
           python -V
-          python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/${{matrix.torch_version}}/index.html
+          python -m pip install openmim
+          mim install mmcv-full
           python -m pip install -r requirements.txt
+          python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
           python -c 'import mmcv; print(mmcv.__version__)'
       - name: Build and install
         run: |
@@ -219,6 +223,62 @@ jobs:
           env_vars: OS,PYTHON
           name: codecov-umbrella
           fail_ci_if_error: false
+
+  build_cuda116:
+    runs-on: ubuntu-18.04
+    container:
+      image: pytorch/pytorch:1.13.0-cuda11.6-cudnn8-devel
+    env:
+      FORCE_CUDA: 1
+      MMCV_CUDA_ARGS: -gencode=arch=compute_61,code=sm_61
+    strategy:
+      matrix:
+        python-version: ['3.10']
+        torch: [1.13.0+cu116]
+        include:
+          - torch: 1.13.0+cu116
+            torchvision: 0.14.0+cu116
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Fetch GPG keys
+        run: |
+          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
+          apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
+      - name: Add PPA
+        run: |
+          apt-get update && apt-get install -y software-properties-common
+          add-apt-repository -y ppa:deadsnakes/ppa
+      - name: Install python-dev
+        run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python${{matrix.python-version}}-dev
+      - name: python -m Install PyTorch
+        run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y ffmpeg libturbojpeg ninja-build
+      - name: Install PyTorch
+        run: python -m pip install torch==${{matrix.torch}} torchvision==${{matrix.torchvision}} -f https://download.pytorch.org/whl/torch_stable.html
+      - name: Install mmseg dependencies
+        run: |
+          python -V
+          python -m pip install openmim
+          mim install mmcv-full
+          python -m pip install -r requirements.txt
+          python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
+          python -c 'import mmcv; print(mmcv.__version__)'
+      - name: Build and install
+        run: |
+          rm -rf .eggs
+          python setup.py check -m -s
+          TORCH_CUDA_ARCH_LIST=7.0 pip install .
+      - name: Run unittests and generate coverage report
+        run: |
+          python -m pip install timm
+          coverage run --branch --source mmseg -m pytest tests/
+          coverage xml
+          coverage report -m
 
   test_windows:
     runs-on: ${{ matrix.os }}
@@ -242,9 +302,12 @@ jobs:
         run: pip install torch==1.8.2+${{ matrix.platform }} torchvision==0.9.2+${{ matrix.platform }} -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
       - name: Install MMCV
         run: |
-          pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.8/index.html --only-binary mmcv-full
+          pip install -U openmim
+          mim install mmcv-full
       - name: Install unittest dependencies
-        run: pip install -r requirements/tests.txt -r requirements/optional.txt
+        run: |
+          pip install -r requirements/tests.txt -r requirements/optional.txt
+          pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - name: Build and install
         run: pip install -e .
       - name: Run unittests

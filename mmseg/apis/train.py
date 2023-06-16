@@ -136,6 +136,11 @@ def train_segmentor(model,
             logger=logger,
             meta=meta))
 
+    if cfg.device == 'npu':
+        optimiter_config = dict(type='Fp16OptimizerHook', loss_scale='dynamic')
+        cfg.optimizer_config = optimiter_config if \
+            not cfg.optimizer_config else cfg.optimizer_config
+
     # register hooks
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config,
@@ -187,8 +192,12 @@ def train_segmentor(model,
         resume_from = find_latest_checkpoint(cfg.work_dir)
         if resume_from is not None:
             cfg.resume_from = resume_from
+
     if cfg.resume_from:
-        runner.resume(cfg.resume_from)
+        if cfg.device == 'npu':
+            runner.resume(cfg.resume_from, map_location='npu')
+        else:
+            runner.resume(cfg.resume_from)
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
     runner.run(data_loaders, cfg.workflow)

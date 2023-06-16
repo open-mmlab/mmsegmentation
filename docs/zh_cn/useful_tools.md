@@ -366,3 +366,31 @@ configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py \
 checkpoint/fcn_r50-d8_512x1024_40k_cityscapes_20200604_192608-efe53f0d.pth \
 fcn
 ```
+
+## 模型集成
+
+我们提供了`tools/model_ensemble.py` 完成对多个模型的预测概率进行集成的脚本
+
+### 使用方法
+
+```bash
+python tools/model_ensemble.py \
+  --config ${CONFIG_FILE1} ${CONFIG_FILE2} ... \
+  --checkpoint ${CHECKPOINT_FILE1} ${CHECKPOINT_FILE2} ...\
+  --aug-test \
+  --out ${OUTPUT_DIR}\
+  --gpus ${GPU_USED}\
+```
+
+### 各个参数的描述:
+
+- `--config`: 集成模型的配置文件的路径
+- `--checkpoint`: 集成模型的权重文件的路径
+- `--aug-test`: 是否使用翻转和多尺度预测
+- `--out`: 模型集成结果的保存文件夹路径
+- `--gpus`: 模型集成使用的gpu-id
+
+### 模型集成结果
+
+- 模型集成会对每一张输入，形状为`[H, W]`，产生一张未渲染的分割掩膜文件(segmentation mask)，形状为`[H, W]`，分割掩膜中的每个像素点的值代表该位置分割后的像素类别.
+- 模型集成结果的文件名会采用和`Ground Truth`一致的文件命名，如`Ground Truth`文件名称为`1.png`，则模型集成结果文件也会被命名为`1.png`，并放置在`--out`指定的文件夹中.
