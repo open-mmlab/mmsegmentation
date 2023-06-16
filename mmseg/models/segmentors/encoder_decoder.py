@@ -33,7 +33,7 @@ class EncoderDecoder(BaseSegmentor):
     2. The ``predict`` method is used to predict segmentation results,
     which includes two steps: (1) Run inference function to obtain the list of
     seg_logits (2) Call post-processing function to obtain list of
-    ``SegDataSampel`` including ``pred_sem_seg`` and ``seg_logits``.
+    ``SegDataSample`` including ``pred_sem_seg`` and ``seg_logits``.
 
     .. code:: text
 
@@ -326,10 +326,7 @@ class EncoderDecoder(BaseSegmentor):
             Tensor: The segmentation results, seg_logits from model of each
                 input image.
         """
-        if isinstance(self.test_cfg.mode, dict):
-            assert self.test_cfg['mode'] in ['slide', 'whole']
-        else:
-            assert self.test_cfg.mode in ['slide', 'whole']
+        assert self.test_cfg.get('mode') in ['slide', 'whole']
         ori_shape = batch_img_metas[0]['ori_shape']
         assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
         if self.test_cfg.mode == 'slide':
