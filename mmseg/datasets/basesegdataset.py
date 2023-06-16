@@ -252,6 +252,7 @@ class BaseSegDataset(BaseDataset):
                 data_info['seg_fields'] = []
                 data_list.append(data_info)
         else:
+            _suffix_len = len(self.img_suffix)
             for img in fileio.list_dir_or_file(
                     dir_path=img_dir,
                     list_dir=False,
@@ -260,7 +261,7 @@ class BaseSegDataset(BaseDataset):
                     backend_args=self.backend_args):
                 data_info = dict(img_path=osp.join(img_dir, img))
                 if ann_dir is not None:
-                    seg_map = img.replace(self.img_suffix, self.seg_map_suffix)
+                    seg_map = img[:-_suffix_len] + self.seg_map_suffix
                     data_info['seg_map_path'] = osp.join(ann_dir, seg_map)
                 data_info['label_map'] = self.label_map
                 data_info['reduce_zero_label'] = self.reduce_zero_label
