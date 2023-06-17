@@ -76,7 +76,10 @@ def hd_loss(seg_soft: Tensor,
 
 @MODELS.register_module()
 class HuasdorffDisstanceLoss(nn.Module):
-    """HuasdorffDisstanceLoss
+    """HuasdorffDisstanceLoss. This loss is proposed in `How Distance Transform
+    Maps Boost Segmentation CNNs: An Empirical Study.
+
+    <http://proceedings.mlr.press/v121/ma20b.html>`_.
     Args:
         reduction (str, optional): The method used to reduce the loss into
             a scalar. Defaults to 'mean'.
