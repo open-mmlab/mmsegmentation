@@ -241,7 +241,7 @@ class ShiftWindowMSA(BaseModule):
                                               float(-100.0)).masked_fill(
                                                   attn_mask == 0, float(0.0))
         else:
-            shifted_query = x
+            shifted_query = query
             attn_mask = None
 
         # partition windows
