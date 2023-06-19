@@ -4,7 +4,7 @@ _base_ = [
 ]
 crop_size = (640, 640)
 data_preprocessor = dict(size=crop_size)
-checkpoint_file = './swinv2_large_patch4_window24_384_22k.pth'  # noqa
+checkpoint_file = './weights/swinv2_large_patch4_window24_384_22k.pth'  # noqa
 model = dict(
     data_preprocessor=data_preprocessor,
     backbone=dict(
