@@ -326,7 +326,9 @@ class EncoderDecoder(BaseSegmentor):
             Tensor: The segmentation results, seg_logits from model of each
                 input image.
         """
-        assert self.test_cfg.get('mode') in ['slide', 'whole']
+        assert self.test_cfg.get('mode', 'whole') in ['slide', 'whole'], \
+            f'Only "slide" or "whole" test mode are supported, but got ' \
+            f'{self.test_cfg.mode}'
         ori_shape = batch_img_metas[0]['ori_shape']
         assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
         if self.test_cfg.mode == 'slide':
