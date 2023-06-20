@@ -1,0 +1,109 @@
+Collections:
+- Name: EMANet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: Expectation-Maximization Attention Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1907.13426
+  README: configs/emanet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: eemanet_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: EMANet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.59
+      mIoU(ms+flip): 79.44
+  Config: configs/emanet/eemanet_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - EMANet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes_20200901_100301-c43fcef1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_512x1024_80k_cityscapes/emanet_r50-d8_512x1024_80k_cityscapes-20200901_100301.log.json
+  Paper:
+    Title: Expectation-Maximization Attention Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1907.13426
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
+  Framework: PyTorch
+- Name: emanet_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: EMANet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.1
+      mIoU(ms+flip): 81.21
+  Config: configs/emanet/emanet_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - EMANet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes_20200901_100301-2d970745.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_512x1024_80k_cityscapes/emanet_r101-d8_512x1024_80k_cityscapes-20200901_100301.log.json
+  Paper:
+    Title: Expectation-Maximization Attention Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1907.13426
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
+  Framework: PyTorch
+- Name: emanet_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: EMANet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.33
+      mIoU(ms+flip): 80.49
+  Config: configs/emanet/emanet_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - EMANet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes_20200901_100301-16f8de52.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r50-d8_769x769_80k_cityscapes/emanet_r50-d8_769x769_80k_cityscapes-20200901_100301.log.json
+  Paper:
+    Title: Expectation-Maximization Attention Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1907.13426
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
+  Framework: PyTorch
+- Name: emanet_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: EMANet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.62
+      mIoU(ms+flip): 81.0
+  Config: configs/emanet/emanet_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - EMANet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes_20200901_100301-47a324ce.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/emanet/emanet_r101-d8_769x769_80k_cityscapes/emanet_r101-d8_769x769_80k_cityscapes-20200901_100301.log.json
+  Paper:
+    Title: Expectation-Maximization Attention Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1907.13426
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ema_head.py#L80
+  Framework: PyTorch

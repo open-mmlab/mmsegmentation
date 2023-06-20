@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from .typing import SampleList
+from .typing_utils import SampleList
 
 
 def add_prefix(inputs, prefix):

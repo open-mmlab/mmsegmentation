@@ -126,7 +126,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
 
     def postprocess_result(self,
                            seg_logits: Tensor,
-                           data_samples: OptSampleList = None) -> list:
+                           data_samples: OptSampleList = None) -> SampleList:
         """ Convert results list to `SegDataSample`.
         Args:
             seg_logits (Tensor): The segmentation results, seg_logits from
@@ -187,6 +187,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
             if C > 1:
                 i_seg_pred = i_seg_logits.argmax(dim=0, keepdim=True)
             else:
+                i_seg_logits = i_seg_logits.sigmoid()
                 i_seg_pred = (i_seg_logits >
                               self.decode_head.threshold).to(i_seg_logits)
             data_samples[i].set_data({
