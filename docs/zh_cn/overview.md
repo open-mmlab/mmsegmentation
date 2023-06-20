@@ -42,7 +42,7 @@ MMSeg 主要包含了 apis, structures, datasets, models, engine, evaluation 和
 
 以下是详细步骤，将带您一步步学习如何使用 MMSegmentation :
 
-1. 有关安装说明，请参阅 [开始你的第一步](getting_started.md)。
+1. 有关安装说明，请参阅 [开始你的第一步](get_started.md)。
 
 2. 对于初学者来说，MMSegmentation 是开始语义分割之旅的最好选择，因为这里实现了许多 SOTA 模型以及经典的模型 [model](model_zoo.md) 。另外，将各类组件和高级 API 結合使用，可以更便捷的执行分割任务。关于 MMSegmentation 的基本用法，请参考下面的教程：
 
@@ -62,8 +62,8 @@ MMSeg 主要包含了 apis, structures, datasets, models, engine, evaluation 和
 4. MMSegmentation 也为用户自定义和一些前沿的研究提供了教程，请参考下面的教程来建立你自己的分割项目：
 
    - [添加新的模型](advanced_guides/add_models.md)
-   - [添加新的数据集](advanced_guides/add_dataset.md)
-   - [添加新的 transform](advanced_guides/add_transform.md)
+   - [添加新的数据集](advanced_guides/add_datasets.md)
+   - [添加新的 transform](advanced_guides/add_transforms.md)
    - [自定义 runtime](advanced_guides/customize_runtime.md)
 
 5. 如果您更熟悉 MMSegmentation v0.x , 以下是 MMSegmentation v0.x 迁移到 v1.x 的文档

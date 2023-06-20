@@ -1,0 +1,109 @@
+Collections:
+- Name: SegNeXt
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2209.08575
+  README: configs/segnext/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: segnext_mscan-t_1xb16-adamw-160k_ade20k-512x512
+  In Collection: SegNeXt
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.5
+      mIoU(ms+flip): 42.59
+  Config: configs/segnext/segnext_mscan-t_1xb16-adamw-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MSCAN-T
+    - SegNeXt
+    Training Resources: 1x A100 GPUS
+    Memory (GB): 17.88
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k_20230210_140244-05bd8466.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k/segnext_mscan-t_1x16_512x512_adamw_160k_ade20k_20230210_140244.log.json
+  Paper:
+    Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2209.08575
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
+  Framework: PyTorch
+- Name: segnext_mscan-s_1xb16-adamw-160k_ade20k-512x512
+  In Collection: SegNeXt
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.16
+      mIoU(ms+flip): 45.81
+  Config: configs/segnext/segnext_mscan-s_1xb16-adamw-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MSCAN-S
+    - SegNeXt
+    Training Resources: 1x A100 GPUS
+    Memory (GB): 21.47
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k_20230214_113014-43013668.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k/segnext_mscan-s_1x16_512x512_adamw_160k_ade20k_20230214_113014.log.json
+  Paper:
+    Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2209.08575
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
+  Framework: PyTorch
+- Name: segnext_mscan-b_1xb16-adamw-160k_ade20k-512x512
+  In Collection: SegNeXt
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.03
+      mIoU(ms+flip): 49.68
+  Config: configs/segnext/segnext_mscan-b_1xb16-adamw-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MSCAN-B
+    - SegNeXt
+    Training Resources: 1x A100 GPUS
+    Memory (GB): 31.03
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k_20230209_172053-b6f6c70c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k/segnext_mscan-b_1x16_512x512_adamw_160k_ade20k_20230209_172053.log.json
+  Paper:
+    Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2209.08575
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
+  Framework: PyTorch
+- Name: segnext_mscan-l_1xb16-adamw-160k_ade20k-512x512
+  In Collection: SegNeXt
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 50.99
+      mIoU(ms+flip): 52.1
+  Config: configs/segnext/segnext_mscan-l_1xb16-adamw-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - MSCAN-L
+    - SegNeXt
+    Training Resources: 1x A100 GPUS
+    Memory (GB): 43.32
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k_20230209_172055-19b14b63.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segnext/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k/segnext_mscan-l_1x16_512x512_adamw_160k_ade20k_20230209_172055.log.json
+  Paper:
+    Title: 'SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2209.08575
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/models/backbones/mscan.py#L328
+  Framework: PyTorch

@@ -1,6 +1,6 @@
 # Fast-SCNN
 
-[Fast-SCNN for Semantic Segmentation](https://arxiv.org/abs/1902.04502)
+> [Fast-SCNN for Semantic Segmentation](https://arxiv.org/abs/1902.04502)
 
 ## Introduction
 
@@ -22,6 +22,14 @@ The encoder-decoder framework is state-of-the-art for offline semantic image seg
 <img src="https://user-images.githubusercontent.com/24582831/142901444-705b4ff4-6d1e-409b-899a-37bf3a6b69ce.png" width="80%"/>
 </div>
 
+## Results and models
+
+### Cityscapes
+
+| Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device |  mIoU | mIoU(ms+flip) | config                                                                                                                       | download                                                                                                                                                                                                                                                                                                                                               |
+| -------- | -------- | --------- | ------: | -------- | -------------- | ------ | ----: | ------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| FastSCNN | FastSCNN | 512x1024  |  160000 | 3.3      | 56.45          | V100   | 70.96 | 72.65         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853-0cec9937.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853.log.json) |
+
 ## Citation
 
 ```bibtex
@@ -32,11 +40,3 @@ The encoder-decoder framework is state-of-the-art for offline semantic image seg
   year={2019}
 }
 ```
-
-## Results and models
-
-### Cityscapes
-
-| Method   | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                          | download                                                                                                                                                                                                                                                                                                                                               |
-| -------- | -------- | --------- | ------: | -------- | -------------- | ----: | ------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| FastSCNN | FastSCNN | 512x1024  |  160000 | 3.3      | 56.45          | 70.96 | 72.65         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853-0cec9937.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/fast_scnn/fast_scnn_lr0.12_8x4_160k_cityscapes/fast_scnn_lr0.12_8x4_160k_cityscapes_20210630_164853.log.json) |
