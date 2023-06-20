@@ -116,16 +116,6 @@ mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 
 You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
 
-## Results
-
-### Breast Cancer Cell Segmentation
-
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                           config                                            |         download         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------------------------: | :----------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_breast-cancer-cell-seg-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_breast-cancer-cell-seg-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_breast-cancer-cell-seg-512x512.py) | [model](<>) \| [log](<>) |
-
 ## Checklist
 
 - [x] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
@@ -138,9 +128,9 @@ You should claim whether this is based on the pre-trained weights, which are con
 
   - [x] A full README
 
-- [x] Milestone 2: Indicates a successful model implementation.
+- [ ] Milestone 2: Indicates a successful model implementation.
 
-  - [x] Training-time correctness
+  - [ ] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 

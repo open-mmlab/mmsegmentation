@@ -10,7 +10,9 @@ seg_map_suffix = '.TIF'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
 
-x_train = glob.glob(os.path.join('data/Images/*' + img_suffix))
+x_train = glob.glob(
+    os.path.join('data/Breast Cancer Cell Segmentation_datasets/Images/*' +
+                 img_suffix))
 
 os.system('mkdir -p ' + root_path + 'images/train/')
 os.system('mkdir -p ' + root_path + 'masks/train/')
@@ -33,7 +35,7 @@ for ith, part in enumerate([x_train]):
         img_save_path = root_path + 'images/' + part_dir + basename.split(
             '.')[0] + save_img_suffix
         Image.open(img).save(img_save_path)
-        mask_path = root_path + 'Masks/' + '_'.join(
+        mask_path = root_path + 'Breast Cancer Cell Segmentation_datasets/Masks/' + '_'.join(  # noqa
             basename.split('_')[:-1]) + seg_map_suffix
         label = np.array(Image.open(mask_path))
 
