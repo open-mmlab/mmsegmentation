@@ -3,7 +3,7 @@ from mmseg.registry import DATASETS
 
 
 @DATASETS.register_module()
-class ddtiDataset(BaseSegDataset):
+class DDTIDataset(BaseSegDataset):
     """ddtiDataset dataset.
 
     In segmentation map annotation for ddtiDataset,
