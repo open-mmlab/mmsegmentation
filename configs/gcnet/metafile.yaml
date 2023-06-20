@@ -1,0 +1,391 @@
+Collections:
+- Name: GCNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  README: configs/gcnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: gcnet_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.69
+      mIoU(ms+flip): 78.56
+  Config: configs/gcnet/gcnet_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x1024_40k_cityscapes/gcnet_r50-d8_512x1024_40k_cityscapes_20200618_074436-4b0fd17b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x1024_40k_cityscapes/gcnet_r50-d8_512x1024_40k_cityscapes_20200618_074436.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.28
+      mIoU(ms+flip): 79.34
+  Config: configs/gcnet/gcnet_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x1024_40k_cityscapes/gcnet_r101-d8_512x1024_40k_cityscapes_20200618_074436-5e62567f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x1024_40k_cityscapes/gcnet_r101-d8_512x1024_40k_cityscapes_20200618_074436.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.12
+      mIoU(ms+flip): 80.09
+  Config: configs/gcnet/gcnet_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_769x769_40k_cityscapes/gcnet_r50-d8_769x769_40k_cityscapes_20200618_182814-a26f4471.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_769x769_40k_cityscapes/gcnet_r50-d8_769x769_40k_cityscapes_20200618_182814.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.95
+      mIoU(ms+flip): 80.71
+  Config: configs/gcnet/gcnet_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_769x769_40k_cityscapes/gcnet_r101-d8_769x769_40k_cityscapes_20200619_092550-ca4f0a84.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_769x769_40k_cityscapes/gcnet_r101-d8_769x769_40k_cityscapes_20200619_092550.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.48
+      mIoU(ms+flip): 80.01
+  Config: configs/gcnet/gcnet_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x1024_80k_cityscapes/gcnet_r50-d8_512x1024_80k_cityscapes_20200618_074450-ef8f069b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x1024_80k_cityscapes/gcnet_r50-d8_512x1024_80k_cityscapes_20200618_074450.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.03
+      mIoU(ms+flip): 79.84
+  Config: configs/gcnet/gcnet_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x1024_80k_cityscapes/gcnet_r101-d8_512x1024_80k_cityscapes_20200618_074450-778ebf69.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x1024_80k_cityscapes/gcnet_r101-d8_512x1024_80k_cityscapes_20200618_074450.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.68
+      mIoU(ms+flip): 80.66
+  Config: configs/gcnet/gcnet_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_769x769_80k_cityscapes/gcnet_r50-d8_769x769_80k_cityscapes_20200619_092516-4839565b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_769x769_80k_cityscapes/gcnet_r50-d8_769x769_80k_cityscapes_20200619_092516.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.18
+      mIoU(ms+flip): 80.71
+  Config: configs/gcnet/gcnet_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_769x769_80k_cityscapes/gcnet_r101-d8_769x769_80k_cityscapes_20200619_092628-8e043423.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_769x769_80k_cityscapes/gcnet_r101-d8_769x769_80k_cityscapes_20200619_092628.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.47
+      mIoU(ms+flip): 42.85
+  Config: configs/gcnet/gcnet_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_80k_ade20k/gcnet_r50-d8_512x512_80k_ade20k_20200614_185146-91a6da41.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_80k_ade20k/gcnet_r50-d8_512x512_80k_ade20k_20200614_185146.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.82
+      mIoU(ms+flip): 44.54
+  Config: configs/gcnet/gcnet_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_80k_ade20k/gcnet_r101-d8_512x512_80k_ade20k_20200615_020811-c3fcb6dd.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_80k_ade20k/gcnet_r101-d8_512x512_80k_ade20k_20200615_020811.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.37
+      mIoU(ms+flip): 43.52
+  Config: configs/gcnet/gcnet_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_160k_ade20k/gcnet_r50-d8_512x512_160k_ade20k_20200615_224122-d95f3e1f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_160k_ade20k/gcnet_r50-d8_512x512_160k_ade20k_20200615_224122.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.69
+      mIoU(ms+flip): 45.21
+  Config: configs/gcnet/gcnet_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_160k_ade20k/gcnet_r101-d8_512x512_160k_ade20k_20200615_225406-615528d7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_160k_ade20k/gcnet_r101-d8_512x512_160k_ade20k_20200615_225406.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb4-20k_voc12aug-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.42
+      mIoU(ms+flip): 77.51
+  Config: configs/gcnet/gcnet_r50-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_20k_voc12aug/gcnet_r50-d8_512x512_20k_voc12aug_20200617_165701-3cbfdab1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_20k_voc12aug/gcnet_r50-d8_512x512_20k_voc12aug_20200617_165701.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb4-20k_voc12aug-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.41
+      mIoU(ms+flip): 78.56
+  Config: configs/gcnet/gcnet_r101-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_20k_voc12aug/gcnet_r101-d8_512x512_20k_voc12aug_20200617_165713-6c720aa9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_20k_voc12aug/gcnet_r101-d8_512x512_20k_voc12aug_20200617_165713.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r50-d8_4xb4-40k_voc12aug-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.24
+      mIoU(ms+flip): 77.63
+  Config: configs/gcnet/gcnet_r50-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_40k_voc12aug/gcnet_r50-d8_512x512_40k_voc12aug_20200613_195105-9797336d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r50-d8_512x512_40k_voc12aug/gcnet_r50-d8_512x512_40k_voc12aug_20200613_195105.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch
+- Name: gcnet_r101-d8_4xb4-40k_voc12aug-512x512
+  In Collection: GCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.84
+      mIoU(ms+flip): 78.59
+  Config: configs/gcnet/gcnet_r101-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - GCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_40k_voc12aug/gcnet_r101-d8_512x512_40k_voc12aug_20200613_185806-1e38208d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/gcnet/gcnet_r101-d8_512x512_40k_voc12aug/gcnet_r101-d8_512x512_40k_voc12aug_20200613_185806.log.json
+  Paper:
+    Title: 'GCNet: Non-local Networks Meet Squeeze-Excitation Networks and Beyond'
+    URL: https://arxiv.org/abs/1904.11492
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/gc_head.py#L10
+  Framework: PyTorch

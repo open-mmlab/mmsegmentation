@@ -91,7 +91,7 @@ def slide_crop_image(src_path, out_dir, mode, patch_H, patch_W, overlap):
                     x_end) + '.png'
             # print(image)
             save_path_image = osp.join(out_dir, 'img_dir', mode, str(image))
-            img_patch.save(save_path_image)
+            img_patch.save(save_path_image, format='BMP')
 
 
 def slide_crop_label(src_path, out_dir, mode, patch_H, patch_W, overlap):
