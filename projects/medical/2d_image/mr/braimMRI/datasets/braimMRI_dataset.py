@@ -19,8 +19,8 @@ class braimMRIDataset(BaseSegDataset):
     METAINFO = dict(classes=('background', 'brainTumor'))
 
     def __init__(self,
-                 img_suffix='.png',
-                 seg_map_suffix='.png',
+                 img_suffix='.tif',
+                 seg_map_suffix='_mask.tif',
                  reduce_zero_label=False,
                  **kwargs) -> None:
         super().__init__(
