@@ -68,9 +68,10 @@ class CascadeEncoderDecoder(EncoderDecoder):
             self.decode_head.append(MODELS.build(decode_head[i]))
         self.align_corners = self.decode_head[-1].align_corners
         self.num_classes = self.decode_head[-1].num_classes
+        self.out_channels = self.decode_head[-1].out_channels
 
     def encode_decode(self, inputs: Tensor,
-                      batch_img_metas: List[dict]) -> List[Tensor]:
+                      batch_img_metas: List[dict]) -> Tensor:
         """Encode images with backbone and decode into a semantic segmentation
         map of the same size as input."""
         x = self.extract_feat(inputs)
