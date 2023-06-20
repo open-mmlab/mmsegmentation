@@ -12,8 +12,8 @@ seg_map_suffix = '.mat'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
 
-x_train = glob.glob(os.path.join('data/train/Images/*' + img_suffix))
-x_test = glob.glob(os.path.join('data/val/Images/*' + img_suffix))
+x_train = glob.glob(os.path.join('data/CoNSeP/Train/Images/*' + img_suffix))
+x_test = glob.glob(os.path.join('data/CoNSeP/Test/Images/*' + img_suffix))
 
 os.system('mkdir -p ' + root_path + 'images/train/')
 os.system('mkdir -p ' + root_path + 'images/val/')
@@ -29,14 +29,15 @@ def convert_2d(img, convert_dict=D2_255_convert_dict):
     return arr_2d
 
 
-part_dir_dict = {0: 'train/', 1: 'val/'}
+part_dir_dict = {0: 'CoNSeP/Train/', 1: 'CoNSeP/Test/'}
+save_dir_dict = {0: 'train/', 1: 'val/'}
 for ith, part in enumerate([x_train, x_test]):
     part_dir = part_dir_dict[ith]
     for img in part:
         basename = os.path.basename(img)
         shutil.copy(
-            img, root_path + 'images/' + part_dir + basename.split('.')[0] +
-            save_img_suffix)
+            img, root_path + 'images/' + save_dir_dict[ith] +
+            basename.split('.')[0] + save_img_suffix)
 
         mask_path = root_path + part_dir + 'Labels/' + basename.split(
             '.')[0] + seg_map_suffix
@@ -45,11 +46,9 @@ for ith, part in enumerate([x_train, x_test]):
         label_type = label_['inst_type']
         label_dict = {i + 1: int(val) for i, val in enumerate(label_type)}
 
-        save_mask_path = root_path + 'masks/' + part_dir + basename.split(
-            '.')[0] + save_seg_map_suffix
+        save_mask_path = root_path + 'masks/' + save_dir_dict[
+            ith] + basename.split('.')[0] + save_seg_map_suffix
 
         res = convert_2d(label, convert_dict=label_dict)
         res = Image.fromarray(res.astype(np.uint8))
         res.save(save_mask_path)
-
-print(label_dict)
