@@ -47,7 +47,7 @@ repos:
       - id: update-model-index
         name: update-model-index
         description: Collect model information and update model-index.yml
-        entry: .dev/update_model_index.py
+        entry: .dev_scripts/update_model_index.py
         additional_dependencies: [pyyaml]
         language: python
         require_serial: true
