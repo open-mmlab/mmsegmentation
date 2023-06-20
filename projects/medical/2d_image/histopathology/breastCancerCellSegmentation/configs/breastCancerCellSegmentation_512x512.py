@@ -24,6 +24,7 @@ train_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         ann_file='train.txt',
+        data_prefix=dict(img_path='images', seg_map_path='masks'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -34,6 +35,7 @@ val_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         ann_file='val.txt',
+        data_prefix=dict(img_path='images', seg_map_path='masks'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice'])

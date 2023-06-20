@@ -40,7 +40,7 @@ Note:
 - [MIM](https://github.com/open-mmlab/mim) v0.3.4
 - [MMCV](https://github.com/open-mmlab/mmcv) v2.0.0rc4
 - [MMEngine](https://github.com/open-mmlab/mmengine) v0.2.0 or higher
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0rc5
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation) v1.0.0
 
 All the commands below rely on the correct configuration of `PYTHONPATH`, which should point to the project's directory so that Python can locate the module files. In `breastCancerCellSegmentation/` root directory, run the following line to add the current directory to `PYTHONPATH`:
 
@@ -104,9 +104,9 @@ mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 
   - [x] A full README
 
-- [x] Milestone 2: Indicates a successful model implementation.
+- [ ] Milestone 2: Indicates a successful model implementation.
 
-  - [x] Training-time correctness
+  - [ ] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 

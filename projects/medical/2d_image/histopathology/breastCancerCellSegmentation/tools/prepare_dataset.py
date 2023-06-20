@@ -5,14 +5,10 @@ import os
 from sklearn.model_selection import train_test_split
 
 
-def save_anno(img_list, file_path, remove_suffix=True):
-    if remove_suffix:  # （文件路径从data/${image/masks}之后的相对路径开始）
-        img_list = [
-            '/'.join(img_path.split('/')[-2:]) for img_path in img_list
-        ]  # noqa
-        img_list = [
-            '.'.join(img_path.split('.')[:-1]) for img_path in img_list
-        ]  # noqa
+def save_anno(img_list, file_path, suffix):
+    # 只保留文件名，不保留后缀
+    img_list = [x.split('/')[-1][:-len(suffix)] for x in img_list]
+
     with open(file_path, 'w') as file_:
         for x in list(img_list):
             file_.write(x + '\n')
@@ -20,7 +16,8 @@ def save_anno(img_list, file_path, remove_suffix=True):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('data_root', default='data/')
+    parser.add_argument(
+        '--data_root', default='data/breastCancerCellSegmentation/')
     args = parser.parse_args()
     data_root = args.data_root
 
@@ -35,5 +32,5 @@ if __name__ == '__main__':
     train_img_list, val_img_list, train_mask_list, val_mask_list = train_test_split(  # noqa
         img_list, mask_list, test_size=0.2, random_state=42)
     # 1.3 保存划分结果
-    save_anno(train_img_list, os.path.join(data_root, 'train.txt'))
-    save_anno(val_img_list, os.path.join(data_root, 'val.txt'))
+    save_anno(train_img_list, os.path.join(data_root, 'train.txt'), '_ccd.tif')
+    save_anno(val_img_list, os.path.join(data_root, 'val.txt'), '_ccd.tif')

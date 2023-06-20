@@ -19,7 +19,7 @@ class breastCancerCellSegmentationDataset(BaseSegDataset):
     METAINFO = dict(classes=('background', 'breastCancerCell'))
 
     def __init__(self,
-                 img_suffix='.tif',
+                 img_suffix='_ccd.tif',
                  seg_map_suffix='.TIF',
                  reduce_zero_label=False,
                  **kwargs) -> None:
