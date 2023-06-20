@@ -8,11 +8,11 @@ import torch
 from mmengine import Config
 from mmengine.fileio import dump
 from mmengine.model.utils import revert_sync_batchnorm
+from mmengine.registry import init_default_scope
 from mmengine.runner import Runner, load_checkpoint
 from mmengine.utils import mkdir_or_exist
 
 from mmseg.registry import MODELS
-from mmseg.utils import register_all_modules
 
 
 def parse_args():
@@ -32,8 +32,10 @@ def parse_args():
 
 def main():
     args = parse_args()
-    register_all_modules()
     cfg = Config.fromfile(args.config)
+
+    init_default_scope(cfg.get('default_scope', 'mmseg'))
+
     timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
     if args.work_dir is not None:
         mkdir_or_exist(osp.abspath(args.work_dir))

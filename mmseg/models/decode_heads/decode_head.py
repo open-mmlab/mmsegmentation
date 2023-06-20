@@ -45,7 +45,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         in_channels (int|Sequence[int]): Input channels.
         channels (int): Channels after modules, before conv_seg.
         num_classes (int): Number of classes.
-        out_channels (int): Output channels of conv_seg.
+        out_channels (int): Output channels of conv_seg. Default: None.
         threshold (float): Threshold for binary segmentation in the case of
             `num_classes==1`. Default: None.
         dropout_ratio (float): Ratio of dropout layer. Default: 0.1.
@@ -263,7 +263,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return losses
 
     def predict(self, inputs: Tuple[Tensor], batch_img_metas: List[dict],
-                test_cfg: ConfigType) -> List[Tensor]:
+                test_cfg: ConfigType) -> Tensor:
         """Forward function for prediction.
 
         Args:
@@ -276,7 +276,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             test_cfg (dict): The testing config.
 
         Returns:
-            List[Tensor]: Outputs segmentation logits map.
+            Tensor: Outputs segmentation logits map.
         """
         seg_logits = self.forward(inputs)
 

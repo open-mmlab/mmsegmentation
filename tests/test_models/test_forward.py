@@ -9,14 +9,14 @@ import pytest
 import torch
 import torch.nn as nn
 from mmengine.model.utils import revert_sync_batchnorm
+from mmengine.registry import init_default_scope
 from mmengine.structures import PixelData
 from mmengine.utils import is_list_of, is_tuple_of
 from torch import Tensor
 
 from mmseg.structures import SegDataSample
-from mmseg.utils import register_all_modules
 
-register_all_modules()
+init_default_scope('mmseg')
 
 
 def _demo_mm_inputs(batch_size=2, image_shapes=(3, 32, 32), num_classes=5):

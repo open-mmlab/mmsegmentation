@@ -1,0 +1,1041 @@
+Collections:
+- Name: DeepLabV3+
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+    - Pascal Context
+    - Pascal Context 59
+    - LoveDA
+    - Potsdam
+    - Vaihingen
+    - iSAID
+    - Mapillary Vistas v1.2
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  README: configs/deeplabv3plus/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: deeplabv3plus_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.61
+      mIoU(ms+flip): 81.01
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610-d222ffcd.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.21
+      mIoU(ms+flip): 81.82
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614-3769eecf.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.97
+      mIoU(ms+flip): 80.46
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143-1dcb0e3c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_40k_cityscapes/deeplabv3plus_r50-d8_769x769_40k_cityscapes_20200606_114143.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.46
+      mIoU(ms+flip): 80.5
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304-ff414b9e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_40k_cityscapes/deeplabv3plus_r101-d8_769x769_40k_cityscapes_20200606_114304.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.89
+      mIoU(ms+flip): 78.76
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes/deeplabv3plus_r18-d8_512x1024_80k_cityscapes_20201226_080942-cff257fe.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes/deeplabv3plus_r18-d8_512x1024_80k_cityscapes-20201226_080942.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.09
+      mIoU(ms+flip): 81.13
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049-f9fb496d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes/deeplabv3plus_r50-d8_512x1024_80k_cityscapes_20200606_114049.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.97
+      mIoU(ms+flip): 82.03
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143-068fcfe9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_512x1024_80k_cityscapes_20200606_114143.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb2-amp-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.46
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb2-amp-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    - (FP16)
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.35
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920-f1104f4b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes/deeplabv3plus_r101-d8_fp16_512x1024_80k_cityscapes_20200717_230920.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.26
+      mIoU(ms+flip): 77.91
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes/deeplabv3plus_r18-d8_769x769_80k_cityscapes_20201226_083346-f326e06a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_769x769_80k_cityscapes/deeplabv3plus_r18-d8_769x769_80k_cityscapes-20201226_083346.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.83
+      mIoU(ms+flip): 81.48
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233-0e9dfdc4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_769x769_80k_cityscapes/deeplabv3plus_r50-d8_769x769_80k_cityscapes_20200606_210233.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.65
+      mIoU(ms+flip): 81.47
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20220406_154720-dfcc0b68.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_769x769_80k_cityscapes/deeplabv3plus_r101-d8_769x769_80k_cityscapes_20220406_154720.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: ddeeplabv3plus_r101-d16-mg124_4xb2-40k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.09
+      mIoU(ms+flip): 80.36
+  Config: configs/deeplabv3plus/ddeeplabv3plus_r101-d16-mg124_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D16-MG124
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-cf9ce186.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes-20200908_005644.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d16-mg124_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.9
+      mIoU(ms+flip): 81.33
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d16-mg124_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D16-MG124
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes_20200908_005644-ee6158e0.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes-20200908_005644.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18b-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.87
+      mIoU(ms+flip): 77.52
+  Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18b-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes_20201226_090828-e451abd9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes-20201226_090828.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50b-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.28
+      mIoU(ms+flip): 81.44
+  Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50b-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes_20201225_213645-a97e4e43.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes-20201225_213645.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101b-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.16
+      mIoU(ms+flip): 81.41
+  Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101b-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes_20201226_190843-9c3c93a4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes-20201226_190843.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18b-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.36
+      mIoU(ms+flip): 78.24
+  Config: configs/deeplabv3plus/deeplabv3plus_r18b-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18b-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes-20201226_151312.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50b-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.41
+      mIoU(ms+flip): 80.56
+  Config: configs/deeplabv3plus/deeplabv3plus_r50b-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50b-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes/deeplabv3plus_r50b-d8_769x769_80k_cityscapes_20201225_224655-8b596d1c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50b-d8_769x769_80k_cityscapes/deeplabv3plus_r50b-d8_769x769_80k_cityscapes-20201225_224655.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101b-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.88
+      mIoU(ms+flip): 81.46
+  Config: configs/deeplabv3plus/deeplabv3plus_r101b-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101b-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes/deeplabv3plus_r101b-d8_769x769_80k_cityscapes_20201226_205041-227cdf7c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes/deeplabv3plus_r101b-d8_769x769_80k_cityscapes-20201226_205041.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.72
+      mIoU(ms+flip): 43.75
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028-bf1400d8.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_ade20k/deeplabv3plus_r50-d8_512x512_80k_ade20k_20200614_185028.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.6
+      mIoU(ms+flip): 46.06
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 14.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139-d5730af7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_ade20k/deeplabv3plus_r101-d8_512x512_80k_ade20k_20200615_014139.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.95
+      mIoU(ms+flip): 44.93
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504-6135c7e0.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_160k_ade20k/deeplabv3plus_r50-d8_512x512_160k_ade20k_20200615_124504.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.47
+      mIoU(ms+flip): 46.35
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232-38ed86bb.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_160k_ade20k/deeplabv3plus_r101-d8_512x512_160k_ade20k_20200615_123232.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-20k_voc12aug-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 75.93
+      mIoU(ms+flip): 77.5
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323-aad58ef1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_20k_voc12aug/deeplabv3plus_r50-d8_512x512_20k_voc12aug_20200617_102323.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-20k_voc12aug-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.22
+      mIoU(ms+flip): 78.59
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345-c7ff3d56.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_20k_voc12aug/deeplabv3plus_r101-d8_512x512_20k_voc12aug_20200617_102345.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-40k_voc12aug-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.81
+      mIoU(ms+flip): 77.57
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759-e1b43aa9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_40k_voc12aug/deeplabv3plus_r50-d8_512x512_40k_voc12aug_20200613_161759.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-40k_voc12aug-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 78.62
+      mIoU(ms+flip): 79.53
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333-faf03387.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_40k_voc12aug/deeplabv3plus_r101-d8_512x512_40k_voc12aug_20200613_205333.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-40k_pascal-context-480x480
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 47.3
+      mIoU(ms+flip): 48.47
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-40k_pascal-context-480x480.py
+  Metadata:
+    Training Data: Pascal Context
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context/deeplabv3plus_r101-d8_480x480_40k_pascal_context_20200911_165459-d3c8a29e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context/deeplabv3plus_r101-d8_480x480_40k_pascal_context-20200911_165459.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-80k_pascal-context-480x480
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context
+    Metrics:
+      mIoU: 47.23
+      mIoU(ms+flip): 48.26
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_pascal-context-480x480.py
+  Metadata:
+    Training Data: Pascal Context
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context/deeplabv3plus_r101-d8_480x480_80k_pascal_context_20200911_155322-145d3ee8.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context/deeplabv3plus_r101-d8_480x480_80k_pascal_context-20200911_155322.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-40k_pascal-context-59-480x480
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 52.86
+      mIoU(ms+flip): 54.54
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+  Metadata:
+    Training Data: Pascal Context 59
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59_20210416_111233-ed937f15.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59/deeplabv3plus_r101-d8_480x480_40k_pascal_context_59-20210416_111233.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-80k_pascal-context-59-480x480
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal Context 59
+    Metrics:
+      mIoU: 53.2
+      mIoU(ms+flip): 54.67
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+  Metadata:
+    Training Data: Pascal Context 59
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59_20210416_111127-7ca0331d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59/deeplabv3plus_r101-d8_480x480_80k_pascal_context_59-20210416_111127.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18-d8_4xb4-80k_loveda-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.28
+      mIoU(ms+flip): 50.47
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb4-80k_loveda-512x512.py
+  Metadata:
+    Training Data: LoveDA
+    Batch Size: 16
+    Architecture:
+    - R-18-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.93
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_loveda/deeplabv3plus_r18-d8_512x512_80k_loveda_20211104_132800-ce0fa0ca.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_loveda/deeplabv3plus_r18-d8_512x512_80k_loveda_20211104_132800.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-80k_loveda-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 50.99
+      mIoU(ms+flip): 50.65
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_loveda-512x512.py
+  Metadata:
+    Training Data: LoveDA
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.37
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda/deeplabv3plus_r50-d8_512x512_80k_loveda_20211105_080442-f0720392.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_loveda/deeplabv3plus_r50-d8_512x512_80k_loveda_20211105_080442.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-80k_loveda-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: LoveDA
+    Metrics:
+      mIoU: 51.47
+      mIoU(ms+flip): 51.32
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_loveda-512x512.py
+  Metadata:
+    Training Data: LoveDA
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.84
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759-4c1f297e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_loveda/deeplabv3plus_r101-d8_512x512_80k_loveda_20211105_110759.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18-d8_4xb4-80k_potsdam-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 77.09
+      mIoU(ms+flip): 78.44
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb4-80k_potsdam-512x512.py
+  Metadata:
+    Training Data: Potsdam
+    Batch Size: 16
+    Architecture:
+    - R-18-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.91
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam/deeplabv3plus_r18-d8_512x512_80k_potsdam_20211219_020601-75fd5bc3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_512x512_80k_potsdam/deeplabv3plus_r18-d8_512x512_80k_potsdam_20211219_020601.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-80k_potsdam-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.33
+      mIoU(ms+flip): 79.27
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_potsdam-512x512.py
+  Metadata:
+    Training Data: Potsdam
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.36
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam/deeplabv3plus_r50-d8_512x512_80k_potsdam_20211219_031508-7e7a2b24.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x512_80k_potsdam/deeplabv3plus_r50-d8_512x512_80k_potsdam_20211219_031508.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-80k_potsdam-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Potsdam
+    Metrics:
+      mIoU: 78.7
+      mIoU(ms+flip): 79.47
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_potsdam-512x512.py
+  Metadata:
+    Training Data: Potsdam
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.83
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam/deeplabv3plus_r101-d8_512x512_80k_potsdam_20211219_031508-8b112708.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x512_80k_potsdam/deeplabv3plus_r101-d8_512x512_80k_potsdam_20211219_031508.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18-d8_4xb4-80k_vaihingen-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 72.5
+      mIoU(ms+flip): 74.13
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb4-80k_vaihingen-512x512.py
+  Metadata:
+    Training Data: Vaihingen
+    Batch Size: 16
+    Architecture:
+    - R-18-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.91
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805-7626a263.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r18-d8_4x4_512x512_80k_vaihingen_20211231_230805.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-80k_vaihingen-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 73.97
+      mIoU(ms+flip): 75.05
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_vaihingen-512x512.py
+  Metadata:
+    Training Data: Vaihingen
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.36
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816-5040938d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r50-d8_4x4_512x512_80k_vaihingen_20211231_230816.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r101-d8_4xb4-80k_vaihingen-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Vaihingen
+    Metrics:
+      mIoU: 73.06
+      mIoU(ms+flip): 74.14
+  Config: configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_vaihingen-512x512.py
+  Metadata:
+    Training Data: Vaihingen
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.83
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816-8a095afa.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen/deeplabv3plus_r101-d8_4x4_512x512_80k_vaihingen_20211231_230816.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 61.35
+      mIoU(ms+flip): 62.61
+  Config: configs/deeplabv3plus/deeplabv3plus_r18-d8_4xb4-80k_isaid-896x896.py
+  Metadata:
+    Training Data: iSAID
+    Batch Size: 16
+    Architecture:
+    - R-18-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.19
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid_20220110_180526-7059991d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid/deeplabv3plus_r18-d8_4x4_896x896_80k_isaid_20220110_180526.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb4-80k_isaid-896x896
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: iSAID
+    Metrics:
+      mIoU: 67.06
+      mIoU(ms+flip): 68.02
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb4-80k_isaid-896x896.py
+  Metadata:
+    Training Data: iSAID
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 21.45
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526-598be439.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid/deeplabv3plus_r50-d8_4x4_896x896_80k_isaid_20220110_180526.log.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
+- Name: deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Mapillary Vistas v1.2
+    Metrics:
+      mIoU: 47.35
+  Config: configs/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280.py
+  Metadata:
+    Training Data: Mapillary Vistas v1.2
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DeepLabV3+
+    Training Resources: 4x A100 GPUS
+    Memory (GB): 24.04
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280_20230301_110504-655f8e43.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280/deeplabv3plus_r50-d8_4xb2-300k_mapillay_v1_65-1280x1280_20230301_110504.json
+  Paper:
+    Title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+    URL: https://arxiv.org/abs/1802.02611
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/sep_aspp_head.py#L30
+  Framework: PyTorch
