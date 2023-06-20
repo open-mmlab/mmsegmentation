@@ -92,7 +92,11 @@ def test_config_data_pipeline():
         del config_mod.train_pipeline[0]
         del config_mod.test_pipeline[0]
         # remove loading annotation in test pipeline
-        del config_mod.test_pipeline[-2]
+        load_anno_idx = -1
+        for i in range(len(config_mod.test_pipeline)):
+            if config_mod.test_pipeline[i].type == 'LoadAnnotations':
+                load_anno_idx = i
+        del config_mod.test_pipeline[load_anno_idx]
 
         train_pipeline = Compose(config_mod.train_pipeline)
         test_pipeline = Compose(config_mod.test_pipeline)
@@ -110,20 +114,25 @@ def test_config_data_pipeline():
             ori_shape=img.shape,
             gt_seg_map=seg)
         results['seg_fields'] = ['gt_seg_map']
-
+        _check_concat_cd_input(config_mod, results)
         print(f'Test training data pipeline: \n{train_pipeline!r}')
         output_results = train_pipeline(results)
         assert output_results is not None
 
-        results = dict(
-            filename='test_img.png',
-            ori_filename='test_img.png',
-            img=img,
-            img_shape=img.shape,
-            ori_shape=img.shape)
+        _check_concat_cd_input(config_mod, results)
         print(f'Test testing data pipeline: \n{test_pipeline!r}')
         output_results = test_pipeline(results)
         assert output_results is not None
+
+
+def _check_concat_cd_input(config_mod: Config, results: dict):
+    keys = []
+    pipeline = config_mod.train_pipeline.copy()
+    pipeline.extend(config_mod.test_pipeline)
+    for t in pipeline:
+        keys.append(t.type)
+    if 'ConcatCDInput' in keys:
+        results.update({'img2': results['img']})
 
 
 def _check_decode_head(decode_head_cfg, decode_head):

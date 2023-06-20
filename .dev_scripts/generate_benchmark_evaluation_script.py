@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument(
         '--out',
         type=str,
-        default='.dev/benchmark_evaluation.sh',
+        default='.dev_scripts/benchmark_evaluation.sh',
         help='path to save model benchmark script')
 
     args = parser.parse_args()

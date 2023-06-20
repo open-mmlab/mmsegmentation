@@ -2,6 +2,7 @@
 
 It is recommended to symlink the dataset root to `$MMSEGMENTATION/data`.
 If your folder structure is different, you may need to change the corresponding paths in config files.
+For users in China, we also recommend you get the dsdl dataset from our opensource platform [OpenDataLab](https://opendatalab.com/), for better download and use experience，here is an example: [DSDLReadme](../../../configs/dsdl/README.md)， welcome to try.
 
 ```none
 mmsegmentation
@@ -349,9 +350,10 @@ More details about LoveDA can be found [here](https://github.com/Junjue-Wang/Lov
 
 ## ISPRS Potsdam
 
-The [Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
+The [Potsdam](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Potsdam.
 
-The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
+The dataset can be requested at the challenge [homepage](https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx).
+Or download on [BaiduNetdisk](https://pan.baidu.com/s/1K-cLVZnd1X7d8c26FQ-nGg?pwd=mseg)，password：mseg, [Google Drive](https://drive.google.com/drive/folders/1w3EJuyUGet6_qmLwGAWZ9vw5ogeG0zLz?usp=sharing) and [OpenDataLab](https://opendatalab.com/ISPRS_Potsdam/download).
 The '2_Ortho_RGB.zip' and '5_Labels_all_noBoundary.zip' are required.
 
 For Potsdam dataset, please run the following command to re-organize the dataset.
@@ -367,6 +369,7 @@ In our default setting, it will generate 3456 images for training and 2016 image
 The [Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/) dataset is for urban semantic segmentation used in the 2D Semantic Labeling Contest - Vaihingen.
 
 The dataset can be requested at the challenge [homepage](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
+Or [BaiduNetdisk](https://pan.baidu.com/s/109D3WLrLafsuYtLeerLiiA?pwd=mseg)，password：mseg, [Google Drive](https://drive.google.com/drive/folders/1w3NhvLVA2myVZqOn2pbiDXngNC7NTP_t?usp=sharing).
 The 'ISPRS_semantic_labeling_Vaihingen.zip' and 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip' are required.
 
 For Vaihingen dataset, please run the following command to re-organize the dataset.
@@ -620,3 +623,33 @@ It includes 400 images for training, 400 images for validation and 400 images fo
 
 - You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
   View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) and [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py)
+
+## LEVIR-CD
+
+[LEVIR-CD](https://justchenhao.github.io/LEVIR/) Large-scale Remote Sensing Change Detection Dataset for Building.
+
+Download the dataset from [here](https://justchenhao.github.io/LEVIR/).
+
+The supplement version of the dataset can be requested on the [homepage](https://github.com/S2Looking/Dataset)
+
+Please download the supplement version of the dataset, then unzip `LEVIR-CD+.zip`, the contents of original datasets include:
+
+```none
+│   ├── LEVIR-CD+
+│   │   ├── train
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+│   │   ├── test
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+```
+
+For LEVIR-CD dataset, please run the following command to crop images without overlap:
+
+```shell
+python tools/dataset_converters/levircd.py --dataset-path /path/to/LEVIR-CD+ --out_dir /path/to/LEVIR-CD
+```
+
+The size of cropped image is 256x256, which is consistent with the original paper.
