@@ -1,0 +1,110 @@
+Collections:
+- Name: PointRend
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+  Paper:
+    Title: 'PointRend: Image Segmentation as Rendering'
+    URL: https://arxiv.org/abs/1912.08193
+  README: configs/point_rend/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: pointrend_r50_4xb2-80k_cityscapes-512x1024
+  In Collection: PointRend
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.47
+      mIoU(ms+flip): 78.13
+  Config: configs/point_rend/pointrend_r50_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50
+    - PointRend
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 3.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x1024_80k_cityscapes/pointrend_r50_512x1024_80k_cityscapes_20200711_015821-bb1ff523.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x1024_80k_cityscapes/pointrend_r50_512x1024_80k_cityscapes-20200715_214714.log.json
+  Paper:
+    Title: 'PointRend: Image Segmentation as Rendering'
+    URL: https://arxiv.org/abs/1912.08193
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36
+  Framework: PyTorch
+- Name: pointrend_r101_4xb2-80k_cityscapes-512x1024
+  In Collection: PointRend
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.3
+      mIoU(ms+flip): 79.97
+  Config: configs/point_rend/pointrend_r101_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - PointRend
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 4.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x1024_80k_cityscapes/pointrend_r101_512x1024_80k_cityscapes_20200711_170850-d0ca84be.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x1024_80k_cityscapes/pointrend_r101_512x1024_80k_cityscapes-20200715_214824.log.json
+  Paper:
+    Title: 'PointRend: Image Segmentation as Rendering'
+    URL: https://arxiv.org/abs/1912.08193
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36
+  Framework: PyTorch
+- Name: pointrend_r50_4xb4-160k_ade20k-512x512
+  In Collection: PointRend
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 37.64
+      mIoU(ms+flip): 39.17
+  Config: configs/point_rend/pointrend_r50_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50
+    - PointRend
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x512_160k_ade20k/pointrend_r50_512x512_160k_ade20k_20200807_232644-ac3febf2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r50_512x512_160k_ade20k/pointrend_r50_512x512_160k_ade20k-20200807_232644.log.json
+  Paper:
+    Title: 'PointRend: Image Segmentation as Rendering'
+    URL: https://arxiv.org/abs/1912.08193
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36
+  Framework: PyTorch
+- Name: pointrend_r101_4xb4-160k_ade20k-512x512
+  In Collection: PointRend
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.02
+      mIoU(ms+flip): 41.6
+  Config: configs/point_rend/pointrend_r101_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101
+    - PointRend
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x512_160k_ade20k/pointrend_r101_512x512_160k_ade20k_20200808_030852-8834902a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/point_rend/pointrend_r101_512x512_160k_ade20k/pointrend_r101_512x512_160k_ade20k-20200808_030852.log.json
+  Paper:
+    Title: 'PointRend: Image Segmentation as Rendering'
+    URL: https://arxiv.org/abs/1912.08193
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/point_head.py#L36
+  Framework: PyTorch

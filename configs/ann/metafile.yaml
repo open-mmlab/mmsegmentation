@@ -1,0 +1,391 @@
+Collections:
+- Name: ANN
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  README: configs/ann/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: ann_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.4
+      mIoU(ms+flip): 78.57
+  Config: configs/ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_40k_cityscapes/ann_r50-d8_512x1024_40k_cityscapes_20200605_095211.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.55
+      mIoU(ms+flip): 78.85
+  Config: configs/ann/ann_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243-adf6eece.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_40k_cityscapes/ann_r101-d8_512x1024_40k_cityscapes_20200605_095243.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.89
+      mIoU(ms+flip): 80.46
+  Config: configs/ann/ann_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712-2b46b04d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_40k_cityscapes/ann_r50-d8_769x769_40k_cityscapes_20200530_025712.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.32
+      mIoU(ms+flip): 80.94
+  Config: configs/ann/ann_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720-059bff28.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_40k_cityscapes/ann_r101-d8_769x769_40k_cityscapes_20200530_025720.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.34
+      mIoU(ms+flip): 78.65
+  Config: configs/ann/ann_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911-5a9ad545.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x1024_80k_cityscapes/ann_r50-d8_512x1024_80k_cityscapes_20200607_101911.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.14
+      mIoU(ms+flip): 78.81
+  Config: configs/ann/ann_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728-aceccc6e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x1024_80k_cityscapes/ann_r101-d8_512x1024_80k_cityscapes_20200607_013728.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.88
+      mIoU(ms+flip): 80.57
+  Config: configs/ann/ann_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426-cc7ff323.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_769x769_80k_cityscapes/ann_r50-d8_769x769_80k_cityscapes_20200607_044426.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.8
+      mIoU(ms+flip): 80.34
+  Config: configs/ann/ann_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713-a9d4be8d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_769x769_80k_cityscapes/ann_r101-d8_769x769_80k_cityscapes_20200607_013713.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.01
+      mIoU(ms+flip): 42.3
+  Config: configs/ann/ann_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818-26f75e11.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_80k_ade20k/ann_r50-d8_512x512_80k_ade20k_20200615_014818.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.94
+      mIoU(ms+flip): 44.18
+  Config: configs/ann/ann_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818-c0153543.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_80k_ade20k/ann_r101-d8_512x512_80k_ade20k_20200615_014818.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.74
+      mIoU(ms+flip): 42.62
+  Config: configs/ann/ann_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733-892247bc.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_160k_ade20k/ann_r50-d8_512x512_160k_ade20k_20200615_231733.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.94
+      mIoU(ms+flip): 44.06
+  Config: configs/ann/ann_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733-955eb1ec.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_160k_ade20k/ann_r101-d8_512x512_160k_ade20k_20200615_231733.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb4-20k_voc12aug-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 74.86
+      mIoU(ms+flip): 76.13
+  Config: configs/ann/ann_r50-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246-dfcb1c62.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_20k_voc12aug/ann_r50-d8_512x512_20k_voc12aug_20200617_222246.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb4-20k_voc12aug-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.47
+      mIoU(ms+flip): 78.7
+  Config: configs/ann/ann_r101-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246-2fad0042.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_20k_voc12aug/ann_r101-d8_512x512_20k_voc12aug_20200617_222246.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r50-d8_4xb4-40k_voc12aug-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.56
+      mIoU(ms+flip): 77.51
+  Config: configs/ann/ann_r50-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314-b5dac322.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r50-d8_512x512_40k_voc12aug/ann_r50-d8_512x512_40k_voc12aug_20200613_231314.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
+- Name: ann_r101-d8_4xb4-40k_voc12aug-512x512
+  In Collection: ANN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.7
+      mIoU(ms+flip): 78.06
+  Config: configs/ann/ann_r101-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - ANN
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314-bd205bbe.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ann/ann_r101-d8_512x512_40k_voc12aug/ann_r101-d8_512x512_40k_voc12aug_20200613_231314.log.json
+  Paper:
+    Title: Asymmetric Non-local Neural Networks for Semantic Segmentation
+    URL: https://arxiv.org/abs/1908.07678
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/ann_head.py#L185
+  Framework: PyTorch
