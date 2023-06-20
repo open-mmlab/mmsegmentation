@@ -1,6 +1,6 @@
 # Semantic FPN
 
-[Panoptic Feature Pyramid Networks](https://arxiv.org/abs/1901.02446)
+> [Panoptic Feature Pyramid Networks](https://arxiv.org/abs/1901.02446)
 
 ## Introduction
 
@@ -22,6 +22,22 @@ The recently introduced panoptic segmentation task has renewed our community's i
 <img src="https://user-images.githubusercontent.com/24582831/142902694-03ed2131-9104-467b-ace1-c74c62fb7177.png" width="60%"/>
 </div>
 
+## Results and models
+
+### Cityscapes
+
+| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device |  mIoU | mIoU(ms+flip) | config                                                                                                                    | download                                                                                                                                                                                                                                                                                                                           |
+| ------ | -------- | --------- | ------: | -------: | -------------- | ------ | ----: | ------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FPN    | R-50     | 512x1024  |   80000 |      2.8 | 13.54          | V100   | 74.52 | 76.08         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/sem_fpn/fpn_r50_4xb2-80k_cityscapes-512x1024.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes_20200717_021437-94018a0d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes-20200717_021437.log.json)     |
+| FPN    | R-101    | 512x1024  |   80000 |      3.9 | 10.29          | V100   | 75.80 | 77.40         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/sem_fpn/fpn_r101_4xb2-80k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes_20200717_012416-c5800d4c.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes-20200717_012416.log.json) |
+
+### ADE20K
+
+| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device |  mIoU | mIoU(ms+flip) | config                                                                                                                | download                                                                                                                                                                                                                                                                                                           |
+| ------ | -------- | --------- | ------: | -------: | -------------- | ------ | ----: | ------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| FPN    | R-50     | 512x512   |  160000 |      4.9 | 55.77          | V100   | 37.49 | 39.09         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/sem_fpn/fpn_r50_4xb4-160k_ade20k-512x512.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k_20200718_131734-5b5a6ab9.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k-20200718_131734.log.json)     |
+| FPN    | R-101    | 512x512   |  160000 |      5.9 | 40.58          | V100   | 39.35 | 40.72         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/sem_fpn/fpn_r101_4xb4-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k_20200718_131734-306b5004.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k-20200718_131734.log.json) |
+
 ## Citation
 
 ```bibtex
@@ -33,19 +49,3 @@ The recently introduced panoptic segmentation task has renewed our community's i
   year={2019}
 }
 ```
-
-## Results and models
-
-### Cityscapes
-
-| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                       | download                                                                                                                                                                                                                                                                                                                           |
-| ------ | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FPN    | R-50     | 512x1024  |   80000 |      2.8 | 13.54          | 74.52 | 76.08         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/sem_fpn/fpn_r50_4xb2-80k_cityscapes-512x1024.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes_20200717_021437-94018a0d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x1024_80k_cityscapes/fpn_r50_512x1024_80k_cityscapes-20200717_021437.log.json)     |
-| FPN    | R-101    | 512x1024  |   80000 |      3.9 | 10.29          | 75.80 | 77.40         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/sem_fpn/fpn_r101_4xb2-80k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes_20200717_012416-c5800d4c.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x1024_80k_cityscapes/fpn_r101_512x1024_80k_cityscapes-20200717_012416.log.json) |
-
-### ADE20K
-
-| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                   | download                                                                                                                                                                                                                                                                                                           |
-| ------ | -------- | --------- | ------: | -------: | -------------- | ----: | ------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| FPN    | R-50     | 512x512   |  160000 |      4.9 | 55.77          | 37.49 | 39.09         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/sem_fpn/fpn_r50_4xb4-160k_ade20k-512x512.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k_20200718_131734-5b5a6ab9.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r50_512x512_160k_ade20k/fpn_r50_512x512_160k_ade20k-20200718_131734.log.json)     |
-| FPN    | R-101    | 512x512   |  160000 |      5.9 | 40.58          | 39.35 | 40.72         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/sem_fpn/fpn_r101_4xb4-160k_ade20k-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k_20200718_131734-306b5004.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/sem_fpn/fpn_r101_512x512_160k_ade20k/fpn_r101_512x512_160k_ade20k-20200718_131734.log.json) |
