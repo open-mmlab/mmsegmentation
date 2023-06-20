@@ -44,17 +44,15 @@ def rle_decode(rle, width, height):
 
 part_dir_dict = {0: 'train/', 1: 'test/'}
 dict_from_csv = pd.read_csv(
-    root_path + 'chestimage_train-rle_datasets.csv',
-    sep=',',
-    index_col=0,
-    squeeze=True).to_dict()
+    root_path + 'chestimage_train-rle_datasets.csv', sep=',',
+    index_col=0).to_dict()[' EncodedPixels']
 
 for ith, part in enumerate([x_train, x_test]):
     part_dir = part_dir_dict[ith]
     for img in part:
         basename = os.path.basename(img)
-        if ith == 0 and ('.'.join(basename.split('.')[:-1])
-                         not in dict_from_csv.keys()):
+        img_id = '.'.join(basename.split('.')[:-1])
+        if ith == 0 and (img_id not in dict_from_csv.keys()):
             continue
         image = pydicom.read_file(img).pixel_array
         save_img_path = root_path + 'images/' + part_dir + '.'.join(
@@ -63,15 +61,12 @@ for ith, part in enumerate([x_train, x_test]):
         img_h, img_w = image.shape[:2]
         image = Image.fromarray(image)
         image.save(save_img_path)
-
         if ith == 1:
             continue
-        if dict_from_csv['.'.join(basename.split('.')[:-1])] == '-1':
+        if dict_from_csv[img_id] == '-1':
             mask = np.zeros((img_h, img_w), dtype=np.uint8)
         else:
-            mask = rle_decode(
-                dict_from_csv['.'.join(basename.split('.')[:-1])], img_h,
-                img_w)
+            mask = rle_decode(dict_from_csv[img_id], img_h, img_w)
         save_mask_path = root_path + 'masks/' + part_dir + '.'.join(
             basename.split('.')[:-1]) + save_seg_map_suffix
         mask = Image.fromarray(mask)
