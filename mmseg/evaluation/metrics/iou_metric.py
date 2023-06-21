@@ -1,11 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os.path as osp
 from collections import OrderedDict
 from typing import Dict, List, Optional, Sequence
 
 import numpy as np
 import torch
+from mmengine.dist import is_main_process
 from mmengine.evaluator import BaseMetric
 from mmengine.logging import MMLogger, print_log
+from mmengine.utils import mkdir_or_exist
+from PIL import Image
 from prettytable import PrettyTable
 
 from mmseg.registry import METRICS
@@ -27,6 +31,12 @@ class IoUMetric(BaseMetric):
         collect_device (str): Device name used for collecting results from
             different ranks during distributed training. Must be 'cpu' or
             'gpu'. Defaults to 'cpu'.
+        output_dir (str): The directory for output prediction. Defaults to
+            None.
+        format_only (bool): Only format result for results commit without
+            perform evaluation. It is useful when you want to save the result
+            to a specific format and submit it to the test server.
+            Defaults to False.
         prefix (str, optional): The prefix that will be added in the metric
             names to disambiguate homonymous metrics of different evaluators.
             If prefix is not provided in the argument, self.default_prefix
@@ -39,13 +49,20 @@ class IoUMetric(BaseMetric):
                  nan_to_num: Optional[int] = None,
                  beta: int = 1,
                  collect_device: str = 'cpu',
-                 prefix: Optional[str] = None) -> None:
+                 output_dir: Optional[str] = None,
+                 format_only: bool = False,
+                 prefix: Optional[str] = None,
+                 **kwargs) -> None:
         super().__init__(collect_device=collect_device, prefix=prefix)
 
         self.ignore_index = ignore_index
         self.metrics = iou_metrics
         self.nan_to_num = nan_to_num
         self.beta = beta
+        self.output_dir = output_dir
+        if self.output_dir and is_main_process():
+            mkdir_or_exist(self.output_dir)
+        self.format_only = format_only
 
     def process(self, data_batch: dict, data_samples: Sequence[dict]) -> None:
         """Process one batch of data and data_samples.
@@ -60,10 +77,27 @@ class IoUMetric(BaseMetric):
         num_classes = len(self.dataset_meta['classes'])
         for data_sample in data_samples:
             pred_label = data_sample['pred_sem_seg']['data'].squeeze()
-            label = data_sample['gt_sem_seg']['data'].squeeze().to(pred_label)
-            self.results.append(
-                self.intersect_and_union(pred_label, label, num_classes,
-                                         self.ignore_index))
+            # format_only always for test dataset without ground truth
+            if not self.format_only:
+                label = data_sample['gt_sem_seg']['data'].squeeze().to(
+                    pred_label)
+                self.results.append(
+                    self.intersect_and_union(pred_label, label, num_classes,
+                                             self.ignore_index))
+            # format_result
+            if self.output_dir is not None:
+                basename = osp.splitext(osp.basename(
+                    data_sample['img_path']))[0]
+                png_filename = osp.abspath(
+                    osp.join(self.output_dir, f'{basename}.png'))
+                output_mask = pred_label.cpu().numpy()
+                # The index range of official ADE20k dataset is from 0 to 150.
+                # But the index range of output is from 0 to 149.
+                # That is because we set reduce_zero_label=True.
+                if data_sample.get('reduce_zero_label', False):
+                    output_mask = output_mask + 1
+                output = Image.fromarray(output_mask.astype(np.uint8))
+                output.save(png_filename)
 
     def compute_metrics(self, results: list) -> Dict[str, float]:
         """Compute the metrics from processed results.
@@ -78,7 +112,9 @@ class IoUMetric(BaseMetric):
                 mRecall.
         """
         logger: MMLogger = MMLogger.get_current_instance()
-
+        if self.format_only:
+            logger.info(f'results are saved to {osp.dirname(self.output_dir)}')
+            return OrderedDict()
         # convert list of tuples to tuple of lists, e.g.
         # [(A_1, B_1, C_1, D_1), ...,  (A_n, B_n, C_n, D_n)] to
         # ([A_1, ..., A_n], ..., [D_1, ..., D_n])
