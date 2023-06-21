@@ -34,7 +34,7 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='val.txt',
+        ann_file='test.txt',
         data_prefix=dict(img_path='images/', seg_map_path='masks/'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
