@@ -1,0 +1,186 @@
+Models:
+- Name: mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024
+  In Collection: FCN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 71.19
+      mIoU(ms+flip): 73.34
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - M-V2-D8
+    - FCN
+    Training Resources: 4x A100 GPUS
+    Memory (GB): 3.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024-20230224_185436-13fef4ea.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024/mobilenet-v2-d8_fcn_4xb2-80k_cityscapes-512x1024_20230224_185436.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_pspnet_4xb2-80k_cityscapes-512x1024
+  In Collection: PSPNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 70.23
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_pspnet_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - M-V2-D8
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 3.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes_20200825_124817-19e81d51.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x1024_80k_cityscapes/pspnet_m-v2-d8_512x1024_80k_cityscapes-20200825_124817.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_deeplabv3_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.84
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_deeplabv3_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - M-V2-D8
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 3.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-bef03590.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x1024_80k_cityscapes/deeplabv3_m-v2-d8_512x1024_80k_cityscapes-20200825_124836.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.2
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - M-V2-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes_20200825_124836-d256dd4b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes/deeplabv3plus_m-v2-d8_512x1024_80k_cityscapes-20200825_124836.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_fcn_4xb4-160k_ade20k-512x512
+  In Collection: FCN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 19.71
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_fcn_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - M-V2-D8
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k_20200825_214953-c40e1095.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/fcn_m-v2-d8_512x512_160k_ade20k/fcn_m-v2-d8_512x512_160k_ade20k-20200825_214953.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_pspnet_4xb4-160k_ade20k-512x512
+  In Collection: PSPNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 29.68
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_pspnet_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - M-V2-D8
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k_20200825_214953-f5942f7a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/pspnet_m-v2-d8_512x512_160k_ade20k/pspnet_m-v2-d8_512x512_160k_ade20k-20200825_214953.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_deeplabv3_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 34.08
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_deeplabv3_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - M-V2-D8
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k_20200825_223255-63986343.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3_m-v2-d8_512x512_160k_ade20k/deeplabv3_m-v2-d8_512x512_160k_ade20k-20200825_223255.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch
+- Name: mobilenet-v2-d8_deeplabv3plus_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 34.02
+  Config: configs/mobilenet_v2/mobilenet-v2-d8_deeplabv3plus_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - M-V2-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k/deeplabv3plus_m-v2-d8_512x512_160k_ade20k_20200825_223255-465a01d4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mobilenet_v2/deeplabv3plus_m-v2-d8_512x512_160k_ade20k/deeplabv3plus_m-v2-d8_512x512_160k_ade20k-20200825_223255.log.json
+  Paper:
+    Title: 'MobileNetV2: Inverted Residuals and Linear Bottlenecks'
+    URL: https://arxiv.org/abs/1801.04381
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/mobilenet_v2.py#L14
+  Framework: PyTorch

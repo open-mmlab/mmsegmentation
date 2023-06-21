@@ -1,6 +1,6 @@
 # ConvNeXt
 
-[A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
+> [A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
 
 ## Introduction
 
@@ -21,15 +21,6 @@ The "Roaring 20s" of visual recognition began with the introduction of Vision Tr
 <div align=center>
 <img src="https://user-images.githubusercontent.com/8370623/148624004-e9581042-ea4d-4e10-b3bd-42c92b02053b.png" width="90%"/>
 </div>
-
-```bibtex
-@article{liu2022convnet,
-  title={A ConvNet for the 2020s},
-  author={Liu, Zhuang and Mao, Hanzi and Wu, Chao-Yuan and Feichtenhofer, Christoph and Darrell, Trevor and Xie, Saining},
-  journal={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year={2022}
-}
-```
 
 ### Usage
 
@@ -58,15 +49,26 @@ The pre-trained models on ImageNet-1k or ImageNet-21k are used to fine-tune on t
 
 ### ADE20K
 
-| Method  | Backbone    | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config                                                                                                                                       | download                                                                                                                                                                                                                                                                                                                                                                                             |
-| ------- | ----------- | --------- | ------- | -------- | -------------- | ----- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| UPerNet | ConvNeXt-T  | 512x512   | 160000  | 4.23     | 19.90          | 46.11 | 46.62         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/convnext/convnext-tiny_upernet_8xb2-amp-160k_ade20k-512x512.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553-cad485de.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553.log.json)         |
-| UPerNet | ConvNeXt-S  | 512x512   | 160000  | 5.16     | 15.18          | 48.56 | 49.02         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/convnext/convnext-small_upernet_8xb2-amp-160k_ade20k-512x512.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208-1b1e394f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208.log.json)     |
-| UPerNet | ConvNeXt-B  | 512x512   | 160000  | 6.33     | 14.41          | 48.71 | 49.54         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/convnext/convnext-base_upernet_8xb2-amp-160k_ade20k-512x512.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227-02a24fc6.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227.log.json)         |
-| UPerNet | ConvNeXt-B  | 640x640   | 160000  | 8.53     | 10.88          | 52.13 | 52.66         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/convnext/convnext-base_upernet_8xb2-amp-160k_ade20k-640x640.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859-9280e39b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859.log.json)         |
-| UPerNet | ConvNeXt-L  | 640x640   | 160000  | 12.08    | 7.69           | 53.16 | 53.38         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/convnext/convnext-large_upernet_8xb2-amp-160k_ade20k-640x640.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532-e57aa54d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532.log.json)     |
-| UPerNet | ConvNeXt-XL | 640x640   | 160000  | 26.16\*  | 6.33           | 53.58 | 54.11         | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/convnext/convnext-xlarge_upernet_8xb2-amp-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344-95fc38c2.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344.log.json) |
+| Method  | Backbone    | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device | mIoU  | mIoU(ms+flip) | config                                                                                                                                    | download                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------- | ----------- | --------- | ------- | -------- | -------------- | ------ | ----- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UPerNet | ConvNeXt-T  | 512x512   | 160000  | 4.23     | 19.90          | V100   | 46.11 | 46.62         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/convnext/convnext-tiny_upernet_8xb2-amp-160k_ade20k-512x512.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553-cad485de.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_tiny_fp16_512x512_160k_ade20k/upernet_convnext_tiny_fp16_512x512_160k_ade20k_20220227_124553.log.json)         |
+| UPerNet | ConvNeXt-S  | 512x512   | 160000  | 5.16     | 15.18          | V100   | 48.56 | 49.02         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/convnext/convnext-small_upernet_8xb2-amp-160k_ade20k-512x512.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208-1b1e394f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_small_fp16_512x512_160k_ade20k/upernet_convnext_small_fp16_512x512_160k_ade20k_20220227_131208.log.json)     |
+| UPerNet | ConvNeXt-B  | 512x512   | 160000  | 6.33     | 14.41          | V100   | 48.71 | 49.54         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/convnext/convnext-base_upernet_8xb2-amp-160k_ade20k-512x512.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227-02a24fc6.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_512x512_160k_ade20k/upernet_convnext_base_fp16_512x512_160k_ade20k_20220227_181227.log.json)         |
+| UPerNet | ConvNeXt-B  | 640x640   | 160000  | 8.53     | 10.88          | V100   | 52.13 | 52.66         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/convnext/convnext-base_upernet_8xb2-amp-160k_ade20k-640x640.py)   | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859-9280e39b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_base_fp16_640x640_160k_ade20k/upernet_convnext_base_fp16_640x640_160k_ade20k_20220227_182859.log.json)         |
+| UPerNet | ConvNeXt-L  | 640x640   | 160000  | 12.08    | 7.69           | V100   | 53.16 | 53.38         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/convnext/convnext-large_upernet_8xb2-amp-160k_ade20k-640x640.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532-e57aa54d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_large_fp16_640x640_160k_ade20k/upernet_convnext_large_fp16_640x640_160k_ade20k_20220226_040532.log.json)     |
+| UPerNet | ConvNeXt-XL | 640x640   | 160000  | 26.16\*  | 6.33           | V100   | 53.58 | 54.11         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/convnext/convnext-xlarge_upernet_8xb2-amp-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344-95fc38c2.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/convnext/upernet_convnext_xlarge_fp16_640x640_160k_ade20k/upernet_convnext_xlarge_fp16_640x640_160k_ade20k_20220226_080344.log.json) |
 
 Note:
 
 - `Mem (GB)` with * is collected when `cudnn_benchmark=True`, and hardware is V100.
+
+## Citation
+
+```bibtex
+@article{liu2022convnet,
+  title={A ConvNet for the 2020s},
+  author={Liu, Zhuang and Mao, Hanzi and Wu, Chao-Yuan and Feichtenhofer, Christoph and Darrell, Trevor and Xie, Saining},
+  journal={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2022}
+}
+```

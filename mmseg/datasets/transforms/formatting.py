@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import warnings
+
 import numpy as np
 from mmcv.transforms import to_tensor
 from mmcv.transforms.base import BaseTransform
@@ -42,7 +44,7 @@ class PackSegInputs(BaseTransform):
     def __init__(self,
                  meta_keys=('img_path', 'seg_map_path', 'ori_shape',
                             'img_shape', 'pad_shape', 'scale_factor', 'flip',
-                            'flip_direction')):
+                            'flip_direction', 'reduce_zero_label')):
         self.meta_keys = meta_keys
 
     def transform(self, results: dict) -> dict:
@@ -63,14 +65,25 @@ class PackSegInputs(BaseTransform):
             img = results['img']
             if len(img.shape) < 3:
                 img = np.expand_dims(img, -1)
-            img = np.ascontiguousarray(img.transpose(2, 0, 1))
-            packed_results['inputs'] = to_tensor(img)
+            if not img.flags.c_contiguous:
+                img = to_tensor(np.ascontiguousarray(img.transpose(2, 0, 1)))
+            else:
+                img = img.transpose(2, 0, 1)
+                img = to_tensor(img).contiguous()
+            packed_results['inputs'] = img
 
         data_sample = SegDataSample()
         if 'gt_seg_map' in results:
-            gt_sem_seg_data = dict(
-                data=to_tensor(results['gt_seg_map'][None,
-                                                     ...].astype(np.int64)))
+            if len(results['gt_seg_map'].shape) == 2:
+                data = to_tensor(results['gt_seg_map'][None,
+                                                       ...].astype(np.int64))
+            else:
+                warnings.warn('Please pay attention your ground truth '
+                              'segmentation map, usually the segmentation '
+                              'map is 2D, but got '
+                              f'{results["gt_seg_map"].shape}')
+                data = to_tensor(results['gt_seg_map'].astype(np.int64))
+            gt_sem_seg_data = dict(data=data)
             data_sample.gt_sem_seg = PixelData(**gt_sem_seg_data)
 
         if 'gt_edge_map' in results:
