@@ -12,15 +12,10 @@ The structure of this guide is as follows:
 
 ## Design of Data pipelines
 
-Following typical conventions, we use `Dataset` and `DataLoader` for data loading
-with multiple workers. `Dataset` returns a dict of data items corresponding
-the arguments of models' forward method.
-Since the data in semantic segmentation may not be the same size,
-we introduce a new `DataContainer` type in MMCV to help collect and distribute
-data of different size.
-See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
+Following typical conventions, we use `Dataset` and `DataLoader` for data loading with multiple workers. `Dataset` returns a dict of data items corresponding the arguments of models' forward method. Since the data in semantic segmentation may not be the same size, we introduce a new `DataContainer` type in MMCV to help collect and distribute data of different size. See [here](https://github.com/open-mmlab/mmcv/blob/master/mmcv/parallel/data_container.py) for more details.
 
 In 1.x version of MMSegmentation, all data transformations are inherited from [`BaseTransform`](https://github.com/open-mmlab/mmcv/blob/2.x/mmcv/transforms/base.py#L6).
+
 The input and output types of transformations are both dict. A simple example is as follows:
 
 ```python
@@ -38,13 +33,11 @@ The input and output types of transformations are both dict. A simple example is
 dict_keys(['img_path', 'seg_map_path', 'reduce_zero_label', 'seg_fields', 'gt_seg_map'])
 ```
 
-The data preparation pipeline and the dataset are decomposed. Usually a dataset
-defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict.
-A pipeline consists of a sequence of operations. Each operation takes a dict as input and also outputs a dict for the next transform.
+The data preparation pipeline and the dataset are decomposed. Usually a dataset defines how to process the annotations and a data pipeline defines all the steps to prepare a data dict. A pipeline consists of a sequence of operations. Each operation takes a dict as input and also outputs a dict for the next transform.
 
 The operations are categorized into data loading, pre-processing, formatting and test-time augmentation.
 
-Here is a pipeline example for PSPNet.
+Here is a pipeline example for PSPNet:
 
 ```python
 crop_size = (512, 1024)
@@ -71,8 +64,7 @@ test_pipeline = [
 ]
 ```
 
-For each operation, we list the related dict fields that are `added`/`updated`/`removed`.
-Before pipelines, the information we can directly obtain from the datasets are `img_path` and `seg_map_path`.
+For each operation, we list the related dict fields that are `added`/`updated`/`removed`. Before pipelines, the information we can directly obtain from the datasets are `img_path` and `seg_map_path`.
 
 ### Data loading
 
@@ -98,16 +90,14 @@ Before pipelines, the information we can directly obtain from the datasets are `
 
 `RandomCrop`: Random crop image & segmentation map.
 
-- update: `img`, `gt_seg_map`, `img_shape`.
+- update: `img`, `gt_seg_map`, `img_shape`
 
 `RandomFlip`: Flip the image & segmentation map.
 
 - add: `flip`, `flip_direction`
 - update: `img`, `gt_seg_map`
 
-`PhotoMetricDistortion`: Apply photometric distortion to image sequentially,
-every transformation is applied with a probability of 0.5.
-The position of random contrast is in second or second to last(mode 0 or 1 below, respectively).
+`PhotoMetricDistortion`: Apply photometric distortion to image sequentially, every transformation is applied with a probability of 0.5. The position of random contrast is in second or second to last(mode 0 or 1 below, respectively).
 
 ```
 1. random brightness

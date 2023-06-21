@@ -53,7 +53,7 @@ mim train mmsegmentation configs/fcn_dummy-r50-d8_4xb2-40k_cityscapes-512x1024.p
 mim test mmsegmentation configs/fcn_dummy-r50-d8_4xb2-40k_cityscapes-512x1024.py --work-dir work_dirs/dummy_resnet --checkpoint ${CHECKPOINT_PATH}
 ```
 
-> List the results as usually done in other model's README. \[Example\](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models
+> List the results as usually done in other model's README. \[Example\](https://github.com/open-mmlab/mmsegmentation/tree/main/configs/fcn#results-and-models
 > You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project
 
 | Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                             | download                                                                                                                                                                                                                                                                                                                           |
@@ -113,11 +113,11 @@ Here is a checklist illustrating a usual development workflow of a successful pr
 
   - [ ] Type hints and docstrings
 
-> Ideally *all* the methods should have [type hints](https://www.pythontutorial.net/python-basics/python-type-hints/) and [docstrings](https://google.github.io/styleguide/pyguide.html#381-docstrings). [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/utils/io.py#L9)
+> Ideally *all* the methods should have [type hints](https://www.pythontutorial.net/python-basics/python-type-hints/) and [docstrings](https://google.github.io/styleguide/pyguide.html#381-docstrings). [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/mmseg/utils/io.py#L9)
 
 - [ ] Unit tests
 
-> Unit tests for each module are required. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/tests/test_utils/test_io.py#L14)
+> Unit tests for each module are required. [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/tests/test_utils/test_io.py#L14)
 
 - [ ] Code polishing
 
@@ -125,10 +125,10 @@ Here is a checklist illustrating a usual development workflow of a successful pr
 
 - [ ] Metafile.yml
 
-> It will be parsed by MIM and Inferencer. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fcn/fcn.yml)
+> It will be parsed by MIM and Inferencer. [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fcn/fcn.yml)
 
 - [ ] Move your modules into the core package following the codebase's file hierarchy structure.
 
-> In particular, you may have to refactor this README into a standard one. [Example](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/fcn/README.md)
+> In particular, you may have to refactor this README into a standard one. [Example](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/fcn/README.md)
 
 - [ ] Refactor your modules into the core package following the codebase's file hierarchy structure.

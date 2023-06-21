@@ -1,6 +1,7 @@
 version: 2
 
-formats: all
+formats:
+    - epub
 
 python:
   version: 3.7
