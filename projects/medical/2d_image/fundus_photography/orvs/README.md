@@ -44,7 +44,7 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://opendatalab.org.cn/ORVS) and decompress data to path `'data/'`.
+- Clone this [repository](https://github.com/AbdullahSarhan/ICPRVessels), then move `Vessels-Datasets` to `data/`.
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
@@ -94,16 +94,6 @@ mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 
 You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
 
-## Results
-
-### Bactteria detection with darkfield microscopy
-
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                  config                                   |         download         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :-----------------------------------------------------------------------: | :----------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_orvs-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_orvs-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_orvs-512x512.py) | [model](<>) \| [log](<>) |
-
 ## Dataset Citation
 
 If this work is helpful for your research, please consider citing the below paper.
@@ -127,13 +117,13 @@ If this work is helpful for your research, please consider citing the below pape
 
   - [x] Basic docstrings & proper citation
 
-  - [x] Test-time correctness
+  - [ ] Test-time correctness
 
   - [x] A full README
 
-- [x] Milestone 2: Indicates a successful model implementation.
+- [ ] Milestone 2: Indicates a successful model implementation.
 
-  - [x] Training-time correctness
+  - [ ] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 
