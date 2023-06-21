@@ -89,18 +89,15 @@ if __name__ == '__main__':
     save_img_suffix = '.png'
     save_seg_map_suffix = '.png'
 
-    train_imgs = glob.glob(
-        'data/ISBI2016_ISIC_Part1_Training_Data/ISBI2016_ISIC_Part1_Training_Data/*'  # noqa
-        + img_suffix)
+    train_imgs = glob.glob('data/ISBI2016_ISIC_Part1_Training_Data/*'  # noqa
+                           + img_suffix)
     train_masks = glob.glob(
-        'data/ISBI2016_ISIC_Part1_Training_GroundTruth/ISBI2016_ISIC_Part1_Training_GroundTruth/*'  # noqa
+        'data/ISBI2016_ISIC_Part1_Training_GroundTruth/*'  # noqa
         + seg_map_suffix)
 
-    test_imgs = glob.glob(
-        'data/ISBI2016_ISIC_Part1_Test_Data/ISBI2016_ISIC_Part1_Test_Data/*' +
-        img_suffix)
+    test_imgs = glob.glob('data/ISBI2016_ISIC_Part1_Test_Data/*' + img_suffix)
     test_masks = glob.glob(
-        'data/ISBI2016_ISIC_Part1_Test_GroundTruth/ISBI2016_ISIC_Part1_Test_GroundTruth/*'  # noqa
+        'data/ISBI2016_ISIC_Part1_Test_GroundTruth/*'  # noqa
         + seg_map_suffix)
 
     assert len(train_imgs) == len(train_masks)
