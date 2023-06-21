@@ -2,7 +2,7 @@
 
 ## Description
 
-This project supports **`CoNIC: Colon Nuclei Identification and Counting Challenge`**, which can be downloaded from [here](https://conic-challenge.grand-challenge.org/).
+This project supports **`CoNIC: Colon Nuclei Identification and Counting Challenge`**, which can be downloaded from [here](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb).
 
 ### Dataset Overview
 
@@ -67,7 +67,16 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 
 ### Dataset preparing
 
-- download dataset from [here](https://conic-challenge.grand-challenge.org/) and decompress data to path `'data/'`.
+- download dataset from [here](https://drive.google.com/drive/folders/1il9jG7uA4-ebQ_lNmXbbF2eOK9uNwheb/) and move data to path `'data/CoNIC_Challenge'`. The directory should be like:
+  ```shell
+  data/CoNIC_Challenge
+        ├── README.txt
+        ├── by-nc-sa.md
+        ├── counts.csv
+        ├── images.npy
+        ├── labels.npy
+        └── patch_info.csv
+  ```
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
