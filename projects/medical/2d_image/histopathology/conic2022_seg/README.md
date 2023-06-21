@@ -26,9 +26,9 @@ The output of Task 1 can be directly used to perform Task 2, but these can be tr
 
 ### Original Statistic Information
 
-| Dataset name                                             | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License |
-| -------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | ------- |
-| [CoNIC202](https://conic-challenge.grand-challenge.org/) | abdomen           | segmentation | histopathology | 7            | 4981/-/-              | yes/-/-                | 2022         | -       |
+| Dataset name                                             | Anatomical region | Task type    | Modality       | Num. Classes | Train/Val/Test Images | Train/Val/Test Labeled | Release Date | License                                                                                                      |
+| -------------------------------------------------------- | ----------------- | ------------ | -------------- | ------------ | --------------------- | ---------------------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
+| [CoNIC202](https://conic-challenge.grand-challenge.org/) | abdomen           | segmentation | histopathology | 7            | 4981/-/-              | yes/-/-                | 2022         | [Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/) |
 
 | Class Name | Num. Train | Pct. Train | Num. Val | Pct. Val | Num. Test | Pct. Test |
 | :--------: | :--------: | :--------: | :------: | :------: | :-------: | :-------: |
@@ -131,16 +131,6 @@ mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 
 You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
 
-## Results
-
-### Bactteria detection with darkfield microscopy
-
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                       config                                       |         download         |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :--------------------------------------------------------------------------------: | :----------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_conic2022-seg-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_conic2022-seg-512x512.py)  | [model](<>) \| [log](<>) |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](./configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_conic2022-seg-512x512.py) | [model](<>) \| [log](<>) |
-
 ## Organizers
 
 - Simon Graham (TIA, PathLAKE)
@@ -187,13 +177,11 @@ If this work is helpful for your research, please consider citing the below pape
 
   - [x] Basic docstrings & proper citation
 
-  - [x] Test-time correctness
-
   - [x] A full README
 
-- [x] Milestone 2: Indicates a successful model implementation.
+- [ ] Milestone 2: Indicates a successful model implementation.
 
-  - [x] Training-time correctness
+  - [ ] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 
