@@ -135,13 +135,13 @@ You should claim whether this is based on the pre-trained weights, which are con
 
   - [x] Basic docstrings & proper citation
 
-  - [x] Test-time correctness
+  - [ ] Test-time correctness
 
   - [x] A full README
 
-- [x] Milestone 2: Indicates a successful model implementation.
+- [ ] Milestone 2: Indicates a successful model implementation.
 
-  - [x] Training-time correctness
+  - [ ] Training-time correctness
 
 - [ ] Milestone 3: Good to be a part of our core package!
 
