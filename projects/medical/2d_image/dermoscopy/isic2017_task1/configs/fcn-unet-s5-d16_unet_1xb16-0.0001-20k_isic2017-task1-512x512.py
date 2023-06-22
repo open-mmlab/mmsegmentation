@@ -3,7 +3,7 @@ _base_ = [
     'mmseg::_base_/default_runtime.py',
     'mmseg::_base_/schedules/schedule_20k.py'
 ]
-custom_imports = dict(imports='datasets.isic2017_task1')
+custom_imports = dict(imports='datasets.isic2017-task1_dataset')
 img_scale = (512, 512)
 data_preprocessor = dict(size=img_scale)
 optimizer = dict(lr=0.0001)
