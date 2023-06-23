@@ -1,13 +1,17 @@
-from argparse import ArgumentParser
-from mmseg.apis import inference_model, init_model
-import numpy as np
+# Copyright (c) OpenMMLab. All rights reserved.
 import os
-from osgeo import gdal
 import queue
 import threading
+from argparse import ArgumentParser
+
+import numpy as np
+from osgeo import gdal
+
+from mmseg.apis import inference_model, init_model
 
 
 class RSImage:
+
     def __init__(self, img):
         if isinstance(img, str):
             self.dataset = gdal.Open(img)
@@ -36,8 +40,9 @@ class RSImage:
     def imwrite(self, grid=None, data=None):
         if grid is not None:
             for index, band in enumerate(self.bandlist):
-                band.WriteArray(data[grid[5]:grid[5] + grid[7], grid[4]:grid[4] + grid[6]],
-                                grid[0] + grid[4], grid[1] + grid[5])
+                band.WriteArray(
+                    data[grid[5]:grid[5] + grid[7], grid[4]:grid[4] + grid[6]],
+                    grid[0] + grid[4], grid[1] + grid[5])
         else:
             if data is not None:
                 for i in range(self.channel):
@@ -47,9 +52,10 @@ class RSImage:
         if segmap_path is None:
             base_name = os.path.basename(self.path)
             file_name, _ = os.path.splitext(base_name)
-            segmap_path = f"{file_name}_label.tif"
+            segmap_path = f'{file_name}_label.tif'
         driver = gdal.GetDriverByName('GTiff')
-        segmap = driver.Create(segmap_path, self.width, self.height, 1, gdal.GDT_Byte)
+        segmap = driver.Create(segmap_path, self.width, self.height, 1,
+                               gdal.GDT_Byte)
         segmap.SetGeoTransform(self.trans)
         segmap.SetProjection(self.proj)
         segmap_img = RSImage(segmap)
@@ -102,7 +108,10 @@ class RSImage:
                     x_crop_size = winx - x_half_overlap
                 if not x_end:
                     x_crop_size -= x_half_overlap
-                self.grids.append([xoff, yoff, xsize, ysize, x_crop_off, y_crop_off, x_crop_size, y_crop_size])
+                self.grids.append([
+                    xoff, yoff, xsize, ysize, x_crop_off, y_crop_off,
+                    x_crop_size, y_crop_size
+                ])
                 x += xstep
                 if x_end:
                     break
@@ -148,14 +157,18 @@ def main():
     parser.add_argument('model', help='Config file')
     parser.add_argument('checkpoint', help='Checkpoint file')
     parser.add_argument('out', help='Path to save result image')
-    parser.add_argument('batch_size', type=int,
-                        help='maximum number of windows inferred simultaneously')
-    parser.add_argument('win_size', help='window xsize,ysize', type=int, nargs=2)
-    parser.add_argument('stride', help='window xstride,ystride', type=int, nargs=2)
-    parser.add_argument('--thread', default=1, type=int,
-                        help='number of inference threads')
-    parser.add_argument('--device', default='cuda:0',
-                        help='Device used for inference')
+    parser.add_argument(
+        'batch_size',
+        type=int,
+        help='maximum number of windows inferred simultaneously')
+    parser.add_argument(
+        'win_size', help='window xsize,ysize', type=int, nargs=2)
+    parser.add_argument(
+        'stride', help='window xstride,ystride', type=int, nargs=2)
+    parser.add_argument(
+        '--thread', default=1, type=int, help='number of inference threads')
+    parser.add_argument(
+        '--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
 
     img = RSImage(args.img)
@@ -164,27 +177,19 @@ def main():
     write_buffer = queue.Queue(args.batch_size)
     end_flag = object()
 
-    read_thread = threading.Thread(target=reader,
-                                   args=(img,
-                                         read_buffer,
-                                         end_flag,
-                                         *args.win_size,
-                                         *args.stride))
+    read_thread = threading.Thread(
+        target=reader,
+        args=(img, read_buffer, end_flag, *args.win_size, *args.stride))
     read_thread.start()
     inferencer_threads = []
     for _ in range(args.thread):
-        inferencer_thread = threading.Thread(target=inferencer,
-                                             args=(read_buffer,
-                                                   write_buffer,
-                                                   end_flag,
-                                                   model))
+        inferencer_thread = threading.Thread(
+            target=inferencer,
+            args=(read_buffer, write_buffer, end_flag, model))
         inferencer_thread.start()
         inferencer_threads.append(inferencer_thread)
-    write_thread = threading.Thread(target=writer,
-                                    args=(img,
-                                          write_buffer,
-                                          end_flag,
-                                          args.out))
+    write_thread = threading.Thread(
+        target=writer, args=(img, write_buffer, end_flag, args.out))
     write_thread.start()
     read_thread.join()
     for inferencer_thread in inferencer_threads:
