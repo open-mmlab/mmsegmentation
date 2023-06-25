@@ -1,6 +1,6 @@
 # BEiT
 
-[BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)
+> [BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/abs/2106.08254)
 
 ## Introduction
 
@@ -21,18 +21,6 @@ We introduce a self-supervised vision representation model BEiT, which stands fo
 <div align=center>
 <img src="https://user-images.githubusercontent.com/93248678/160155758-781c9a45-b1d7-4530-9015-88eca6645006.png" width="70%"/>
 </div>
-
-## Citation
-
-```bibtex
-@inproceedings{beit,
-      title={{BEiT}: {BERT} Pre-Training of Image Transformers},
-      author={Hangbo Bao and Li Dong and Songhao Piao and Furu Wei},
-      booktitle={International Conference on Learning Representations},
-      year={2022},
-      url={https://openreview.net/forum?id=p-BhZSz59o4}
-}
-```
 
 ## Usage
 
@@ -79,7 +67,19 @@ upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth $GPUS --eval mIoU
 
 ### ADE20K
 
-| Method  | Backbone | Crop Size | pretrain     | pretrain img size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | mIoU  | mIoU(ms+flip) | config                                                                                                                              | download                                                                                                                                                                                                                                                                                                                                                 |
-| ------- | -------- | --------- | ------------ | ----------------- | ---------- | ------- | -------- | -------------- | ----- | ------------: | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| UPerNet | BEiT-B   | 640x640   | ImageNet-22K | 224x224           | 16         | 160000  | 15.88    | 2.00           | 53.08 |         53.84 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/beit/beit-base_upernet_8xb2-160k_ade20k-640x640.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k.log.json)                         |
-| UPerNet | BEiT-L   | 640x640   | ImageNet-22K | 224x224           | 8          | 320000  | 22.64    | 0.96           | 56.33 |         56.84 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/beit/beit-large_upernet_8xb1-amp-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.log.json) |
+| Method  | Backbone | Crop Size | pretrain     | pretrain img size | Batch Size | Lr schd | Mem (GB) | Inf time (fps) | Device | mIoU  | mIoU(ms+flip) | config                                                                                                                           | download                                                                                                                                                                                                                                                                                                                                                 |
+| ------- | -------- | --------- | ------------ | ----------------- | ---------- | ------- | -------- | -------------- | ------ | ----- | ------------: | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UPerNet | BEiT-B   | 640x640   | ImageNet-22K | 224x224           | 16         | 160000  | 15.88    | 2.00           | V100   | 53.08 |         53.84 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/beit/beit-base_upernet_8xb2-160k_ade20k-640x640.py)      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k.log.json)                         |
+| UPerNet | BEiT-L   | 640x640   | ImageNet-22K | 224x224           | 8          | 320000  | 22.64    | 0.96           | V100   | 56.33 |         56.84 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/beit/beit-large_upernet_8xb1-amp-160k_ade20k-640x640.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.log.json) |
+
+## Citation
+
+```bibtex
+@inproceedings{beit,
+      title={{BEiT}: {BERT} Pre-Training of Image Transformers},
+      author={Hangbo Bao and Li Dong and Songhao Piao and Furu Wei},
+      booktitle={International Conference on Learning Representations},
+      year={2022},
+      url={https://openreview.net/forum?id=p-BhZSz59o4}
+}
+```

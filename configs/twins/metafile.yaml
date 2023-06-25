@@ -1,0 +1,289 @@
+Models:
+- Name: twins_pcpvt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.26
+      mIoU(ms+flip): 44.11
+  Config: configs/twins/twins_pcpvt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-PCPVT-S
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 6.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_204132-41acd132.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_204132.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_pcpvt-s_uperhead_8xb4-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.04
+      mIoU(ms+flip): 46.92
+  Config: configs/twins/twins_pcpvt-s_uperhead_8xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-PCPVT-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.67
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k_20211201_233537-8e99c07a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k/twins_pcpvt-s_uperhead_8x4_512x512_160k_ade20k_20211201_233537.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_pcpvt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.66
+      mIoU(ms+flip): 46.48
+  Config: configs/twins/twins_pcpvt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-PCPVT-B
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 8.41
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141019-d396db72.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141019.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_pcpvt-b_uperhead_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.91
+      mIoU(ms+flip): 48.64
+  Config: configs/twins/twins_pcpvt-b_uperhead_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - Twins-PCPVT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 6.46
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k_20211130_141020-02094ea5.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-b_uperhead_8x2_512x512_160k_ade20k_20211130_141020.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_pcpvt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.94
+      mIoU(ms+flip): 46.7
+  Config: configs/twins/twins_pcpvt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-PCPVT-L
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 10.78
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_105226-bc6d61dc.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_pcpvt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_105226.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.35
+      mIoU(ms+flip): 50.08
+  Config: configs/twins/twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - Twins-PCPVT-L
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 7.82
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k_20211201_075053-c6095c07.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k/twins_pcpvt-l_uperhead_8x2_512x512_160k_ade20k_20211201_075053.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_svt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.47
+      mIoU(ms+flip): 45.42
+  Config: configs/twins/twins_svt-s_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-SVT-S
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 5.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141006-0a0d3317.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-s_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141006.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_svt-s_uperhead_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.08
+      mIoU(ms+flip): 46.96
+  Config: configs/twins/twins_svt-s_uperhead_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - SVT-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.93
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_uperhead_8x2_512x512_160k_ade20k/twins_svt-s_uperhead_8x2_512x512_160k_ade20k_20211130_141005-e48a2d94.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-s_uperhead_8x2_512x512_160k_ade20k/twins_svt-s_uperhead_8x2_512x512_160k_ade20k_20211130_141005.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_svt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.77
+      mIoU(ms+flip): 47.47
+  Config: configs/twins/twins_svt-b_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-SVT-B
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 8.75
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_113849-88b2907c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-b_fpn_fpnhead_8x4_512x512_80k_ade20k_20211201_113849.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_svt-b_uperhead_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.04
+      mIoU(ms+flip): 48.87
+  Config: configs/twins/twins_svt-b_uperhead_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - Twins-SVT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 6.77
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_uperhead_8x2_512x512_160k_ade20k/twins_svt-b_uperhead_8x2_512x512_160k_ade20k_20211202_040826-0943a1f1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-b_uperhead_8x2_512x512_160k_ade20k/twins_svt-b_uperhead_8x2_512x512_160k_ade20k_20211202_040826.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_svt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512
+  In Collection: FPN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.55
+      mIoU(ms+flip): 47.74
+  Config: configs/twins/twins_svt-l_fpn_fpnhead_8xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 32
+    Architecture:
+    - Twins-SVT-L
+    - FPN
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 11.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141005-1d59bee2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k/twins_svt-l_fpn_fpnhead_8x4_512x512_80k_ade20k_20211130_141005.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
+- Name: twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.65
+      mIoU(ms+flip): 50.63
+  Config: configs/twins/twins_pcpvt-l_uperhead_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - Twins-SVT-L
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 8.41
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_uperhead_8x2_512x512_160k_ade20k/twins_svt-l_uperhead_8x2_512x512_160k_ade20k_20211130_141005-3e2cae61.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/twins/twins_svt-l_uperhead_8x2_512x512_160k_ade20k/twins_svt-l_uperhead_8x2_512x512_160k_ade20k_20211130_141005.log.json
+  Paper:
+    Title: 'Twins: Revisiting the Design of Spatial Attention in Vision Transformers'
+    URL: https://arxiv.org/pdf/2104.13840.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.20.0/mmseg/models/backbones/twins.py#L352
+  Framework: PyTorch
