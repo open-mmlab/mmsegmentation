@@ -1,0 +1,193 @@
+Models:
+- Name: resnest_s101-d8_fcn_4xb2-80k_cityscapes-512x1024
+  In Collection: FCN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.56
+      mIoU(ms+flip): 78.98
+  Config: configs/resnest/resnest_s101-d8_fcn_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - S-101-D8
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x1024_80k_cityscapes/fcn_s101-d8_512x1024_80k_cityscapes-20200807_140631.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_pspnet_4xb2-80k_cityscapes512x1024
+  In Collection: PSPNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.57
+      mIoU(ms+flip): 79.19
+  Config: configs/resnest/resnest_s101-d8_pspnet_4xb2-80k_cityscapes512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - S-101-D8
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes_20200807_140631-c75f3b99.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x1024_80k_cityscapes/pspnet_s101-d8_512x1024_80k_cityscapes-20200807_140631.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_deeplabv3_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.67
+      mIoU(ms+flip): 80.51
+  Config: configs/resnest/resnest_s101-d8_deeplabv3_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - S-101-D8
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes_20200807_144429-b73c4270.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x1024_80k_cityscapes/deeplabv3_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.62
+      mIoU(ms+flip): 80.27
+  Config: configs/resnest/resnest_s101-d8_deeplabv3plus_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - S-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 13.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes_20200807_144429-1239eb43.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x1024_80k_cityscapes/deeplabv3plus_s101-d8_512x1024_80k_cityscapes-20200807_144429.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_fcn_4xb4-160k_ade20k-512x512
+  In Collection: FCN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.62
+      mIoU(ms+flip): 46.16
+  Config: configs/resnest/resnest_s101-d8_fcn_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - S-101-D8
+    - FCN
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 14.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k_20200807_145416-d3160329.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/fcn_s101-d8_512x512_160k_ade20k/fcn_s101-d8_512x512_160k_ade20k-20200807_145416.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_pspnet_4xb4-160k_ade20k-512x512
+  In Collection: PSPNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.44
+      mIoU(ms+flip): 46.28
+  Config: configs/resnest/resnest_s101-d8_pspnet_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - S-101-D8
+    - PSPNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 14.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k_20200807_145416-a6daa92a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/pspnet_s101-d8_512x512_160k_ade20k/pspnet_s101-d8_512x512_160k_ade20k-20200807_145416.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_deeplabv3_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.71
+      mIoU(ms+flip): 46.59
+  Config: configs/resnest/resnest_s101-d8_deeplabv3_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - S-101-D8
+    - DeepLabV3
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 14.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k_20200807_144503-17ecabe5.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3_s101-d8_512x512_160k_ade20k/deeplabv3_s101-d8_512x512_160k_ade20k-20200807_144503.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch
+- Name: resnest_s101-d8_deeplabv3plus_4xb4-160k_ade20k-512x512
+  In Collection: DeepLabV3+
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.47
+      mIoU(ms+flip): 47.27
+  Config: configs/resnest/resnest_s101-d8_deeplabv3plus_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - S-101-D8
+    - DeepLabV3+
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 16.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k_20200807_144503-27b26226.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/resnest/deeplabv3plus_s101-d8_512x512_160k_ade20k/deeplabv3plus_s101-d8_512x512_160k_ade20k-20200807_144503.log.json
+  Paper:
+    Title: 'ResNeSt: Split-Attention Networks'
+    URL: https://arxiv.org/abs/2004.08955
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/resnest.py#L271
+  Framework: PyTorch

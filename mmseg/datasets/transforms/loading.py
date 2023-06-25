@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 import mmcv
 import mmengine.fileio as fileio
@@ -11,6 +11,11 @@ from mmcv.transforms import LoadImageFromFile
 
 from mmseg.registry import TRANSFORMS
 from mmseg.utils import datafrombytes
+
+try:
+    from osgeo import gdal
+except ImportError:
+    gdal = None
 
 
 @TRANSFORMS.register_module()
@@ -436,4 +441,187 @@ class LoadBiomedicalData(BaseTransform):
                     f"decode_backend='{self.decode_backend}', "
                     f'to_xyz={self.to_xyz}, '
                     f'backend_args={self.backend_args})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class InferencerLoader(BaseTransform):
+    """Load an image from ``results['img']``.
+
+    Similar with :obj:`LoadImageFromFile`, but the image has been loaded as
+    :obj:`np.ndarray` in ``results['img']``. Can be used when loading image
+    from webcam.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+    - img_path
+    - img_shape
+    - ori_shape
+
+    Args:
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is an uint8 array.
+            Defaults to False.
+    """
+
+    def __init__(self, **kwargs) -> None:
+        super().__init__()
+        self.from_file = TRANSFORMS.build(
+            dict(type='LoadImageFromFile', **kwargs))
+        self.from_ndarray = TRANSFORMS.build(
+            dict(type='LoadImageFromNDArray', **kwargs))
+
+    def transform(self, single_input: Union[str, np.ndarray, dict]) -> dict:
+        """Transform function to add image meta information.
+
+        Args:
+            results (dict): Result dict with Webcam read image in
+                ``results['img']``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+        if isinstance(single_input, str):
+            inputs = dict(img_path=single_input)
+        elif isinstance(single_input, np.ndarray):
+            inputs = dict(img=single_input)
+        elif isinstance(single_input, dict):
+            inputs = single_input
+        else:
+            raise NotImplementedError
+
+        if 'img' in inputs:
+            return self.from_ndarray(inputs)
+        return self.from_file(inputs)
+
+
+@TRANSFORMS.register_module()
+class LoadSingleRSImageFromFile(BaseTransform):
+    """Load a Remote Sensing mage from file.
+
+    Required Keys:
+
+    - img_path
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - ori_shape
+
+    Args:
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is a float64 array.
+            Defaults to True.
+    """
+
+    def __init__(self, to_float32: bool = True):
+        self.to_float32 = to_float32
+
+        if gdal is None:
+            raise RuntimeError('gdal is not installed')
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+
+        filename = results['img_path']
+        ds = gdal.Open(filename)
+        if ds is None:
+            raise Exception(f'Unable to open file: {filename}')
+        img = np.einsum('ijk->jki', ds.ReadAsArray())
+
+        if self.to_float32:
+            img = img.astype(np.float32)
+
+        results['img'] = img
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f'to_float32={self.to_float32})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadMultipleRSImageFromFile(BaseTransform):
+    """Load two Remote Sensing mage from file.
+
+    Required Keys:
+
+    - img_path
+    - img_path2
+
+    Modified Keys:
+
+    - img
+    - img2
+    - img_shape
+    - ori_shape
+
+    Args:
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image is a float64 array.
+            Defaults to True.
+    """
+
+    def __init__(self, to_float32: bool = True):
+        if gdal is None:
+            raise RuntimeError('gdal is not installed')
+        self.to_float32 = to_float32
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+
+        filename = results['img_path']
+        filename2 = results['img_path2']
+
+        ds = gdal.Open(filename)
+        ds2 = gdal.Open(filename2)
+
+        if ds is None:
+            raise Exception(f'Unable to open file: {filename}')
+        if ds2 is None:
+            raise Exception(f'Unable to open file: {filename2}')
+
+        img = np.einsum('ijk->jki', ds.ReadAsArray())
+        img2 = np.einsum('ijk->jki', ds2.ReadAsArray())
+
+        if self.to_float32:
+            img = img.astype(np.float32)
+            img2 = img2.astype(np.float32)
+
+        if img.shape != img2.shape:
+            raise Exception(f'Image shapes do not match:'
+                            f' {img.shape} vs {img2.shape}')
+
+        results['img'] = img
+        results['img2'] = img2
+        results['img_shape'] = img.shape[:2]
+        results['ori_shape'] = img.shape[:2]
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f'to_float32={self.to_float32})')
         return repr_str
