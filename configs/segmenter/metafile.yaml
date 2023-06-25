@@ -1,0 +1,138 @@
+Collections:
+- Name: Segmenter
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2105.05633
+  README: configs/segmenter/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: segmenter_vit-t_mask_8xb1-160k_ade20k-512x512
+  In Collection: Segmenter
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 39.99
+      mIoU(ms+flip): 40.83
+  Config: configs/segmenter/segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 8
+    Architecture:
+    - ViT-T_16
+    - Segmenter
+    - Mask
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 1.21
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706-ffcf7509.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-t_mask_8x1_512x512_160k_ade20k/segmenter_vit-t_mask_8x1_512x512_160k_ade20k_20220105_151706.log.json
+  Paper:
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2105.05633
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15
+  Framework: PyTorch
+- Name: segmenter_vit-s_fcn_8xb1-160k_ade20k-512x512
+  In Collection: Segmenter
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.75
+      mIoU(ms+flip): 46.82
+  Config: configs/segmenter/segmenter_vit-s_fcn_8xb1-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 8
+    Architecture:
+    - ViT-S_16
+    - Segmenter
+    - Linear
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 1.78
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713-39658c46.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_linear_8x1_512x512_160k_ade20k/segmenter_vit-s_linear_8x1_512x512_160k_ade20k_20220105_151713.log.json
+  Paper:
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2105.05633
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15
+  Framework: PyTorch
+- Name: segmenter_vit-s_mask_8xb1-160k_ade20k-512x512
+  In Collection: Segmenter
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.19
+      mIoU(ms+flip): 47.85
+  Config: configs/segmenter/segmenter_vit-s_mask_8xb1-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 8
+    Architecture:
+    - ViT-S_16
+    - Segmenter
+    - Mask
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 2.03
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706-511bb103.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-s_mask_8x1_512x512_160k_ade20k/segmenter_vit-s_mask_8x1_512x512_160k_ade20k_20220105_151706.log.json
+  Paper:
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2105.05633
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15
+  Framework: PyTorch
+- Name: segmenter_vit-b_mask_8xb1-160k_ade20k-512x512
+  In Collection: Segmenter
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 49.6
+      mIoU(ms+flip): 51.07
+  Config: configs/segmenter/segmenter_vit-b_mask_8xb1-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 8
+    Architecture:
+    - ViT-B_16
+    - Segmenter
+    - Mask
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706-bc533b08.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-b_mask_8x1_512x512_160k_ade20k/segmenter_vit-b_mask_8x1_512x512_160k_ade20k_20220105_151706.log.json
+  Paper:
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2105.05633
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15
+  Framework: PyTorch
+- Name: segmenter_vit-l_mask_8xb1-160k_ade20k-512x512
+  In Collection: Segmenter
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 52.16
+      mIoU(ms+flip): 53.65
+  Config: configs/segmenter/segmenter_vit-l_mask_8xb1-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 8
+    Architecture:
+    - ViT-L_16
+    - Segmenter
+    - Mask
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 16.56
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750-7ef345be.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/segmenter/segmenter_vit-l_mask_8x1_512x512_160k_ade20k/segmenter_vit-l_mask_8x1_512x512_160k_ade20k_20220105_162750.log.json
+  Paper:
+    Title: 'Segmenter: Transformer for Semantic Segmentation'
+    URL: https://arxiv.org/abs/2105.05633
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.21.0/mmseg/models/decode_heads/segmenter_mask_head.py#L15
+  Framework: PyTorch
