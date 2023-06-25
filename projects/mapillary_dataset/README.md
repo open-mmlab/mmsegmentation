@@ -10,7 +10,7 @@ This project implements **`Mapillary Vistas Dataset`**
 
 ### Dataset preparing
 
-Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset Preparing Guide](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/mapillary_dataset/docs/en/user_guides/2_dataset_prepare.md)
+Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset Preparing Guide](https://github.com/open-mmlab/mmsegmentation/tree/main/projects/mapillary_dataset/docs/en/user_guides/2_dataset_prepare.md)
 
 ```none
   mmsegmentation
@@ -34,6 +34,7 @@ Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset
   |   │   │   │   └── polygons
   │   │   ├── validation
   │   │   │   ├── images
+  │   │   │   ├── v1.2
   |   │   │   │   ├── instances
   |   │   │   │   ├── labels
   |   │   │   │   ├── labels_mask
@@ -46,12 +47,12 @@ Preparing `Mapillary Vistas Dataset` dataset following [Mapillary Vistas Dataset
   |   │   │   │   └── polygons
 ```
 
-### Training commands with `deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py`
+### Training commands
 
 ```bash
 # Dataset train commands
 # at `mmsegmentation` folder
-bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-240k_mapillay-512x1024.py 4
+bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d8_4xb2-240k_mapillay_v1-512x1024.py 4
 ```
 
 ## Checklist
@@ -66,20 +67,20 @@ bash tools/dist_train.sh projects/mapillary_dataset/configs/deeplabv3plus_r101-d
 
   - [x] A full README
 
-- [ ] Milestone 2: Indicates a successful model implementation.
+- [x] Milestone 2: Indicates a successful model implementation.
 
-  - [ ] Training-time correctness
+  - [x] Training-time correctness
 
-- [ ] Milestone 3: Good to be a part of our core package!
+- [x] Milestone 3: Good to be a part of our core package!
 
-  - [ ] Type hints and docstrings
+  - [x] Type hints and docstrings
 
-  - [ ] Unit tests
+  - [x] Unit tests
 
-  - [ ] Code polishing
+  - [x] Code polishing
 
-  - [ ] Metafile.yml
+  - [x] Metafile.yml
 
-- [ ] Move your modules into the core package following the codebase's file hierarchy structure.
+- [x] Move your modules into the core package following the codebase's file hierarchy structure.
 
-- [ ] Refactor your modules into the core package following the codebase's file hierarchy structure.
+- [x] Refactor your modules into the core package following the codebase's file hierarchy structure.

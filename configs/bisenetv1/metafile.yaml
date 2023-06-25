@@ -1,0 +1,275 @@
+Collections:
+- Name: BiSeNetV1
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - COCO-Stuff 164k
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  README: configs/bisenetv1/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: bisenetv1_r18-d32_4xb4-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.44
+      mIoU(ms+flip): 77.05
+  Config: configs/bisenetv1/bisenetv1_r18-d32_4xb4-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - R-18-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.69
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes_20210922_172239-c55e78e2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_4x4_1024x1024_160k_cityscapes_20210922_172239.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r18-d32-in1k-pre_4xb4-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.37
+      mIoU(ms+flip): 76.91
+  Config: configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - R-18-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 5.69
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210905_220251-8ba80eff.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210905_220251.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r18-d32-in1k-pre_4xb8-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.16
+      mIoU(ms+flip): 77.24
+  Config: configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb8-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 32
+    Architecture:
+    - R-18-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 11.17
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes_20210905_220322-bb8db75f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes/bisenetv1_r18-d32_in1k-pre_4x8_1024x1024_160k_cityscapes_20210905_220322.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r50-d32_4xb4-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.92
+      mIoU(ms+flip): 78.87
+  Config: configs/bisenetv1/bisenetv1_r50-d32_4xb4-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - R-50-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 15.39
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes_20210923_222639-7b28a2a6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_4x4_1024x1024_160k_cityscapes_20210923_222639.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r50-d32-in1k-pre_4xb4-160k_cityscapes-1024x1024
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.68
+      mIoU(ms+flip): 79.57
+  Config: configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - R-50-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 15.39
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210917_234628-8b304447.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes/bisenetv1_r50-d32_in1k-pre_4x4_1024x1024_160k_cityscapes_20210917_234628.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r18-d32_4xb4-160k_coco-stuff164k-512x512
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 25.45
+      mIoU(ms+flip): 26.15
+  Config: configs/bisenetv1/bisenetv1_r18-d32_4xb4-160k_coco-stuff164k-512x512.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - R-18-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328-046aa2f2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211022_054328.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 28.55
+      mIoU(ms+flip): 29.26
+  Config: configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - R-18-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.33
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211023_013100-f700dbf7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r18-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211023_013100.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r50-d32_4xb4-160k_coco-stuff164k-512x512
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 29.82
+      mIoU(ms+flip): 30.33
+  Config: configs/bisenetv1/bisenetv1_r50-d32_4xb4-160k_coco-stuff164k-512x512.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - R-50-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616-d2bb0df4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_040616.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 34.88
+      mIoU(ms+flip): 35.37
+  Config: configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - R-50-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.28
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_181932-66747911.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r50-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_181932.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 31.14
+      mIoU(ms+flip): 31.76
+  Config: configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - R-101-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147-c6b32c3b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211102_164147.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
+- Name: bisenetv1_r101-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512
+  In Collection: BiSeNetV1
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 37.38
+      mIoU(ms+flip): 37.99
+  Config: configs/bisenetv1/bisenetv1_r101-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - R-101-D32
+    - BiSeNetV1
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.36
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_225220-28c8f092.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/bisenetv1/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k/bisenetv1_r101-d32_in1k-pre_lr5e-3_4x4_512x512_160k_coco-stuff164k_20211101_225220.log.json
+  Paper:
+    Title: 'BiSeNet: Bilateral Segmentation Network for Real-time Semantic Segmentation'
+    URL: https://arxiv.org/abs/1808.00897
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/backbones/bisenetv1.py#L266
+  Framework: PyTorch
