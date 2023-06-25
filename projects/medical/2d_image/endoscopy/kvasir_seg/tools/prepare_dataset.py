@@ -73,6 +73,7 @@ def convert_label_pics_into_pngs(src_dir,
         Image.fromarray(img).save(tgt_path)
         print(f'processed {i+1}/{num}.')
 
+
 if __name__ == '__main__':
 
     convert_pics_into_pngs(
@@ -84,4 +85,3 @@ if __name__ == '__main__':
         os.path.join(root_path, 'sessile-main-Kvasir-SEG/masks'),
         tgt_mask_dir,
         suffix=seg_map_suffix)
-

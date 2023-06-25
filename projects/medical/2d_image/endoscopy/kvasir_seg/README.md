@@ -120,7 +120,6 @@ mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 
 You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
 
-
 ## Checklist
 
 - [x] Milestone 1: PR-ready, and acceptable to be one of the `projects/`.
