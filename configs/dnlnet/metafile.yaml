@@ -1,0 +1,292 @@
+Collections:
+- Name: DNLNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  README: configs/dnlnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: dnl_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.61
+  Config: configs/dnlnet/dnl_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes/dnl_r50-d8_512x1024_40k_cityscapes_20200904_233629-53d4ea93.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_40k_cityscapes/dnl_r50-d8_512x1024_40k_cityscapes-20200904_233629.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.31
+  Config: configs/dnlnet/dnl_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes/dnl_r101-d8_512x1024_40k_cityscapes_20200904_233629-9928ffef.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_40k_cityscapes/dnl_r101-d8_512x1024_40k_cityscapes-20200904_233629.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.44
+      mIoU(ms+flip): 80.27
+  Config: configs/dnlnet/dnl_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_40k_cityscapes/dnl_r50-d8_769x769_40k_cityscapes_20200820_232206-0f283785.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_40k_cityscapes/dnl_r50-d8_769x769_40k_cityscapes-20200820_232206.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.39
+      mIoU(ms+flip): 77.77
+  Config: configs/dnlnet/dnl_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_40k_cityscapes/dnl_r101-d8_769x769_40k_cityscapes_20200820_171256-76c596df.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_40k_cityscapes/dnl_r101-d8_769x769_40k_cityscapes-20200820_171256.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.33
+  Config: configs/dnlnet/dnl_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes/dnl_r50-d8_512x1024_80k_cityscapes_20200904_233629-58b2f778.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x1024_80k_cityscapes/dnl_r50-d8_512x1024_80k_cityscapes-20200904_233629.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.41
+  Config: configs/dnlnet/dnl_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes_20200904_233629-758e2dd4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x1024_80k_cityscapes/dnl_r101-d8_512x1024_80k_cityscapes-20200904_233629.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.36
+      mIoU(ms+flip): 80.7
+  Config: configs/dnlnet/dnl_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes_20200820_011925-366bc4c7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_769x769_80k_cityscapes/dnl_r50-d8_769x769_80k_cityscapes-20200820_011925.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.41
+      mIoU(ms+flip): 80.68
+  Config: configs/dnlnet/dnl_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes_20200821_051111-95ff84ab.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_769x769_80k_cityscapes/dnl_r101-d8_769x769_80k_cityscapes-20200821_051111.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.76
+      mIoU(ms+flip): 42.99
+  Config: configs/dnlnet/dnl_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k_20200826_183354-1cf6e0c1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_80k_ade20k/dnl_r50-d8_512x512_80k_ade20k-20200826_183354.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.76
+      mIoU(ms+flip): 44.91
+  Config: configs/dnlnet/dnl_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k_20200826_183354-d820d6ea.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_80k_ade20k/dnl_r101-d8_512x512_80k_ade20k-20200826_183354.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.87
+      mIoU(ms+flip): 43.01
+  Config: configs/dnlnet/dnl_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k_20200826_183350-37837798.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r50-d8_512x512_160k_ade20k/dnl_r50-d8_512x512_160k_ade20k-20200826_183350.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch
+- Name: dnl_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: DNLNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.25
+      mIoU(ms+flip): 45.78
+  Config: configs/dnlnet/dnl_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DNLNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_160k_ade20k/dnl_r101-d8_512x512_160k_ade20k_20200826_183350-ed522c61.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dnlnet/dnl_r101-d8_512x512_160k_ade20k/dnl_r101-d8_512x512_160k_ade20k-20200826_183350.log.json
+  Paper:
+    Title: Disentangled Non-Local Neural Networks
+    URL: https://arxiv.org/abs/2006.06668
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dnl_head.py#L88
+  Framework: PyTorch

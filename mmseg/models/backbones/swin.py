@@ -716,20 +716,22 @@ class SwinTransformer(BaseModule):
             ]
             for table_key in relative_position_bias_table_keys:
                 table_pretrained = state_dict[table_key]
-                table_current = self.state_dict()[table_key]
-                L1, nH1 = table_pretrained.size()
-                L2, nH2 = table_current.size()
-                if nH1 != nH2:
-                    print_log(f'Error in loading {table_key}, pass')
-                elif L1 != L2:
-                    S1 = int(L1**0.5)
-                    S2 = int(L2**0.5)
-                    table_pretrained_resized = F.interpolate(
-                        table_pretrained.permute(1, 0).reshape(1, nH1, S1, S1),
-                        size=(S2, S2),
-                        mode='bicubic')
-                    state_dict[table_key] = table_pretrained_resized.view(
-                        nH2, L2).permute(1, 0).contiguous()
+                if table_key in self.state_dict():
+                    table_current = self.state_dict()[table_key]
+                    L1, nH1 = table_pretrained.size()
+                    L2, nH2 = table_current.size()
+                    if nH1 != nH2:
+                        print_log(f'Error in loading {table_key}, pass')
+                    elif L1 != L2:
+                        S1 = int(L1**0.5)
+                        S2 = int(L2**0.5)
+                        table_pretrained_resized = F.interpolate(
+                            table_pretrained.permute(1, 0).reshape(
+                                1, nH1, S1, S1),
+                            size=(S2, S2),
+                            mode='bicubic')
+                        state_dict[table_key] = table_pretrained_resized.view(
+                            nH2, L2).permute(1, 0).contiguous()
 
             # load state_dict
             self.load_state_dict(state_dict, strict=False)
