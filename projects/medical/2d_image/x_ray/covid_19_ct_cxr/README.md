@@ -70,6 +70,14 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set cannot be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
+```shell
+mkdir data && cd data
+git clone git@github.com:ieee8023/covid-chestxray-dataset.git
+cd ..
+python tools/prepare_dataset.py
+python ../../tools/split_seg_dataset.py
+```
+
 ```none
   mmsegmentation
   ├── mmseg
@@ -124,16 +132,6 @@ mim test mmseg ./configs/${CONFIG_FILE}  --checkpoint ${CHECKPOINT_PATH}
 <!-- List the results as usually done in other model's README. [Example](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/configs/fcn#results-and-models)
 
 You should claim whether this is based on the pre-trained weights, which are converted from the official release; or it's a reproduced result obtained from retraining the model in this project. -->
-
-## Results
-
-### Covid-19 CT Chest X-ray
-
-|     Method      | Backbone | Crop Size |   lr   | mIoU  | mDice |                                                                                            config                                                                                            |
-| :-------------: | :------: | :-------: | :----: | :---: | :---: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| fcn_unet_s5-d16 |   unet   |  512x512  |  0.01  | 76.48 | 84.68 |  [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/x_ray/covid_19_ct_cxr/configs/fcn-unet-s5-d16_unet_1xb16-0.01-20k_covid-19-ct-cxr-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.001  | 61.06 | 63.69 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/x_ray/covid_19_ct_cxr/configs/fcn-unet-s5-d16_unet_1xb16-0.001-20k_covid-19-ct-cxr-512x512.py)  |
-| fcn_unet_s5-d16 |   unet   |  512x512  | 0.0001 | 58.87 | 62.42 | [config](https://github.com/open-mmlab/mmsegmentation/tree/dev-1.x/projects/medical/2d_image/x_ray/covid_19_ct_cxr/configs/fcn-unet-s5-d16_unet_1xb16-0.0001-20k_covid-19-ct-cxr-512x512.py) |
 
 ## Checklist
 
