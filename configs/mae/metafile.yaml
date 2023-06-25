@@ -1,0 +1,25 @@
+Models:
+- Name: mae-base_upernet_8xb2-amp-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 48.13
+      mIoU(ms+flip): 48.7
+  Config: configs/mae/mae-base_upernet_8xb2-amp-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ViT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.96
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752-f92a2975.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/mae/upernet_mae-base_fp16_8x2_512x512_160k_ade20k/upernet_mae-base_fp16_8x2_512x512_160k_ade20k_20220426_174752.log.json
+  Paper:
+    Title: Masked Autoencoders Are Scalable Vision Learners
+    URL: https://arxiv.org/abs/2111.06377
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.24.0/mmseg/models/backbones/mae.py#L46
+  Framework: PyTorch
