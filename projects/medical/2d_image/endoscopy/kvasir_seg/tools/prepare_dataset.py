@@ -73,12 +73,15 @@ def convert_label_pics_into_pngs(src_dir,
         Image.fromarray(img).save(tgt_path)
         print(f'processed {i+1}/{num}.')
 
+if __name__ == '__main__':
+
     convert_pics_into_pngs(
-        os.path.join(root_path, 'Kvasir-SEG/kvasir-sessile/images'),
+        os.path.join(root_path, 'sessile-main-Kvasir-SEG/images'),
         tgt_img_dir,
         suffix=img_suffix)
 
     convert_label_pics_into_pngs(
-        os.path.join(root_path, 'Kvasir-SEG/kvasir-sessile/masks'),
+        os.path.join(root_path, 'sessile-main-Kvasir-SEG/masks'),
         tgt_mask_dir,
         suffix=seg_map_suffix)
+
