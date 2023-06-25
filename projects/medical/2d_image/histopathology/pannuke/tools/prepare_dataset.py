@@ -11,21 +11,15 @@ os.system('mkdir -p ' + tgt_img_dir)
 os.system('mkdir -p ' + tgt_mask_dir)
 
 fold_img_paths = sorted([
-    os.path.join(root_path,
-                 'Pannuke/pannuke/fold_1/Fold 1/images/fold1/images.npy'),
-    os.path.join(root_path,
-                 'Pannuke/pannuke/fold_2/Fold 2/images/fold2/images.npy'),
-    os.path.join(root_path,
-                 'Pannuke/pannuke/fold_3/Fold 3/images/fold3/images.npy')
+    os.path.join(root_path, 'pannuke/Fold 1/images/fold1/images.npy'),
+    os.path.join(root_path, 'pannuke/Fold 2/images/fold2/images.npy'),
+    os.path.join(root_path, 'pannuke/Fold 3/images/fold3/images.npy')
 ])
 
 fold_mask_paths = sorted([
-    os.path.join(root_path,
-                 'Pannuke/pannuke/fold_1/Fold 1/masks/fold1/masks.npy'),
-    os.path.join(root_path,
-                 'Pannuke/pannuke/fold_2/Fold 2/masks/fold2/masks.npy'),
-    os.path.join(root_path,
-                 'Pannuke/pannuke/fold_3/Fold 3/masks/fold3/masks.npy')
+    os.path.join(root_path, 'pannuke/Fold 1/masks/fold1/masks.npy'),
+    os.path.join(root_path, 'pannuke/Fold 2/masks/fold2/masks.npy'),
+    os.path.join(root_path, 'pannuke/Fold 3/masks/fold3/masks.npy')
 ])
 
 for n, (img_path,
