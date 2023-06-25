@@ -1,0 +1,298 @@
+Collections:
+- Name: ICNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  README: configs/icnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: icnet_r18-d8_4xb2-80k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 68.14
+      mIoU(ms+flip): 70.16
+  Config: configs/icnet/icnet_r18-d8_4xb2-80k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18-D8
+    - ICNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 1.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_80k_cityscapes/icnet_r18-d8_832x832_80k_cityscapes_20210925_225521-2e36638d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_80k_cityscapes/icnet_r18-d8_832x832_80k_cityscapes_20210925_225521.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r18-d8_4xb2-160k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 71.64
+      mIoU(ms+flip): 74.18
+  Config: configs/icnet/icnet_r18-d8_4xb2-160k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18-D8
+    - ICNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_160k_cityscapes/icnet_r18-d8_832x832_160k_cityscapes_20210925_230153-2c6eb6e0.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_832x832_160k_cityscapes/icnet_r18-d8_832x832_160k_cityscapes_20210925_230153.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r18-d8-in1k-pre_4xb2-80k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 72.51
+      mIoU(ms+flip): 74.78
+  Config: configs/icnet/icnet_r18-d8-in1k-pre_4xb2-80k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18-D8
+    - ICNet
+    - (in1k-pre)
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354-1cbe3022.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes/icnet_r18-d8_in1k-pre_832x832_80k_cityscapes_20210925_230354.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r18-d8-in1k-pre_4xb2-160k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.43
+      mIoU(ms+flip): 76.72
+  Config: configs/icnet/icnet_r18-d8-in1k-pre_4xb2-160k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-18-D8
+    - ICNet
+    - (in1k-pre)
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702-619c8ae1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes/icnet_r18-d8_in1k-pre_832x832_160k_cityscapes_20210926_052702.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r50-d8_4xb2-80k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 68.91
+      mIoU(ms+flip): 69.72
+  Config: configs/icnet/icnet_r50-d8_4xb2-80k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ICNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 2.53
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_80k_cityscapes/icnet_r50-d8_832x832_80k_cityscapes_20210926_044625-c6407341.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_80k_cityscapes/icnet_r50-d8_832x832_80k_cityscapes_20210926_044625.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r50-d8_4xb2-160k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.82
+      mIoU(ms+flip): 75.67
+  Config: configs/icnet/icnet_r50-d8_4xb2-160k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ICNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_160k_cityscapes/icnet_r50-d8_832x832_160k_cityscapes_20210925_232612-a95f0d4e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_832x832_160k_cityscapes/icnet_r50-d8_832x832_160k_cityscapes_20210925_232612.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r50-d8-in1k-pre_4xb2-80k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 74.58
+      mIoU(ms+flip): 76.41
+  Config: configs/icnet/icnet_r50-d8-in1k-pre_4xb2-80k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ICNet
+    - (in1k-pre)
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943-1743dc7b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes/icnet_r50-d8_in1k-pre_832x832_80k_cityscapes_20210926_032943.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r50-d8-in1k-pre_4xb2-160k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.29
+      mIoU(ms+flip): 78.09
+  Config: configs/icnet/icnet_r50-d8-in1k-pre_4xb2-160k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - ICNet
+    - (in1k-pre)
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715-ce310aea.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes/icnet_r50-d8_in1k-pre_832x832_160k_cityscapes_20210926_042715.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r101-d8_4xb2-80k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 70.28
+      mIoU(ms+flip): 71.95
+  Config: configs/icnet/icnet_r101-d8_4xb2-80k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ICNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 3.08
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_80k_cityscapes/icnet_r101-d8_832x832_80k_cityscapes_20210926_072447-b52f936e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_80k_cityscapes/icnet_r101-d8_832x832_80k_cityscapes_20210926_072447.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r101-d8_4xb2-160k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 73.8
+      mIoU(ms+flip): 76.1
+  Config: configs/icnet/icnet_r101-d8_4xb2-160k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ICNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_160k_cityscapes/icnet_r101-d8_832x832_160k_cityscapes_20210926_092350-3a1ebf1a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_832x832_160k_cityscapes/icnet_r101-d8_832x832_160k_cityscapes_20210926_092350.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r101-d8-in1k-pre_4xb2-80k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 75.57
+      mIoU(ms+flip): 77.86
+  Config: configs/icnet/icnet_r101-d8-in1k-pre_4xb2-80k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ICNet
+    - (in1k-pre)
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414-7ceb12c5.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes/icnet_r101-d8_in1k-pre_832x832_80k_cityscapes_20210926_020414.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch
+- Name: icnet_r101-d8-in1k-pre_4xb2-160k_cityscapes-832x832
+  In Collection: ICNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.15
+      mIoU(ms+flip): 77.98
+  Config: configs/icnet/icnet_r101-d8-in1k-pre_4xb2-160k_cityscapes-832x832.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - ICNet
+    - (in1k-pre)
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612-9484ae8a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/icnet/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes/icnet_r101-d8_in1k-pre_832x832_160k_cityscapes_20210925_232612.log.json
+  Paper:
+    Title: ICNet for Real-time Semantic Segmentation on High-resolution Images
+    URL: https://arxiv.org/abs/1704.08545
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.18.0/mmseg/models/necks/ic_neck.py#L77
+  Framework: PyTorch

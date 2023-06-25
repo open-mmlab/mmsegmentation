@@ -1,0 +1,391 @@
+Collections:
+- Name: CCNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  README: configs/ccnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: ccnet_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.76
+      mIoU(ms+flip): 78.87
+  Config: configs/ccnet/ccnet_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes/ccnet_r50-d8_512x1024_40k_cityscapes_20200616_142517-4123f401.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_40k_cityscapes/ccnet_r50-d8_512x1024_40k_cityscapes_20200616_142517.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.35
+      mIoU(ms+flip): 78.19
+  Config: configs/ccnet/ccnet_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes/ccnet_r101-d8_512x1024_40k_cityscapes_20200616_142540-a3b84ba6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_40k_cityscapes/ccnet_r101-d8_512x1024_40k_cityscapes_20200616_142540.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.46
+      mIoU(ms+flip): 79.93
+  Config: configs/ccnet/ccnet_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_40k_cityscapes/ccnet_r50-d8_769x769_40k_cityscapes_20200616_145125-76d11884.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_40k_cityscapes/ccnet_r50-d8_769x769_40k_cityscapes_20200616_145125.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 76.94
+      mIoU(ms+flip): 78.62
+  Config: configs/ccnet/ccnet_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_40k_cityscapes/ccnet_r101-d8_769x769_40k_cityscapes_20200617_101428-4f57c8d0.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_40k_cityscapes/ccnet_r101-d8_769x769_40k_cityscapes_20200617_101428.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.03
+      mIoU(ms+flip): 80.16
+  Config: configs/ccnet/ccnet_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes/ccnet_r50-d8_512x1024_80k_cityscapes_20200617_010421-869a3423.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x1024_80k_cityscapes/ccnet_r50-d8_512x1024_80k_cityscapes_20200617_010421.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.87
+      mIoU(ms+flip): 79.9
+  Config: configs/ccnet/ccnet_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes/ccnet_r101-d8_512x1024_80k_cityscapes_20200617_203935-ffae8917.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x1024_80k_cityscapes/ccnet_r101-d8_512x1024_80k_cityscapes_20200617_203935.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.29
+      mIoU(ms+flip): 81.08
+  Config: configs/ccnet/ccnet_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_80k_cityscapes/ccnet_r50-d8_769x769_80k_cityscapes_20200617_010421-73eed8ca.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_769x769_80k_cityscapes/ccnet_r50-d8_769x769_80k_cityscapes_20200617_010421.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.45
+      mIoU(ms+flip): 80.66
+  Config: configs/ccnet/ccnet_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_80k_cityscapes/ccnet_r101-d8_769x769_80k_cityscapes_20200618_011502-ad3cd481.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_769x769_80k_cityscapes/ccnet_r101-d8_769x769_80k_cityscapes_20200618_011502.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 41.78
+      mIoU(ms+flip): 42.98
+  Config: configs/ccnet/ccnet_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_80k_ade20k/ccnet_r50-d8_512x512_80k_ade20k_20200615_014848-aa37f61e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_80k_ade20k/ccnet_r50-d8_512x512_80k_ade20k_20200615_014848.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.97
+      mIoU(ms+flip): 45.13
+  Config: configs/ccnet/ccnet_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_80k_ade20k/ccnet_r101-d8_512x512_80k_ade20k_20200615_014848-1f4929a3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_80k_ade20k/ccnet_r101-d8_512x512_80k_ade20k_20200615_014848.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.08
+      mIoU(ms+flip): 43.13
+  Config: configs/ccnet/ccnet_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_160k_ade20k/ccnet_r50-d8_512x512_160k_ade20k_20200616_084435-7c97193b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_160k_ade20k/ccnet_r50-d8_512x512_160k_ade20k_20200616_084435.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.71
+      mIoU(ms+flip): 45.04
+  Config: configs/ccnet/ccnet_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_160k_ade20k/ccnet_r101-d8_512x512_160k_ade20k_20200616_000644-e849e007.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_160k_ade20k/ccnet_r101-d8_512x512_160k_ade20k_20200616_000644.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb4-20k_voc12aug-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.17
+      mIoU(ms+flip): 77.51
+  Config: configs/ccnet/ccnet_r50-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_20k_voc12aug/ccnet_r50-d8_512x512_20k_voc12aug_20200617_193212-fad81784.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_20k_voc12aug/ccnet_r50-d8_512x512_20k_voc12aug_20200617_193212.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb4-20k_voc12aug-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.27
+      mIoU(ms+flip): 79.02
+  Config: configs/ccnet/ccnet_r101-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_20k_voc12aug/ccnet_r101-d8_512x512_20k_voc12aug_20200617_193212-0007b61d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_20k_voc12aug/ccnet_r101-d8_512x512_20k_voc12aug_20200617_193212.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r50-d8_4xb4-40k_voc12aug-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 75.96
+      mIoU(ms+flip): 77.04
+  Config: configs/ccnet/ccnet_r50-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_40k_voc12aug/ccnet_r50-d8_512x512_40k_voc12aug_20200613_232127-c2a15f02.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r50-d8_512x512_40k_voc12aug/ccnet_r50-d8_512x512_40k_voc12aug_20200613_232127.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
+- Name: ccnet_r101-d8_4xb4-40k_voc12aug-512x512
+  In Collection: CCNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.87
+      mIoU(ms+flip): 78.9
+  Config: configs/ccnet/ccnet_r101-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - CCNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_40k_voc12aug/ccnet_r101-d8_512x512_40k_voc12aug_20200613_232127-c30da577.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ccnet/ccnet_r101-d8_512x512_40k_voc12aug/ccnet_r101-d8_512x512_40k_voc12aug_20200613_232127.log.json
+  Paper:
+    Title: 'CCNet: Criss-Cross Attention for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.11721
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/apc_head.py#L111
+  Framework: PyTorch
