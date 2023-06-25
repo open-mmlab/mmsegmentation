@@ -10,19 +10,19 @@ seg_map_suffix = '.png'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
 src_img_train_dir = os.path.join(
-    root_path, '/wound-segmentation-master/data/' +
+    root_path, 'wound-segmentation/data/' +
     'Foot Ulcer Segmentation Challenge/train/images')
 src_img_val_dir = os.path.join(
-    root_path, '/wound-segmentation-master/data/' +
+    root_path, 'wound-segmentation/data/' +
     'Foot Ulcer Segmentation Challenge/validation/images')
 src_img_test_dir = os.path.join(
-    root_path, '/wound-segmentation-master/data/' +
+    root_path, 'wound-segmentation/data/' +
     'Foot Ulcer Segmentation Challenge/test/images')
 src_mask_train_dir = os.path.join(
-    root_path, '/wound-segmentation-master/data/' +
+    root_path, 'wound-segmentation/data/' +
     'Foot Ulcer Segmentation Challenge/train/labels')
 src_mask_val_dir = os.path.join(
-    root_path, '/wound-segmentation-master/data/' +
+    root_path, 'wound-segmentation/data/' +
     'Foot Ulcer Segmentation Challenge/validation/labels')
 
 tgt_img_train_dir = os.path.join(root_path, 'images/train/')
@@ -58,6 +58,7 @@ def convert_pics_into_pngs(src_dir, tgt_dir, suffix, convert='RGB'):
         os.makedirs(tgt_dir)
 
     src_paths, src_names = filter_suffix_recursive(src_dir, suffix=suffix)
+
     for i, (src_name, src_path) in enumerate(zip(src_names, src_paths)):
         tgt_name = src_name.replace(suffix, save_img_suffix)
         tgt_path = os.path.join(tgt_dir, tgt_name)
@@ -96,14 +97,18 @@ def convert_label_pics_into_pngs(src_dir,
         print(f'processed {i+1}/{num}.')
 
 
-convert_pics_into_pngs(src_img_train_dir, tgt_img_train_dir, suffix=img_suffix)
+if __name__ == '__main__':
 
-convert_pics_into_pngs(src_img_val_dir, tgt_img_val_dir, suffix=img_suffix)
+    convert_pics_into_pngs(
+        src_img_train_dir, tgt_img_train_dir, suffix=img_suffix)
 
-convert_pics_into_pngs(src_img_test_dir, tgt_img_test_dir, suffix=img_suffix)
+    convert_pics_into_pngs(src_img_val_dir, tgt_img_val_dir, suffix=img_suffix)
 
-convert_label_pics_into_pngs(
-    src_mask_train_dir, tgt_mask_train_dir, suffix=seg_map_suffix)
+    convert_pics_into_pngs(
+        src_img_test_dir, tgt_img_test_dir, suffix=img_suffix)
 
-convert_label_pics_into_pngs(
-    src_mask_val_dir, tgt_mask_val_dir, suffix=seg_map_suffix)
+    convert_label_pics_into_pngs(
+        src_mask_train_dir, tgt_mask_train_dir, suffix=seg_map_suffix)
+
+    convert_label_pics_into_pngs(
+        src_mask_val_dir, tgt_mask_val_dir, suffix=seg_map_suffix)
