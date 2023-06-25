@@ -9,14 +9,10 @@ img_suffix = '.tif'
 seg_map_suffix = '.png'
 save_img_suffix = '.png'
 save_seg_map_suffix = '.png'
-src_img_train_dir = os.path.join(
-    root_path, 'RITE/AV_groundTruth/AV_groundTruth/training/images/')
-src_img_test_dir = os.path.join(
-    root_path, 'RITE/AV_groundTruth/AV_groundTruth/test/images/')
-src_mask_train_dir = os.path.join(
-    root_path, 'RITE/AV_groundTruth/AV_groundTruth/training/vessels/')
-src_mask_test_dir = os.path.join(
-    root_path, 'RITE/AV_groundTruth/AV_groundTruth/test/vessels/')
+src_img_train_dir = os.path.join(root_path, 'AV_groundTruth/training/images/')
+src_img_test_dir = os.path.join(root_path, 'AV_groundTruth/test/images/')
+src_mask_train_dir = os.path.join(root_path, 'AV_groundTruth/training/vessel/')
+src_mask_test_dir = os.path.join(root_path, 'AV_groundTruth/test/vessel/')
 
 tgt_img_train_dir = os.path.join(root_path, 'images/train/')
 tgt_mask_train_dir = os.path.join(root_path, 'masks/train/')
@@ -87,12 +83,16 @@ def convert_label_pics_into_pngs(src_dir,
         print(f'processed {i+1}/{num}.')
 
 
-convert_pics_into_pngs(src_img_train_dir, tgt_img_train_dir, suffix=img_suffix)
+if __name__ == '__main__':
 
-convert_pics_into_pngs(src_img_test_dir, tgt_img_test_dir, suffix=img_suffix)
+    convert_pics_into_pngs(
+        src_img_train_dir, tgt_img_train_dir, suffix=img_suffix)
 
-convert_label_pics_into_pngs(
-    src_mask_train_dir, tgt_mask_train_dir, suffix=seg_map_suffix)
+    convert_pics_into_pngs(
+        src_img_test_dir, tgt_img_test_dir, suffix=img_suffix)
 
-convert_label_pics_into_pngs(
-    src_mask_test_dir, tgt_mask_test_dir, suffix=seg_map_suffix)
+    convert_label_pics_into_pngs(
+        src_mask_train_dir, tgt_mask_train_dir, suffix=seg_map_suffix)
+
+    convert_label_pics_into_pngs(
+        src_mask_test_dir, tgt_mask_test_dir, suffix=seg_map_suffix)
