@@ -1,0 +1,49 @@
+Models:
+- Name: beit-base_upernet_8xb2-160k_ade20k-640x640
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 53.08
+      mIoU(ms+flip): 53.84
+  Config: configs/beit/beit-base_upernet_8xb2-160k_ade20k-640x640.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - BEiT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 15.88
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k-eead221d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-base_8x2_640x640_160k_ade20k/upernet_beit-base_8x2_640x640_160k_ade20k.log.json
+  Paper:
+    Title: 'BEiT: BERT Pre-Training of Image Transformers'
+    URL: https://arxiv.org/abs/2106.08254
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/backbones/beit.py#1404
+  Framework: PyTorch
+- Name: beit-large_upernet_8xb1-amp-160k_ade20k-640x640
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 56.33
+      mIoU(ms+flip): 56.84
+  Config: configs/beit/beit-large_upernet_8xb1-amp-160k_ade20k-640x640.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 8
+    Architecture:
+    - BEiT-L
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 22.64
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k-8fc0dd5d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/beit/upernet_beit-large_fp16_8x1_640x640_160k_ade20k/upernet_beit-large_fp16_8x1_640x640_160k_ade20k.log.json
+  Paper:
+    Title: 'BEiT: BERT Pre-Training of Image Transformers'
+    URL: https://arxiv.org/abs/2106.08254
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.23.0/mmseg/models/backbones/beit.py#1404
+  Framework: PyTorch

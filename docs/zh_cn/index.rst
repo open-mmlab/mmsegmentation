@@ -23,7 +23,7 @@
    :maxdepth: 1
    :caption: 迁移指引
 
-   migration.md
+   migration/index.rst
 
 .. toctree::
    :caption: 接口文档（英文）
