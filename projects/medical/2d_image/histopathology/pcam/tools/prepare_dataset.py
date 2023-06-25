@@ -26,22 +26,24 @@ def extract_pics_from_h5(h5_path, h5_key, save_dir):
         img.save(save_image_path)
 
 
-extract_pics_from_h5(
-    'data/PCam/camelyonpatch_level_2_split_train_x.h5',
-    h5_key='x',
-    save_dir=tgt_img_train_dir)
+if __name__ == '__main__':
 
-extract_pics_from_h5(
-    'data/PCam/camelyonpatch_level_2_split_valid_x.h5',
-    h5_key='x',
-    save_dir=tgt_img_val_dir)
+    extract_pics_from_h5(
+        'data/pcamv1/camelyonpatch_level_2_split_train_x.h5',
+        h5_key='x',
+        save_dir=tgt_img_train_dir)
 
-extract_pics_from_h5(
-    'data/PCam/camelyonpatch_level_2_split_test_x.h5',
-    h5_key='x',
-    save_dir=tgt_img_test_dir)
+    extract_pics_from_h5(
+        'data/pcamv1/camelyonpatch_level_2_split_valid_x.h5',
+        h5_key='x',
+        save_dir=tgt_img_val_dir)
 
-extract_pics_from_h5(
-    'data/PCam/camelyonpatch_level_2_split_train_mask.h5',
-    h5_key='mask',
-    save_dir=tgt_mask_train_dir)
+    extract_pics_from_h5(
+        'data/pcamv1/camelyonpatch_level_2_split_test_x.h5',
+        h5_key='x',
+        save_dir=tgt_img_test_dir)
+
+    extract_pics_from_h5(
+        'data/pcamv1/camelyonpatch_level_2_split_train_mask.h5',
+        h5_key='mask',
+        save_dir=tgt_mask_train_dir)
