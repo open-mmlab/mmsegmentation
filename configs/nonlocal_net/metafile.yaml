@@ -1,0 +1,387 @@
+Collections:
+- Name: NonLocalNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  README: configs/nonlocal_net/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: nonlocal_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.24
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748-c75e81e3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_40k_cityscapes/nonlocal_r50-d8_512x1024_40k_cityscapes_20200605_210748.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.66
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes/nonlocal_r101-d8_512x1024_40k_cityscapes_20200605_210748-d63729fa.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_40k_cityscapes/nonlocal_r101-d8_512x1024_40k_cityscapes_20200605_210748.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.33
+      mIoU(ms+flip): 79.92
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes/nonlocal_r50-d8_769x769_40k_cityscapes_20200530_045243-82ef6749.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_40k_cityscapes/nonlocal_r50-d8_769x769_40k_cityscapes_20200530_045243.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.57
+      mIoU(ms+flip): 80.29
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes/nonlocal_r101-d8_769x769_40k_cityscapes_20200530_045348-8fe9a9dc.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_40k_cityscapes/nonlocal_r101-d8_769x769_40k_cityscapes_20200530_045348.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.01
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes/nonlocal_r50-d8_512x1024_80k_cityscapes_20200607_193518-d6839fae.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x1024_80k_cityscapes/nonlocal_r50-d8_512x1024_80k_cityscapes_20200607_193518.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.93
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes/nonlocal_r101-d8_512x1024_80k_cityscapes_20200607_183411-32700183.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x1024_80k_cityscapes/nonlocal_r101-d8_512x1024_80k_cityscapes_20200607_183411.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.05
+      mIoU(ms+flip): 80.68
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes/nonlocal_r50-d8_769x769_80k_cityscapes_20200607_193506-1f9792f6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_769x769_80k_cityscapes/nonlocal_r50-d8_769x769_80k_cityscapes_20200607_193506.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.4
+      mIoU(ms+flip): 80.85
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428-0e1fa4f9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_769x769_80k_cityscapes/nonlocal_r101-d8_769x769_80k_cityscapes_20200607_183428.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.75
+      mIoU(ms+flip): 42.05
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801-5ae0aa33.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_80k_ade20k/nonlocal_r50-d8_512x512_80k_ade20k_20200615_015801.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.9
+      mIoU(ms+flip): 44.27
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k/nonlocal_r101-d8_512x512_80k_ade20k_20200615_015758-24105919.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_80k_ade20k/nonlocal_r101-d8_512x512_80k_ade20k_20200615_015758.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.03
+      mIoU(ms+flip): 43.04
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k/nonlocal_r50-d8_512x512_160k_ade20k_20200616_005410-baef45e3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_160k_ade20k/nonlocal_r50-d8_512x512_160k_ade20k_20200616_005410.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 44.63
+      mIoU(ms+flip): 45.79
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20210827_221502-7881aa1a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_160k_ade20k/nonlocal_r101-d8_512x512_160k_ade20k_20210827_221502.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb4-20k_voc12aug-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.2
+      mIoU(ms+flip): 77.12
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613-07f2a57c.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_20k_voc12aug/nonlocal_r50-d8_512x512_20k_voc12aug_20200617_222613.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb4-20k_voc12aug-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 78.15
+      mIoU(ms+flip): 78.86
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.8
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug/nonlocal_r101-d8_512x512_20k_voc12aug_20200617_222615-948c68ab.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_20k_voc12aug/nonlocal_r101-d8_512x512_20k_voc12aug_20200617_222615.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r50-d8_4xb4-40k_voc12aug-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 76.65
+      mIoU(ms+flip): 77.47
+  Config: configs/nonlocal_net/nonlocal_r50-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug/nonlocal_r50-d8_512x512_40k_voc12aug_20200614_000028-0139d4a9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r50-d8_512x512_40k_voc12aug/nonlocal_r50-d8_512x512_40k_voc12aug_20200614_000028.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch
+- Name: nonlocal_r101-d8_4xb4-40k_voc12aug-512x512
+  In Collection: NonLocalNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 78.27
+      mIoU(ms+flip): 79.12
+  Config: configs/nonlocal_net/nonlocal_r101-d8_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - NonLocalNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug/nonlocal_r101-d8_512x512_40k_voc12aug_20200614_000028-7e5ff470.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/nonlocal_net/nonlocal_r101-d8_512x512_40k_voc12aug/nonlocal_r101-d8_512x512_40k_voc12aug_20200614_000028.log.json
+  Paper:
+    Title: Non-local Neural Networks
+    URL: https://arxiv.org/abs/1711.07971
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/nl_head.py#L10
+  Framework: PyTorch

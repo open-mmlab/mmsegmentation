@@ -1,6 +1,8 @@
-## 准备数据集（待更新）
+# 教程2：准备数据集
 
-推荐用软链接，将数据集根目录链接到 `$MMSEGMENTATION/data` 里。如果您的文件夹结构是不同的，您也许可以试着修改配置文件里对应的路径。
+我们建议将数据集根目录符号链接到 `$MMSEGMENTATION/data`。
+如果您的目录结构不同，您可能需要更改配置文件中相应的路径。
+对于中国境内的用户，我们也推荐通过开源数据平台 [OpenDataLab](https://opendatalab.com/) 来下载dsdl标准数据，以获得更好的下载和使用体验，这里有一个下载dsdl数据集并进行训练的案例[DSDLReadme](../../../configs/dsdl/README.md)，欢迎尝试。
 
 ```none
 mmsegmentation
@@ -40,6 +42,24 @@ mmsegmentation
 │   │   │   ├── images
 │   │   │   │   ├── training
 │   │   │   │   ├── validation
+│   ├── coco_stuff10k
+│   │   ├── images
+│   │   │   ├── train2014
+│   │   │   ├── test2014
+│   │   ├── annotations
+│   │   │   ├── train2014
+│   │   │   ├── test2014
+│   │   ├── imagesLists
+│   │   │   ├── train.txt
+│   │   │   ├── test.txt
+│   │   │   ├── all.txt
+│   ├── coco_stuff164k
+│   │   ├── images
+│   │   │   ├── train2017
+│   │   │   ├── val2017
+│   │   ├── annotations
+│   │   │   ├── train2017
+│   │   │   ├── val2017
 │   ├── CHASE_DB1
 │   │   ├── images
 │   │   │   ├── training
@@ -135,180 +155,239 @@ mmsegmentation
 │   │   │   ├── training
 │   │   │   ├── validation
 │   │   │   ├── test
+│   ├── mapillary
+│   │   ├── training
+│   │   │   ├── images
+│   │   │   ├── v1.2
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   └── panoptic
+│   │   │   ├── v2.0
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── panoptic
+|   │   │   │   └── polygons
+│   │   ├── validation
+│   │   │   ├── images
+|   │   │   ├── v1.2
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   └── panoptic
+│   │   │   ├── v2.0
+|   │   │   │   ├── instances
+|   │   │   │   ├── labels
+|   │   │   │   ├── panoptic
+|   │   │   │   └── polygons
 ```
 
-### Cityscapes
+## Cityscapes
 
-注册成功后，数据集可以在 [这里](https://www.cityscapes-dataset.com/downloads/) 下载。
+Cityscapes [官方网站](https://www.cityscapes-dataset.com/)可以下载 Cityscapes 数据集，按照官网要求注册并登陆后，数据可以在[这里](https://www.cityscapes-dataset.com/downloads/)找到。
 
-通常情况下，`**labelTrainIds.png` 被用来训练 cityscapes。
-基于 [cityscapesscripts](https://github.com/mcordts/cityscapesScripts),
-我们提供了一个 [脚本](https://github.com/open-mmlab/mmsegmentation/blob/master/tools/convert_datasets/cityscapes.py),
-去生成 `**labelTrainIds.png`。
+按照惯例，`**labelTrainIds.png` 用于 cityscapes 训练。
+我们提供了一个基于 [cityscapesscripts](https://github.com/mcordts/cityscapesScripts) 的[脚本](https://github.com/open-mmlab/mmsegmentation/blob/1.x/tools/dataset_converters/cityscapes.py)用于生成 `**labelTrainIds.png`。
 
 ```shell
-# --nproc 8 意味着有 8 个进程用来转换，它也可以被忽略。
-python tools/convert_datasets/cityscapes.py data/cityscapes --nproc 8
+# --nproc 表示 8 个转换进程，也可以省略。
+python tools/dataset_converters/cityscapes.py data/cityscapes --nproc 8
 ```
 
-### Pascal VOC
+## Pascal VOC
 
-Pascal VOC 2012 可以在 [这里](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar) 下载。
-此外，许多最近在 Pascal VOC 数据集上的工作都会利用增广的数据，它们可以在 [这里](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz) 找到。
+Pascal VOC 2012 可从[此处](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar)下载。
+此外，Pascal VOC 数据集的最新工作通常利用额外的增强数据，可以在[这里](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz)找到。
 
-如果您想使用增广后的 VOC 数据集，请运行下面的命令来将数据增广的标注转成正确的格式。
+如果您想使用增强的 VOC 数据集，请运行以下命令将增强数据的标注转换为正确的格式。
 
 ```shell
-# --nproc 8 意味着有 8 个进程用来转换，它也可以被忽略。
-python tools/convert_datasets/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
+# --nproc 表示 8 个转换进程，也可以省略。
+python tools/dataset_converters/voc_aug.py data/VOCdevkit data/VOCdevkit/VOCaug --nproc 8
 ```
 
-关于如何拼接数据集 (concatenate) 并一起训练它们，更多细节请参考 [拼接连接数据集](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/tutorials/customize_datasets.md#%E6%8B%BC%E6%8E%A5%E6%95%B0%E6%8D%AE%E9%9B%86) 。
+请参考[拼接数据集文档](../advanced_guides/add_datasets.md#拼接数据集)及 [voc_aug 配置示例](../../../configs/_base_/datasets/pascal_voc12_aug.py)以详细了解如何将它们拼接并合并训练。
 
-### ADE20K
+## ADE20K
 
-ADE20K 的训练集和验证集可以在 [这里](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip) 下载。
-您还可以在 [这里](http://data.csail.mit.edu/places/ADEchallenge/release_test.zip) 下载验证集。
+ADE20K 的训练和验证集可以从这个[链接](http://data.csail.mit.edu/places/ADEchallenge/ADEChallengeData2016.zip)下载。
+如果需要下载测试数据集，可以在[官网](http://host.robots.ox.ac.uk/)注册后，下载[测试集](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar)。
 
-### Pascal Context
+## Pascal Context
 
-Pascal Context 的训练集和验证集可以在 [这里](http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar) 下载。
-注册成功后，您还可以在 [这里](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar) 下载验证集。
+Pascal Context 的训练和验证集可以从[此处](http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar)下载。注册后，您也可以从[此处](http://host.robots.ox.ac.uk:8080/eval/downloads/VOC2010test.tar)下载测试集。
 
-为了从原始数据集里切分训练集和验证集， 您可以在 [这里](https://codalabuser.blob.core.windows.net/public/trainval_merged.json)
-下载 trainval_merged.json。
+从原始数据集中抽出部分数据作为验证集，您可以从[此处](https://codalabuser.blob.core.windows.net/public/trainval_merged.json)下载 trainval_merged.json 文件。
 
-如果您想使用 Pascal Context 数据集，
-请安装 [细节](https://github.com/zhanghang1989/detail-api) 然后再运行如下命令来把标注转换成正确的格式。
+请先安装 [Detail](https://github.com/zhanghang1989/detail-api) 工具然后运行以下命令将标注转换为正确的格式。
 
 ```shell
-python tools/convert_datasets/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
+python tools/dataset_converters/pascal_context.py data/VOCdevkit data/VOCdevkit/VOC2010/trainval_merged.json
 ```
 
-### CHASE DB1
+## COCO Stuff 10k
 
-CHASE DB1 的训练集和验证集可以在 [这里](https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip) 下载。
+数据可以通过 wget 在[这里](http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip)下载。
 
-为了将 CHASE DB1 数据集转换成 MMSegmentation 的格式，您需要运行如下命令：
+对于 COCO Stuff 10k 数据集，请运行以下命令下载并转换数据集。
 
 ```shell
-python tools/convert_datasets/chase_db1.py /path/to/CHASEDB1.zip
+# 下载
+mkdir coco_stuff10k && cd coco_stuff10k
+wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/cocostuff-10k-v1.1.zip
+
+# 解压
+unzip cocostuff-10k-v1.1.zip
+
+# --nproc 表示 8 个转换进程，也可以省略。
+python tools/dataset_converters/coco_stuff10k.py /path/to/coco_stuff10k --nproc 8
 ```
 
-这个脚本将自动生成正确的文件夹结构。
+按照惯例，`/path/to/coco_stuff164k/annotations/*2014/*_labelTrainIds.png` 中的 mask 标注用于 COCO Stuff 10k 的训练和测试。
 
-### DRIVE
+## COCO Stuff 164k
 
-DRIVE 的训练集和验证集可以在 [这里](https://drive.grand-challenge.org/) 下载。
-在此之前，您需要注册一个账号，当前 '1st_manual' 并未被官方提供，因此需要您从其他地方获取。
-
-为了将 DRIVE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+对于 COCO Stuff 164k 数据集，请运行以下命令下载并转换增强的数据集。
 
 ```shell
-python tools/convert_datasets/drive.py /path/to/training.zip /path/to/test.zip
+# 下载
+mkdir coco_stuff164k && cd coco_stuff164k
+wget http://images.cocodataset.org/zips/train2017.zip
+wget http://images.cocodataset.org/zips/val2017.zip
+wget http://calvin.inf.ed.ac.uk/wp-content/uploads/data/cocostuffdataset/stuffthingmaps_trainval2017.zip
+
+# 解压
+unzip train2017.zip -d images/
+unzip val2017.zip -d images/
+unzip stuffthingmaps_trainval2017.zip -d annotations/
+
+# --nproc 表示 8 个转换进程，也可以省略。
+python tools/dataset_converters/coco_stuff164k.py /path/to/coco_stuff164k --nproc 8
 ```
 
-这个脚本将自动生成正确的文件夹结构。
+按照惯例，`/path/to/coco_stuff164k/annotations/*2017/*_labelTrainIds.png` 中的 mask 标注用于 COCO Stuff 164k 的训练和测试。
 
-### HRF
+此数据集的详细信息可在[此处](https://github.com/nightrome/cocostuff#downloads)找到。
 
-首先，下载 [healthy.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy.zip) [glaucoma.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma.zip), [diabetic_retinopathy.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy.zip), [healthy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy_manualsegm.zip), [glaucoma_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma_manualsegm.zip) 以及 [diabetic_retinopathy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy_manualsegm.zip) 。
+## CHASE DB1
 
-为了将 HRF 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+CHASE DB1 的训练和验证集可以从[此处](https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip)下载。
+
+请运行以下命令，准备 CHASE DB1 数据集：
 
 ```shell
-python tools/convert_datasets/hrf.py /path/to/healthy.zip /path/to/healthy_manualsegm.zip /path/to/glaucoma.zip /path/to/glaucoma_manualsegm.zip /path/to/diabetic_retinopathy.zip /path/to/diabetic_retinopathy_manualsegm.zip
+python tools/dataset_converters/chase_db1.py /path/to/CHASEDB1.zip
 ```
 
-这个脚本将自动生成正确的文件夹结构。
+该脚本将自动调整数据集目录结构，使其满足 MMSegmentation 数据集加载要求。
 
-### STARE
+## DRIVE
 
-首先，下载 [stare-images.tar](http://cecas.clemson.edu/~ahoover/stare/probing/stare-images.tar), [labels-ah.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-ah.tar) 和 [labels-vk.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-vk.tar) 。
+按照[官网](https://drive.grand-challenge.org/)要求，注册并登陆后，便可以下载 DRIVE 的训练和验证数据集。
 
-为了将 STARE 数据集转换成 MMSegmentation 格式，您需要运行如下命令：
+要将 DRIVE 数据集转换为 MMSegmentation 的格式，请运行以下命令：
 
 ```shell
-python tools/convert_datasets/stare.py /path/to/stare-images.tar /path/to/labels-ah.tar /path/to/labels-vk.tar
+python tools/dataset_converters/drive.py /path/to/training.zip /path/to/test.zip
 ```
 
-这个脚本将自动生成正确的文件夹结构。
+该脚本将自动调整数据集目录结构，使其满足 MMSegmentation 数据集加载要求。
 
-### Dark Zurich
+## HRF
 
-因为我们只支持在此数据集上测试模型，所以您只需下载[验证集](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip) 。
-
-### Nighttime Driving
-
-因为我们只支持在此数据集上测试模型，所以您只需下载[测试集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip) 。
-
-### LoveDA
-
-可以从 Google Drive 里下载 [LoveDA数据集](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing) 。
-
-或者它还可以从 [zenodo](https://zenodo.org/record/5706578#.YZvN7SYRXdF) 下载, 您需要运行如下命令:
+请下载 [health.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy.zip)、[glaucoma.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma.zip)、[diabetic_retinopathy.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy.zip)、[healthy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/healthy_manualsegm.zip)、[glaucoma_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/glaucoma_manualsegm.zip) 和 [diabetic_retinopathy_manualsegm.zip](https://www5.cs.fau.de/fileadmin/research/datasets/fundus-images/diabetic_retinopathy_manualsegm.zip)，无需解压，可以直接运行以下命令，准备 HRF 数据集：
 
 ```shell
-# Download Train.zip
+python tools/dataset_converters/hrf.py /path/to/healthy.zip /path/to/healthy_manualsegm.zip /path/to/glaucoma.zip /path/to/glaucoma_manualsegm.zip /path/to/diabetic_retinopathy.zip /path/to/diabetic_retinopathy_manualsegm.zip
+```
+
+该脚本将自动调整数据集目录结构，使其满足 MMSegmentation 数据集加载要求。
+
+## STARE
+
+请下载 [stare images.tar](http://cecas.clemson.edu/~ahoover/stare/probing/stare-images.tar)、[labels-ah.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-ah.tar) 和 [labels-vk.tar](http://cecas.clemson.edu/~ahoover/stare/probing/labels-vk.tar)，无需解压，可以直接运行以下命令，准备 STARE 数据集：
+
+```shell
+python tools/dataset_converters/stare.py /path/to/stare-images.tar /path/to/labels-ah.tar /path/to/labels-vk.tar
+```
+
+该脚本将自动调整数据集目录结构，使其满足 MMSegmentation 数据集加载要求。
+
+## Dark Zurich
+
+由于我们只支持在此数据集上的模型测试，因此您只需要下载并解压[验证数据集](https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip)。
+
+## Nighttime Driving
+
+由于我们只支持在此数据集上的模型测试，因此您只需要下载并解压[验证数据集](http://data.vision.ee.ethz.ch/daid/NighttimeDriving/NighttimeDrivingTest.zip)。
+
+## LoveDA
+
+数据可以从[此处](https://drive.google.com/drive/folders/1ibYV0qwn4yuuh068Rnc-w4tPi0U0c-ti?usp=sharing)下载 LaveDA 数据集。
+
+或者可以从 [zenodo](https://zenodo.org/record/5706578#.YZvN7SYRXdF) 下载。下载后，无需解压，直接运行以下命令：
+
+```shell
+# 下载 Train.zip
 wget https://zenodo.org/record/5706578/files/Train.zip
-# Download Val.zip
+# 下载 Val.zip
 wget https://zenodo.org/record/5706578/files/Val.zip
-# Download Test.zip
+# 下载 Test.zip
 wget https://zenodo.org/record/5706578/files/Test.zip
 ```
 
-对于 LoveDA 数据集，请运行以下命令下载并重新组织数据集
+请对于 LoveDA 数据集，请运行以下命令调整数据集目录。
 
 ```shell
-python tools/convert_datasets/loveda.py /path/to/loveDA
+python tools/dataset_converters/loveda.py /path/to/loveDA
 ```
 
-请参照 [这里](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/inference.md) 来使用训练好的模型去预测 LoveDA 测试集并且提交到官网。
+可将模型对 LoveDA 的测试集的预测结果上传至到数据集[测试服务器](https://codalab.lisn.upsaclay.fr/competitions/421)，查看评测结果。
 
-关于 LoveDA 的更多细节可以在[这里](https://github.com/Junjue-Wang/LoveDA) 找到。
+有关 LoveDA 的更多详细信息，可查看[此处](https://github.com/Junjue-Wang/LoveDA).
 
-### ISPRS Potsdam
+## ISPRS Potsdam
 
-[Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/)
-数据集是一个有着2D 语义分割内容标注的城市遥感数据集。
-数据集可以从挑战[主页](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/) 获得。
-需要其中的 '2_Ortho_RGB.zip' 和 '5_Labels_all_noBoundary.zip'。
+[Potsdam](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx) 城市语义分割数据集用于 2D 语义分割竞赛 —— Potsdam。
 
-对于 Potsdam 数据集，请运行以下命令下载并重新组织数据集
+数据集可以在竞赛[主页](https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx)上请求获得。
+这里也提供了[BaiduNetdisk](https://pan.baidu.com/s/1K-cLVZnd1X7d8c26FQ-nGg?pwd=mseg)，提取码：mseg、 [Google Drive](https://drive.google.com/drive/folders/1w3EJuyUGet6_qmLwGAWZ9vw5ogeG0zLz?usp=sharing)以及[OpenDataLab](https://opendatalab.com/ISPRS_Potsdam/download)。
+实验中需要下载 '2_Ortho_RGB.zip' 和 '5_Labels_all_noBoundary.zip'。
+
+对于 Potsdam 数据集，请运行以下命令调整数据集目录。
 
 ```shell
-python tools/convert_datasets/potsdam.py /path/to/potsdam
+python tools/dataset_converters/potsdam.py /path/to/potsdam
 ```
 
-使用我们默认的配置， 将生成 3456 张图片的训练集和 2016 张图片的验证集。
+在我们的默认设置中，将生成 3456 张图像用于训练和 2016 张图像用于验证。
 
-### ISPRS Vaihingen
+## ISPRS Vaihingen
 
-[Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/)
-数据集是一个有着2D 语义分割内容标注的城市遥感数据集。
+[Vaihingen](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-vaihingen.aspx) 城市语义分割数据集用于 2D 语义分割竞赛 —— Vaihingen。
 
-数据集可以从挑战 [主页](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/).
-需要其中的 'ISPRS_semantic_labeling_Vaihingen.zip' 和 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip'。
+数据集可以在竞赛[主页](https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx)上请求获得。
+这里也提供了[BaiduNetdisk](https://pan.baidu.com/s/109D3WLrLafsuYtLeerLiiA?pwd=mseg)，提取码：mseg 、 [Google Drive](https://drive.google.com/drive/folders/1w3NhvLVA2myVZqOn2pbiDXngNC7NTP_t?usp=sharing)。
+实验中需要下载 'ISPRS_semantic_labeling_Vaihingen.zip' 和 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip'。
 
-对于 Vaihingen 数据集，请运行以下命令下载并重新组织数据集
+对于 Vaihingen 数据集，请运行以下命令调整数据集目录。
 
 ```shell
-python tools/convert_datasets/vaihingen.py /path/to/vaihingen
+python tools/dataset_converters/vaihingen.py /path/to/vaihingen
 ```
 
-使用我们默认的配置 (`clip_size`=512, `stride_size`=256)， 将生成 344 张图片的训练集和 398 张图片的验证集。
+在我们的默认设置（`clip_size`=512, `stride_size`=256）中，将生成 344 张图像用于训练和 398 张图像用于验证。
 
-### iSAID
+## iSAID
 
-iSAID 数据集(训练集/验证集/测试集)的图像可以从 [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html) 下载.
+iSAID 数据集可从 [DOTA-v1.0](https://captain-whu.github.io/DOTA/dataset.html) 下载训练/验证/测试数据集的图像数据，
 
-iSAID 数据集(训练集/验证集)的注释可以从 [iSAID](https://captain-whu.github.io/iSAID/dataset.html) 下载.
+并从 [iSAID](https://captain-whu.github.io/iSAID/dataset.html)下载训练/验证数据集的标注数据。
 
-该数据集是一个大规模的实例分割(也可以用于语义分割)的遥感数据集.
+该数据集是航空图像实例分割和语义分割任务的大规模数据集。
 
-下载后，在数据集转换前，您需要将数据集文件夹调整成如下格式.
+下载 iSAID 数据集后，您可能需要按照以下结构进行数据集准备。
 
-```
+```none
+├── data
 │   ├── iSAID
 │   │   ├── train
 │   │   │   ├── images
@@ -329,24 +408,62 @@ iSAID 数据集(训练集/验证集)的注释可以从 [iSAID](https://captain-w
 ```
 
 ```shell
-python tools/convert_datasets/isaid.py /path/to/iSAID
+python tools/dataset_converters/isaid.py /path/to/iSAID
 ```
 
-使用我们默认的配置 (`patch_width`=896, `patch_height`=896,　`overlap_area`=384), 将生成 33,978 张图片的训练集和 11,644 张图片的验证集.
+在我们的默认设置（`patch_width`=896, `patch_height`=896, `overlap_area`=384）中，将生成 33978 张图像用于训练和 11644 张图像用于验证。
+
+## LIP(Look Into Person) dataset
+
+该数据集可以从[此页面](https://lip.sysuhcp.com/overview.php)下载。
+
+请运行以下命令来解压数据集。
+
+```shell
+unzip LIP.zip
+cd LIP
+unzip TrainVal_images.zip
+unzip TrainVal_parsing_annotations.zip
+cd TrainVal_parsing_annotations
+unzip TrainVal_parsing_annotations.zip
+mv train_segmentations ../
+mv val_segmentations ../
+cd ..
+```
+
+LIP 数据集的内容包括：
+
+```none
+├── data
+│   ├── LIP
+│   │   ├── train_images
+│   │   │   ├── 1000_1234574.jpg
+│   │   │   ├── ...
+│   │   ├── train_segmentations
+│   │   │   ├── 1000_1234574.png
+│   │   │   ├── ...
+│   │   ├── val_images
+│   │   │   ├── 100034_483681.jpg
+│   │   │   ├── ...
+│   │   ├── val_segmentations
+│   │   │   ├── 100034_483681.png
+│   │   │   ├── ...
+```
 
 ## Synapse dataset
 
-这个数据集可以在这个[网页](https://www.synapse.org/#!Synapse:syn3193805/wiki/) 里被下载.
-我们参考了 [TransUNet](https://arxiv.org/abs/2102.04306) 里面的数据集预处理的设置, 它将原始数据集 (30 套 3D 样例) 切分出 18 套用于训练, 12 套用于验证. 请参考以下步骤来准备该数据集:
+此数据集可以从[此页面](https://www.synapse.org/#!Synapse:syn3193805/wiki/)下载。
+
+遵循 [TransUNet](https://arxiv.org/abs/2102.04306) 的数据准备设定，将原始训练集（30 次扫描）拆分为新的训练集（18 次扫描）和验证集（12 次扫描）。请运行以下命令来准备数据集。
 
 ```shell
 unzip RawData.zip
 cd ./RawData/Training
 ```
 
-随后新建 `train.txt` 和 `val.txt`.
+然后创建 `train.txt` 和 `val.txt` 以拆分数据集。
 
-根据 TransUNet 来将训练集和验证集如下划分:
+根据 TransUnet，以下是数据集的划分。
 
 train.txt
 
@@ -388,7 +505,7 @@ img0025.nii.gz
 img0035.nii.gz
 ```
 
-此时, synapse 数据集包括了以下内容:
+synapse 数据集的内容包括：
 
 ```none
 ├── Training
@@ -404,19 +521,19 @@ img0035.nii.gz
 │   ├── val.txt
 ```
 
-随后, 运行下面的数据集转换脚本来处理 synapse 数据集:
+然后，使用此命令转换 synapse 数据集。
 
 ```shell
 python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 ```
 
-使用我们默认的配置, 将生成 2,211 张 2D 图片的训练集和 1,568 张图片的验证集.
+注意，MMSegmentation 的默认评估指标（例如 mean dice value）是在 2D 切片图像上计算的，这与 [TransUNet](https://arxiv.org/abs/2102.04306) 等一些论文中的 3D 扫描结果是不同的。
 
-需要注意的是 MMSegmentation 默认的评价指标 (例如平均 Dice 值) 都是基于每帧 2D 图片计算的, 这与基于每套 3D 图片计算评价指标的 [TransUNet](https://arxiv.org/abs/2102.04306) 是不同的.
+## REFUGE
 
-### REFUGE
+在 [REFUGE Challenge](https://refuge.grand-challenge.org) 官网上注册并下载 [REFUGE 数据集](https://refuge.grand-challenge.org/REFUGE2Download)。
 
-在[官网](https://refuge.grand-challenge.org)注册后, 下载 [REFUGE 数据集](https://refuge.grand-challenge.org/REFUGE2Download)  `REFUGE2.zip` , 解压后的内容如下:
+然后，解压 `REFUGE2.zip`，原始数据集的内容包括：
 
 ```none
 ├── REFUGE2
@@ -430,13 +547,13 @@ python tools/dataset_converters/synapse.py --dataset-path /path/to/synapse
 │   ├── __MACOSX
 ```
 
-运行如下命令，就可以按照 REFUGE2018 挑战赛划分数据集的标准将数据集切分成训练集、验证集、测试集:
+请运行以下命令转换 REFUGE 数据集：
 
 ```shell
 python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/REFUGE2
 ```
 
-这个脚本将自动生成下面的文件夹结构：
+脚本会将目录结构转换如下：
 
 ```none
 │   ├── REFUGE
@@ -450,4 +567,85 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
 │   │   │   ├── test
 ```
 
-其中包括 400 张图片的训练集, 400 张图片的验证集和 400 张图片的测试集.
+包含 400 张用于训练的图像、400 张用于验证的图像和 400 张用于测试的图像，这与 REFUGE 2018 数据集相同。
+
+## Mapillary Vistas Datasets
+
+- Mapillary Vistas [官方网站](https://www.mapillary.com/dataset/vistas) 可以下载 Mapillary Vistas 数据集，按照官网要求注册并登陆后，数据可以在[这里](https://www.mapillary.com/dataset/vistas)找到。
+
+- Mapillary Vistas 数据集使用 8-bit with color-palette 来存储标签。不需要进行转换操作。
+
+- 假设您已将数据集 zip 文件放在 `mmsegmentation/data/mapillary` 中
+
+- 请运行以下命令来解压数据集。
+
+  ```bash
+  cd data/mapillary
+  unzip An-ZjB1Zm61yAZG0ozTymz8I8NqI4x0MrYrh26dq7kPgfu8vf9ImrdaOAVOFYbJ2pNAgUnVGBmbue9lTgdBOb5BbKXIpFs0fpYWqACbrQDChAA2fdX0zS9PcHu7fY8c-FOvyBVxPNYNFQuM.zip
+  ```
+
+- 解压后，您将获得类似于此结构的 Mapillary Vistas 数据集。语义分割 mask 标签在 `labels` 文件夹中。
+
+  ```none
+  mmsegmentation
+  ├── mmseg
+  ├── tools
+  ├── configs
+  ├── data
+  │   ├── mapillary
+  │   │   ├── training
+  │   │   │   ├── images
+  │   │   │   ├── v1.2
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   └── panoptic
+  │   │   │   ├── v2.0
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   ├── panoptic
+  |   │   │   │   └── polygons
+  │   │   ├── validation
+  │   │   │   ├── images
+  |   │   │   ├── v1.2
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   └── panoptic
+  │   │   │   ├── v2.0
+  |   │   │   │   ├── instances
+  |   │   │   │   ├── labels
+  |   │   │   │   ├── panoptic
+  |   │   │   │   └── polygons
+  ```
+
+- 您可以在配置中使用 `MapillaryDataset_v1` 和 `Mapillary Dataset_v2` 设置数据集版本。
+  在此处 [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) 和 [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py) 查看 Mapillary Vistas 数据集配置文件
+
+## LEVIR-CD
+
+[LEVIR-CD](https://justchenhao.github.io/LEVIR/) 大规模遥感建筑变化检测数据集。
+
+数据集可以在[主页](https://justchenhao.github.io/LEVIR/)上请求获得。
+
+数据集的补充版本可以在[主页](https://github.com/S2Looking/Dataset)上请求获得。
+
+请下载数据集的补充版本，然后解压 `LEVIR-CD+.zip`，数据集的内容包括：
+
+```none
+│   ├── LEVIR-CD+
+│   │   ├── train
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+│   │   ├── test
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+```
+
+对于 LEVIR-CD 数据集，请运行以下命令无重叠裁剪影像：
+
+```shell
+python tools/dataset_converters/levircd.py --dataset-path /path/to/LEVIR-CD+ --out_dir /path/to/LEVIR-CD
+```
+
+裁剪后的影像大小为256x256，与原论文保持一致。

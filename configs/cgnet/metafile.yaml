@@ -1,0 +1,61 @@
+Collections:
+- Name: CGNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.08201
+  README: configs/cgnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: cgnet_fcn_4xb4-60k_cityscapes-680x680
+  In Collection: CGNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 65.63
+      mIoU(ms+flip): 68.04
+  Config: configs/cgnet/cgnet_fcn_4xb4-60k_cityscapes-680x680.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 16
+    Architecture:
+    - M3N21
+    - CGNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes-20201101_110253.log.json
+  Paper:
+    Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.08201
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
+  Framework: PyTorch
+- Name: cgnet_fcn_4xb8-60k_cityscapes-512x1024
+  In Collection: CGNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 68.27
+      mIoU(ms+flip): 70.33
+  Config: configs/cgnet/cgnet_fcn_4xb8-60k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 32
+    Architecture:
+    - M3N21
+    - CGNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.3
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes-20201101_110254.log.json
+  Paper:
+    Title: 'CGNet: A Light-weight Context Guided Network for Semantic Segmentation'
+    URL: https://arxiv.org/abs/1811.08201
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/cgnet.py#L187
+  Framework: PyTorch

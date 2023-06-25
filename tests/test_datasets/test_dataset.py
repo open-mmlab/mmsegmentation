@@ -6,12 +6,18 @@ import tempfile
 import pytest
 
 from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
-                            COCOStuffDataset, DecathlonDataset, ISPRSDataset,
-                            LIPDataset, LoveDADataset, PascalVOCDataset,
-                            PotsdamDataset, REFUGEDataset, SynapseDataset,
-                            iSAIDDataset)
+                            COCOStuffDataset, DecathlonDataset, DSDLSegDataset,
+                            ISPRSDataset, LIPDataset, LoveDADataset,
+                            MapillaryDataset_v1, MapillaryDataset_v2,
+                            PascalVOCDataset, PotsdamDataset, REFUGEDataset,
+                            SynapseDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
+
+try:
+    from dsdl.dataset import DSDLDataset
+except ImportError:
+    DSDLDataset = None
 
 
 def test_classes():
@@ -27,6 +33,10 @@ def test_classes():
     assert list(PotsdamDataset.METAINFO['classes']) == get_classes('potsdam')
     assert list(ISPRSDataset.METAINFO['classes']) == get_classes('vaihingen')
     assert list(iSAIDDataset.METAINFO['classes']) == get_classes('isaid')
+    assert list(
+        MapillaryDataset_v1.METAINFO['classes']) == get_classes('mapillary_v1')
+    assert list(
+        MapillaryDataset_v2.METAINFO['classes']) == get_classes('mapillary_v2')
 
     with pytest.raises(ValueError):
         get_classes('unsupported')
@@ -80,6 +90,10 @@ def test_palette():
     assert PotsdamDataset.METAINFO['palette'] == get_palette('potsdam')
     assert COCOStuffDataset.METAINFO['palette'] == get_palette('cocostuff')
     assert iSAIDDataset.METAINFO['palette'] == get_palette('isaid')
+    assert list(
+        MapillaryDataset_v1.METAINFO['palette']) == get_palette('mapillary_v1')
+    assert list(
+        MapillaryDataset_v2.METAINFO['palette']) == get_palette('mapillary_v2')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
@@ -304,6 +318,19 @@ def test_lip():
     assert len(test_dataset) == 1
 
 
+def test_mapillary():
+    test_dataset = MapillaryDataset_v1(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_mapillary_dataset/images'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_mapillary_dataset/v1.2')))
+    assert len(test_dataset) == 1
+
+
 @pytest.mark.parametrize('dataset, classes', [
     ('ADE20KDataset', ('wall', 'building')),
     ('CityscapesDataset', ('road', 'sidewalk')),
@@ -411,3 +438,13 @@ def test_custom_dataset_custom_palette():
             ann_file=tempfile.mkdtemp(),
             metainfo=dict(classes=('bus', 'car'), palette=[[200, 200, 200]]),
             lazy_init=True)
+
+
+def test_dsdlseg_dataset():
+    if DSDLDataset is not None:
+        dataset = DSDLSegDataset(
+            data_root='tests/data/dsdl_seg', ann_file='set-train/train.yaml')
+        assert len(dataset) == 3
+        assert len(dataset.metainfo['classes']) == 21
+    else:
+        ImportWarning('Package `dsdl` is not installed.')

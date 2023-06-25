@@ -175,7 +175,7 @@ if __name__ == '__main__':
         author='MMSegmentation Contributors',
         author_email='openmmlab@gmail.com',
         keywords='computer vision, semantic segmentation',
-        url='http://github.com/open-mmlab/mmsegmentation',
+        url='https://github.com/open-mmlab/mmsegmentation',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
         include_package_data=True,
         classifiers=[

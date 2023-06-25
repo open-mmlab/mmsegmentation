@@ -1,5 +1,76 @@
 # Changelog of v1.x
 
+## v1.0.0(04/06/2023)
+
+### Highlights
+
+- Add Mapillary Vistas Datasets support to MMSegmentation Core Package ([#2576](https://github.com/open-mmlab/mmsegmentation/pull/2576))
+- Support PIDNet ([#2609](https://github.com/open-mmlab/mmsegmentation/pull/2609))
+- Support SegNeXt ([#2654](https://github.com/open-mmlab/mmsegmentation/pull/2654))
+
+### Features
+
+- Support calculating FLOPs of segmentors ([#2706](https://github.com/open-mmlab/mmsegmentation/pull/2706))
+- Support multi-band image for Mosaic ([#2748](https://github.com/open-mmlab/mmsegmentation/pull/2748))
+- Support dump segment prediction ([#2712](https://github.com/open-mmlab/mmsegmentation/pull/2712))
+
+### Bug fix
+
+- Fix format_result and fix prefix param in cityscape metric, and rename CitysMetric to CityscapesMetric ([#2660](https://github.com/open-mmlab/mmsegmentation/pull/2660))
+- Support input gt seg map is not 2D ([#2739](https://github.com/open-mmlab/mmsegmentation/pull/2739))
+- Fix accepting an unexpected argument `local-rank` in PyTorch 2.0 ([#2812](https://github.com/open-mmlab/mmsegmentation/pull/2812))
+
+### Documentation
+
+- Add Chinese version of various documentation ([#2673](https://github.com/open-mmlab/mmsegmentation/pull/2673), [#2702](https://github.com/open-mmlab/mmsegmentation/pull/2702), [#2703](https://github.com/open-mmlab/mmsegmentation/pull/2703), [#2701](https://github.com/open-mmlab/mmsegmentation/pull/2701), [#2722](https://github.com/open-mmlab/mmsegmentation/pull/2722), [#2733](https://github.com/open-mmlab/mmsegmentation/pull/2733), [#2769](https://github.com/open-mmlab/mmsegmentation/pull/2769), [#2790](https://github.com/open-mmlab/mmsegmentation/pull/2790), [#2798](https://github.com/open-mmlab/mmsegmentation/pull/2798))
+- Update and refine various English documentation ([#2715](https://github.com/open-mmlab/mmsegmentation/pull/2715), [#2755](https://github.com/open-mmlab/mmsegmentation/pull/2755), [#2745](https://github.com/open-mmlab/mmsegmentation/pull/2745), [#2797](https://github.com/open-mmlab/mmsegmentation/pull/2797), [#2799](https://github.com/open-mmlab/mmsegmentation/pull/2799), [#2821](https://github.com/open-mmlab/mmsegmentation/pull/2821), [#2827](https://github.com/open-mmlab/mmsegmentation/pull/2827), [#2831](https://github.com/open-mmlab/mmsegmentation/pull/2831))
+- Add deeplabv3 model structure documentation ([#2426](https://github.com/open-mmlab/mmsegmentation/pull/2426))
+- Add custom metrics documentation ([#2799](https://github.com/open-mmlab/mmsegmentation/pull/2799))
+- Add faq in dev-1.x branch ([#2765](https://github.com/open-mmlab/mmsegmentation/pull/2765))
+
+### New Contributors
+
+- @liuruiqiang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2554
+- @wangjiangben-hw made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2569
+- @jinxianwei made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2557
+- @KKIEEK made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2747
+- @Renzhihan made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2765
+
+## v1.0.0rc6(03/03/2023)
+
+### Highlights
+
+- Support MMSegInferencer ([#2413](https://github.com/open-mmlab/mmsegmentation/pull/2413), [#2658](https://github.com/open-mmlab/mmsegmentation/pull/2658))
+- Support REFUGE dataset ([#2554](https://github.com/open-mmlab/mmsegmentation/pull/2554))
+
+### Features
+
+- Support auto import modules from registry ([#2481](https://github.com/open-mmlab/mmsegmentation/pull/2481))
+- Replace numpy ascontiguousarray with torch contiguous to speed-up ([#2604](https://github.com/open-mmlab/mmsegmentation/pull/2604))
+- Add browse_dataset.py tool ([#2649](https://github.com/open-mmlab/mmsegmentation/pull/2649))
+
+### Bug fix
+
+- Rename and Fix bug of projects HieraSeg ([#2565](https://github.com/open-mmlab/mmsegmentation/pull/2565))
+- Add out_channels  in `CascadeEncoderDecoder` and update OCRNet and MobileNet v2 results ([#2656](https://github.com/open-mmlab/mmsegmentation/pull/2656))
+
+### Documentation
+
+- Add dataflow documentation of Chinese version ([#2652](https://github.com/open-mmlab/mmsegmentation/pull/2652))
+- Add custmized runtime documentation of English version ([#2533](https://github.com/open-mmlab/mmsegmentation/pull/2533))
+- Add documentation for visualizing feature map using wandb backend ([#2557](https://github.com/open-mmlab/mmsegmentation/pull/2557))
+- Add documentation for benchmark results on NPU (HUAWEI Ascend) ([#2569](https://github.com/open-mmlab/mmsegmentation/pull/2569), [#2596](https://github.com/open-mmlab/mmsegmentation/pull/2596), [#2610](https://github.com/open-mmlab/mmsegmentation/pull/2610))
+- Fix api name error in the migration doc ([#2601](https://github.com/open-mmlab/mmsegmentation/pull/2601))
+- Refine projects documentation ([#2586](https://github.com/open-mmlab/mmsegmentation/pull/2586))
+- Refine MMSegmentation documentation ([#2668](https://github.com/open-mmlab/mmsegmentation/pull/2668), [#2659](https://github.com/open-mmlab/mmsegmentation/pull/2659))
+
+### New Contributors
+
+- @zccjjj made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2548
+- @liuruiqiang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2554
+- @wangjiangben-hw made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2569
+- @jinxianwei made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2557
+
 ## v1.0.0rc5(02/01/2023)
 
 ### Bug fix

@@ -1,6 +1,6 @@
 # CGNet
 
-[CGNet: A Light-weight Context Guided Network for Semantic Segmentation](https://arxiv.org/abs/1811.08201)
+> [CGNet: A Light-weight Context Guided Network for Semantic Segmentation](https://arxiv.org/abs/1811.08201)
 
 ## Introduction
 
@@ -22,6 +22,15 @@ The demand of applying semantic segmentation model on mobile devices has been in
 <img src="https://user-images.githubusercontent.com/24582831/142900351-89559574-79cc-4f57-8f69-5d88765ec38d.png" width="80%"/>
 </div>
 
+## Results and models
+
+### Cityscapes
+
+| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device |  mIoU | mIoU(ms+flip) | config                                                                                                                   | download                                                                                                                                                                                                                                                                                                           |
+| ------ | -------- | --------- | ------: | -------- | -------------- | ------ | ----: | ------------: | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| CGNet  | M3N21    | 680x680   |   60000 | 7.5      | 30.51          | V100   | 65.63 |         68.04 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/cgnet/cgnet_fcn_4xb4-60k_cityscapes-680x680.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes-20201101_110253.log.json)     |
+| CGNet  | M3N21    | 512x1024  |   60000 | 8.3      | 31.14          | V100   | 68.27 |         70.33 | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/cgnet/cgnet_fcn_4xb8-60k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes-20201101_110254.log.json) |
+
 ## Citation
 
 ```bibtext
@@ -35,12 +44,3 @@ The demand of applying semantic segmentation model on mobile devices has been in
   publisher={IEEE}
 }
 ```
-
-## Results and models
-
-### Cityscapes
-
-| Method | Backbone | Crop Size | Lr schd | Mem (GB) | Inf time (fps) |  mIoU | mIoU(ms+flip) | config                                                                                                                      | download                                                                                                                                                                                                                                                                                                           |
-| ------ | -------- | --------- | ------: | -------- | -------------- | ----: | ------------: | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| CGNet  | M3N21    | 680x680   |   60000 | 7.5      | 30.51          | 65.63 |         68.04 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/cgnet/cgnet_fcn_4xb4-60k_cityscapes-680x680.py)  | [model](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes_20201101_110253-4c0b2f2d.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_680x680_60k_cityscapes/cgnet_680x680_60k_cityscapes-20201101_110253.log.json)     |
-| CGNet  | M3N21    | 512x1024  |   60000 | 8.3      | 31.14          | 68.27 |         70.33 | [config](https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/configs/cgnet/cgnet_fcn_4xb8-60k_cityscapes-512x1024.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes_20201101_110254-124ea03b.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/cgnet/cgnet_512x1024_60k_cityscapes/cgnet_512x1024_60k_cityscapes-20201101_110254.log.json) |
