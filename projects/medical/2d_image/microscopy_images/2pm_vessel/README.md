@@ -69,7 +69,7 @@ pip install opendatalab
 odl get    2-PM_Vessel_Dataset
 cd ..
 python tools/prepare_dataset.py
-python tools/prepare_dataset.py
+python ../../tools/split_seg_dataset.py
 ```
 
 ```none
