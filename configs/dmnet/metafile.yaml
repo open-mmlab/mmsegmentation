@@ -1,0 +1,296 @@
+Collections:
+- Name: DMNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  README: configs/dmnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: dmnet_r50-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.78
+      mIoU(ms+flip): 79.14
+  Config: configs/dmnet/dmnet_r50-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x1024_40k_cityscapes/dmnet_r50-d8_512x1024_40k_cityscapes_20201215_042326-615373cf.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x1024_40k_cityscapes/dmnet_r50-d8_512x1024_40k_cityscapes-20201215_042326.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r101-d8_4xb2-40k_cityscapes-512x1024
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.37
+      mIoU(ms+flip): 79.72
+  Config: configs/dmnet/dmnet_r101-d8_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 10.6
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x1024_40k_cityscapes/dmnet_r101-d8_512x1024_40k_cityscapes_20201215_043100-8291e976.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x1024_40k_cityscapes/dmnet_r101-d8_512x1024_40k_cityscapes-20201215_043100.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r50-d8_4xb2-40k_cityscapes-769x769
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.49
+      mIoU(ms+flip): 80.27
+  Config: configs/dmnet/dmnet_r50-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.9
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_769x769_40k_cityscapes/dmnet_r50-d8_769x769_40k_cityscapes_20201215_093706-e7f0e23e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_769x769_40k_cityscapes/dmnet_r50-d8_769x769_40k_cityscapes-20201215_093706.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r101-d8_4xb2-40k_cityscapes-769x769
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.62
+      mIoU(ms+flip): 78.94
+  Config: configs/dmnet/dmnet_r101-d8_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 12.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_769x769_40k_cityscapes/dmnet_r101-d8_769x769_40k_cityscapes_20201215_081348-a74261f6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_769x769_40k_cityscapes/dmnet_r101-d8_769x769_40k_cityscapes-20201215_081348.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r50-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.07
+      mIoU(ms+flip): 80.22
+  Config: configs/dmnet/dmnet_r50-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x1024_80k_cityscapes/dmnet_r50-d8_512x1024_80k_cityscapes_20201215_053728-3c8893b9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x1024_80k_cityscapes/dmnet_r50-d8_512x1024_80k_cityscapes-20201215_053728.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r101-d8_4xb2-80k_cityscapes-512x1024
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.64
+      mIoU(ms+flip): 80.67
+  Config: configs/dmnet/dmnet_r101-d8_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x1024_80k_cityscapes/dmnet_r101-d8_512x1024_80k_cityscapes_20201215_031718-fa081cb8.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x1024_80k_cityscapes/dmnet_r101-d8_512x1024_80k_cityscapes-20201215_031718.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r50-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.22
+      mIoU(ms+flip): 80.55
+  Config: configs/dmnet/dmnet_r50-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_769x769_80k_cityscapes/dmnet_r50-d8_769x769_80k_cityscapes_20201215_034006-6060840e.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_769x769_80k_cityscapes/dmnet_r50-d8_769x769_80k_cityscapes-20201215_034006.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r101-d8_4xb2-80k_cityscapes-769x769
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.19
+      mIoU(ms+flip): 80.65
+  Config: configs/dmnet/dmnet_r101-d8_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_769x769_80k_cityscapes/dmnet_r101-d8_769x769_80k_cityscapes_20201215_082810-7f0de59a.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_769x769_80k_cityscapes/dmnet_r101-d8_769x769_80k_cityscapes-20201215_082810.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r50-d8_4xb4-80k_ade20k-512x512
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.37
+      mIoU(ms+flip): 43.62
+  Config: configs/dmnet/dmnet_r50-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x512_80k_ade20k/dmnet_r50-d8_512x512_80k_ade20k_20201215_144744-f89092a6.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x512_80k_ade20k/dmnet_r50-d8_512x512_80k_ade20k-20201215_144744.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r101-d8_4xb4-80k_ade20k-512x512
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.34
+      mIoU(ms+flip): 46.13
+  Config: configs/dmnet/dmnet_r101-d8_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 13.0
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x512_80k_ade20k/dmnet_r101-d8_512x512_80k_ade20k_20201215_104812-bfa45311.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x512_80k_ade20k/dmnet_r101-d8_512x512_80k_ade20k-20201215_104812.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r50-d8_4xb4-160k_ade20k-512x512
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.15
+      mIoU(ms+flip): 44.17
+  Config: configs/dmnet/dmnet_r50-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x512_160k_ade20k/dmnet_r50-d8_512x512_160k_ade20k_20201215_115313-025ab3f9.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r50-d8_512x512_160k_ade20k/dmnet_r50-d8_512x512_160k_ade20k-20201215_115313.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch
+- Name: dmnet_r101-d8_4xb4-160k_ade20k-512x512
+  In Collection: DMNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.42
+      mIoU(ms+flip): 46.76
+  Config: configs/dmnet/dmnet_r101-d8_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101-D8
+    - DMNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x512_160k_ade20k/dmnet_r101-d8_512x512_160k_ade20k_20201215_111145-a0bc02ef.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dmnet/dmnet_r101-d8_512x512_160k_ade20k/dmnet_r101-d8_512x512_160k_ade20k-20201215_111145.log.json
+  Paper:
+    Title: Dynamic Multi-scale Filters for Semantic Segmentation
+    URL: https://openaccess.thecvf.com/content_ICCV_2019/papers/He_Dynamic_Multi-Scale_Filters_for_Semantic_Segmentation_ICCV_2019_paper.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dm_head.py#L93
+  Framework: PyTorch

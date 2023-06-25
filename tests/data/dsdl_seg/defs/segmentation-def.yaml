@@ -1,0 +1,15 @@
+$dsdl-version: "0.5.0"
+
+ImageMedia:
+    $def: struct
+    $fields:
+        image: Image
+        image_shape: ImageShape
+
+SegmentationSample:
+    $def: struct
+    $params: ['cdom']
+    $fields:
+        media: ImageMedia
+        label_map: LabelMap[dom=$cdom]
+        instance_map: InstanceMap
