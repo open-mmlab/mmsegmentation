@@ -91,7 +91,7 @@ def convert_label_pics_into_pngs(src_dir,
         tgt_name = src_name.replace(suffix, save_seg_map_suffix)
         tgt_path = os.path.join(tgt_dir, tgt_name)
 
-        img = np.array(Image.open(src_path))
+        img = np.array(Image.open(src_path).convert('L'))
         img = convert_label(img, convert_dict)
         Image.fromarray(img).save(tgt_path)
         print(f'processed {i+1}/{num}.')
