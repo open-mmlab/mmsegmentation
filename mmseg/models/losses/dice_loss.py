@@ -1,125 +1,160 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-"""Modified from https://github.com/LikeLy-Journey/SegmenTron/blob/master/
-segmentron/solver/loss.py (Apache-2.0 License)"""
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from mmseg.registry import MODELS
-from .utils import get_class_weight, weighted_loss
+from .utils import weight_reduce_loss
 
 
-@weighted_loss
-def dice_loss(pred,
-              target,
-              valid_mask,
-              smooth=1,
-              exponent=2,
-              class_weight=None,
-              ignore_index=255):
-    assert pred.shape[0] == target.shape[0]
-    total_loss = 0
-    num_classes = pred.shape[1]
-    for i in range(num_classes):
-        if i != ignore_index:
-            dice_loss = binary_dice_loss(
-                pred[:, i],
-                target[..., i],
-                valid_mask=valid_mask,
-                smooth=smooth,
-                exponent=exponent)
-            if class_weight is not None:
-                dice_loss *= class_weight[i]
-            total_loss += dice_loss
-    return total_loss / num_classes
+def dice_loss(
+    pred,
+    target,
+    weight,
+    eps=1e-3,
+    reduction='mean',
+    naive_dice=False,
+    avg_factor=None,
+):
+    """Calculate dice loss, there are two forms of dice loss is supported:
 
+        - the one proposed in `V-Net: Fully Convolutional Neural
+            Networks for Volumetric Medical Image Segmentation
+            <https://arxiv.org/abs/1606.04797>`_.
+        - the dice loss in which the power of the number in the
+            denominator is the first power instead of the second
+            power.
 
-@weighted_loss
-def binary_dice_loss(pred, target, valid_mask, smooth=1, exponent=2, **kwards):
-    assert pred.shape[0] == target.shape[0]
-    pred = pred.reshape(pred.shape[0], -1)
-    target = target.reshape(target.shape[0], -1)
-    valid_mask = valid_mask.reshape(valid_mask.shape[0], -1)
+    Args:
+        pred (torch.Tensor): The prediction, has a shape (n, *)
+        target (torch.Tensor): The learning label of the prediction,
+            shape (n, *), same shape of pred.
+        weight (torch.Tensor, optional): The weight of loss for each
+            prediction, has a shape (n,). Defaults to None.
+        eps (float): Avoid dividing by zero. Default: 1e-3.
+        reduction (str, optional): The method used to reduce the loss into
+            a scalar. Defaults to 'mean'.
+            Options are "none", "mean" and "sum".
+        naive_dice (bool, optional): If false, use the dice
+            loss defined in the V-Net paper, otherwise, use the
+            naive dice loss in which the power of the number in the
+            denominator is the first power instead of the second
+            power.Defaults to False.
+        avg_factor (int, optional): Average factor that is used to average
+            the loss. Defaults to None.
+    """
 
-    num = torch.sum(torch.mul(pred, target) * valid_mask, dim=1) * 2 + smooth
-    den = torch.sum(pred.pow(exponent) + target.pow(exponent), dim=1) + smooth
+    input = pred.flatten(1)
+    target = target.flatten(1).float()
 
-    return 1 - num / den
+    a = torch.sum(input * target, 1)
+    if naive_dice:
+        b = torch.sum(input, 1)
+        c = torch.sum(target, 1)
+        d = (2 * a + eps) / (b + c + eps)
+    else:
+        b = torch.sum(input * input, 1) + eps
+        c = torch.sum(target * target, 1) + eps
+        d = (2 * a) / (b + c)
+
+    loss = 1 - d
+    if weight is not None:
+        assert weight.ndim == loss.ndim
+        assert len(weight) == len(pred)
+    loss = weight_reduce_loss(loss, weight, reduction, avg_factor)
+    return loss
 
 
 @MODELS.register_module()
 class DiceLoss(nn.Module):
-    """DiceLoss.
-
-    This loss is proposed in `V-Net: Fully Convolutional Neural Networks for
-    Volumetric Medical Image Segmentation <https://arxiv.org/abs/1606.04797>`_.
-
-    Args:
-        smooth (float): A float number to smooth loss, and avoid NaN error.
-            Default: 1
-        exponent (float): An float number to calculate denominator
-            value: \\sum{x^exponent} + \\sum{y^exponent}. Default: 2.
-        reduction (str, optional): The method used to reduce the loss. Options
-            are "none", "mean" and "sum". This parameter only works when
-            per_image is True. Default: 'mean'.
-        class_weight (list[float] | str, optional): Weight of each class. If in
-            str format, read them from a file. Defaults to None.
-        loss_weight (float, optional): Weight of the loss. Default to 1.0.
-        ignore_index (int | None): The label index to be ignored. Default: 255.
-        loss_name (str, optional): Name of the loss item. If you want this loss
-            item to be included into the backward graph, `loss_` must be the
-            prefix of the name. Defaults to 'loss_dice'.
-    """
 
     def __init__(self,
-                 smooth=1,
-                 exponent=2,
+                 use_sigmoid=True,
+                 activate=True,
                  reduction='mean',
-                 class_weight=None,
+                 naive_dice=False,
                  loss_weight=1.0,
                  ignore_index=255,
-                 loss_name='loss_dice',
-                 **kwards):
+                 eps=1e-3,
+                 loss_name='loss_dice'):
+        """Compute dice loss.
+
+        Args:
+            use_sigmoid (bool, optional): Whether to the prediction is
+                used for sigmoid or softmax. Defaults to True.
+            activate (bool): Whether to activate the predictions inside,
+                this will disable the inside sigmoid operation.
+                Defaults to True.
+            reduction (str, optional): The method used
+                to reduce the loss. Options are "none",
+                "mean" and "sum". Defaults to 'mean'.
+            naive_dice (bool, optional): If false, use the dice
+                loss defined in the V-Net paper, otherwise, use the
+                naive dice loss in which the power of the number in the
+                denominator is the first power instead of the second
+                power. Defaults to False.
+            loss_weight (float, optional): Weight of loss. Defaults to 1.0.
+            ignore_index (int | None): The label index to be ignored.
+                Default: 255.
+            eps (float): Avoid dividing by zero. Defaults to 1e-3.
+            loss_name (str, optional): Name of the loss item. If you want this
+                loss item to be included into the backward graph, `loss_` must
+                be the prefix of the name. Defaults to 'loss_dice'.
+        """
+
         super().__init__()
-        self.smooth = smooth
-        self.exponent = exponent
+        self.use_sigmoid = use_sigmoid
         self.reduction = reduction
-        self.class_weight = get_class_weight(class_weight)
+        self.naive_dice = naive_dice
         self.loss_weight = loss_weight
+        self.eps = eps
+        self.activate = activate
         self.ignore_index = ignore_index
         self._loss_name = loss_name
 
     def forward(self,
                 pred,
                 target,
+                weight=None,
                 avg_factor=None,
-                reduction_override=None,
-                **kwards):
+                reduction_override=None):
+        """Forward function.
+
+        Args:
+            pred (torch.Tensor): The prediction, has a shape (n, *).
+            target (torch.Tensor): The label of the prediction,
+                shape (n, *), same shape of pred.
+            weight (torch.Tensor, optional): The weight of loss for each
+                prediction, has a shape (n,). Defaults to None.
+            avg_factor (int, optional): Average factor that is used to average
+                the loss. Defaults to None.
+            reduction_override (str, optional): The reduction method used to
+                override the original reduction method of the loss.
+                Options are "none", "mean" and "sum".
+
+        Returns:
+            torch.Tensor: The calculated loss
+        """
+
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
-        if self.class_weight is not None:
-            class_weight = pred.new_tensor(self.class_weight)
-        else:
-            class_weight = None
 
-        pred = F.softmax(pred, dim=1)
-        num_classes = pred.shape[1]
-        one_hot_target = F.one_hot(
-            torch.clamp(target.long(), 0, num_classes - 1),
-            num_classes=num_classes)
-        valid_mask = (target != self.ignore_index).long()
+        if self.activate:
+            if self.use_sigmoid:
+                pred = pred.sigmoid()
+            else:
+                raise NotImplementedError
 
         loss = self.loss_weight * dice_loss(
             pred,
-            one_hot_target,
-            valid_mask=valid_mask,
+            target,
+            weight,
+            eps=self.eps,
             reduction=reduction,
+            naive_dice=self.naive_dice,
             avg_factor=avg_factor,
-            smooth=self.smooth,
-            exponent=self.exponent,
-            class_weight=class_weight,
-            ignore_index=self.ignore_index)
+        )
+
         return loss
 
     @property

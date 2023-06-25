@@ -11,11 +11,6 @@ datasets
 .. automodule:: mmseg.datasets
     :members:
 
-samplers
-^^^^^^^^^^
-.. automodule:: mmseg.datasets.samplers
-    :members:
-
 transforms
 ^^^^^^^^^^^^
 .. automodule:: mmseg.datasets.transforms

@@ -1,0 +1,391 @@
+Collections:
+- Name: UPerNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+    - ADE20K
+    - Pascal VOC 2012 + Aug
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  README: configs/upernet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: upernet_r50_4xb2-40k_cityscapes-512x1024
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.1
+      mIoU(ms+flip): 78.37
+  Config: configs/upernet/upernet_r50_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827-aa54cb54.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_40k_cityscapes/upernet_r50_512x1024_40k_cityscapes_20200605_094827.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb2-40k_cityscapes-512x1024
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.69
+      mIoU(ms+flip): 80.11
+  Config: configs/upernet/upernet_r101_4xb2-40k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933-ebce3b10.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_40k_cityscapes/upernet_r101_512x1024_40k_cityscapes_20200605_094933.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb2-40k_cityscapes-769x769
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.98
+      mIoU(ms+flip): 79.7
+  Config: configs/upernet/upernet_r50_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048-92d21539.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_40k_cityscapes/upernet_r50_769x769_40k_cityscapes_20200530_033048.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb2-40k_cityscapes-769x769
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.03
+      mIoU(ms+flip): 80.77
+  Config: configs/upernet/upernet_r101_4xb2-40k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819-83c95d01.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_40k_cityscapes/upernet_r101_769x769_40k_cityscapes_20200530_040819.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb2-80k_cityscapes-512x1024
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 78.19
+      mIoU(ms+flip): 79.19
+  Config: configs/upernet/upernet_r50_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207-848beca8.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x1024_80k_cityscapes/upernet_r50_512x1024_80k_cityscapes_20200607_052207.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb2-80k_cityscapes-512x1024
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.4
+      mIoU(ms+flip): 80.46
+  Config: configs/upernet/upernet_r101_4xb2-80k_cityscapes-512x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403-f05f2345.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x1024_80k_cityscapes/upernet_r101_512x1024_80k_cityscapes_20200607_002403.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb2-80k_cityscapes-769x769
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.39
+      mIoU(ms+flip): 80.92
+  Config: configs/upernet/upernet_r50_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107-82ae7d15.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_769x769_80k_cityscapes/upernet_r50_769x769_80k_cityscapes_20200607_005107.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb2-80k_cityscapes-769x769
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 80.1
+      mIoU(ms+flip): 81.49
+  Config: configs/upernet/upernet_r101_4xb2-80k_cityscapes-769x769.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 8
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014-082fc334.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_769x769_80k_cityscapes/upernet_r101_769x769_80k_cityscapes_20200607_001014.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb4-80k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 40.7
+      mIoU(ms+flip): 41.81
+  Config: configs/upernet/upernet_r50_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 8.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127-ecc8377b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_80k_ade20k/upernet_r50_512x512_80k_ade20k_20200614_144127.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb4-80k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.91
+      mIoU(ms+flip): 43.96
+  Config: configs/upernet/upernet_r101_4xb4-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 9.1
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117-32e4db94.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_80k_ade20k/upernet_r101_512x512_80k_ade20k_20200614_185117.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb4-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.05
+      mIoU(ms+flip): 42.78
+  Config: configs/upernet/upernet_r50_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328-8534de8d.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_160k_ade20k/upernet_r50_512x512_160k_ade20k_20200615_184328.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb4-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.82
+      mIoU(ms+flip): 44.85
+  Config: configs/upernet/upernet_r101_4xb4-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951-91b32684.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_160k_ade20k/upernet_r101_512x512_160k_ade20k_20200615_161951.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb4-20k_voc12aug-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 74.82
+      mIoU(ms+flip): 76.35
+  Config: configs/upernet/upernet_r50_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 6.4
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330-5b5890a7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_20k_voc12aug/upernet_r50_512x512_20k_voc12aug_20200617_165330.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb4-20k_voc12aug-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.1
+      mIoU(ms+flip): 78.29
+  Config: configs/upernet/upernet_r101_4xb4-20k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+    Memory (GB): 7.5
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629-f14e7f27.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_20k_voc12aug/upernet_r101_512x512_20k_voc12aug_20200617_165629.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r50_4xb4-40k_voc12aug-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 75.92
+      mIoU(ms+flip): 77.44
+  Config: configs/upernet/upernet_r50_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-50
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257-ca9bcc6b.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r50_512x512_40k_voc12aug/upernet_r50_512x512_40k_voc12aug_20200613_162257.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
+- Name: upernet_r101_4xb4-40k_voc12aug-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Pascal VOC 2012 + Aug
+    Metrics:
+      mIoU: 77.43
+      mIoU(ms+flip): 78.56
+  Config: configs/upernet/upernet_r101_4xb4-40k_voc12aug-512x512.py
+  Metadata:
+    Training Data: Pascal VOC 2012 + Aug
+    Batch Size: 16
+    Architecture:
+    - R-101
+    - UPerNet
+    Training Resources: 4x V100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549-e26476ac.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/upernet/upernet_r101_512x512_40k_voc12aug/upernet_r101_512x512_40k_voc12aug_20200613_163549.log.json
+  Paper:
+    Title: Unified Perceptual Parsing for Scene Understanding
+    URL: https://arxiv.org/pdf/1807.10221.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/uper_head.py#L13
+  Framework: PyTorch
