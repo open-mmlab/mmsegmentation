@@ -63,6 +63,15 @@ export PYTHONPATH=`pwd`:$PYTHONPATH
 - run script `"python tools/prepare_dataset.py"` to format data and change folder structure as below.
 - run script `"python ../../tools/split_seg_dataset.py"` to split dataset and generate `train.txt`, `val.txt` and `test.txt`. If the label of official validation set and test set can't be obtained, we generate `train.txt` and `val.txt` from the training set randomly.
 
+```shell
+mkdir data & cd data
+pip install opendatalab
+odl get    2-PM_Vessel_Dataset
+cd ..
+python tools/prepare_dataset.py
+python tools/prepare_dataset.py
+```
+
 ```none
   mmsegmentation
   ├── mmseg
