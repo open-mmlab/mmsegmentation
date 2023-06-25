@@ -1,0 +1,37 @@
+Collections:
+- Name: DPT
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - ADE20K
+  Paper:
+    Title: Vision Transformer for Dense Prediction
+    URL: https://arxiv.org/abs/2103.13413
+  README: configs/dpt/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: dpt_vit-b16_8xb2-160k_ade20k-512x512
+  In Collection: DPT
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.97
+      mIoU(ms+flip): 48.34
+  Config: configs/dpt/dpt_vit-b16_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ViT-B
+    - DPT
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 8.09
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-b16_512x512_160k_ade20k/dpt_vit-b16_512x512_160k_ade20k-db31cf52.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/dpt/dpt_vit-b16_512x512_160k_ade20k/dpt_vit-b16_512x512_160k_ade20k-20210809_172025.log.json
+  Paper:
+    Title: Vision Transformer for Dense Prediction
+    URL: https://arxiv.org/abs/2103.13413
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/decode_heads/dpt_head.py#L215
+  Framework: PyTorch

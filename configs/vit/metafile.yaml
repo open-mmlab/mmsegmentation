@@ -1,0 +1,265 @@
+Models:
+- Name: vit_vit-b16_mln_upernet_8xb2-80k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.71
+      mIoU(ms+flip): 49.51
+  Config: configs/vit/vit_vit-b16_mln_upernet_8xb2-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ViT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_80k_ade20k/upernet_vit-b16_mln_512x512_80k_ade20k_20210624_130547-0403cee1.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_80k_ade20k/20210624_130547.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 46.75
+      mIoU(ms+flip): 48.46
+  Config: configs/vit/vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ViT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.2
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_160k_ade20k/upernet_vit-b16_mln_512x512_160k_ade20k_20210624_130547-852fa768.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_mln_512x512_160k_ade20k/20210623_192432.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 47.73
+      mIoU(ms+flip): 49.95
+  Config: configs/vit/vit_vit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - ViT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.21
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k/upernet_vit-b16_ln_mln_512x512_160k_ade20k_20210621_172828-f444c077.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_vit-b16_ln_mln_512x512_160k_ade20k/20210621_172828.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-s16_upernet_8xb2-80k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.96
+      mIoU(ms+flip): 43.79
+  Config: configs/vit/vit_deit-s16_upernet_8xb2-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.68
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_80k_ade20k/upernet_deit-s16_512x512_80k_ade20k_20210624_095228-afc93ec2.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_80k_ade20k/20210624_095228.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-s16_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 42.87
+      mIoU(ms+flip): 43.79
+  Config: configs/vit/vit_deit-s16_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 4.68
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_160k_ade20k/upernet_deit-s16_512x512_160k_ade20k_20210621_160903-5110d916.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_512x512_160k_ade20k/20210621_160903.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-s16_mln_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.82
+      mIoU(ms+flip): 45.07
+  Config: configs/vit/vit_deit-s16_mln_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 5.69
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_mln_512x512_160k_ade20k/upernet_deit-s16_mln_512x512_160k_ade20k_20210621_161021-fb9a5dfb.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_mln_512x512_160k_ade20k/20210621_161021.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-s16-ln_mln_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 43.52
+      mIoU(ms+flip): 45.01
+  Config: configs/vit/vit_deit-s16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-S
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 5.69
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k/upernet_deit-s16_ln_mln_512x512_160k_ade20k_20210621_161021-c0cd652f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-s16_ln_mln_512x512_160k_ade20k/20210621_161021.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-b16_upernet_8xb2-80k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.24
+      mIoU(ms+flip): 46.73
+  Config: configs/vit/vit_deit-b16_upernet_8xb2-80k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 7.75
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_80k_ade20k/upernet_deit-b16_512x512_80k_ade20k_20210624_130529-1e090789.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_80k_ade20k/20210624_130529.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-b16_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.36
+      mIoU(ms+flip): 47.16
+  Config: configs/vit/vit_deit-b16_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 7.75
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_160k_ade20k/upernet_deit-b16_512x512_160k_ade20k_20210621_180100-828705d7.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_512x512_160k_ade20k/20210621_180100.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-b16_mln_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.46
+      mIoU(ms+flip): 47.16
+  Config: configs/vit/vit_deit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.21
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_mln_512x512_160k_ade20k/upernet_deit-b16_mln_512x512_160k_ade20k_20210621_191949-4e1450f3.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_mln_512x512_160k_ade20k/20210621_191949.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
+- Name: vit_deit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512
+  In Collection: UPerNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: ADE20K
+    Metrics:
+      mIoU: 45.37
+      mIoU(ms+flip): 47.23
+  Config: configs/vit/vit_deit-b16-ln_mln_upernet_8xb2-160k_ade20k-512x512.py
+  Metadata:
+    Training Data: ADE20K
+    Batch Size: 16
+    Architecture:
+    - DeiT-B
+    - UPerNet
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 9.21
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k/upernet_deit-b16_ln_mln_512x512_160k_ade20k_20210623_153535-8a959c14.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vit/upernet_deit-b16_ln_mln_512x512_160k_ade20k/20210623_153535.log.json
+  Paper:
+    Title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+    URL: https://arxiv.org/pdf/2010.11929.pdf
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/v0.17.0/mmseg/models/backbones/vit.py#L98
+  Framework: PyTorch
