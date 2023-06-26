@@ -4,7 +4,8 @@ checkpoint_file = 'https://download.openmmlab.com/mmclassification/v0/poolformer
 # TODO: delete custom_imports after mmcls supports auto import
 # please install mmcls>=1.0
 # import mmcls.models to trigger register_module in mmcls
-custom_imports = dict(imports=['mmpretrain.models'], allow_failed_imports=False)
+custom_imports = dict(
+    imports=['mmpretrain.models'], allow_failed_imports=False)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     mean=[123.675, 116.28, 103.53],
