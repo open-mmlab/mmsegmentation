@@ -145,7 +145,7 @@ workflows:
                 - main
       - build_cpu:
           name: minimum_version_cpu
-          torch: 1.8.1
+          torch: 1.8.0
           torchvision: 0.7.0
           python: "3.7"
           requires:
