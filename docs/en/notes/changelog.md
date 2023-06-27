@@ -1,5 +1,100 @@
 # Changelog of v1.x
 
+## v1.1.0(06/27/2023)
+
+## What's Changed
+
+- \[CI\] rm github workflow by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/2898
+- \[Doc\] update doc link by @csatsurnh in https://github.com/open-mmlab/mmsegmentation/pull/2863
+- Fix typo in tutorial-1 by @liu-mengyang in https://github.com/open-mmlab/mmsegmentation/pull/2896
+- \[Refactor\] Handle case where device is neither CPU nor CUDA in HamHead by @KKIEEK in https://github.com/open-mmlab/mmsegmentation/pull/2868
+- \[Fix\] Fix bugs when out_channels==1 by @likyoo in https://github.com/open-mmlab/mmsegmentation/pull/2911
+- \[Fix\] modify links in `overview.md` by @tianleiSHI in https://github.com/open-mmlab/mmsegmentation/pull/2919
+- \[Project\] support SAM inferencer by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/2897
+- Fix URL so output of `mim list` looks better by @1qh in https://github.com/open-mmlab/mmsegmentation/pull/2902
+- \[Dev\] update owner by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/2927
+- Merge branch 'dev-1.x' of github.com:open-mmlab/mmsegmentation into main by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/2928
+- \[Fix\] Fix binary C=1 focal loss & dataset fileio by @csatsurnh in https://github.com/open-mmlab/mmsegmentation/pull/2935
+- \[Fix\] fix squeeze error when N=1 and C=1 by @acdart in https://github.com/open-mmlab/mmsegmentation/pull/2933
+- \[Feature\] Support albu transform by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/2943
+- Fix typo in docs/en/user_guides/visualization_feature_map.md by @JoshuaChou2018 in https://github.com/open-mmlab/mmsegmentation/pull/2951
+- \[Feature\] Support DDRNet by @whu-pzhang in https://github.com/open-mmlab/mmsegmentation/pull/2855
+- \[Doc\] Update the translation of models. by @jts250 in https://github.com/open-mmlab/mmsegmentation/pull/2833
+- \[Doc\] Fix a tiny mis-Arg in BaseDecodeHead class by @MGAMZ in https://github.com/open-mmlab/mmsegmentation/pull/2970
+- Fix typo in tools/test.py by @mmeendez8 in https://github.com/open-mmlab/mmsegmentation/pull/2961
+- \[Project\] add Bactteria_Dataset project in dev-1.x by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2568
+- \[Fix\] Limit urllib3 version for docs building by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/2984
+- \[Fix\] Fix DDRNet readme by @MengzhangLI in https://github.com/open-mmlab/mmsegmentation/pull/2981
+- \[Project\] add Vampire dataset project in dev-1.x by @Provable0816 in https://github.com/open-mmlab/mmsegmentation/pull/2633
+- \[Feature\] Add GDAL backend and Support LEVIR-CD Dataset by @Zoulinx in https://github.com/open-mmlab/mmsegmentation/pull/2903
+- \[Feature\] Support DSDL Dataset by @wufan-tb in https://github.com/open-mmlab/mmsegmentation/pull/2925
+- Prevent passed `ann_file` from silently failing to load by @haruishi43 in https://github.com/open-mmlab/mmsegmentation/pull/2966
+- \[Refactor\] Refactor dice loss by @csatsurnh in https://github.com/open-mmlab/mmsegmentation/pull/3002
+- Cranium by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2675
+- \[Project\] Added a supported for Visual Attention Network (VAN) by @tang576225574 in https://github.com/open-mmlab/mmsegmentation/pull/2987
+- \[Project\] add Ravir dataset project in dev-1.x by @Provable0816 in https://github.com/open-mmlab/mmsegmentation/pull/2635
+- \[Doc\] Repair invalid link of potsdam and vaihingen by @AI-Tianlong in https://github.com/open-mmlab/mmsegmentation/pull/3042
+- Fixes an issue in isaid.py by @Kedreamix in https://github.com/open-mmlab/mmsegmentation/pull/3010
+- \[Dataset\] Support GID dataset on project by @AI-Tianlong in https://github.com/open-mmlab/mmsegmentation/pull/3038
+- \[CI\] Fix mmdet version by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3081
+- Clean jupyter output by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3082
+- \[Fix\] Fix bug cannot use both '--tta' and '--out' while testing. by @nightrain01 in https://github.com/open-mmlab/mmsegmentation/pull/3067
+- \[Docs\] Add docs contents at README.md  by @AI-Tianlong in https://github.com/open-mmlab/mmsegmentation/pull/3083
+- \[Docker\] update Dockerfile libgl1-mesa-dev by @shigengtian in https://github.com/open-mmlab/mmsegmentation/pull/3095
+- \[Feature\] enhance swin pretrained model loading by @SheffieldCao in https://github.com/open-mmlab/mmsegmentation/pull/3097
+- \[Fix\] Robust mapping from image path to seg map path by @wangruohui in https://github.com/open-mmlab/mmsegmentation/pull/3091
+- \[Fix\] fix inferencer ut by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3117
+- \[Feature\] huasdorff distance loss by @jinxianwei in https://github.com/open-mmlab/mmsegmentation/pull/2820
+- \[Dev\] update benchmark script by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3116
+- \[Enhancement\] Change assertion logic inference cfg.model.test_cfg by @LHamnett in https://github.com/open-mmlab/mmsegmentation/pull/3012
+- fix assert by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3119
+- \[Project\] Medical semantic seg dataset: bccs by @Provable0816 in https://github.com/open-mmlab/mmsegmentation/pull/2861
+- \[Project\] add Gamma Task3 dataset project in dev-1.x by @Provable0816 in https://github.com/open-mmlab/mmsegmentation/pull/2695
+- \[Project\] Medical semantic seg dataset: consep by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2724
+- \[Project\] Medical semantic seg dataset: breast_cancer_cell_seg by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2726
+- \[Project\] Medical semantic seg dataset: chest_image_pneum by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2727
+- \[Project\] Medical semantic seg dataset: conic2022 by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2725
+- \[Project\] Medical semantic seg dataset: dr_hagis by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2729
+- \[Project\] Medical semantic seg dataset: orvs by @tianbinli in https://github.com/open-mmlab/mmsegmentation/pull/2728
+- \[Project\] Medical semantic seg dataset: ISIC-2016 Task1 by @suyanzhou626 in https://github.com/open-mmlab/mmsegmentation/pull/2708
+- \[Project\] Medical semantic seg dataset: ISIC-2017 Task1 by @suyanzhou626 in https://github.com/open-mmlab/mmsegmentation/pull/2709
+- \[Project\] Medical semantic seg dataset: Kvasir seg by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2677
+- \[Project\] Medical dataset: Kvasir seg aliyun by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2678
+- \[Project\] Medical semantic seg dataset: Rite by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2680
+- \[Project\] Medical semanti seg dataset: Fusc2021 by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2682
+- \[Project\] Medical semantic seg dataset: 2pm vessel by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2685
+- \[Project\] Medical semantic seg dataset: Pcam by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2684
+- \[Project\] Medical semantic seg dataset: Pannuke by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2683
+- \[Project\] Medical semantic seg dataset: Covid 19 ct cxr by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2688
+- \[Project\] Medical semantic seg dataset: Crass by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2690
+- \[Project\] Medical semantic seg dataset: Chest x ray images with pneumothorax masks by @Masaaki-75 in https://github.com/open-mmlab/mmsegmentation/pull/2687
+- \[Fix\] Fix dependency by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3136
+- \[CI\] fix merge stage by @xiexinch in https://github.com/open-mmlab/mmsegmentation/pull/3138
+
+## New Contributors
+
+- @liu-mengyang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2896
+- @likyoo made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2911
+- @1qh made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2902
+- @JoshuaChou2018 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2951
+- @jts250 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2833
+- @MGAMZ made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2970
+- @tianbinli made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2568
+- @Provable0816 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2633
+- @Zoulinx made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2903
+- @wufan-tb made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2925
+- @haruishi43 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2966
+- @Masaaki-75 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2675
+- @tang576225574 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2987
+- @Kedreamix made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3010
+- @nightrain01 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3067
+- @shigengtian made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3095
+- @SheffieldCao made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3097
+- @wangruohui made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3091
+- @LHamnett made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3012
+
+**Full Changelog**: https://github.com/open-mmlab/mmsegmentation/compare/v1.0.0...v1.1.0
+
 ## v1.0.0(04/06/2023)
 
 ### Highlights
