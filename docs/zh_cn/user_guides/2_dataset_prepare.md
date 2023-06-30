@@ -177,6 +177,27 @@ mmsegmentation
 |   │   │   │   ├── labels
 |   │   │   │   ├── panoptic
 |   │   │   │   └── polygons
+│   ├── bdd100k
+│   │   ├── images
+│   │   │   └── 10k
+|   │   │   │   ├── test
+|   │   │   │   ├── train
+|   │   │   │   └── val
+│   │   └── labels
+│   │   │   └── sem_seg
+|   │   │   │   ├── colormaps
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── masks
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── polygons
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+|   │   │   │   └── rles
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+
 ```
 
 ## Cityscapes
@@ -616,3 +637,38 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
 
 - 您可以在配置中使用 `MapillaryDataset_v1` 和 `Mapillary Dataset_v2` 设置数据集版本。
   在此处 [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) 和 [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py) 查看 Mapillary Vistas 数据集配置文件
+
+
+## BDD100K
+可以从[官方网站](https://bdd-data.berkeley.edu/) 下载 BDD100K数据集（语义分割任务主要是10K数据集），按照官网要求注册并登陆后，数据可以在[这里](https://bdd-data.berkeley.edu/portal.html#download)找到。
+
+图像数据对应的名称是是`10K Images`, 语义分割标注对应的名称是`Segmentation`
+
+下载后，可以使用以下代码进行解压
+```bash
+unzip ~/bdd100k_images_10k.zip -d ~/mmsegmentation/data/
+unzip ~/bdd100k_sem_seg_labels_trainval.zip -d ~/mmsegmentation/data/
+```
+就可以得到以下文件结构：
+```bash
+bdd100k/
+├── images
+│   └── 10k
+│       ├── test [2000 entries exceeds filelimit, not opening dir]
+│       ├── train [7000 entries exceeds filelimit, not opening dir]
+│       └── val [1000 entries exceeds filelimit, not opening dir]
+└── labels
+    └── sem_seg
+        ├── colormaps
+        │   ├── train
+        │   └── val
+        ├── masks
+        │   ├── train
+        │   └── val
+        ├── polygons
+        │   ├── sem_seg_train.json
+        │   └── sem_seg_val.json
+        └── rles
+            ├── sem_seg_train.json
+            └── sem_seg_val.json
+```
