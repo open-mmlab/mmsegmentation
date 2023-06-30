@@ -39,7 +39,7 @@ class SegTTAModel(BaseTTAModel):
                             ).to(logits).squeeze(1)
             else:
                 seg_pred = logits.argmax(dim=0)
-            if hasattr(data_samples[0], 'gt_sem_seg'): 
+            if hasattr(data_samples[0], 'gt_sem_seg'):
                 data_sample = SegDataSample(
                     **{
                         'pred_sem_seg': PixelData(data=seg_pred),
@@ -50,7 +50,7 @@ class SegTTAModel(BaseTTAModel):
                     **{
                         'pred_sem_seg': PixelData(data=seg_pred),
                         'gt_sem_seg': PixelData(data=seg_pred)
-                    }) 
+                    })
             data_sample.set_metainfo({'img_path': data_samples[0].img_path})
             predictions.append(data_sample)
         return predictions
