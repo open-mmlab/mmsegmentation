@@ -22,4 +22,3 @@ val_dataloader = dict(
             img_path='images/10k/val',
             seg_map_path='labels/sem_seg/masks/val'),
     ))
-test_dataloader = val_dataloader
