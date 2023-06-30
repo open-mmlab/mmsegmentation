@@ -223,10 +223,9 @@ class SegLocalVisualizer(Visualizer):
             drawn_img = pred_img_data
 
         if show:
-            self.show(
-                drawn_img, win_name=name, wait_time=wait_time, backend='cv2')
+            self.show(drawn_img, win_name=name, wait_time=wait_time)
 
         if out_file is not None:
-            mmcv.imwrite(drawn_img, out_file)
+            mmcv.imwrite(mmcv.rgb2bgr(drawn_img), out_file)
         else:
             self.add_image(name, drawn_img, step)
