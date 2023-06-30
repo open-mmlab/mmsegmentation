@@ -1,9 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from mmseg.registry import DATASETS
-from .basesegdataset import BaseSegDataset
+
+from mmseg.datasets.basesegdataset import BaseSegDataset
+
+# from mmseg.registry import DATASETS
+# @DATASETS.register_module()
 
 
-@DATASETS.register_module()
 class BDD100KDataset(BaseSegDataset):
     METAINFO = dict(
         classes=('road', 'sidewalk', 'building', 'wall', 'fence', 'pole',
