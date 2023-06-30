@@ -4,7 +4,9 @@ checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segfor
 
 # model settings
 model = dict(
-    pretrained=checkpoint,
     backbone=dict(
-        embed_dims=64, num_heads=[1, 2, 5, 8], num_layers=[2, 2, 2, 2]),
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint),
+        embed_dims=64,
+        num_heads=[1, 2, 5, 8],
+        num_layers=[2, 2, 2, 2]),
     decode_head=dict(in_channels=[64, 128, 320, 512]))

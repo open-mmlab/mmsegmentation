@@ -33,7 +33,9 @@ test_dataloader = val_dataloader
 # model settings
 model = dict(
     data_preprocessor=data_preprocessor,
-    pretrained=checkpoint,
     backbone=dict(
-        embed_dims=64, num_heads=[1, 2, 5, 8], num_layers=[3, 6, 40, 3]),
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint),
+        embed_dims=64,
+        num_heads=[1, 2, 5, 8],
+        num_layers=[3, 6, 40, 3]),
     decode_head=dict(in_channels=[64, 128, 320, 512]))
