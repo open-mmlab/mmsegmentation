@@ -9,16 +9,21 @@ model = dict(data_preprocessor=data_preprocessor)
 train_dataloader = dict(
     dataset=dict(
         type='BDD100KDataset',
-        data_root='data/bdd100k',
+        data_root='data/bdd100k/',
         data_prefix=dict(
             img_path='images/10k/train',
-            seg_map_path='labels/sem_seg/masks/train'),
-    ))
+            seg_map_path='labels/sem_seg/masks/train')))
 val_dataloader = dict(
     dataset=dict(
         type='BDD100KDataset',
-        data_root='data/bdd100k',
+        data_root='data/bdd100k/',
         data_prefix=dict(
             img_path='images/10k/val',
-            seg_map_path='labels/sem_seg/masks/val'),
-    ))
+            seg_map_path='labels/sem_seg/masks/val')))
+test_dataloader = dict(
+    dataset=dict(
+        type='BDD100KDataset',
+        data_root='data/bdd100k/',
+        data_prefix=dict(
+            img_path='images/10k/val',
+            seg_map_path='labels/sem_seg/masks/val')))
