@@ -26,7 +26,7 @@ test_pipeline = [
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=None),
+    dict(type='LoadImageFromFile', file_client_args=dict(backend='disk')),
     dict(
         type='TestTimeAug',
         transforms=[
@@ -42,15 +42,14 @@ tta_pipeline = [
 ]
 train_dataloader = dict(
     batch_size=2,
-    num_workers=2,
+    num_workers=4,
     persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='images/10k/train',
-            seg_map_path='labels/sem_seg/masks/train'),
+            img_path='training/images', seg_map_path='training/v1.2/labels'),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
@@ -61,8 +60,8 @@ val_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='images/10k/val',
-            seg_map_path='labels/sem_seg/masks/val'),
+            img_path='validation/images',
+            seg_map_path='validation/v1.2/labels'),
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 

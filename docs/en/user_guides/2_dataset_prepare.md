@@ -177,6 +177,26 @@ mmsegmentation
 |   │   │   │   ├── labels
 |   │   │   │   ├── panoptic
 |   │   │   │   └── polygons
+│   ├── bdd100k
+│   │   ├── images
+│   │   │   └── 10k
+|   │   │   │   ├── test
+|   │   │   │   ├── train
+|   │   │   │   └── val
+│   │   └── labels
+│   │   │   └── sem_seg
+|   │   │   │   ├── colormaps
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── masks
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── polygons
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+|   │   │   │   └── rles
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
 ```
 
 ## Cityscapes
@@ -620,3 +640,46 @@ It includes 400 images for training, 400 images for validation and 400 images fo
 
 - You could set Datasets version with `MapillaryDataset_v1` and `MapillaryDataset_v2` in your configs.
   View the Mapillary Vistas Datasets config file here [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) and [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py)
+
+## BDD100K
+
+- You could download BDD100k datasets from  [here](https://bdd-data.berkeley.edu/) after  registration.
+
+- You can download images and masks by clicking  `10K Images` button and `Segmentation` button.
+
+- After download, unzip by the following instructions:
+
+  ```bash
+  unzip ~/bdd100k_images_10k.zip -d ~/mmsegmentation/data/
+  unzip ~/bdd100k_sem_seg_labels_trainval.zip -d ~/mmsegmentation/data/
+  ```
+
+- And get
+
+```none
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── bdd100k
+│   │   ├── images
+│   │   │   └── 10k
+|   │   │   │   ├── test
+|   │   │   │   ├── train
+|   │   │   │   └── val
+│   │   └── labels
+│   │   │   └── sem_seg
+|   │   │   │   ├── colormaps
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── masks
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── polygons
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+|   │   │   │   └── rles
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+```
