@@ -5,11 +5,22 @@ import tempfile
 
 import pytest
 
-from mmseg.datasets import (
-    ADE20KDataset, BaseSegDataset, BDD100KDataset, CityscapesDataset,
-    COCOStuffDataset, DecathlonDataset, ISPRSDataset, LIPDataset,
-    LoveDADataset, MapillaryDataset_v1, MapillaryDataset_v2, PascalVOCDataset,
-    PotsdamDataset, REFUGEDataset, SynapseDataset, iSAIDDataset)
+from mmseg.datasets import ADE20KDataset as ADE20KDataset
+from mmseg.datasets import BaseSegDataset as BaseSegDataset
+from mmseg.datasets import BDD100KDataset as BDD100KDataset
+from mmseg.datasets import CityscapesDataset as CityscapesDataset
+from mmseg.datasets import COCOStuffDataset as COCOStuffDataset
+from mmseg.datasets import DecathlonDataset as DecathlonDataset
+from mmseg.datasets import ISPRSDataset as ISPRSDataset
+from mmseg.datasets import LIPDataset as LIPDataset
+from mmseg.datasets import LoveDADataset as LoveDADataset
+from mmseg.datasets import MapillaryDataset_v1 as MapillaryDataset_v1
+from mmseg.datasets import MapillaryDataset_v2 as MapillaryDataset_v2
+from mmseg.datasets import PascalVOCDataset as PascalVOCDataset
+from mmseg.datasets import PotsdamDataset as PotsdamDataset
+from mmseg.datasets import REFUGEDataset as REFUGEDataset
+from mmseg.datasets import SynapseDataset as SynapseDataset
+from mmseg.datasets import iSAIDDataset as iSAIDDataset
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
