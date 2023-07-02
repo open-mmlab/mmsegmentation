@@ -99,7 +99,7 @@ def test_palette():
         MapillaryDataset_v1.METAINFO['palette']) == get_palette('mapillary_v1')
     assert list(
         MapillaryDataset_v2.METAINFO['palette']) == get_palette('mapillary_v2')
-    assert list(BDD100KDataset.METAINFO['palette']) == get_classes('bdd100k')
+    assert list(BDD100KDataset.METAINFO['palette']) == get_palette('bdd100k')
 
     with pytest.raises(ValueError):
         get_palette('unsupported')
