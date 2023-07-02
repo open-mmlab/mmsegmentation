@@ -336,7 +336,7 @@ def test_bdd100k():
             seg_map_path=osp.join(
                 osp.dirname(__file__),
                 '../data/pseudo_bdd100k_dataset/labels/sem_seg/masks/val')))
-    assert len(test_dataset) == 1
+    assert len(test_dataset) == 3
 
 
 @pytest.mark.parametrize('dataset, classes', [
