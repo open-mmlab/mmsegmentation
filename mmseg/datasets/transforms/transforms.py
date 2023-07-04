@@ -1,10 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
+import inspect
 import warnings
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 import cv2
 import mmcv
+import mmengine
 import numpy as np
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
@@ -14,6 +16,15 @@ from scipy.ndimage import gaussian_filter
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
+
+try:
+    import albumentations
+    from albumentations import Compose
+    ALBU_INSTALLED = True
+except ImportError:
+    albumentations = None
+    Compose = None
+    ALBU_INSTALLED = False
 
 
 @TRANSFORMS.register_module()
@@ -186,7 +197,7 @@ class CLAHE(BaseTransform):
 
     def __repr__(self):
         repr_str = self.__class__.__name__
-        repr_str += f'(clip_limit={self.clip_limit}, '\
+        repr_str += f'(clip_limit={self.clip_limit}, ' \
                     f'tile_grid_size={self.tile_grid_size})'
         return repr_str
 
@@ -1151,8 +1162,8 @@ class RandomMosaic(BaseTransform):
                 x1_c, y1_c, x2_c, y2_c = crop_coord
 
                 # crop and paste image
-                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = gt_seg_i[y1_c:y2_c,
-                                                            x1_c:x2_c]
+                mosaic_seg[y1_p:y2_p, x1_p:x2_p] = \
+                    gt_seg_i[y1_c:y2_c, x1_c:x2_c]
 
             results[key] = mosaic_seg
 
@@ -1760,9 +1771,9 @@ class BioMedicalGaussianBlur(BaseTransform):
         repr_str += f'(prob={self.prob}, '
         repr_str += f'prob_per_channel={self.prob_per_channel}, '
         repr_str += f'sigma_range={self.sigma_range}, '
-        repr_str += 'different_sigma_per_channel='\
+        repr_str += 'different_sigma_per_channel=' \
                     f'{self.different_sigma_per_channel}, '
-        repr_str += 'different_sigma_per_axis='\
+        repr_str += 'different_sigma_per_axis=' \
                     f'{self.different_sigma_per_axis})'
         return repr_str
 
@@ -2134,4 +2145,179 @@ class BioMedical3DRandomFlip(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'(prob={self.prob}, axes={self.axes}, ' \
                     f'swap_label_pairs={self.swap_label_pairs})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class Albu(BaseTransform):
+    """Albumentation augmentation. Adds custom transformations from
+    Albumentations library. Please, visit
+    `https://albumentations.readthedocs.io` to get more information. An example
+    of ``transforms`` is as followed:
+
+    .. code-block::
+        [
+            dict(
+                type='ShiftScaleRotate',
+                shift_limit=0.0625,
+                scale_limit=0.0,
+                rotate_limit=0,
+                interpolation=1,
+                p=0.5),
+            dict(
+                type='RandomBrightnessContrast',
+                brightness_limit=[0.1, 0.3],
+                contrast_limit=[0.1, 0.3],
+                p=0.2),
+            dict(type='ChannelShuffle', p=0.1),
+            dict(
+                type='OneOf',
+                transforms=[
+                    dict(type='Blur', blur_limit=3, p=1.0),
+                    dict(type='MedianBlur', blur_limit=3, p=1.0)
+                ],
+                p=0.1),
+        ]
+    Args:
+        transforms (list[dict]): A list of albu transformations
+        keymap (dict): Contains {'input key':'albumentation-style key'}
+        update_pad_shape (bool): Whether to update padding shape according to \
+            the output shape of the last transform
+    """
+
+    def __init__(self,
+                 transforms: List[dict],
+                 keymap: Optional[dict] = None,
+                 update_pad_shape: bool = False):
+        if not ALBU_INSTALLED:
+            raise ImportError(
+                'albumentations is not installed, '
+                'we suggest install albumentation by '
+                '"pip install albumentations>=0.3.2 --no-binary qudida,albumentations"'  # noqa
+            )
+
+        # Args will be modified later, copying it will be safer
+        transforms = copy.deepcopy(transforms)
+
+        self.transforms = transforms
+        self.keymap = keymap
+        self.update_pad_shape = update_pad_shape
+
+        self.aug = Compose([self.albu_builder(t) for t in self.transforms])
+
+        if not keymap:
+            self.keymap_to_albu = {
+                'img': 'image',
+                'gt_masks': 'masks',
+            }
+        else:
+            self.keymap_to_albu = copy.deepcopy(keymap)
+        self.keymap_back = {v: k for k, v in self.keymap_to_albu.items()}
+
+    def albu_builder(self, cfg: dict) -> object:
+        """Build a callable object from a dict containing albu arguments.
+
+        Args:
+            cfg (dict): Config dict. It should at least contain the key "type".
+
+        Returns:
+            Callable: A callable object.
+        """
+
+        assert isinstance(cfg, dict) and 'type' in cfg
+        args = cfg.copy()
+
+        obj_type = args.pop('type')
+        if mmengine.is_str(obj_type):
+            if not ALBU_INSTALLED:
+                raise ImportError(
+                    'albumentations is not installed, '
+                    'we suggest install albumentation by '
+                    '"pip install albumentations>=0.3.2 --no-binary qudida,albumentations"'  # noqa
+                )
+            obj_cls = getattr(albumentations, obj_type)
+        elif inspect.isclass(obj_type):
+            obj_cls = obj_type
+        else:
+            raise TypeError(
+                f'type must be a valid type or str, but got {type(obj_type)}')
+
+        if 'transforms' in args:
+            args['transforms'] = [
+                self.albu_builder(t) for t in args['transforms']
+            ]
+
+        return obj_cls(**args)
+
+    @staticmethod
+    def mapper(d: dict, keymap: dict):
+        """Dictionary mapper.
+
+        Renames keys according to keymap provided.
+        Args:
+            d (dict): old dict
+            keymap (dict): {'old_key':'new_key'}
+        Returns:
+            dict: new dict.
+        """
+
+        updated_dict = {}
+        for k, _ in zip(d.keys(), d.values()):
+            new_k = keymap.get(k, k)
+            updated_dict[new_k] = d[k]
+        return updated_dict
+
+    def transform(self, results):
+        # dict to albumentations format
+        results = self.mapper(results, self.keymap_to_albu)
+
+        # Convert to RGB since Albumentations works with RGB images
+        results['image'] = cv2.cvtColor(results['image'], cv2.COLOR_BGR2RGB)
+
+        results = self.aug(**results)
+
+        # Convert back to BGR
+        results['image'] = cv2.cvtColor(results['image'], cv2.COLOR_RGB2BGR)
+
+        # back to the original format
+        results = self.mapper(results, self.keymap_back)
+
+        # update final shape
+        if self.update_pad_shape:
+            results['pad_shape'] = results['img'].shape
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__ + f'(transforms={self.transforms})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class ConcatCDInput(BaseTransform):
+    """Concat images for change detection.
+
+    Required Keys:
+
+    - img
+    - img2
+
+    Args:
+        input_keys (tuple):  Input image keys for change detection.
+            Default: ('img', 'img2').
+    """
+
+    def __init__(self, input_keys=('img', 'img2')):
+        self.input_keys = input_keys
+
+    def transform(self, results: dict) -> dict:
+        img = []
+        for input_key in self.input_keys:
+            img.append(results.pop(input_key))
+        results['img'] = np.concatenate(img, axis=2)
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(input_keys={self.input_keys}, '
         return repr_str

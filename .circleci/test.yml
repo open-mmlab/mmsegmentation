@@ -61,10 +61,11 @@ jobs:
           command: |
             pip install git+https://github.com/open-mmlab/mmengine.git@main
             pip install -U openmim
-            mim install 'mmcv>=2.0.0rc4'
-            pip install mmcls==1.0.0rc6
-            pip install git+https://github.com/open-mmlab/mmdetection.git@main
+            mim install mmcv>=2.0.0
+            pip install mmpretrain>=1.0.0rc7
+            pip install mmdet>=3.0.0
             pip install -r requirements/tests.txt -r requirements/optional.txt
+            python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - run:
           name: Build and install
           command: |
@@ -96,21 +97,21 @@ jobs:
           name: Clone Repos
           command: |
             git clone -b main --depth 1 https://github.com/open-mmlab/mmengine.git /home/circleci/mmengine
-            git clone -b dev-3.x --depth 1 https://github.com/open-mmlab/mmdetection.git /home/circleci/mmdetection
       - run:
           name: Build Docker image
           command: |
             docker build .circleci/docker -t mmseg:gpu --build-arg PYTORCH=<< parameters.torch >> --build-arg CUDA=<< parameters.cuda >> --build-arg CUDNN=<< parameters.cudnn >>
-            docker run --gpus all -t -d -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -v /home/circleci/mmclassification:/mmclassification -v /home/circleci/mmdetection:/mmdetection -w /mmseg --name mmseg mmseg:gpu
+            docker run --gpus all -t -d -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -v /home/circleci/mmpretrain:/mmpretrain -v /home/circleci/mmdetection:/mmdetection -w /mmseg --name mmseg mmseg:gpu
       - run:
           name: Install mmseg dependencies
           command: |
             docker exec mmseg pip install -e /mmengine
             docker exec mmseg pip install -U openmim
-            docker exec mmseg mim install 'mmcv>=2.0.0rc4'
-            docker exec mmseg pip install mmcls==1.0.0rc6
-            docker exec mmseg pip install -e /mmdetection
+            docker exec mmseg mim install mmcv>=2.0.0
+            docker exec mmseg pip install mmpretrain>=1.0.0rc7
+            docker exec mmseg mim install mmdet>=3.0.0
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
+            docker exec mmseg python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - run:
           name: Build and install
           command: |
@@ -144,8 +145,8 @@ workflows:
                 - main
       - build_cpu:
           name: minimum_version_cpu
-          torch: 1.6.0
-          torchvision: 0.7.0
+          torch: 1.8.1
+          torchvision: 0.9.1
           python: "3.7"
           requires:
             - lint
@@ -176,10 +177,10 @@ workflows:
     jobs:
       - build_cuda:
           name: minimum_version_gpu
-          torch: 1.6.0
+          torch: 1.8.1
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
-          cuda: "10.1"
+          cuda: "10.2"
           filters:
             branches:
               only:

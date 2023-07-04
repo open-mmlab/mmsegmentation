@@ -4,7 +4,7 @@
 
 本教程中，我们将会演示如何使用 PyTorch 准备环境。
 
-MMSegmentation 可以在 Linux, Windows 和 macOS 系统上运行，并且需要安装 Python 3.6+, CUDA 9.2+ 和 PyTorch 1.5+
+MMSegmentation 可以在 Linux, Windows 和 macOS 系统上运行，并且需要安装 Python 3.7+, CUDA 10.2+ 和 PyTorch 1.8+
 
 **注意:**
 如果您已经安装了 PyTorch, 可以跳过该部分，直接到[下一小节](##安装)。否则，您可以按照以下步骤操作。
@@ -192,6 +192,16 @@ docker build -t mmsegmentation docker/
 
 ```shell
 docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmsegmentation/data mmsegmentation
+```
+
+### 可选依赖
+
+#### 安装 GDAL
+
+[GDAL](https://gdal.org/) 是一个用于栅格和矢量地理空间数据格式的转换库。安装 GDAL 可以读取复杂格式和极大的遥感图像。
+
+```shell
+conda install GDAL
 ```
 
 ## 问题解答
