@@ -4,6 +4,7 @@ from .apc_head import APCHead
 from .aspp_head import ASPPHead
 from .cc_head import CCHead
 from .da_head import DAHead
+from .ddr_head import DDRHead
 from .dm_head import DMHead
 from .dnl_head import DNLHead
 from .dpt_head import DPTHead
@@ -41,5 +42,5 @@ __all__ = [
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
     'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
     'KernelUpdateHead', 'KernelUpdator', 'MaskFormerHead', 'Mask2FormerHead',
-    'LightHamHead', 'PIDHead'
+    'LightHamHead', 'PIDHead', 'DDRHead'
 ]

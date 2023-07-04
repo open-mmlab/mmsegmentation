@@ -68,8 +68,8 @@ def trigger_visualization_hook(cfg, args):
             visualization_hook['show'] = True
             visualization_hook['wait_time'] = args.wait_time
         if args.show_dir:
-            visulizer = cfg.visualizer
-            visulizer['save_dir'] = args.show_dir
+            visualizer = cfg.visualizer
+            visualizer['save_dir'] = args.show_dir
     else:
         raise RuntimeError(
             'VisualizationHook must be included in default_hooks.'

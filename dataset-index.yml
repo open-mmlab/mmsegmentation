@@ -1,0 +1,79 @@
+ade20k:
+  dataset: ADE20K_2016
+  download_root: data
+  data_root: data/ade
+
+cityscapes:
+  dataset: CityScapes
+  download_root: data
+  data_root: data/cityscapes
+
+voc2012:
+  dataset: PASCAL_VOC2012
+  download_root: data
+  data_root: data/VOCdevkit/VOC2012
+
+cocostuff:
+  dataset: COCO-Stuff
+  download_root: data
+  data_root: data/coco_stuff164k
+
+mapillary:
+  dataset: Mapillary
+  download_root: data
+  data_root: data/mapillary
+
+pascal_context:
+  dataset: VOC2010
+  download_root: data
+  data_root: data/VOCdevkit/VOC2010
+
+isaid:
+  dataset: iSAID
+  download_root: data
+  data_root: data/iSAID
+
+isprs_potsdam:
+  dataset: ISPRS_Potsdam
+  download_root: data
+  data_root: data/potsdam
+
+loveda:
+  dataset: LoveDA
+  download_root: data
+  data_root: data/loveDA
+
+chase_db1:
+  dataset: CHASE_DB1
+  download_root: data
+  data_root: data/CHASE_DB1
+
+drive:
+  dataset: DRIVE
+  download_root: data
+  data_root: data/DRIVE
+
+hrf:
+  dataset: HRF
+  download_root: data
+  data_root: data/HRF
+
+stare:
+  dataset: STARE
+  download_root: data
+  data_root: data/STARE
+
+synapse:
+  dataset: SurgVisDom
+  download_root: data
+  data_root: data/synapse
+
+refuge:
+  dataset: REFUGE_Challenge
+  download_root: data
+  data_root: data/REFUGE
+
+lip:
+  dataset: LIP
+  download_root: data
+  data_root: data/LIP

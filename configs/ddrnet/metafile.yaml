@@ -1,0 +1,14 @@
+Collections:
+- Name: ''
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: Deep Dual-resolution Networks for Real-time and Accurate Semantic Segmentation
+      of Road Scenes
+    URL: http://arxiv.org/abs/2101.06085
+  README: configs/ddrnet/README.md
+  Frameworks:
+  - PyTorch
+Models: []

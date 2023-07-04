@@ -194,7 +194,7 @@ ann_r50-d8_512x1024_40k_cityscapes_20200605_095211-049fc292.pth \
 --gt_mask aachen_000000_000019_gtFine_labelTrainIds.png
 ```
 
-The visualized image result and its corresponding reature map will appear in the wandb account.
+The visualized image result and its corresponding feature map will appear in the wandb account.
 
 <div align=center>
 <img src="https://user-images.githubusercontent.com/76149310/217520321-647f5bf9-eef2-446d-a9e8-5ca7b621d500.png">

@@ -2,6 +2,7 @@
 
 我们建议将数据集根目录符号链接到 `$MMSEGMENTATION/data`。
 如果您的目录结构不同，您可能需要更改配置文件中相应的路径。
+对于中国境内的用户，我们也推荐通过开源数据平台 [OpenDataLab](https://opendatalab.com/) 来下载dsdl标准数据，以获得更好的下载和使用体验，这里有一个下载dsdl数据集并进行训练的案例[DSDLReadme](../../../configs/dsdl/README.md)，欢迎尝试。
 
 ```none
 mmsegmentation
@@ -345,9 +346,10 @@ python tools/dataset_converters/loveda.py /path/to/loveDA
 
 ## ISPRS Potsdam
 
-[Potsdam](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-potsdam/) 城市语义分割数据集用于 2D 语义分割竞赛 —— Potsdam。
+[Potsdam](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx) 城市语义分割数据集用于 2D 语义分割竞赛 —— Potsdam。
 
-数据集可以在竞赛[主页](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/)上请求获得。
+数据集可以在竞赛[主页](https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx)上请求获得。
+这里也提供了[BaiduNetdisk](https://pan.baidu.com/s/1K-cLVZnd1X7d8c26FQ-nGg?pwd=mseg)，提取码：mseg、 [Google Drive](https://drive.google.com/drive/folders/1w3EJuyUGet6_qmLwGAWZ9vw5ogeG0zLz?usp=sharing)以及[OpenDataLab](https://opendatalab.com/ISPRS_Potsdam/download)。
 实验中需要下载 '2_Ortho_RGB.zip' 和 '5_Labels_all_noBoundary.zip'。
 
 对于 Potsdam 数据集，请运行以下命令调整数据集目录。
@@ -360,9 +362,10 @@ python tools/dataset_converters/potsdam.py /path/to/potsdam
 
 ## ISPRS Vaihingen
 
-[Vaihingen](https://www2.isprs.org/commissions/comm2/wg4/benchmark/2d-sem-label-vaihingen/) 城市语义分割数据集用于 2D 语义分割竞赛 —— Vaihingen。
+[Vaihingen](https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-vaihingen.aspx) 城市语义分割数据集用于 2D 语义分割竞赛 —— Vaihingen。
 
-数据集可以在竞赛[主页](https://www2.isprs.org/commissions/comm2/wg4/benchmark/data-request-form/)上请求获得。
+数据集可以在竞赛[主页](https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx)上请求获得。
+这里也提供了[BaiduNetdisk](https://pan.baidu.com/s/109D3WLrLafsuYtLeerLiiA?pwd=mseg)，提取码：mseg 、 [Google Drive](https://drive.google.com/drive/folders/1w3NhvLVA2myVZqOn2pbiDXngNC7NTP_t?usp=sharing)。
 实验中需要下载 'ISPRS_semantic_labeling_Vaihingen.zip' 和 'ISPRS_semantic_labeling_Vaihingen_ground_truth_eroded_COMPLETE.zip'。
 
 对于 Vaihingen 数据集，请运行以下命令调整数据集目录。
@@ -616,3 +619,33 @@ python tools/convert_datasets/refuge.py --raw_data_root=/path/to/refuge/REFUGE2/
 
 - 您可以在配置中使用 `MapillaryDataset_v1` 和 `Mapillary Dataset_v2` 设置数据集版本。
   在此处 [V1.2](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v1.py) 和 [V2.0](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/_base_/datasets/mapillary_v2.py) 查看 Mapillary Vistas 数据集配置文件
+
+## LEVIR-CD
+
+[LEVIR-CD](https://justchenhao.github.io/LEVIR/) 大规模遥感建筑变化检测数据集。
+
+数据集可以在[主页](https://justchenhao.github.io/LEVIR/)上请求获得。
+
+数据集的补充版本可以在[主页](https://github.com/S2Looking/Dataset)上请求获得。
+
+请下载数据集的补充版本，然后解压 `LEVIR-CD+.zip`，数据集的内容包括：
+
+```none
+│   ├── LEVIR-CD+
+│   │   ├── train
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+│   │   ├── test
+│   │   │   ├── A
+│   │   │   ├── B
+│   │   │   ├── label
+```
+
+对于 LEVIR-CD 数据集，请运行以下命令无重叠裁剪影像：
+
+```shell
+python tools/dataset_converters/levircd.py --dataset-path /path/to/LEVIR-CD+ --out_dir /path/to/LEVIR-CD
+```
+
+裁剪后的影像大小为256x256，与原论文保持一致。

@@ -187,7 +187,7 @@ def show_result_pyplot(model: BaseSegmentor,
     if hasattr(model, 'module'):
         model = model.module
     if isinstance(img, str):
-        image = mmcv.imread(img)
+        image = mmcv.imread(img, channel_order='rgb')
     else:
         image = img
     if save_dir is not None:
