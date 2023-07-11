@@ -27,7 +27,7 @@ The "Roaring 20s" of visual recognition began with the introduction of Vision Tr
 - ConvNeXt backbone needs to install [MMClassification](https://github.com/open-mmlab/mmclassification) first, which has abundant backbones for downstream tasks.
 
 ```shell
-pip install mmcls>=0.20.1
+pip install mmpretrain>=1.0.0rc7
 ```
 
 ### Pre-trained Models
