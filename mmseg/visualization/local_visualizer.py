@@ -108,14 +108,14 @@ class SegLocalVisualizer(Visualizer):
 
         colors = [palette[label] for label in labels]
 
-        self.set_image(image)
-
-        # draw semantic masks
+        mask = np.zeros_like(image, dtype=np.uint8)
         for label, color in zip(labels, colors):
-            self.draw_binary_masks(
-                sem_seg == label, colors=[color], alphas=self.alpha)
+            mask[sem_seg[0] == label, :] = color
 
-        return self.get_image()
+        color_seg = (image * (1 - self.alpha) + mask * self.alpha).astype(
+            np.uint8)
+        self.set_image(color_seg)
+        return color_seg
 
     def set_dataset_meta(self,
                          classes: Optional[List] = None,
@@ -226,6 +226,6 @@ class SegLocalVisualizer(Visualizer):
             self.show(drawn_img, win_name=name, wait_time=wait_time)
 
         if out_file is not None:
-            mmcv.imwrite(mmcv.bgr2rgb(drawn_img), out_file)
+            mmcv.imwrite(mmcv.rgb2bgr(drawn_img), out_file)
         else:
             self.add_image(name, drawn_img, step)
