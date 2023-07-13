@@ -426,7 +426,7 @@ def bdd100k_classes():
         'road', 'sidewalk', 'building', 'wall', 'fence', 'pole',
         'traffic light', 'traffic sign', 'vegetation', 'terrain', 'sky',
         'person', 'rider', 'car', 'truck', 'bus', 'train', 'motorcycle',
-        'bicycle', 'Unlabeled'
+        'bicycle'
     ]
 
 
@@ -436,7 +436,7 @@ def bdd100k_palette():
             [190, 153, 153], [153, 153, 153], [250, 170, 30], [220, 220, 0],
             [107, 142, 35], [152, 251, 152], [70, 130, 180], [220, 20, 60],
             [255, 0, 0], [0, 0, 142], [0, 0, 70], [0, 60, 100], [0, 80, 100],
-            [0, 0, 230], [119, 11, 32], [0, 0, 0]]
+            [0, 0, 230], [119, 11, 32]]
 
 
 dataset_aliases = {
