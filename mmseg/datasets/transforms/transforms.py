@@ -2208,7 +2208,7 @@ class Albu(BaseTransform):
         if not keymap:
             self.keymap_to_albu = {
                 'img': 'image',
-                'gt_masks': 'masks',
+                'gt_seg_map': 'mask'
             }
         else:
             self.keymap_to_albu = copy.deepcopy(keymap)
