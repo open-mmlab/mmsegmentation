@@ -1,8 +1,11 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import subprocess
+from hashlib import sha256
 
 import torch
+
+BLOCK_SIZE = 128 * 1024
 
 
 def parse_args():
@@ -14,6 +17,17 @@ def parse_args():
     return args
 
 
+def sha256sum(filename: str) -> str:
+    """Compute SHA256 message digest from a file."""
+    hash_func = sha256()
+    byte_array = bytearray(BLOCK_SIZE)
+    memory_view = memoryview(byte_array)
+    with open(filename, 'rb', buffering=0) as file:
+        for block in iter(lambda: file.readinto(memory_view), 0):
+            hash_func.update(memory_view[:block])
+    return hash_func.hexdigest()
+
+
 def process_checkpoint(in_file, out_file):
     checkpoint = torch.load(in_file, map_location='cpu')
     # remove optimizer for smaller file size
@@ -22,7 +36,7 @@ def process_checkpoint(in_file, out_file):
     # if it is necessary to remove some sensitive data in checkpoint['meta'],
     # add the code here.
     torch.save(checkpoint, out_file)
-    sha = subprocess.check_output(['sha256sum', out_file]).decode()
+    sha = sha256sum(in_file)
     final_file = out_file.rstrip('.pth') + f'-{sha[:8]}.pth'
     subprocess.Popen(['mv', out_file, final_file])
 

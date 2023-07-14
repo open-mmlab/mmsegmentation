@@ -78,6 +78,9 @@ def get_model_info(md_file: str, config_dir: str,
             if line.startswith('<!-- [DATASET]'):
                 is_dataset = True
 
+            if '<!-- [SKIP DEV CHECK] -->' in line:
+                return None, None
+
             # get dataset names
             if line.startswith('###'):
                 current_dataset = line.split('###')[1].strip()
@@ -279,14 +282,20 @@ if __name__ == '__main__':
     collection_name_list: List[str] = get_collection_name_list(md_file_list)
     # hard code to add 'FPN'
     collection_name_list.append('FPN')
+    remove_config_dir_list = []
     # parse md file
     for md_file, config_dir in zip(md_file_list, config_dir_list):
         results, collection_name = get_model_info(md_file, config_dir,
                                                   collection_name_list)
+        if results is None:
+            remove_config_dir_list.append(config_dir)
+            continue
         filename = osp.join(config_dir, 'metafile.yaml')
         file_modified |= dump_yaml_and_check_difference(results, filename)
         if collection_name != '':
             collection_name_list.append(collection_name)
-
+    # remove config dir
+    for config_dir in remove_config_dir_list:
+        config_dir_list.remove(config_dir)
     file_modified |= update_model_index(config_dir_list)
     sys.exit(1 if file_modified else 0)
