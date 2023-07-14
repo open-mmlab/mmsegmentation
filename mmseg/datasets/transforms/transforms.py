@@ -2206,10 +2206,7 @@ class Albu(BaseTransform):
         self.aug = Compose([self.albu_builder(t) for t in self.transforms])
 
         if not keymap:
-            self.keymap_to_albu = {
-                'img': 'image',
-                'gt_masks': 'masks',
-            }
+            self.keymap_to_albu = {'img': 'image', 'gt_seg_map': 'mask'}
         else:
             self.keymap_to_albu = copy.deepcopy(keymap)
         self.keymap_back = {v: k for k, v in self.keymap_to_albu.items()}
