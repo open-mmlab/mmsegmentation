@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import json
 import os
+from typing import List
 
 import torch
 import torch.nn.functional as F
@@ -9,7 +10,7 @@ from mmengine.model import BaseModule
 
 from mmseg.models.utils import clip_wrapper
 from mmseg.registry import MODELS
-from mmseg.utils import clip_templates
+from mmseg.utils import ConfigType, clip_templates
 
 
 @MODELS.register_module()
@@ -22,7 +23,8 @@ class CLIPOVCATSeg(BaseModule):
     in the original `CAT-Seg`.
 
     Args:
-        feature_extractor (dict): Appearance guidance extractor config dict.
+        feature_extractor (ConfigType): Appearance guidance extractor
+            config dict.
         train_class_json (str): The training class json file.
         test_class_json (str): The path to test class json file.
         clip_pretrained (str): The pre-trained clip type.
@@ -36,33 +38,36 @@ class CLIPOVCATSeg(BaseModule):
         prompt_length (int): The prompt length. Default: 0.
         prompt_ensemble_type (str): The prompt ensemble type.
             Default: "imagenet".
-        pixel_mean (list[float]): The pixel mean for feature extractor.
-        pxiel_std (list[float]): The pixel std for feature extractor.
-        clip_pixel_mean (list[float]): The pixel mean for clip model.
-        clip_pxiel_std (list[float]): The pixel std for clip model.
-        clip_img_feat_size: (tuple[int]): Clip image embedding size from
+        pixel_mean (List[float]): The pixel mean for feature extractor.
+        pxiel_std (List[float]): The pixel std for feature extractor.
+        clip_pixel_mean (List[float]): The pixel mean for clip model.
+        clip_pxiel_std (List[float]): The pixel std for clip model.
+        clip_img_feat_size: (List[int]: Clip image embedding size from
             image encoder.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
     """
 
-    def __init__(self,
-                 feature_extractor,
-                 train_class_json,
-                 test_class_json,
-                 clip_pretrained,
-                 clip_finetune,
-                 custom_clip_weights=None,
-                 backbone_multiplier=0.01,
-                 prompt_depth=0,
-                 prompt_length=0,
-                 prompt_ensemble_type='imagenet',
-                 pixel_mean=[123.675, 116.280, 103.530],
-                 pixel_std=[58.395, 57.120, 57.375],
-                 clip_pixel_mean=[122.7709383, 116.7460125, 104.09373615],
-                 clip_pixel_std=[68.5005327, 66.6321579, 70.3231630],
-                 clip_img_feat_size=(24, 24),
-                 init_cfg=None):
+    def __init__(
+            self,
+            feature_extractor: ConfigType,
+            train_class_json: str,
+            test_class_json: str,
+            clip_pretrained: str,
+            clip_finetune: str,
+            custom_clip_weights: str = None,
+            backbone_multiplier=0.01,
+            prompt_depth: int = 0,
+            prompt_length: int = 0,
+            prompt_ensemble_type: str = 'imagenet',
+            pixel_mean: List[float] = [123.675, 116.280, 103.530],
+            pixel_std: List[float] = [58.395, 57.120, 57.375],
+            clip_pixel_mean: List[float] = [
+                122.7709383, 116.7460125, 104.09373615
+            ],
+            clip_pixel_std: List[float] = [68.5005327, 66.6321579, 70.3231630],
+            clip_img_feat_size: List[int] = [24, 24],
+            init_cfg=None):
         super().__init__(init_cfg=init_cfg)
         # normalization parameters
         self.register_buffer('pixel_mean',
