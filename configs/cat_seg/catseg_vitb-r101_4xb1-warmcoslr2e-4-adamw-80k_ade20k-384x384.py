@@ -42,6 +42,7 @@ model = dict(
         type='CATSegAggregator',
         appearance_guidance_dim=1024,
         num_layers=2,
+        pooling_size=(1, 1),
     ),
     decode_head=dict(
         type='CATSegHead',
