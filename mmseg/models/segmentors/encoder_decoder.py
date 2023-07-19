@@ -334,7 +334,7 @@ class EncoderDecoder(BaseSegmentor):
         ori_shape = batch_img_metas[0]['ori_shape']
         if not all(_['ori_shape'] == ori_shape for _ in batch_img_metas):
             print_log(
-                'Image shapes are different in the batch, the inference performance might be poor.',  # noqa
+                'Image shapes are different in the batch.',
                 logger='current',
                 level=logging.WARN)
         if self.test_cfg.mode == 'slide':
