@@ -133,7 +133,9 @@ class SegDataPreProcessor(BaseDataPreprocessor):
                     inputs, data_samples)
         else:
             img_size = inputs[0].shape[1:]
-            assert all(input_.shape[1:] == img_size for input_ in inputs), \
+            assert all(
+                input_.shape[1:] == img_size for input_ in inputs
+            ) or self.test_cfg is not None, \
                 'The image size in a batch should be the same.'
             # pad images when testing
             if self.test_cfg:
