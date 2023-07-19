@@ -132,14 +132,9 @@ class SegDataPreProcessor(BaseDataPreprocessor):
                 inputs, data_samples = self.batch_augments(
                     inputs, data_samples)
         else:
-            # assert len(inputs) == 1, (
-            #     'Batch inference is not support currently, '
-            #     'as the image size might be different in a batch')
             img_size = inputs[0].shape[1:]
-            for _input in inputs:
-                if _input.shape[1:] != img_size:
-                    raise ValueError(
-                        'The size of inputs in a batch should be the same')
+            assert all(input_.shape[1:] == img_size for input_ in inputs), \
+                'The size of inputs in a batch should be the same'
             # pad images when testing
             if self.test_cfg:
                 inputs, padded_samples = stack_batch(
