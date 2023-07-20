@@ -137,9 +137,9 @@ def train_segmentor(model,
             meta=meta))
 
     if cfg.device == 'npu' and not is_npu_support_full_precision():
-        optimiter_config = dict(type='Fp16OptimizerHook', loss_scale='dynamic')
-        cfg.optimizer_config = optimiter_config if \
-            not cfg.optimizer_config else cfg.optimizer_config
+        cfg.optimizer_config = cfg.optimizer_config or {}
+        cfg.optimizer_config['type'] = 'Fp16OptimizerHook'
+        cfg.optimizer_config['loss_scale'] = 'dynamic'
 
     # register hooks
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
