@@ -1,8 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import logging
 from typing import List, Optional
 
 import torch.nn as nn
 import torch.nn.functional as F
+from mmengine.logging import print_log
 from torch import Tensor
 
 from mmseg.registry import MODELS
@@ -330,7 +332,11 @@ class EncoderDecoder(BaseSegmentor):
             f'Only "slide" or "whole" test mode are supported, but got ' \
             f'{self.test_cfg["mode"]}.'
         ori_shape = batch_img_metas[0]['ori_shape']
-        assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
+        if not all(_['ori_shape'] == ori_shape for _ in batch_img_metas):
+            print_log(
+                'Image shapes are different in the batch.',
+                logger='current',
+                level=logging.WARN)
         if self.test_cfg.mode == 'slide':
             seg_logit = self.slide_inference(inputs, batch_img_metas)
         else:
