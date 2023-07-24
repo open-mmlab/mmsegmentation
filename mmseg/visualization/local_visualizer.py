@@ -83,7 +83,6 @@ class SegLocalVisualizer(Visualizer):
         Args:
             mask: np.ndarray: get from sem_seg
         """
-        mask = mask.astype(np.uint8)
         loc = np.argwhere(mask == 1)
 
         loc_sort = np.array(
@@ -146,6 +145,7 @@ class SegLocalVisualizer(Visualizer):
             thickness = 3
             lineType = 2
             masks = sem_seg[0] == labels[:, None, None]
+            masks = masks.astype(np.uint8)
             for mask_num in range(len(labels)):
                 classes_id = labels[mask_num]
                 classes_color = colors[mask_num]
