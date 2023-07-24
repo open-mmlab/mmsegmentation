@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 import cv2
 import mmcv
 import numpy as np
+import torch
 from mmengine.dist import master_only
 from mmengine.structures import PixelData
 from mmengine.visualization import Visualizer
@@ -144,7 +145,11 @@ class SegLocalVisualizer(Visualizer):
             fontColor = (255, 255, 255)
             thickness = 3
             lineType = 2
-            masks = sem_seg[0] == labels[:, None, None]
+
+            if isinstance(sem_seg[0], torch.Tensor):
+                masks = sem_seg[0].numpy() == labels[:, None, None]
+            else:
+                masks = sem_seg[0] == labels[:, None, None]
             masks = masks.astype(np.uint8)
             for mask_num in range(len(labels)):
                 classes_id = labels[mask_num]
