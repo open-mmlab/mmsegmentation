@@ -10,6 +10,7 @@ from .class_names import (ade_classes, ade_palette, cityscapes_classes,
                           vaihingen_palette, voc_classes, voc_palette)
 # yapf: enable
 from .collect_env import collect_env
+from .hugging_face import create_from_hf_hub, has_hf_hub, push_to_hf_hub
 from .io import datafrombytes
 from .misc import add_prefix, stack_batch
 from .set_env import register_all_modules
@@ -27,5 +28,6 @@ __all__ = [
     'cityscapes_palette', 'ade_palette', 'voc_palette', 'cocostuff_palette',
     'loveda_palette', 'potsdam_palette', 'vaihingen_palette', 'isaid_palette',
     'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette',
-    'datafrombytes', 'synapse_palette', 'synapse_classes'
+    'datafrombytes', 'synapse_palette', 'synapse_classes', 'push_to_hf_hub',
+    'has_hf_hub', 'create_from_hf_hub'
 ]
