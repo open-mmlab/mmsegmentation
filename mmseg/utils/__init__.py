@@ -28,6 +28,6 @@ __all__ = [
     'cityscapes_palette', 'ade_palette', 'voc_palette', 'cocostuff_palette',
     'loveda_palette', 'potsdam_palette', 'vaihingen_palette', 'isaid_palette',
     'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette',
-    'datafrombytes', 'synapse_palette', 'synapse_classes', bdd100k_classes,
-    bdd100k_palette
+    'datafrombytes', 'synapse_palette', 'synapse_classes', 'bdd100k_classes',
+    'bdd100k_palette'
 ]
