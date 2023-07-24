@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import Dict, List, Optional
 
+import cv2
 import mmcv
 import numpy as np
 from mmengine.dist import master_only
@@ -42,8 +43,8 @@ class SegLocalVisualizer(Visualizer):
         >>> import numpy as np
         >>> import torch
         >>> from mmengine.structures import PixelData
-        >>> from mmseg.data import SegDataSample
-        >>> from mmseg.engine.visualization import SegLocalVisualizer
+        >>> from mmseg.structures import SegDataSample
+        >>> from mmseg.visualization import SegLocalVisualizer
 
         >>> seg_local_visualizer = SegLocalVisualizer()
         >>> image = np.random.randint(0, 256,
@@ -60,7 +61,7 @@ class SegLocalVisualizer(Visualizer):
         >>> seg_local_visualizer.add_datasample(
         ...                        'visualizer_example', image,
         ...                         gt_seg_data_sample, show=True)
-    """ # noqa
+    """  # noqa
 
     def __init__(self,
                  name: str = 'visualizer',
@@ -76,9 +77,33 @@ class SegLocalVisualizer(Visualizer):
         self.alpha: float = alpha
         self.set_dataset_meta(palette, classes, dataset_name)
 
-    def _draw_sem_seg(self, image: np.ndarray, sem_seg: PixelData,
+    def _get_center_loc(self, mask: np.ndarray) -> np.ndarray:
+        """Get semantic seg center coordinate.
+
+        Args:
+            mask: np.ndarray: get from sem_seg
+        """
+        mask = mask.astype(np.uint8)
+        loc = np.argwhere(mask == 1)
+
+        loc_sort = np.array(
+            sorted(loc.tolist(), key=lambda row: (row[0], row[1])))
+        y_list = loc_sort[:, 0]
+        unique, indices, counts = np.unique(
+            y_list, return_index=True, return_counts=True)
+        y_loc = unique[counts.argmax()]
+        y_most_freq_loc = loc[loc_sort[:, 0] == y_loc]
+        center_num = len(y_most_freq_loc) // 2
+        x = y_most_freq_loc[center_num][1]
+        y = y_most_freq_loc[center_num][0]
+        return np.array([x, y])
+
+    def _draw_sem_seg(self,
+                      image: np.ndarray,
+                      sem_seg: PixelData,
                       classes: Optional[List],
-                      palette: Optional[List]) -> np.ndarray:
+                      palette: Optional[List],
+                      withLabels: Optional[bool] = True) -> np.ndarray:
         """Draw semantic seg of GT or prediction.
 
         Args:
@@ -94,6 +119,8 @@ class SegLocalVisualizer(Visualizer):
             palette (list, optional): Input palette for result rendering, which
                 is a list of color palette responding to the classes.
                 Defaults to None.
+            withLabels(bool, optional): Add semantic labels in visualization
+                result, Default to True.
 
         Returns:
             np.ndarray: the drawn image which channel is RGB.
@@ -112,6 +139,31 @@ class SegLocalVisualizer(Visualizer):
         for label, color in zip(labels, colors):
             mask[sem_seg[0] == label, :] = color
 
+        if withLabels:
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            fontScale = 1
+            fontColor = (255, 255, 255)
+            thickness = 3
+            lineType = 2
+            masks = sem_seg[0] == labels[:, None, None]
+            for mask_num in range(len(labels)):
+                classes_id = labels[mask_num]
+                classes_color = colors[mask_num]
+                loc = self._get_center_loc(masks[mask_num])
+                text = classes[classes_id]
+                (label_width, label_height), baseline = cv2.getTextSize(
+                    text, font, fontScale, thickness)
+                mask = cv2.rectangle(mask, loc,
+                                     (loc[0] + label_width + baseline,
+                                      loc[1] + label_height + baseline),
+                                     classes_color, -1)
+                mask = cv2.rectangle(mask, loc,
+                                     (loc[0] + label_width + baseline,
+                                      loc[1] + label_height + baseline),
+                                     (0, 0, 0), 2)
+                mask = cv2.putText(mask, text, (loc[0], loc[1] + label_height),
+                                   font, fontScale, fontColor, thickness,
+                                   lineType)
         color_seg = (image * (1 - self.alpha) + mask * self.alpha).astype(
             np.uint8)
         self.set_image(color_seg)
@@ -137,7 +189,7 @@ class SegLocalVisualizer(Visualizer):
                 visulizer will use the meta information of the dataset i.e.
                 classes and palette, but the `classes` and `palette` have
                 higher priority. Defaults to None.
-        """ # noqa
+        """  # noqa
         # Set default value. When calling
         # `SegLocalVisualizer().dataset_meta=xxx`,
         # it will override the default value.
@@ -161,7 +213,8 @@ class SegLocalVisualizer(Visualizer):
             wait_time: float = 0,
             # TODO: Supported in mmengine's Viusalizer.
             out_file: Optional[str] = None,
-            step: int = 0) -> None:
+            step: int = 0,
+            withLabels: Optional[bool] = True) -> None:
         """Draw datasample and save to all backends.
 
         - If GT and prediction are plotted at the same time, they are
@@ -187,6 +240,8 @@ class SegLocalVisualizer(Visualizer):
             wait_time (float): The interval of show (s). Defaults to 0.
             out_file (str): Path to output file. Defaults to None.
             step (int): Global step value to record. Defaults to 0.
+            withLabels(bool, optional): Add semantic labels in visualization
+                result, Defaults to True.
         """
         classes = self.dataset_meta.get('classes', None)
         palette = self.dataset_meta.get('palette', None)
@@ -202,7 +257,7 @@ class SegLocalVisualizer(Visualizer):
                                         'segmentation results.'
             gt_img_data = self._draw_sem_seg(gt_img_data,
                                              data_sample.gt_sem_seg, classes,
-                                             palette)
+                                             palette, withLabels)
 
         if (draw_pred and data_sample is not None
                 and 'pred_sem_seg' in data_sample):
@@ -213,7 +268,7 @@ class SegLocalVisualizer(Visualizer):
                                         'segmentation results.'
             pred_img_data = self._draw_sem_seg(pred_img_data,
                                                data_sample.pred_sem_seg,
-                                               classes, palette)
+                                               classes, palette, withLabels)
 
         if gt_img_data is not None and pred_img_data is not None:
             drawn_img = np.concatenate((gt_img_data, pred_img_data), axis=1)
