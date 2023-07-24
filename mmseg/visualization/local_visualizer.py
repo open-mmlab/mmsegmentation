@@ -141,9 +141,16 @@ class SegLocalVisualizer(Visualizer):
 
         if withLabels:
             font = cv2.FONT_HERSHEY_SIMPLEX
-            fontScale = 1
+            # (0,1] to change the size of the text relative to the image
+            scale = 0.05
+            fontScale = min(image.shape[0], image.shape[1]) / (25 / scale)
             fontColor = (255, 255, 255)
-            thickness = 3
+            if image.shape[0] < 300 or image.shape[1] < 300:
+                thickness = 1
+                rectangleThickness = 1
+            else:
+                thickness = 2
+                rectangleThickness = 2
             lineType = 2
 
             if isinstance(sem_seg[0], torch.Tensor):
@@ -165,7 +172,7 @@ class SegLocalVisualizer(Visualizer):
                 mask = cv2.rectangle(mask, loc,
                                      (loc[0] + label_width + baseline,
                                       loc[1] + label_height + baseline),
-                                     (0, 0, 0), 2)
+                                     (0, 0, 0), rectangleThickness)
                 mask = cv2.putText(mask, text, (loc[0], loc[1] + label_height),
                                    font, fontScale, fontColor, thickness,
                                    lineType)
