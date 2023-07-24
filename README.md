@@ -88,7 +88,7 @@ MMSegmentation v1.x brings remarkable improvements over the 0.x release, offerin
 
 ## What's New
 
-v1.1.0 was released on 07/04/2023.
+v1.1.1 was released on 07/24/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
 - Support 24 medical image datasets in [projects](./projects/medical/).
