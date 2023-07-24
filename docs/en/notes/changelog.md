@@ -1,5 +1,27 @@
 # Changelog of v1.x
 
+## v1.1.1(07/24/2023)
+
+### Features
+
+- Add bdd100K datasets ([#3158](https://github.com/open-mmlab/mmsegmentation/pull/3158))
+- Remove batch inference assertion ([#3210](https://github.com/open-mmlab/mmsegmentation/pull/3210))
+
+### Bug Fixes
+
+- Fix train map path for coco-stuff164k.py ([#3187](https://github.com/open-mmlab/mmsegmentation/pull/3187))
+- Fix mim search error ([#3194](https://github.com/open-mmlab/mmsegmentation/pull/3194))
+- Fix SegTTAModel with no attribute '\_gt_sem_seg' error ([#3152](https://github.com/open-mmlab/mmsegmentation/pull/3152))
+- Fix Albumentations default key mapping mismatch ([#3195](https://github.com/open-mmlab/mmsegmentation/pull/3195))
+
+### New Contributors
+
+- @OliverGrace made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3187
+- @ZiAn-Su made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3152
+- @CastleDream made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3158
+- @coding-famer made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3174
+- @Alias-z made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3195
+
 ## v1.1.0(06/28/2023)
 
 ## What's Changed
@@ -64,7 +86,7 @@
 - Fix document ([#2863](https://github.com/open-mmlab/mmsegmentation/pull/2863), [#2896](https://github.com/open-mmlab/mmsegmentation/pull/2896), [#2919](https://github.com/open-mmlab/mmsegmentation/pull/2919), [#2951](https://github.com/open-mmlab/mmsegmentation/pull/2951), [#2970](https://github.com/open-mmlab/mmsegmentation/pull/2970), [#2961](https://github.com/open-mmlab/mmsegmentation/pull/2961), [#3042](https://github.com/open-mmlab/mmsegmentation/pull/3042), )
 - Fix squeeze error when N=1 and C=1 ([#2933](https://github.com/open-mmlab/mmsegmentation/pull/2933))
 
-## New Contributors
+### New Contributors
 
 - @liu-mengyang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2896
 - @likyoo made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/2911
