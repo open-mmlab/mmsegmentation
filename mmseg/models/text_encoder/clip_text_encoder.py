@@ -104,7 +104,7 @@ class CLIPTextEncoder(BaseModule):
         self.cat_bg = cat_bg
         if self.cat_bg:
             self.bg_embed = nn.Parameter(
-                torch.randn(1, self.text_projection.shape[0]))
+                torch.randn(1, self.text_projection.shape[1]))
             nn.init.normal_(
                 self.bg_embed,
                 std=self.bg_embed.shape[1]**-0.5,
