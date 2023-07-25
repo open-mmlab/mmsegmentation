@@ -52,15 +52,22 @@ def _demo_mm_inputs(input_shape=(1, 3, 8, 16), num_classes=10):
 @MODELS.register_module()
 class ExampleBackbone(nn.Module):
 
-    def __init__(self):
+    def __init__(self, out_indices=None):
         super().__init__()
         self.conv = nn.Conv2d(3, 3, 3)
+        self.out_indices = out_indices
 
     def init_weights(self, pretrained=None):
         pass
 
     def forward(self, x):
-        return [self.conv(x)]
+        if self.out_indices is None:
+            return [self.conv(x)]
+        else:
+            outs = []
+            for i in self.out_indices:
+                outs.append(self.conv(x))
+        return outs
 
 
 @MODELS.register_module()
@@ -72,6 +79,18 @@ class ExampleDecodeHead(BaseDecodeHead):
 
     def forward(self, inputs):
         return self.cls_seg(inputs[0])
+
+
+@MODELS.register_module()
+class ExampleTextEncoder(nn.Module):
+
+    def __init__(self, vocabulary=None, output_dims=None):
+        super().__init__()
+        self.vocabulary = vocabulary
+        self.output_dims = output_dims
+
+    def forward(self):
+        return torch.randn((len(self.vocabulary), self.output_dims))
 
 
 @MODELS.register_module()
@@ -132,3 +151,32 @@ def _segmentor_forward_train_test(segmentor):
         data_batch = dict(inputs=imgs, data_samples=data_samples)
         results = segmentor.forward(imgs, data_samples, mode='tensor')
         assert isinstance(results, torch.Tensor)
+
+
+def _segmentor_predict(segmentor):
+    if isinstance(segmentor.decode_head, nn.ModuleList):
+        num_classes = segmentor.decode_head[-1].num_classes
+    else:
+        num_classes = segmentor.decode_head.num_classes
+    # batch_size=2 for BatchNorm
+    mm_inputs = _demo_mm_inputs(num_classes=num_classes)
+
+    # convert to cuda Tensor if applicable
+    if torch.cuda.is_available():
+        segmentor = segmentor.cuda()
+
+    # check data preprocessor
+    if not hasattr(segmentor,
+                   'data_preprocessor') or segmentor.data_preprocessor is None:
+        segmentor.data_preprocessor = SegDataPreProcessor()
+
+    mm_inputs = segmentor.data_preprocessor(mm_inputs, True)
+    imgs = mm_inputs.pop('imgs')
+    data_samples = mm_inputs.pop('data_samples')
+
+    # Test predict
+    with torch.no_grad():
+        segmentor.eval()
+        data_batch = dict(inputs=imgs, data_samples=data_samples)
+        outputs = segmentor.predict(**data_batch)
+        assert isinstance(outputs, list)
