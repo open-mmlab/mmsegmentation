@@ -132,12 +132,16 @@ class VisionTransformer(BaseModule):
     Args:
         img_size (int | tuple): Input image size. Default: 224.
         patch_size (int): The patch size. Default: 16.
+        patch_pad  (str | int | None): The padding method in patch embedding.
+            Default: 'corner'.
         in_channels (int): Number of input channels. Default: 3.
         embed_dims (int): embedding dimension. Default: 768.
         num_layers (int): depth of transformer. Default: 12.
         num_heads (int): number of attention heads. Default: 12.
         mlp_ratio (int): ratio of mlp hidden dim to embedding dim.
             Default: 4.
+        out_origin (bool): Whether to output the original input embedding.
+            Default: False
         out_indices (list | tuple | int): Output from which stages.
             Default: -1.
         qkv_bias (bool): enable bias for qkv if True. Default: True.
@@ -154,7 +158,11 @@ class VisionTransformer(BaseModule):
             Default: dict(type='LN')
         act_cfg (dict): The activation config for FFNs.
             Default: dict(type='GELU').
+        patch_bias (dict): Whether use bias in convolution of PatchEmbed Block.
+            Default: True.
         patch_norm (bool): Whether to add a norm in PatchEmbed Block.
+            Default: False.
+        pre_norm (bool): Whether to add a norm before Transformer Layers.
             Default: False.
         final_norm (bool): Whether to add a additional layer to normalize
             final feature map. Default: False.
@@ -175,11 +183,13 @@ class VisionTransformer(BaseModule):
     def __init__(self,
                  img_size=224,
                  patch_size=16,
+                 patch_pad='corner',
                  in_channels=3,
                  embed_dims=768,
                  num_layers=12,
                  num_heads=12,
                  mlp_ratio=4,
+                 out_origin=False,
                  out_indices=-1,
                  qkv_bias=True,
                  drop_rate=0.,
@@ -190,6 +200,8 @@ class VisionTransformer(BaseModule):
                  norm_cfg=dict(type='LN'),
                  act_cfg=dict(type='GELU'),
                  patch_norm=False,
+                 patch_bias=False,
+                 pre_norm=False,
                  final_norm=False,
                  interpolate_mode='bicubic',
                  num_fcs=2,
@@ -227,6 +239,7 @@ class VisionTransformer(BaseModule):
         self.norm_eval = norm_eval
         self.with_cp = with_cp
         self.pretrained = pretrained
+        self.out_origin = out_origin
 
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
@@ -234,7 +247,8 @@ class VisionTransformer(BaseModule):
             conv_type='Conv2d',
             kernel_size=patch_size,
             stride=patch_size,
-            padding='corner',
+            padding=patch_pad,
+            bias=patch_bias,
             norm_cfg=norm_cfg if patch_norm else None,
             init_cfg=None,
         )
@@ -248,6 +262,12 @@ class VisionTransformer(BaseModule):
         self.pos_embed = nn.Parameter(
             torch.zeros(1, num_patches + 1, embed_dims))
         self.drop_after_pos = nn.Dropout(p=drop_rate)
+        self.pre_norm = pre_norm
+
+        if self.pre_norm:
+            self.pre_ln_name, pre_ln = build_norm_layer(
+                norm_cfg, embed_dims, postfix='_pre')
+            self.add_module(self.pre_ln_name, pre_ln)
 
         if isinstance(out_indices, int):
             if out_indices == -1:
@@ -284,6 +304,10 @@ class VisionTransformer(BaseModule):
             self.norm1_name, norm1 = build_norm_layer(
                 norm_cfg, embed_dims, postfix=1)
             self.add_module(self.norm1_name, norm1)
+
+    @property
+    def pre_ln(self):
+        return getattr(self, self.pre_ln_name)
 
     @property
     def norm1(self):
@@ -409,7 +433,23 @@ class VisionTransformer(BaseModule):
             # Remove class token for transformer encoder input
             x = x[:, 1:]
 
+        if self.pre_norm:
+            x = self.pre_ln(x)
+
         outs = []
+        if self.out_origin:
+            if self.with_cls_token:
+                # Remove class token and reshape token for decoder head
+                out = x[:, 1:]
+            else:
+                out = x
+            B, _, C = out.shape
+            out = out.reshape(B, hw_shape[0], hw_shape[1],
+                              C).permute(0, 3, 1, 2).contiguous()
+            if self.output_cls_token:
+                out = [out, x[:, 0]]
+            outs.append(out)
+
         for i, layer in enumerate(self.layers):
             x = layer(x)
             if i == len(self.layers) - 1:
