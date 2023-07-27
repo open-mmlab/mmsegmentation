@@ -320,15 +320,25 @@ class VisionTransformer(BaseModule):
         return getattr(self, self.norm1_name)
 
     def init_weights(self):
-        if (isinstance(self.init_cfg, dict)
-                and self.init_cfg.get('type') == 'Pretrained'):
+        if isinstance(self.init_cfg, dict) and \
+                self.init_cfg.get('type') in ['Pretrained', 'Pretrained_Part']:
             checkpoint = CheckpointLoader.load_checkpoint(
                 self.init_cfg['checkpoint'], logger=None, map_location='cpu')
 
-            if 'state_dict' in checkpoint:
-                state_dict = checkpoint['state_dict']
-            else:
-                state_dict = checkpoint
+            if self.init_cfg.get('type') == 'Pretrained':
+                if 'state_dict' in checkpoint:
+                    state_dict = checkpoint['state_dict']
+                else:
+                    state_dict = checkpoint
+
+            elif self.init_cfg.get('type') == 'Pretrained_Part':
+                state_dict = checkpoint.copy()
+                para_prefix = self.init_cfg.get('partname')
+                prefix_len = len(para_prefix) + 1
+                for k, v in checkpoint.items():
+                    state_dict.pop(k)
+                    if self.init_cfg.get('partname') in k:
+                        state_dict[k[prefix_len:]] = v
 
             if 'pos_embed' in state_dict.keys():
                 if self.pos_embed.shape != state_dict['pos_embed'].shape:

@@ -24,7 +24,7 @@ data_preprocessor = dict(
     test_cfg=dict(size_divisor=32))
 model = dict(
     data_preprocessor=data_preprocessor,
-    pretrained='pretrain/vit_base_patch16_224.pth',
+    pretrained='pretrain/clip_vit_base_patch16_224.pth',
     text_encoder=dict(dataset_name='coco-stuff164k'),
     decode_head=dict(num_classes=171))
 

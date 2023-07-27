@@ -7,6 +7,7 @@ import torch.nn as nn
 from mmcv.cnn import build_norm_layer
 from mmcv.cnn.bricks.transformer import BaseTransformerLayer
 from mmengine.model import BaseModule, ModuleList
+from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
 from torch.nn import functional as F
 
 from mmseg.registry import MODELS
@@ -107,10 +108,6 @@ class CLIPTextEncoder(BaseModule):
         if self.cat_bg:
             self.bg_embed = nn.Parameter(
                 torch.randn(1, self.text_projection.shape[1]))
-            nn.init.normal_(
-                self.bg_embed,
-                std=self.bg_embed.shape[1]**-0.5,
-            )
 
     @property
     def ln_final(self):
@@ -130,6 +127,30 @@ class CLIPTextEncoder(BaseModule):
     def _freeze(self):
         for param in self.parameters():
             param.requires_grad = False
+
+    def init_weights(self):
+        if self.cat_bg:
+            nn.init.normal_(
+                self.bg_embed,
+                std=self.bg_embed.shape[1]**-0.5,
+            )
+        if isinstance(self.init_cfg, dict) and \
+                self.init_cfg.get('type') == 'Pretrained_Part':
+            checkpoint = CheckpointLoader.load_checkpoint(
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
+
+            state_dict = checkpoint.copy()
+            para_prefix = self.init_cfg.get('partname')
+            prefix_len = len(para_prefix) + 1
+            for k, v in checkpoint.items():
+                state_dict.pop(k)
+                if self.init_cfg.get('partname') in k:
+                    state_dict[k[prefix_len:]] = v
+
+            load_state_dict(self, state_dict, strict=False, logger=None)
+
+        else:
+            super().init_weights()
 
     @torch.no_grad()
     def encode_text(self, text, normalize=False):

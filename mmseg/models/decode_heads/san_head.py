@@ -6,6 +6,8 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 from mmcv.cnn.bricks.transformer import BaseTransformerLayer
+from mmengine.model.weight_init import caffe2_xavier_init, normal_init
+from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
 from torch import Tensor
 from torch.nn import functional as F
 
@@ -173,14 +175,11 @@ class SideAdapterNetwork(nn.Module):
             mlp_num_layers=cfg_decoder.num_mlp,
             rescale_attn_bias=cfg_decoder.rescale)
 
-    '''
-    def init_para(self):
-        """init weight when training."""
-        nn.init.normal_(self.query_embed, std=0.02)
-        nn.init.normal_(self.query_pos_embed, std=0.02)
+    def init_weights(self):
+        normal_init(self.query_embed, std=0.02)
+        normal_init(self.query_pos_embed, std=0.02)
         for i in range(len(self.conv_clips)):
-            weight_init.c2_xavier_fill(self.conv_clips[i])
-    '''
+            caffe2_xavier_init(self.conv_clips[i])
 
     def fuse_clip(self, fused_index: int, x: torch.Tensor,
                   clip_feature: torch.Tensor, hwshape: Tuple[int,
@@ -348,6 +347,14 @@ class RecWithAttnbias(nn.Module):
         self.final_norm = final_norm
         self._freeze()
 
+    def init_weights(self, rec_state_dict):
+        if hasattr(self, 'sos_token'):
+            normal_init(self.sos_token, std=0.02)
+        if rec_state_dict is not None:
+            load_state_dict(self, rec_state_dict, strict=False, logger=None)
+        else:
+            super().init_weights()
+
     def _freeze(self):
         if 'all' in self.frozen_exclude:
             return
@@ -474,6 +481,27 @@ class SideAdapterCLIPHead(BaseDecodeHead):
 
         self.side_adapter_network = SideAdapterNetwork(**san_cfg)
         self.rec_with_attnbias = RecWithAttnbias(**maskgen_cfg)
+
+    def init_weights(self):
+
+        rec_state_dict = None
+        if isinstance(self.init_cfg, dict) and \
+                self.init_cfg.get('type') == 'Pretrained_Part':
+            checkpoint = CheckpointLoader.load_checkpoint(
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
+
+            rec_state_dict = checkpoint.copy()
+            para_prefix = self.init_cfg.get('partname')
+            assert para_prefix.split('.')[1] == 'rec_with_attnbias', \
+                'part-pretrain only support for Module RecWithAttnbias'
+            prefix_len = len(para_prefix) + 1
+            for k, v in checkpoint.items():
+                rec_state_dict.pop(k)
+                if self.init_cfg.get('partname') in k:
+                    rec_state_dict[k[prefix_len:]] = v
+
+        self.side_adapter_network.init_weights()
+        self.rec_with_attnbias.init_weights(rec_state_dict)
 
     def forward(self, inputs: Tuple[Tensor]) -> Tuple[List]:
         """Forward function.
