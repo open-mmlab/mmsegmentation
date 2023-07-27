@@ -1,7 +1,7 @@
 _base_ = ['./san-vit-b16_coco-stuff164k-640x640.py']
 
 model = dict(
-    type='MultimodelEncoderDecoder',
+    type='MultimodalEncoderDecoder',
     pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
     encoder_resolution=0.7,
     image_encoder=dict(

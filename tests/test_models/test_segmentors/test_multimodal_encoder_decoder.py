@@ -5,10 +5,10 @@ from mmseg.models import build_segmentor
 from .utils import _segmentor_predict
 
 
-def test_multimodel_encoder_decoder():
+def test_multimodal_encoder_decoder():
 
     cfg = ConfigDict(
-        type='MultimodelEncoderDecoder',
+        type='MultimodalEncoderDecoder',
         asymetric_input=False,
         image_encoder=dict(type='ExampleBackbone', out_indices=[1, 2, 3, 4]),
         text_encoder=dict(

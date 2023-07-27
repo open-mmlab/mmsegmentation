@@ -9,7 +9,7 @@ data_preprocessor = dict(
     seg_pad_val=255)
 
 model = dict(
-    type='MultimodelEncoderDecoder',
+    type='MultimodalEncoderDecoder',
     data_preprocessor=data_preprocessor,
     pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
     asymetric_input=True,
