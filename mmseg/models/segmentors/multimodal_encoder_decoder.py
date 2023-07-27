@@ -11,8 +11,8 @@ from .base import BaseSegmentor
 
 
 @MODELS.register_module()
-class MultimodelEncoderDecoder(BaseSegmentor):
-    """Multimodel Encoder-Decoder segmentors.
+class MultimodalEncoderDecoder(BaseSegmentor):
+    """Multimodal Encoder-Decoder segmentors.
 
     Multimodal segmentation architecture is used for open-vocabulary
     semantic segmentation with combining the visual and language
