@@ -194,6 +194,7 @@ if __name__ == '__main__':
             'tests': parse_requirements('requirements/tests.txt'),
             'optional': parse_requirements('requirements/optional.txt'),
             'mim': parse_requirements('requirements/mminstall.txt'),
+            'multimodal': parse_requirements('requirements/multimodal.txt'),
         },
         ext_modules=[],
         zip_safe=False)
