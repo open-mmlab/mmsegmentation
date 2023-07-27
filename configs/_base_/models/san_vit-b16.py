@@ -1,12 +1,16 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+crop_size = (640, 640)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
-    mean=[123.675, 116.28, 103.53],
-    std=[58.395, 57.12, 57.375],
+    size=crop_size,
+    mean=[122.7709, 116.7460, 104.0937],
+    std=[68.5005, 66.6322, 70.3232],
     bgr_to_rgb=True,
     pad_val=0,
-    seg_pad_val=255)
+    seg_pad_val=255,
+    size_divisor=640,
+    test_cfg=dict(size_divisor=32))
 
 model = dict(
     type='MultimodalEncoderDecoder',
