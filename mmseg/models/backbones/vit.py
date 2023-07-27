@@ -175,6 +175,8 @@ class VisionTransformer(BaseModule):
             and its variants only. Default: False.
         with_cp (bool): Use checkpoint or not. Using checkpoint will save
             some memory while slowing down the training speed. Default: False.
+        frozen_exclude (List): List of parameters that are not to be frozen.
+            Default: ["all"], "all" means there are no frozen parameters.
         pretrained (str, optional): model pretrained path. Default: None.
         init_cfg (dict or list[dict], optional): Initialization config dict.
             Default: None.
@@ -207,6 +209,7 @@ class VisionTransformer(BaseModule):
                  num_fcs=2,
                  norm_eval=False,
                  with_cp=False,
+                 frozen_exclude=['all'],
                  pretrained=None,
                  init_cfg=None):
         super().__init__(init_cfg=init_cfg)
@@ -240,6 +243,7 @@ class VisionTransformer(BaseModule):
         self.with_cp = with_cp
         self.pretrained = pretrained
         self.out_origin = out_origin
+        self.frozen_exclude = frozen_exclude
 
         self.patch_embed = PatchEmbed(
             in_channels=in_channels,
@@ -305,6 +309,8 @@ class VisionTransformer(BaseModule):
                 norm_cfg, embed_dims, postfix=1)
             self.add_module(self.norm1_name, norm1)
 
+        self._freeze()
+
     @property
     def pre_ln(self):
         return getattr(self, self.pre_ln_name)
@@ -357,6 +363,13 @@ class VisionTransformer(BaseModule):
                     kaiming_init(m, mode='fan_in', bias=0.)
                 elif isinstance(m, (_BatchNorm, nn.GroupNorm, nn.LayerNorm)):
                     constant_init(m, val=1.0, bias=0.)
+
+    def _freeze(self):
+        if 'all' in self.frozen_exclude:
+            return
+        for name, param in self.named_parameters():
+            if not any([exclude in name for exclude in self.frozen_exclude]):
+                param.requires_grad = False
 
     def _pos_embeding(self, patched_img, hw_shape, pos_embed):
         """Positioning embeding method.

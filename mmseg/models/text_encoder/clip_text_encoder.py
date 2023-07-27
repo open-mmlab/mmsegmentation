@@ -101,6 +101,8 @@ class CLIPTextEncoder(BaseModule):
         if self.cache_feature:
             self.cache = {}
 
+        self._freeze()
+
         self.cat_bg = cat_bg
         if self.cat_bg:
             self.bg_embed = nn.Parameter(
@@ -124,6 +126,10 @@ class CLIPTextEncoder(BaseModule):
         mask.fill_(float('-inf'))
         mask.triu_(1)  # zero out the lower diagonal
         return mask
+
+    def _freeze(self):
+        for param in self.parameters():
+            param.requires_grad = False
 
     @torch.no_grad()
     def encode_text(self, text, normalize=False):

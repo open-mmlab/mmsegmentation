@@ -258,7 +258,6 @@ class RecWithAttnbias(nn.Module):
             Default: 'cls_token'.
         sos_token_num (int): Number of sos token. It should be equal to
             the number of quries. Default: 100.
-        frozen (List): The parameters to be frozen when training.
         num_layers (int): Number of rest CLIP layers for mask recognition.
             Default: 3.
         cross_attn (bool): Whether use cross attention to update sos token.
@@ -281,30 +280,29 @@ class RecWithAttnbias(nn.Module):
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
+        frozen_exclude (List): List of parameters that are not to be frozen.
     """
 
-    def __init__(
-            self,
-            sos_token_format: str = 'cls_token',
-            sos_token_num: int = 100,
-            frozen: List = [],
-            num_layers: int = 3,
-            cross_attn: bool = False,
-            embed_dims: int = 768,
-            num_heads: int = 12,
-            mlp_ratio: int = 4,
-            num_fcs: int = 2,
-            qkv_bias: bool = True,
-            out_dims: int = 512,
-            final_norm: bool = True,
-            act_cfg: dict = dict(type='GELU'),
-            norm_cfg: dict = dict(type='LN'),
-    ):
+    def __init__(self,
+                 sos_token_format: str = 'cls_token',
+                 sos_token_num: int = 100,
+                 num_layers: int = 3,
+                 cross_attn: bool = False,
+                 embed_dims: int = 768,
+                 num_heads: int = 12,
+                 mlp_ratio: int = 4,
+                 num_fcs: int = 2,
+                 qkv_bias: bool = True,
+                 out_dims: int = 512,
+                 final_norm: bool = True,
+                 act_cfg: dict = dict(type='GELU'),
+                 norm_cfg: dict = dict(type='LN'),
+                 frozen_exclude: List = []):
         super().__init__()
 
         self.sos_token_format = sos_token_format
         self.sos_token_num = sos_token_num
-        self.frozen = frozen
+        self.frozen_exclude = frozen_exclude
         self.cross_attn = cross_attn
         self.num_layers = num_layers
         self.num_heads = num_heads
@@ -348,6 +346,14 @@ class RecWithAttnbias(nn.Module):
         self.proj = nn.Linear(embed_dims, out_dims, bias=False)
 
         self.final_norm = final_norm
+        self._freeze()
+
+    def _freeze(self):
+        if 'all' in self.frozen_exclude:
+            return
+        for name, param in self.named_parameters():
+            if not any([exclude in name for exclude in self.frozen_exclude]):
+                param.requires_grad = False
 
     def init_para(self):
         if hasattr(self, 'sos_token'):

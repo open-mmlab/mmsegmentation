@@ -36,7 +36,8 @@ model = dict(
         norm_cfg=dict(type='LN', eps=1e-5),
         act_cfg=dict(type='QuickGELU'),
         norm_eval=False,
-        interpolate_mode='bicubic'),
+        interpolate_mode='bicubic',
+        frozen_exclude='pos_embed'),
     text_encoder=dict(
         type='CLIPTextEncoder',
         dataset_name=None,
@@ -88,7 +89,8 @@ model = dict(
             out_dims=512,
             final_norm=True,
             act_cfg=dict(type='QuickGELU'),
-            norm_cfg=dict(type='LN', eps=1e-5)
+            norm_cfg=dict(type='LN', eps=1e-5),
+            frozen_exclude=[]
         ),
         align_corners=False,
         loss_decode=[
