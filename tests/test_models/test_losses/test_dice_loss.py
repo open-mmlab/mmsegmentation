@@ -8,10 +8,9 @@ from mmseg.models.losses import DiceLoss
 @pytest.mark.parametrize('naive_dice', [True, False])
 def test_dice_loss(naive_dice):
     loss_class = DiceLoss
-    pred = torch.rand((10, 4, 4))
-    target = torch.rand((10, 4, 4))
-    weight = torch.rand(10)
-
+    pred = torch.rand((1, 10, 4, 4))
+    target = torch.randint(0, 10, (1, 4, 4))
+    weight = torch.rand(1)
     # Test loss forward
     loss = loss_class(naive_dice=naive_dice)(pred, target)
     assert isinstance(loss, torch.Tensor)

@@ -6,15 +6,24 @@ from mmseg.registry import MODELS
 from .utils import weight_reduce_loss
 
 
-def dice_loss(
-    pred,
-    target,
-    weight,
-    eps=1e-3,
-    reduction='mean',
-    naive_dice=False,
-    avg_factor=None,
-):
+def _expand_onehot_labels_dice(pred, target):
+    """Expand onehot labels to match the size of prediction."""
+    num_classes = pred.shape[1]
+    one_hot_target = torch.clamp(target, min=0, max=num_classes)
+    one_hot_target = torch.nn.functional.one_hot(one_hot_target,
+                                                 num_classes + 1)
+    one_hot_target = one_hot_target[..., :num_classes].permute(0, 3, 1, 2)
+    return one_hot_target
+
+
+def dice_loss(pred,
+              target,
+              weight,
+              eps=1e-3,
+              reduction='mean',
+              naive_dice=False,
+              avg_factor=None,
+              ignore_index=255):
     """Calculate dice loss, there are two forms of dice loss is supported:
 
         - the one proposed in `V-Net: Fully Convolutional Neural
@@ -42,7 +51,6 @@ def dice_loss(
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
     """
-
     input = pred.flatten(1)
     target = target.flatten(1).float()
 
@@ -116,7 +124,9 @@ class DiceLoss(nn.Module):
                 target,
                 weight=None,
                 avg_factor=None,
-                reduction_override=None):
+                reduction_override=None,
+                ignore_index=255,
+                **kwargs):
         """Forward function.
 
         Args:
@@ -134,6 +144,9 @@ class DiceLoss(nn.Module):
         Returns:
             torch.Tensor: The calculated loss
         """
+        one_hot_target = target
+        if (pred.shape != target.shape):
+            one_hot_target = _expand_onehot_labels_dice(pred, target)
 
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
@@ -147,7 +160,7 @@ class DiceLoss(nn.Module):
 
         loss = self.loss_weight * dice_loss(
             pred,
-            target,
+            one_hot_target,
             weight,
             eps=self.eps,
             reduction=reduction,
