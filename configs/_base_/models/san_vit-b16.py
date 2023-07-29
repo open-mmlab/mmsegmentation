@@ -58,6 +58,7 @@ model = dict(
     decode_head=dict(
         type='SideAdapterCLIPHead',
         num_classes=19,
+        deep_supervision_idxs=[7],
         san_cfg=dict(
             in_channels=3,
             clip_channels=768,

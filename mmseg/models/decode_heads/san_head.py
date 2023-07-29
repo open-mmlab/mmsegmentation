@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from functools import partial
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import torch
 import torch.nn as nn
@@ -13,7 +13,7 @@ from torch.nn import functional as F
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType
+from mmseg.utils import ConfigType, SampleList, seg_data_to_instance_data
 from ..utils import MLP, LayerNorm, PatchEmbed, cross_attn_layer, resize
 from .decode_head import BaseDecodeHead
 
@@ -194,9 +194,9 @@ class SideAdapterNetwork(nn.Module):
         x = torch.cat([x[:, :-L, ...], x[:, -L:, ...] + fused_clip], dim=1)
         return x
 
-    def encode_feature(
-            self, image: torch.Tensor, clip_features: List[torch.Tensor]
-    ) -> List[Dict[str, torch.Tensor]]:
+    def encode_feature(self, image: torch.Tensor,
+                       clip_features: List[torch.Tensor],
+                       deep_supervision_idxs: List[int]) -> List[List]:
         """Encode images by a lightweight vision transformer."""
         assert len(self.fusion_index) == len(clip_features)
         x, hwshape = self.patch_embed(image)
@@ -223,6 +223,7 @@ class SideAdapterNetwork(nn.Module):
         if self.fusion_index[fused_index] == 0:
             x = self.fuse_clip(fused_index, x, clip_features[0][0], hwshape, L)
             fused_index += 1
+        outs = []
         for index, block in enumerate(self.encode_layers, start=1):
             x = block(x)
             if index < len(self.fusion_index
@@ -230,21 +231,36 @@ class SideAdapterNetwork(nn.Module):
                 x = self.fuse_clip(fused_index, x,
                                    clip_features[fused_index][0], hwshape, L)
                 fused_index += 1
+                x_query = x[:, :-L, ...]
+                x_feat = x[:, -L:, ...].permute(0, 2, 1) \
+                    .reshape(x.shape[0], x.shape[-1], hwshape[0], hwshape[1])
+
+            if index in deep_supervision_idxs or index == len(
+                    self.encode_layers):
+                outs.append({'query': x_query, 'x': x_feat})
+
             if index < len(self.encode_layers):
                 x = x + pos_embed
-        return [
-            x[:, :-L, ...],
-            x[:, -L:, ...].permute(0, 2, 1).reshape(x.shape[0], x.shape[-1],
-                                                    hwshape[0], hwshape[1])
-        ]
+        return outs
+
+    def decode_feature(self, features):
+        mask_embeds = []
+        attn_biases = []
+        for feature in features:
+            mask_embed, attn_bias = self.mask_decoder(**feature)
+            mask_embeds.append(mask_embed)
+            attn_biases.append(attn_bias)
+        return mask_embeds, attn_biases
 
     def forward(
-        self, image: torch.Tensor, clip_features: List[torch.Tensor]
+        self, image: torch.Tensor, clip_features: List[torch.Tensor],
+        deep_supervision_idxs: List[int]
     ) -> Tuple[List[torch.Tensor], List[List[torch.Tensor]]]:
         """Forward function."""
-        query, feature = self.encode_feature(image, clip_features)
-        mask_embeds, attn_bias = self.mask_decoder(query, feature)
-        return mask_embeds, attn_bias
+        features = self.encode_feature(image, clip_features,
+                                       deep_supervision_idxs)
+        mask_embeds, attn_biases = self.decode_feature(features)
+        return mask_embeds, attn_biases
 
 
 class RecWithAttnbias(nn.Module):
@@ -469,7 +485,8 @@ class SideAdapterCLIPHead(BaseDecodeHead):
     """
 
     def __init__(self, num_classes: int, san_cfg: ConfigType,
-                 maskgen_cfg: ConfigType, **kwargs):
+                 maskgen_cfg: ConfigType, deep_supervision_idxs: List[int],
+                 **kwargs):
         super().__init__(
             in_channels=san_cfg.in_channels,
             channels=san_cfg.embed_dims,
@@ -481,6 +498,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
 
         self.side_adapter_network = SideAdapterNetwork(**san_cfg)
         self.rec_with_attnbias = RecWithAttnbias(**maskgen_cfg)
+        self.deep_supervision_idxs = deep_supervision_idxs
 
     def init_weights(self):
 
@@ -503,7 +521,8 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         self.side_adapter_network.init_weights()
         self.rec_with_attnbias.init_weights(rec_state_dict)
 
-    def forward(self, inputs: Tuple[Tensor]) -> Tuple[List]:
+    def forward(self, inputs: Tuple[Tensor],
+                deep_supervision_idxs) -> Tuple[List]:
         """Forward function.
 
         Args:
@@ -517,18 +536,16 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         """
         imgs, clip_feature, class_embeds = inputs
         # predict mask proposals and attention bias
-        mask_props, attn_biases = self.side_adapter_network(imgs, clip_feature)
-        if not isinstance(mask_props, List):
-            mask_props = [mask_props]
-            attn_biases = [attn_biases]
+        mask_props, attn_biases = self.side_adapter_network(
+            imgs, clip_feature, deep_supervision_idxs)
 
         # mask recognition with attention bias
         mask_embeds = [
             self.rec_with_attnbias(att_bias, clip_feature[-1])
             for att_bias in attn_biases
         ]
-        # Obtain class prediction of masks by comparing the similarity between
-        # the image token and the text embedding of class names.
+        # Obtain class prediction of masks by comparing the similarity
+        # between the image token and the text embedding of class names.
         mask_logits = [
             torch.einsum('bqc,nc->bqn', mask_embed, class_embeds)
             for mask_embed in mask_embeds
@@ -552,7 +569,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         Returns:
             Tensor: Outputs segmentation logits map.
         """
-        mask_props, mask_logits = self.forward(inputs)
+        mask_props, mask_logits = self.forward(inputs, [])
 
         return self.predict_by_feat([mask_props[-1], mask_logits[-1]],
                                     batch_img_metas)
@@ -576,3 +593,33 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         mask_pred = mask_pred.sigmoid()
         seg_logits = torch.einsum('bqc,bqhw->bchw', mask_cls, mask_pred)
         return seg_logits
+
+    def loss(self, x: Tuple[Tensor], batch_data_samples: SampleList,
+             train_cfg: ConfigType) -> dict:
+        """Perform forward propagation and loss calculation of the decoder head
+        on the features of the upstream network.
+
+        Args:
+            x (tuple[Tensor]): Multi-level features from the upstream
+                network, each is a 4D-tensor.
+            batch_data_samples (List[:obj:`SegDataSample`]): The Data
+                Samples. It usually includes information such as
+                `gt_sem_seg`.
+            train_cfg (ConfigType): Training config.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components.
+        """
+        # batch SegDataSample to InstanceDataSample
+        batch_gt_instances, batch_img_metas = seg_data_to_instance_data(
+            self.ignore_index, batch_data_samples)
+
+        # forward
+        all_mask_props, all_mask_logits = self.forward(
+            x, self.deep_supervision_idxs)
+
+        # loss
+        losses = self.loss_by_feat(all_mask_props, all_mask_logits,
+                                   batch_gt_instances, batch_img_metas)
+
+        return losses

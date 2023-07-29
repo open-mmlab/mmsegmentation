@@ -12,6 +12,7 @@ from .class_names import (ade_classes, ade_palette, cityscapes_classes,
 from .collect_env import collect_env
 from .get_templates import get_predefined_templates
 from .io import datafrombytes
+from .mask_classification import seg_data_to_instance_data
 from .misc import add_prefix, stack_batch
 from .set_env import register_all_modules
 from .tokenizer import tokenize
@@ -30,5 +31,5 @@ __all__ = [
     'loveda_palette', 'potsdam_palette', 'vaihingen_palette', 'isaid_palette',
     'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette',
     'datafrombytes', 'synapse_palette', 'synapse_classes',
-    'get_predefined_templates', 'tokenize'
+    'get_predefined_templates', 'tokenize', 'seg_data_to_instance_data'
 ]
