@@ -4,14 +4,12 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmengine.model import BaseModule
-from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
-from mmseg.registry import MODELS
-from mmseg.models.utils.transformer_utils import DropPath
-from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
-from mmengine.model.weight_init import (constant_init, kaiming_init,
-                                        trunc_normal_)
 from mmengine.logging import print_log
+from mmengine.model import BaseModule
+from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
+
+from mmseg.models.utils.transformer_utils import DropPath
+from mmseg.registry import MODELS
 
 
 class StrideFormer(BaseModule):
@@ -173,10 +171,12 @@ class StackedMV3Block(nn.Module):
         cfgs (list): The MobileNetV3 config list of a stage.
         stem (bool): Whether is the first stage or not.
         in_channels (int, optional): The channels of input image. Default: 3.
-        scale: float=1.0. The coefficient that controls the size of network parameters.
+        scale: float=1.0.
+        The coefficient that controls the size of network parameters.
 
     Returns:
-        model: nn.Module. A stage of specific MobileNetV3 model depends on args.
+        model: nn.Module.
+        A stage of specific MobileNetV3 model depends on args.
     """
 
     def __init__(self, cfgs, stem, inp_channel, scale=1.0):
@@ -456,8 +456,8 @@ class Block(nn.Module):
             activation=act_layer,
             stride_attention=stride_attention)
 
-        self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity(
-        )
+        self.drop_path = DropPath(drop_path) \
+            if drop_path > 0. else nn.Identity()
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = MLP(in_features=dim,
                        hidden_features=mlp_hidden_dim,
@@ -774,7 +774,8 @@ class MobileSeg_Base(StrideFormer):
         cfg4 = [[5, 768, 192, True, "hardswish", 2],
                 [5, 768, 192, True, "hardswish", 1]]
 
-        super().__init__(cfgs=[cfg1, cfg2, cfg3, cfg4], act_layer=nn.ReLU6, **kwargs)
+        super().__init__(cfgs=[cfg1, cfg2, cfg3, cfg4],
+                         act_layer=nn.ReLU6, **kwargs)
 
 
 @MODELS.register_module()
@@ -793,4 +794,5 @@ class MobileSeg_Tiny(StrideFormer):
         cfg4 = [[3, 384, 128, True, "hardswish", 2],
                 [3, 384, 128, True, "hardswish", 1]]
 
-        super().__init__(cfgs=[cfg1, cfg2, cfg3, cfg4], act_layer=nn.ReLU6, **kwargs)
+        super().__init__(cfgs=[cfg1, cfg2, cfg3, cfg4],
+                         act_layer=nn.ReLU6, **kwargs)
