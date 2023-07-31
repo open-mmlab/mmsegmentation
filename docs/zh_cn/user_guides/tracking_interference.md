@@ -1,6 +1,6 @@
 # 预训练
 
-我们提供了一些演示脚本去推理一个给出的视频，或者是推理包含一系列连续照片的文件夹。想要获取这个代码资源，请点击[这里](https://github.com/open-mmlab/mmdetection/tree/tracking/demo)。
+我们提供了一些演示脚本去推理一个给出的视频，或者是预训练包含一系列连续照片的文件夹。想要获取这个代码资源，请点击[这里](https://github.com/open-mmlab/mmdetection/tree/tracking/demo)。
 
 如果输入为文件夹格式，你需要标明这点。图片命名应该**易于整理**，以便于你根据文件名字中包含的数字信息来重新调整图片的顺序。我们现在只支持`.jpg`，`.jpeg`和`.png`格式的图片。
 
@@ -31,7 +31,7 @@ python demo/mot_demo.py \
 - `DETECTOR_FILE`:  可选择detector。
 - `REID_FILE`:  可选择reid。
 - `SCORE_THR`:  bboxes的得分阈值。
-- `DEVICE`: inference所需设备。可以选择 `cpu` ， `cuda:0`, 或者其他的。
+- `DEVICE`: 预训练所需配置。可以选择 `cpu` ， `cuda:0`。或者其他类似的配置。
 - `OUTPUT`: 输出结果可视化的示例。如果未指定，`--show` 将强制显示动态视频。
 - `--show`: 是否即时显示视频。
 
