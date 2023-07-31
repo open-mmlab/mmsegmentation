@@ -39,7 +39,8 @@ class PPMobileSegHead(nn.Module):
         x = self.linear_fuse(x)
         x = self.dropout(x)
         x = self.conv_seg(x)
-        if self.upsample == 'intepolate' or self.training or self.num_classes < 30:
+        if self.upsample == 'intepolate' or self.training or \
+                self.num_classes < 30:
             x = F.interpolate(
                 x, x_hw, mode='bilinear', align_corners=self.align_corners)
         elif self.upsample == 'vim':
