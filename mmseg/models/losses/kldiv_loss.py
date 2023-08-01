@@ -20,7 +20,7 @@ class KLDivLoss(nn.Module):
             and "mean"
         """
 
-        assert isinstance(temperature, (float, int)), "Epected temperature to be" \
+        assert isinstance(temperature, (float, int)), "Expected temperature to be" \
             f"float or int, but got {temperature.__class__.__name__} instead"
         assert temperature != 0., "Temperature must not be zero"
 
@@ -33,8 +33,7 @@ class KLDivLoss(nn.Module):
         self.reduction = reduction
 
     def forward(self, input, target):
-        """
-        Forward function. Calculate KL divergence Loss.
+        """Forward function. Calculate KL divergence Loss.
 
         Args:
             input (Tensor): Logit tensor,
@@ -49,7 +48,6 @@ class KLDivLoss(nn.Module):
 
         Returns:
             (Tensor): Reduced loss.
-
         """
         assert isinstance(input, torch.Tensor), "Expected input to" \
             f"be Tensor, but got {input.__class__.__name__} instead"
@@ -68,11 +66,7 @@ class KLDivLoss(nn.Module):
 
         batch_size = input.shape[0]
 
-
-        if self.reduction == 'none':
-            return loss
-
-        elif self.reduction == 'sum':
+        if self.reduction == 'sum':
             # Change view to calculate instance-wise sum
             loss = loss.view(batch_size, -1)
             return torch.sum(loss, dim=1)
