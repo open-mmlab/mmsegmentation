@@ -6,8 +6,19 @@ from mmseg.registry import MODELS
 from .utils import weight_reduce_loss
 
 
-def _expand_onehot_labels_dice(pred, target):
-    """Expand onehot labels to match the size of prediction."""
+def _expand_onehot_labels_dice(pred: torch.Tensor,
+                               target: torch.Tensor) -> torch.Tensor:
+    """Expand onehot labels to match the size of prediction.
+
+    Args:
+        pred (torch.Tensor): The prediction, has a shape (N, num_class, H, W).
+        target (torch.Tensor): The learning label of the prediction,
+            has a shape (N, H, W).
+
+    Returns:
+        torch.Tensor: The target after one-hot encoding,
+            has a shape (N, num_class, H, W).
+    """
     num_classes = pred.shape[1]
     one_hot_target = torch.clamp(target, min=0, max=num_classes)
     one_hot_target = torch.nn.functional.one_hot(one_hot_target,
@@ -16,14 +27,14 @@ def _expand_onehot_labels_dice(pred, target):
     return one_hot_target
 
 
-def dice_loss(pred,
-              target,
-              weight,
-              eps=1e-3,
-              reduction='mean',
-              naive_dice=False,
-              avg_factor=None,
-              ignore_index=255):
+def dice_loss(pred: torch.Tensor,
+              target: torch.Tensor,
+              weight: torch.Tensor | None,
+              eps: float = 1e-3,
+              reduction: str | None = 'mean',
+              naive_dice: bool | None = False,
+              avg_factor: int | None = None,
+              ignore_index: int | None = 255) -> float:
     """Calculate dice loss, there are two forms of dice loss is supported:
 
         - the one proposed in `V-Net: Fully Convolutional Neural
@@ -50,6 +61,8 @@ def dice_loss(pred,
             power.Defaults to False.
         avg_factor (int, optional): Average factor that is used to average
             the loss. Defaults to None.
+        ignore_index (int, optional): The label index to be ignored.
+            Defaults to 255.
     """
     input = pred.flatten(1)
     target = target.flatten(1).float()
@@ -101,7 +114,7 @@ class DiceLoss(nn.Module):
                 denominator is the first power instead of the second
                 power. Defaults to False.
             loss_weight (float, optional): Weight of loss. Defaults to 1.0.
-            ignore_index (int | None): The label index to be ignored.
+            ignore_index (int, optional): The label index to be ignored.
                 Default: 255.
             eps (float): Avoid dividing by zero. Defaults to 1e-3.
             loss_name (str, optional): Name of the loss item. If you want this
