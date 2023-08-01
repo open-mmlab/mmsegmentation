@@ -1,9 +1,8 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
-crop_size = (640, 640)
+
 data_preprocessor = dict(
     type='SegDataPreProcessor',
-    size=crop_size,
     mean=[122.7709, 116.7460, 104.0937],
     std=[68.5005, 66.6322, 70.3232],
     bgr_to_rgb=True,
@@ -12,6 +11,7 @@ data_preprocessor = dict(
     size_divisor=640,
     test_cfg=dict(size_divisor=32))
 
+num_classes = 171
 model = dict(
     type='MultimodalEncoderDecoder',
     data_preprocessor=data_preprocessor,
@@ -57,7 +57,7 @@ model = dict(
         ),
     decode_head=dict(
         type='SideAdapterCLIPHead',
-        num_classes=19,
+        num_classes=num_classes,
         deep_supervision_idxs=[7],
         san_cfg=dict(
             in_channels=3,
@@ -98,10 +98,36 @@ model = dict(
             frozen_exclude=[]
         ),
         align_corners=False,
-        loss_decode=[
-            dict(type='DiceLoss', loss_weight=5.0),
-            dict(type='CrossEntropyLoss', loss_weight=5.0),
-            dict(type='CrossEntropyLoss', loss_weight=2.0)]),
+        train_cfg=dict(
+            num_points=12544,
+            oversample_ratio=3.0,
+            importance_sample_ratio=0.75,
+            assigner=dict(
+                type='HungarianAssigner',
+                match_costs=[
+                    dict(type='ClassificationCost', weight=2.0),
+                    dict(
+                        type='CrossEntropyLossCost',
+                        weight=5.0,
+                        use_sigmoid=True),
+                    dict(
+                        type='DiceCost',
+                        weight=5.0,
+                        pred_act=True,
+                        eps=1.0)
+                ]),
+            sampler=dict(type='MaskPseudoSampler')),
+        loss_decode=[dict(type='CrossEntropyLoss',
+                          loss_name='loss_cls_ce',
+                          loss_weight=2.0,
+                          class_weight=[1.0] * num_classes + [0.1]),
+                     dict(type='CrossEntropyLoss',
+                          loss_name='loss_mask_ce',
+                          loss_weight=5.0),
+                     dict(type='DiceLoss',
+                          loss_name='loss_mask_dice',
+                          loss_weight=5.0)
+                     ]),
 
     # model training and testing settings
     train_cfg=dict(),

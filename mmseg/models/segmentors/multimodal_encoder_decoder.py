@@ -166,12 +166,17 @@ class MultimodalEncoderDecoder(BaseSegmentor):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-
-        x = self.extract_feat(inputs)
+        classifier_embeds = self.text_encoder()
+        clip_inputs = inputs
+        if self.asymetric_input:
+            clip_inputs = F.interpolate(
+                inputs, scale_factor=self.encoder_resolution, mode='bilinear')
+        x = self.image_encoder(clip_inputs)
 
         losses = dict()
 
-        loss_decode = self._decode_head_forward_train(x, data_samples)
+        loss_decode = self._decode_head_forward_train(
+            [inputs, x, classifier_embeds], data_samples)
         losses.update(loss_decode)
 
         return losses

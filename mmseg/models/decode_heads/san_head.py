@@ -1,20 +1,24 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from functools import partial
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 from mmcv.cnn.bricks.transformer import BaseTransformerLayer
+from mmcv.ops import point_sample
 from mmengine.model.weight_init import caffe2_xavier_init, normal_init
 from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
+from mmengine.structures import InstanceData
 from torch import Tensor
 from torch.nn import functional as F
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType, SampleList, seg_data_to_instance_data
-from ..utils import MLP, LayerNorm, PatchEmbed, cross_attn_layer, resize
+from mmseg.utils import (ConfigType, MatchMasks, SampleList, reduce_mean,
+                         seg_data_to_instance_data)
+from ..utils import (MLP, LayerNorm, PatchEmbed, cross_attn_layer,
+                     get_uncertain_point_coords_with_randomness, resize)
 from .decode_head import BaseDecodeHead
 
 
@@ -457,7 +461,7 @@ class RecWithAttnbias(nn.Module):
         else:
             x = torch.cat([sos_token, x], dim=0)
             for i, block in enumerate(self.layers):
-                x = block(x, attn_masks=attn_biases[i])
+                x = block(x, attn_masks=[attn_biases[i]])
             sos_token = x[:self.sos_token_num]
 
         sos_token = sos_token.permute(1, 0, 2)  # LND -> NLD
@@ -486,7 +490,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
 
     def __init__(self, num_classes: int, san_cfg: ConfigType,
                  maskgen_cfg: ConfigType, deep_supervision_idxs: List[int],
-                 **kwargs):
+                 train_cfg: ConfigType, **kwargs):
         super().__init__(
             in_channels=san_cfg.in_channels,
             channels=san_cfg.embed_dims,
@@ -499,6 +503,14 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         self.side_adapter_network = SideAdapterNetwork(**san_cfg)
         self.rec_with_attnbias = RecWithAttnbias(**maskgen_cfg)
         self.deep_supervision_idxs = deep_supervision_idxs
+        self.train_cfg = train_cfg
+        if train_cfg:
+            self.match_masks = MatchMasks(
+                num_points=train_cfg.num_points,
+                num_queries=san_cfg.num_queries,
+                num_classes=num_classes,
+                assigner=train_cfg.assigner,
+                sampler=train_cfg.sampler)
 
     def init_weights(self):
 
@@ -619,7 +631,112 @@ class SideAdapterCLIPHead(BaseDecodeHead):
             x, self.deep_supervision_idxs)
 
         # loss
-        losses = self.loss_by_feat(all_mask_props, all_mask_logits,
+        losses = self.loss_by_feat(all_mask_logits, all_mask_props,
                                    batch_gt_instances, batch_img_metas)
 
         return losses
+
+    def loss_by_feat(self, all_cls_scores: Tensor, all_mask_preds: Tensor,
+                     batch_gt_instances: List[InstanceData],
+                     batch_img_metas: List[dict]) -> Dict[str, Tensor]:
+        """Loss function.
+
+        Args:
+            all_cls_scores (Tensor): Classification scores for all decoder
+                layers with shape (num_decoder, batch_size, num_queries,
+                cls_out_channels). Note `cls_out_channels` should includes
+                background.
+            all_mask_preds (Tensor): Mask scores for all decoder layers with
+                shape (num_decoder, batch_size, num_queries, h, w).
+            batch_gt_instances (list[obj:`InstanceData`]): each contains
+                ``labels`` and ``masks``.
+            batch_img_metas (list[dict]): List of image meta information.
+
+        Returns:
+            dict[str, Tensor]: A dictionary of loss components.
+        """
+        num_dec_layers = len(all_cls_scores)
+        batch_gt_instances_list = [
+            batch_gt_instances for _ in range(num_dec_layers)
+        ]
+        img_metas_list = [batch_img_metas for _ in range(num_dec_layers)]
+
+        losses = []
+        for i in range(num_dec_layers):
+            cls_scores = all_cls_scores[i]
+            mask_preds = all_mask_preds[i]
+            (labels, label_weights, mask_targets, mask_weights,
+             avg_factor) = self.match_masks.get_targets(
+                 cls_scores, mask_preds, batch_gt_instances_list[i],
+                 img_metas_list[i])
+            cls_scores = cls_scores.flatten(0, 1)
+            labels = labels.flatten(0, 1)
+            label_weights = label_weights.flatten(0, 1)
+
+            num_total_masks = reduce_mean(cls_scores.new_tensor([avg_factor]))
+            num_total_masks = max(num_total_masks, 1)
+
+            # extract positive ones
+            # shape (batch_size, num_queries, h, w) -> (num_total_gts, h, w)
+            mask_preds = mask_preds[mask_weights > 0]
+
+            if mask_targets.shape[0] != 0:
+                with torch.no_grad():
+                    points_coords = get_uncertain_point_coords_with_randomness(
+                        mask_preds.unsqueeze(1), None,
+                        self.train_cfg.num_points,
+                        self.train_cfg.oversample_ratio,
+                        self.train_cfg.importance_sample_ratio)
+                    # shape (num_total_gts, h, w)
+                    # -> (num_total_gts, num_points)
+                    mask_point_targets = point_sample(
+                        mask_targets.unsqueeze(1).float(),
+                        points_coords).squeeze(1)
+                # shape (num_queries, h, w) -> (num_queries, num_points)
+                mask_point_preds = point_sample(
+                    mask_preds.unsqueeze(1), points_coords).squeeze(1)
+
+            if not isinstance(self.loss_decode, nn.ModuleList):
+                losses_decode = [self.loss_decode]
+            else:
+                losses_decode = self.loss_decode
+            loss = dict()
+            for loss_decode in losses_decode:
+                if 'loss_cls' in loss_decode.loss_name:
+                    if loss_decode.loss_name == 'loss_cls_ce':
+                        loss[loss_decode.loss_name] = loss_decode(
+                            cls_scores, labels, weight=label_weights)
+                    else:
+                        assert False, "Only support 'CrossEntropyLoss' in" \
+                                      ' classification loss'
+
+                elif 'loss_mask' in loss_decode.loss_name:
+                    if mask_targets.shape[0] == 0:
+                        loss[loss_decode.loss_name] = mask_preds.sum()
+                    elif loss_decode.loss_name == 'loss_mask_ce':
+                        loss[loss_decode.loss_name] = loss_decode(
+                            mask_point_preds.reshape(-1),
+                            mask_point_targets.reshape(-1),
+                            avg_factor=num_total_masks *
+                            self.train_cfg.num_points)
+                    elif loss_decode.loss_name == 'loss_mask_dice':
+                        loss[loss_decode.loss_name] = loss_decode(
+                            mask_point_preds,
+                            mask_point_targets,
+                            avg_factor=num_total_masks)
+                    else:
+                        assert False, "Only support 'CrossEntropyLoss' and" \
+                                      " 'DiceLoss' in mask loss"
+                else:
+                    assert False, "Only support for 'loss_cls' and 'loss_mask'"
+
+            losses.append(loss)
+
+        loss_dict = dict()
+        # loss from the last decoder layer
+        loss_dict.update(losses[-1])
+        # loss from other decoder layers
+        for i, loss in enumerate(losses[:-1]):
+            for k, v in loss.items():
+                loss_dict[f'd{self.deep_supervision_idxs[i]}.{k}'] = v
+        return loss_dict
