@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from typing import Union
+
 import torch
 import torch.nn as nn
 
@@ -29,12 +31,12 @@ def _expand_onehot_labels_dice(pred: torch.Tensor,
 
 def dice_loss(pred: torch.Tensor,
               target: torch.Tensor,
-              weight: torch.Tensor | None,
+              weight: Union[torch.Tensor, None],
               eps: float = 1e-3,
-              reduction: str | None = 'mean',
-              naive_dice: bool | None = False,
-              avg_factor: int | None = None,
-              ignore_index: int | None = 255) -> float:
+              reduction: Union[str, None] = 'mean',
+              naive_dice: Union[bool, None] = False,
+              avg_factor: Union[int, None] = None,
+              ignore_index: Union[int, None] = 255) -> float:
     """Calculate dice loss, there are two forms of dice loss is supported:
 
         - the one proposed in `V-Net: Fully Convolutional Neural
