@@ -75,6 +75,8 @@ def test_san_head():
     if torch.cuda.is_available():
         head = head.cuda()
         data = list_to_cuda([inputs, clip_feature, class_embed])
+    else:
+        data = [inputs, clip_feature, class_embed]
 
     with torch.no_grad():
         mask_props, mask_logits = head.forward(data)
