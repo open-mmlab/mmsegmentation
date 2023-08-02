@@ -171,7 +171,7 @@ class DiceLoss(nn.Module):
             if self.use_sigmoid:
                 pred = pred.sigmoid()
             else:
-                raise NotImplementedError
+                pred = pred.softmax(dim=1)
 
         loss = self.loss_weight * dice_loss(
             pred,
