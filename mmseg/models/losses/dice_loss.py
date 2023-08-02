@@ -66,9 +66,12 @@ def dice_loss(pred: torch.Tensor,
         ignore_index (int, optional): The label index to be ignored.
             Defaults to 255.
     """
+    num_classes = pred.shape[1]
+    pred = pred[:, torch.arange(num_classes) != ignore_index, :, :]
+    target = target[:, torch.arange(num_classes) != ignore_index, :, :]
+    assert pred.shape[1] != 0 # if the ignored index is the only class 
     input = pred.flatten(1)
     target = target.flatten(1).float()
-
     a = torch.sum(input * target, 1)
     if naive_dice:
         b = torch.sum(input, 1)
@@ -162,17 +165,15 @@ class DiceLoss(nn.Module):
         one_hot_target = target
         if (pred.shape != target.shape):
             one_hot_target = _expand_onehot_labels_dice(pred, target)
-
         assert reduction_override in (None, 'none', 'mean', 'sum')
         reduction = (
             reduction_override if reduction_override else self.reduction)
-
         if self.activate:
             if self.use_sigmoid:
                 pred = pred.sigmoid()
-            else:
+            elif pred.shape[1] != 1:
+                # softmax does not work when there is only 1 class
                 pred = pred.softmax(dim=1)
-
         loss = self.loss_weight * dice_loss(
             pred,
             one_hot_target,
@@ -181,6 +182,7 @@ class DiceLoss(nn.Module):
             reduction=reduction,
             naive_dice=self.naive_dice,
             avg_factor=avg_factor,
+            ignore_index=self.ignore_index
         )
 
         return loss
