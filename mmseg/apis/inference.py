@@ -158,6 +158,7 @@ def show_result_pyplot(model: BaseSegmentor,
                        draw_pred: bool = True,
                        wait_time: float = 0,
                        show: bool = True,
+                       withLabels: Optional[bool] = True,
                        save_dir=None,
                        out_file=None):
     """Visualize the segmentation results on the image.
@@ -177,9 +178,13 @@ def show_result_pyplot(model: BaseSegmentor,
             that means "forever". Defaults to 0.
         show (bool): Whether to display the drawn image.
             Default to True.
+        withLabels(bool, optional): Add semantic labels in visualization
+            result, Default to True.
         save_dir (str, optional): Save file dir for all storage backends.
             If it is None, the backend storage will not save any data.
         out_file (str, optional): Path to output file. Default to None.
+
+
 
     Returns:
         np.ndarray: the drawn image which channel is RGB.
@@ -187,7 +192,7 @@ def show_result_pyplot(model: BaseSegmentor,
     if hasattr(model, 'module'):
         model = model.module
     if isinstance(img, str):
-        image = mmcv.imread(img)
+        image = mmcv.imread(img, channel_order='rgb')
     else:
         image = img
     if save_dir is not None:
@@ -208,7 +213,8 @@ def show_result_pyplot(model: BaseSegmentor,
         draw_pred=draw_pred,
         wait_time=wait_time,
         out_file=out_file,
-        show=show)
+        show=show,
+        withLabels=withLabels)
     vis_img = visualizer.get_image()
 
     return vis_img

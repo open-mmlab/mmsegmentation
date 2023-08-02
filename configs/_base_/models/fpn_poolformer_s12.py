@@ -1,10 +1,11 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 checkpoint_file = 'https://download.openmmlab.com/mmclassification/v0/poolformer/poolformer-s12_3rdparty_32xb128_in1k_20220414-f8d83051.pth'  # noqa
-# TODO: delete custom_imports after mmcls supports auto import
-# please install mmcls>=1.0
-# import mmcls.models to trigger register_module in mmcls
-custom_imports = dict(imports=['mmcls.models'], allow_failed_imports=False)
+# TODO: delete custom_imports after mmpretrain supports auto import
+# please install mmpretrain >= 1.0.0rc7
+# import mmpretrain.models to trigger register_module in mmpretrain
+custom_imports = dict(
+    imports=['mmpretrain.models'], allow_failed_imports=False)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     mean=[123.675, 116.28, 103.53],
@@ -16,7 +17,7 @@ model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
     backbone=dict(
-        type='mmcls.PoolFormer',
+        type='mmpretrain.PoolFormer',
         arch='s12',
         init_cfg=dict(
             type='Pretrained', checkpoint=checkpoint_file, prefix='backbone.'),

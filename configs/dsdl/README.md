@@ -1,8 +1,6 @@
 # DSDL: Standard Description Language for DataSet
 
-<!-- [ALGORITHM] -->
-
-<!-- [DATASET] -->
+<!-- [SKIP DEV CHECK] -->
 
 ## Abstract
 
