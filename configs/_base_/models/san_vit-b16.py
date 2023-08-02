@@ -22,6 +22,7 @@ model = dict(
         type='VisionTransformer',
         img_size=(224, 224),
         patch_size=16,
+        patch_pad=0,
         in_channels=3,
         embed_dims=768,
         num_layers=9,

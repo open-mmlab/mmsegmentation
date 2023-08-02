@@ -7,7 +7,8 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 from mmcv.cnn.bricks.transformer import BaseTransformerLayer
 from mmcv.ops import point_sample
-from mmengine.model.weight_init import caffe2_xavier_init, normal_init
+from mmengine.model.weight_init import (caffe2_xavier_init, normal_init,
+                                        trunc_normal_)
 from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
 from mmengine.structures import InstanceData
 from torch import Tensor
@@ -143,7 +144,8 @@ class SideAdapterNetwork(nn.Module):
         )
         ori_h, ori_w = self.patch_embed.init_out_size
         num_patches = ori_h * ori_w
-        self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dims))
+        self.pos_embed = nn.Parameter(
+            torch.randn(1, num_patches, embed_dims) * .02)
         self.query_pos_embed = nn.Parameter(
             torch.zeros(1, num_queries, embed_dims))
         self.query_embed = nn.Parameter(
@@ -180,10 +182,11 @@ class SideAdapterNetwork(nn.Module):
             rescale_attn_bias=cfg_decoder.rescale)
 
     def init_weights(self):
-        normal_init(self.query_embed, std=0.02)
-        normal_init(self.query_pos_embed, std=0.02)
+        trunc_normal_(self.pos_embed, std=0.02)
+        nn.init.normal_(self.query_embed, std=0.02)
+        nn.init.normal_(self.query_pos_embed, std=0.02)
         for i in range(len(self.conv_clips)):
-            caffe2_xavier_init(self.conv_clips[i])
+            caffe2_xavier_init(self.conv_clips[i][1].conv)
 
     def fuse_clip(self, fused_index: int, x: torch.Tensor,
                   clip_feature: torch.Tensor, hwshape: Tuple[int,
@@ -235,9 +238,9 @@ class SideAdapterNetwork(nn.Module):
                 x = self.fuse_clip(fused_index, x,
                                    clip_features[fused_index][0], hwshape, L)
                 fused_index += 1
-                x_query = x[:, :-L, ...]
-                x_feat = x[:, -L:, ...].permute(0, 2, 1) \
-                    .reshape(x.shape[0], x.shape[-1], hwshape[0], hwshape[1])
+            x_query = x[:, :-L, ...]
+            x_feat = x[:, -L:, ...].permute(0, 2, 1)\
+                .reshape(x.shape[0], x.shape[-1], hwshape[0], hwshape[1])
 
             if index in deep_supervision_idxs or index == len(
                     self.encode_layers):

@@ -14,13 +14,15 @@ from .dist_utils import (all_reduce_dict, allreduce_grads, reduce_mean,
                          sync_random_seed)
 from .get_templates import get_predefined_templates
 from .io import datafrombytes
-from .mask_classification import MatchMasks, seg_data_to_instance_data
 from .misc import add_prefix, stack_batch
 from .set_env import register_all_modules
 from .tokenizer import tokenize
 from .typing_utils import (ConfigType, ForwardResults, MultiConfig,
                            OptConfigType, OptMultiConfig, OptSampleList,
                            SampleList, TensorDict, TensorList)
+
+# isort: off
+from .mask_classification import MatchMasks, seg_data_to_instance_data
 
 __all__ = [
     'collect_env', 'register_all_modules', 'stack_batch', 'add_prefix',
