@@ -69,7 +69,7 @@ def dice_loss(pred: torch.Tensor,
     num_classes = pred.shape[1]
     pred = pred[:, torch.arange(num_classes) != ignore_index, :, :]
     target = target[:, torch.arange(num_classes) != ignore_index, :, :]
-    assert pred.shape[1] != 0 # if the ignored index is the only class 
+    assert pred.shape[1] != 0  # if the ignored index is the only class
     input = pred.flatten(1)
     target = target.flatten(1).float()
     a = torch.sum(input * target, 1)
@@ -182,8 +182,7 @@ class DiceLoss(nn.Module):
             reduction=reduction,
             naive_dice=self.naive_dice,
             avg_factor=avg_factor,
-            ignore_index=self.ignore_index
-        )
+            ignore_index=self.ignore_index)
 
         return loss
 
