@@ -7,14 +7,17 @@ import torch.nn.functional as F
 from mmengine.logging import print_log
 from mmengine.model import BaseModule
 from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
-
-from mmseg.models.utils.transformer_utils import DropPath
+from mmcv.cnn import build_conv_layer, build_norm_layer, build_activation_layer, ConvModule
+from mmcv.cnn.bricks.transformer import build_dropout
 from mmseg.registry import MODELS
 
 
 class StrideFormer(BaseModule):
     def __init__(self,
-                 cfgs,
+                 cfg1,
+                 cfg2,
+                 cfg3,
+                 cfg4,
                  channels,
                  embed_dims,
                  key_dims=[16, 24],
@@ -23,7 +26,7 @@ class StrideFormer(BaseModule):
                  attn_ratios=2,
                  mlp_ratios=[2, 4],
                  drop_path_rate=0.1,
-                 act_layer=nn.Sigmoid,
+                 act_cfg=dict(type='Sigmoid'),
                  inj_type='AAM',
                  out_channels=256,
                  dims=(128, 160),
@@ -43,12 +46,13 @@ class StrideFormer(BaseModule):
         elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
 
+        self.act_layer = build_activation_layer(act_cfg)
         self.depths = depths
-        self.cfgs = cfgs
+        self.cfgs = [cfg1, cfg2, cfg3, cfg4]
         self.dims = dims
-        for i in range(len(cfgs)):
+        for i in range(len(self.cfgs)):
             smb = StackedMV3Block(
-                cfgs=cfgs[i],
+                cfgs=self.cfgs[i],
                 stem=True if i == 0 else False,
                 inp_channel=channels[i])
             setattr(self, f'smb{i + 1}', smb)
@@ -66,7 +70,7 @@ class StrideFormer(BaseModule):
                 drop=0,
                 attn_drop=0.0,
                 drop_path=dpr,
-                act_layer=act_layer,
+                act_layer=self.act_layer,
                 stride_attention=stride_attention)
             setattr(self, f"trans{i + 1}", trans)
 
@@ -74,13 +78,13 @@ class StrideFormer(BaseModule):
         if self.inj_type == "AAM":
             self.inj_module = InjectionMultiSumallmultiallsum(
                 in_channels=out_feat_chs,
-                activations=act_layer,
+                activations=self.act_layer,
                 out_channels=out_channels)
             self.feat_channels = [out_channels, ]
         elif self.inj_type == "AAMSx8":
             self.inj_module = InjectionMultiSumallmultiallsumSimpx8(
                 in_channels=out_feat_chs,
-                activations=act_layer,
+                activations=self.act_layer,
                 out_channels=out_channels)
             self.feat_channels = [out_channels, ]
         elif self.inj_type == 'origin':
@@ -155,9 +159,10 @@ class StrideFormer(BaseModule):
 
 
 class HSigmoid(nn.Module):
-    def __init__(self):
+    def __init__(self, act_cfg=dict(type='ReLU6')):
         super().__init__()
-        self.relu = nn.ReLU6()
+
+        self.relu = build_activation_layer(act_cfg)
 
     def forward(self, x):
         return self.relu(x + 3) / 6
@@ -228,11 +233,14 @@ class ConvBNAct(nn.Module):
                  stride=1,
                  padding=0,
                  groups=1,
-                 norm=nn.BatchNorm2d,
-                 act=None,
+                 conv_cfg=dict(type='Conv'),
+                 norm_cfg=dict(type='BN'),
+                 act_cfg=None,
                  bias_attr=False):
         super(ConvBNAct, self).__init__()
-        self.conv = nn.Conv2d(
+
+        self.conv = build_conv_layer(
+            conv_cfg,
             in_channels=in_channels,
             out_channels=out_channels,
             kernel_size=kernel_size,
@@ -240,9 +248,9 @@ class ConvBNAct(nn.Module):
             padding=padding,
             groups=groups,
             bias=None if bias_attr else False)
-        self.act = act() if act is not None else nn.Identity()
-        self.bn = norm(out_channels) \
-            if norm is not None else nn.Identity()
+        self.act = build_activation_layer(act_cfg) if act_cfg is not None else nn.Identity()
+        self.bn = build_norm_layer(norm_cfg, out_channels)[1] \
+            if norm_cfg is not None else nn.Identity()
 
     def forward(self, x):
         x = self.conv(x)
@@ -262,20 +270,11 @@ class Conv2DBN(nn.Module):
                  groups=1,
                  ):
         super().__init__()
-        self.c = nn.Conv2d(
-            in_channels=in_channels,
-            out_channels=out_channels,
-            kernel_size=ks,
-            stride=stride,
-            padding=pad,
-            dilation=dilation,
-            groups=groups,
-            bias=False)
-        self.bn = nn.BatchNorm2d(out_channels)
+        self.conv_norm = ConvModule(in_channels, out_channels, ks, stride, pad, dilation, groups, False,
+                                    norm_cfg=dict(type='BN'), act_cfg=None)
 
     def forward(self, inputs):
-        out = self.c(inputs)
-        out = self.bn(out)
+        out = self.conv_norm(inputs)
         return out
 
 
@@ -291,22 +290,13 @@ class ConvBNLayer(nn.Module):
                  act=None,
                  dilation=1):
         super().__init__()
-        self.c = nn.Conv2d(
-            in_channels=in_c,
-            out_channels=out_c,
-            kernel_size=filter_size,
-            stride=stride,
-            padding=padding,
-            groups=num_groups,
-            bias=False,
-            dilation=dilation)
-        self.bn = nn.BatchNorm2d(num_features=out_c)
+        self.conv_norm = ConvModule(in_c, out_c, filter_size, stride, padding, dilation, num_groups, False,
+                                    norm_cfg=dict(type='BN'), act_cfg=None)
         self.if_act = if_act
         self.act = _create_act(act)
 
     def forward(self, x):
-        x = self.c(x)
-        x = self.bn(x)
+        x = self.conv_norm(x)
         if self.if_act:
             x = self.act(x)
         return x
@@ -367,17 +357,23 @@ class ResidualUnit(nn.Module):
 
 
 class SEModule(nn.Module):
-    def __init__(self, channel, reduction=4):
+    def __init__(self,
+                 channel,
+                 reduction=4,
+                 act_cfg=dict(type='ReLU'),
+                 conv_cfg=dict(type='Conv')):
         super().__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.conv1 = nn.Conv2d(
+        self.conv1 = build_conv_layer(
+            conv_cfg,
             in_channels=channel,
             out_channels=channel // reduction,
             kernel_size=1,
             stride=1,
             padding=0)
-        self.relu = nn.ReLU()
-        self.conv2 = nn.Conv2d(
+        self.relu = build_activation_layer(act_cfg)
+        self.conv2 = build_conv_layer(
+            conv_cfg,
             in_channels=channel // reduction,
             out_channels=channel,
             kernel_size=1,
@@ -441,13 +437,12 @@ class Block(nn.Module):
                  attn_ratio=2.,
                  drop=0.,
                  drop_path=0.,
-                 act_layer=nn.ReLU,
+                 act_layer=None,
                  stride_attention=None):
         super().__init__()
         self.dim = dim
         self.num_heads = num_heads
         self.mlp_ratio = mlp_ratio
-
         self.attn = Sea_Attention(
             dim,
             key_dim=key_dim,
@@ -455,8 +450,7 @@ class Block(nn.Module):
             attn_ratio=attn_ratio,
             activation=act_layer,
             stride_attention=stride_attention)
-
-        self.drop_path = DropPath(drop_path) \
+        self.drop_path = build_dropout(dict(type='DropPath', drop_prob=drop_path)) \
             if drop_path > 0. else nn.Identity()
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp = MLP(in_features=dim,
@@ -495,6 +489,8 @@ class Sea_Attention(nn.Module):
                  num_heads,
                  attn_ratio=4.,
                  activation=None,
+                 conv_cfg=dict(type='Conv'),
+                 norm_cfg=dict(type='BN'),
                  stride_attention=False):
         super().__init__()
         self.num_heads = num_heads
@@ -512,20 +508,19 @@ class Sea_Attention(nn.Module):
 
         if self.stride_attention:
             self.stride_conv = nn.Sequential(
-                nn.Conv2d(
-                    dim, dim, kernel_size=3, stride=2, padding=1, groups=dim),
-                nn.BatchNorm2d(dim), )
+                build_conv_layer(conv_cfg, dim, dim, kernel_size=3, stride=2, padding=1, groups=dim),
+                build_norm_layer(norm_cfg, num_features=dim)[1], )
 
         self.proj = torch.nn.Sequential(
-            activation(), Conv2DBN(
+            activation, Conv2DBN(
                 self.dh, dim))
         self.proj_encode_row = torch.nn.Sequential(
-            activation(), Conv2DBN(
+            activation, Conv2DBN(
                 self.dh, self.dh))
         self.pos_emb_rowq = SqueezeAxialPositionalEmbedding(nh_kd, 16)
         self.pos_emb_rowk = SqueezeAxialPositionalEmbedding(nh_kd, 16)
         self.proj_encode_column = torch.nn.Sequential(
-            activation(), Conv2DBN(
+            activation, Conv2DBN(
                 self.dh, self.dh))
         self.pos_emb_columnq = SqueezeAxialPositionalEmbedding(nh_kd, 16)
         self.pos_emb_columnk = SqueezeAxialPositionalEmbedding(nh_kd, 16)
@@ -538,7 +533,7 @@ class Sea_Attention(nn.Module):
             pad=1,
             dilation=1,
             groups=2 * self.dh)
-        self.act = activation()
+        self.act = activation
         self.pwconv = Conv2DBN(2 * self.dh, dim, ks=1)
         self.sigmoid = HSigmoid()
 
@@ -602,17 +597,17 @@ class MLP(nn.Module):
                  in_features,
                  hidden_features=None,
                  out_features=None,
-                 act_layer=nn.ReLU,
+                 act_layer=None,
+                 conv_cfg=dict(type='Conv'),
                  drop=0.):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
         self.fc1 = Conv2DBN(in_features, hidden_features)
-        self.dwconv = nn.Conv2d(
-            hidden_features, hidden_features, 3, 1, 1, groups=hidden_features)
-        self.act = act_layer()
+        self.dwconv = build_conv_layer(conv_cfg, hidden_features, hidden_features, 3, 1, 1, groups=hidden_features)
+        self.act = act_layer
         self.fc2 = Conv2DBN(hidden_features, out_features)
-        self.drop = nn.Dropout(drop)
+        self.drop = build_dropout(dict(type='Dropout', drop_prob=drop))
 
     def forward(self, x):
         x = self.fc1(x)
@@ -667,7 +662,7 @@ class InjectionMultiSumallmultiallsum(nn.Module):
             self.act_embedding_list.append(
                 ConvBNAct(
                     in_channels[i], out_channels, kernel_size=1))
-            self.act_list.append(activations())
+            self.act_list.append(activations)
 
     def forward(self, inputs):  # x_x8, x_x16, x_x32, x_x64
         low_feat1 = F.interpolate(inputs[0], scale_factor=0.5, mode="bilinear")
@@ -713,7 +708,7 @@ class InjectionMultiSumallmultiallsumSimpx8(nn.Module):
                 self.act_embedding_list.append(
                     ConvBNAct(
                         in_channels[i], out_channels, kernel_size=1))
-                self.act_list.append(activations())
+                self.act_list.append(activations)
 
     def forward(self, inputs):
         # x_x8, x_x16, x_x32
@@ -761,38 +756,10 @@ def _create_act(act):
 @MODELS.register_module()
 class MobileSeg_Base(StrideFormer):
     def __init__(self, **kwargs):
-        cfg1 = [
-            # k t c, s
-            [3, 16, 16, True, "relu", 1],
-            [3, 64, 32, False, "relu", 2],
-            [3, 96, 32, False, "relu", 1]
-        ]
-        cfg2 = [[5, 128, 64, True, "hardswish", 2],
-                [5, 240, 64, True, "hardswish", 1]]
-        cfg3 = [[5, 384, 128, True, "hardswish", 2],
-                [5, 384, 128, True, "hardswish", 1]]
-        cfg4 = [[5, 768, 192, True, "hardswish", 2],
-                [5, 768, 192, True, "hardswish", 1]]
-
-        super().__init__(cfgs=[cfg1, cfg2, cfg3, cfg4],
-                         act_layer=nn.ReLU6, **kwargs)
+        super().__init__(**kwargs)
 
 
 @MODELS.register_module()
 class MobileSeg_Tiny(StrideFormer):
     def __init__(self, **kwargs):
-        cfg1 = [
-            # k t c, s
-            [3, 16, 16, True, "relu", 1],
-            [3, 64, 32, False, "relu", 2],
-            [3, 48, 24, False, "relu", 1]
-        ]
-        cfg2 = [[5, 96, 32, True, "hardswish", 2],
-                [5, 96, 32, True, "hardswish", 1]]
-        cfg3 = [[5, 160, 64, True, "hardswish", 2],
-                [5, 160, 64, True, "hardswish", 1]]
-        cfg4 = [[3, 384, 128, True, "hardswish", 2],
-                [3, 384, 128, True, "hardswish", 1]]
-
-        super().__init__(cfgs=[cfg1, cfg2, cfg3, cfg4],
-                         act_layer=nn.ReLU6, **kwargs)
+        super().__init__(**kwargs)
