@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from mmseg.models.backbones.strideformer import ConvBNAct
 from mmseg.registry import MODELS
+from mmcv.cnn import build_conv_layer
 import torch.nn.functional as F
 from typing import List
 from torch import Tensor
@@ -16,6 +17,8 @@ class PPMobileSegHead(nn.Module):
                  dropout_ratio=0.1,
                  align_corners=False,
                  upsample='intepolate',
+                 conv_cfg=dict(type='Conv'),
+                 act_cfg=dict(type='ReLU'),
                  out_channels=None):
         super().__init__()
         self.align_corners = align_corners
@@ -29,10 +32,10 @@ class PPMobileSegHead(nn.Module):
             kernel_size=1,
             stride=1,
             groups=self.last_channels if use_dw else 1,
-            act=nn.ReLU)
+            act_cfg=act_cfg)
         self.dropout = nn.Dropout2d(dropout_ratio)
-        self.conv_seg = nn.Conv2d(
-            self.last_channels, self.num_classes, kernel_size=1)
+        self.conv_seg = build_conv_layer(
+            conv_cfg, self.last_channels, self.num_classes, kernel_size=1)
 
     def forward(self, x):
         x, x_hw = x[0], x[1]
