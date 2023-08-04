@@ -1,8 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import logging
 from typing import List, Optional
 
 import torch.nn as nn
 import torch.nn.functional as F
+from mmengine.logging import print_log
 from torch import Tensor
 
 from mmseg.registry import MODELS
@@ -33,7 +35,7 @@ class EncoderDecoder(BaseSegmentor):
     2. The ``predict`` method is used to predict segmentation results,
     which includes two steps: (1) Run inference function to obtain the list of
     seg_logits (2) Call post-processing function to obtain list of
-    ``SegDataSampel`` including ``pred_sem_seg`` and ``seg_logits``.
+    ``SegDataSample`` including ``pred_sem_seg`` and ``seg_logits``.
 
     .. code:: text
 
@@ -326,10 +328,15 @@ class EncoderDecoder(BaseSegmentor):
             Tensor: The segmentation results, seg_logits from model of each
                 input image.
         """
-
-        assert self.test_cfg.mode in ['slide', 'whole']
+        assert self.test_cfg.get('mode', 'whole') in ['slide', 'whole'], \
+            f'Only "slide" or "whole" test mode are supported, but got ' \
+            f'{self.test_cfg["mode"]}.'
         ori_shape = batch_img_metas[0]['ori_shape']
-        assert all(_['ori_shape'] == ori_shape for _ in batch_img_metas)
+        if not all(_['ori_shape'] == ori_shape for _ in batch_img_metas):
+            print_log(
+                'Image shapes are different in the batch.',
+                logger='current',
+                level=logging.WARN)
         if self.test_cfg.mode == 'slide':
             seg_logit = self.slide_inference(inputs, batch_img_metas)
         else:

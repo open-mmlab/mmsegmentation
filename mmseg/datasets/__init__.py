@@ -2,6 +2,7 @@
 # yapf: disable
 from .ade import ADE20KDataset
 from .basesegdataset import BaseCDDataset, BaseSegDataset
+from .bdd100k import BDD100KDataset
 from .chase_db1 import ChaseDB1Dataset
 from .cityscapes import CityscapesDataset
 from .coco_stuff import COCOStuffDataset
@@ -57,5 +58,5 @@ __all__ = [
     'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
-    'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset'
+    'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset'
 ]
