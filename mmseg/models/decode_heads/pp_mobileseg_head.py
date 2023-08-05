@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
-from mmseg.models.backbones.strideformer import ConvBNAct
 from mmseg.registry import MODELS
-from mmcv.cnn import build_conv_layer
+from mmcv.cnn import build_conv_layer, ConvModule
 import torch.nn.functional as F
 from typing import List
 from torch import Tensor
@@ -17,21 +16,24 @@ class PPMobileSegHead(nn.Module):
                  dropout_ratio=0.1,
                  align_corners=False,
                  upsample='intepolate',
+                 out_channels=None,
                  conv_cfg=dict(type='Conv'),
                  act_cfg=dict(type='ReLU'),
-                 out_channels=None):
+                 norm_cfg=dict(type='BN')
+                 ):
         super().__init__()
         self.align_corners = align_corners
         self.last_channels = in_channels
         self.upsample = upsample
         self.num_classes = num_classes
         self.out_channels = out_channels
-        self.linear_fuse = ConvBNAct(
+        self.linear_fuse = ConvModule(
             in_channels=self.last_channels,
             out_channels=self.last_channels,
             kernel_size=1,
-            stride=1,
+            bias=False,
             groups=self.last_channels if use_dw else 1,
+            norm_cfg=norm_cfg,
             act_cfg=act_cfg)
         self.dropout = nn.Dropout2d(dropout_ratio)
         self.conv_seg = build_conv_layer(
