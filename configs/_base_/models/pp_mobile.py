@@ -13,19 +13,23 @@ model = dict(
     data_preprocessor=data_preprocessor,
     # pretrained='open-mmlab://resnet50_v1c',
     backbone=dict(
-        type='MobileSeg_Base',
-        cfg1=[
+        type='StrideFormer',
+        mobileV3_cfg=[
             # k t c, s
-            [3, 16, 16, True, "relu", 1],
-            [3, 64, 32, False, "relu", 2],
-            [3, 96, 32, False, "relu", 1]
+            [[3, 16, 16, True, 'ReLU', 1],
+             [3, 64, 32, False, 'ReLU', 2],
+             [3, 96, 32, False, 'ReLU', 1]],  # cfg1
+
+            [[5, 128, 64, True, 'hardswish', 2],
+             [5, 240, 64, True, 'hardswish', 1]],  # cfg2
+
+            [[5, 384, 128, True, 'hardswish', 2],
+             [5, 384, 128, True, 'hardswish', 1]],  # cfg3
+
+            [[5, 768, 192, True, 'hardswish', 2],
+             [5, 768, 192, True, 'hardswish', 1]],  # cfg4
+
         ],
-        cfg2=[[5, 128, 64, True, "hardswish", 2],
-              [5, 240, 64, True, "hardswish", 1]],
-        cfg3=[[5, 384, 128, True, "hardswish", 2],
-              [5, 384, 128, True, "hardswish", 1]],
-        cfg4=[[5, 768, 192, True, "hardswish", 2],
-              [5, 768, 192, True, "hardswish", 1]],
         channels=[16, 32, 64, 128, 192],
         depths=[3, 3],
         embed_dims=[128, 192],
