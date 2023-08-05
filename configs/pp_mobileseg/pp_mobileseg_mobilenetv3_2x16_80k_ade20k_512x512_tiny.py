@@ -9,19 +9,23 @@ norm_cfg = dict(type='SyncBN', requires_grad=True)
 model = dict(data_preprocessor=data_preprocessor,
              backbone=dict(
                  init_cfg=dict(type='Pretrained', checkpoint=checkpoint),
-                 type='MobileSeg_Tiny',
-                 cfg1=[
+                 type='StrideFormer',
+                 mobileV3_cfg=[
                      # k t c, s
-                     [3, 16, 16, True, "relu", 1],
-                     [3, 64, 32, False, "relu", 2],
-                     [3, 48, 24, False, "relu", 1]
+                     [[3, 16, 16, True, 'ReLU', 1],
+                      [3, 64, 32, False, 'ReLU', 2],
+                      [3, 48, 24, False, 'ReLU', 1]],  # cfg1
+
+                     [[5, 96, 32, True, 'hardswish', 2],
+                      [5, 96, 32, True, 'hardswish', 1]],  # cfg2
+
+                     [[5, 160, 64, True, 'hardswish', 2],
+                      [5, 160, 64, True, 'hardswish', 1]],  # cfg3
+
+                     [[3, 384, 128, True, 'hardswish', 2],
+                      [3, 384, 128, True, 'hardswish', 1]],  # cfg4
+
                  ],
-                 cfg2=[[5, 96, 32, True, "hardswish", 2],
-                       [5, 96, 32, True, "hardswish", 1]],
-                 cfg3=[[5, 160, 64, True, "hardswish", 2],
-                       [5, 160, 64, True, "hardswish", 1]],
-                 cfg4=[[3, 384, 128, True, "hardswish", 2],
-                       [3, 384, 128, True, "hardswish", 1]],
                  channels=[16, 24, 32, 64, 128],
                  depths=[2, 2],
                  embed_dims=[64, 128],
