@@ -16,55 +16,56 @@ from mmseg.registry import MODELS
 
 @MODELS.register_module()
 class StrideFormer(BaseModule):
+    """The StrideFormer implementation based on torch.
+
+    The original article refers to:https://arxiv.org/abs/2304.05152
+    Args:
+        mobileV3_cfg(list): Each sublist describe the config for a
+            MobileNetV3 block.
+        channels(list): The input channels for each MobileNetV3 block.
+        embed_dims(list): The channels of the features input to the sea
+            attention block.
+        key_dims(list, optional): The embeding dims for each head in
+            attention.
+        depths(list, optional): describes the depth of the attention block.
+            i,e: M,N.
+        num_heads(int, optional): The number of heads of the attention
+            blocks.
+        attn_ratios(int, optional): The expand ratio of V.
+        mlp_ratios(list, optional): The ratio of mlp blocks.
+        drop_path_rate(float, optional): The drop path rate in attention
+            block.
+        act_cfg(dict, optional): The activation layer of AAM:
+            Aggregate Attention Modul.
+        inj_type(string, optional): The type of injection/AAM.
+        out_channels(int, optional): The output channels of the AAM.
+        dims(list, optional): The dimension of the fusion block.
+        out_feat_chs(list, optional): The input channels of the AAM.
+        stride_attention(bool, optional): whether to stride attention in
+            each attention layer.
+        pretrained(str, optional): the path of pretrained model.
+    """
 
     def __init__(
-        self,
-        mobileV3_cfg,
-        channels,
-        embed_dims,
-        key_dims=[16, 24],
-        depths=[2, 2],
-        num_heads=8,
-        attn_ratios=2,
-        mlp_ratios=[2, 4],
-        drop_path_rate=0.1,
-        act_cfg=dict(type='ReLU'),
-        inj_type='AAM',
-        out_channels=256,
-        dims=(128, 160),
-        out_feat_chs=None,
-        stride_attention=True,
-        pretrained=None,
-        init_cfg=None,
+            self,
+            mobileV3_cfg,
+            channels,
+            embed_dims,
+            key_dims=[16, 24],
+            depths=[2, 2],
+            num_heads=8,
+            attn_ratios=2,
+            mlp_ratios=[2, 4],
+            drop_path_rate=0.1,
+            act_cfg=dict(type='ReLU'),
+            inj_type='AAM',
+            out_channels=256,
+            dims=(128, 160),
+            out_feat_chs=None,
+            stride_attention=True,
+            pretrained=None,
+            init_cfg=None,
     ):
-        """The StrideFormer implementation based on torch.
-
-        The original article refers to:https://arxiv.org/abs/2304.05152
-        Args:
-            mobileV3_cfg(list): Each sublist describe the config for a
-                MobileNetV3 block.
-            channels(list): The input channels for each MobileNetV3 block.
-            embed_dims(list): The channels of the features input to the sea
-                attention block.
-            key_dims(list, optional): The embeding dims for each head in
-                attention.
-            depths(list, optional): describes the depth of the attention block.
-                i,e: M,N.
-            num_heads(int, optional): The number of heads of the attention
-                blocks.
-            attn_ratios(int, optional): The expand ratio of V.
-            mlp_ratios(list, optional): The ratio of mlp blocks.
-            drop_path_rate(float, optional): The drop path rate in attention
-                block.
-            act_cfg(nn.Layer, optional): The activation layer of AAM.
-            inj_type(string, optional): The type of injection/AAM.
-            out_channels(int, optional): The output channels of the AAM.
-            dims(list, optional): The dimension of the fusion block.
-            out_feat_chs(list, optional): The input channels of the AAM.
-            stride_attention(bool, optioal): whether to stride attention in
-                each attention layer.
-            pretrained(str, optional): the path of pretrained model.
-        """
         super().__init__(init_cfg=init_cfg)
         assert not (init_cfg and pretrained
                     ), 'init_cfg and pretrained cannot be set at the same time'
@@ -153,8 +154,8 @@ class StrideFormer(BaseModule):
             if 'pos_embed' in state_dict.keys():
                 if self.pos_embed.shape != state_dict['pos_embed'].shape:
                     print_log(msg=f'Resize the pos_embed shape from '
-                              f'{state_dict["pos_embed"].shape} to '
-                              f'{self.pos_embed.shape}')
+                                  f'{state_dict["pos_embed"].shape} to '
+                                  f'{self.pos_embed.shape}')
                     h, w = self.img_size
                     pos_size = int(
                         math.sqrt(state_dict['pos_embed'].shape[1] - 1))
@@ -234,7 +235,7 @@ class StackedMV3Block(nn.Module):
                 groups=1,
                 bias=False,
                 norm_cfg=norm_cfg,
-                act_cfg=dict(type='hardswish'),
+                act_cfg=dict(type='HSwish'),
             )
 
         self.blocks = nn.ModuleList()
@@ -262,6 +263,20 @@ class StackedMV3Block(nn.Module):
 
 
 class ResidualUnit(nn.Module):
+    """The Residual module.
+
+    Args:
+        in_channel (int, optional): The channels of input feature.
+        mid_channel (int, optional): The channels of middle process.
+        out_channel (int, optional): The channels of output feature.
+        kernel_size (int, optional): The size of the convolving kernel.
+        stride (int, optional): The stride size.
+        use_se (bool, optional): if to use the SEModule.
+        act (string, optional): activation layer.
+        dilation (int, optional): The dilation size.
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN', requires_grad=True).
+    """
 
     def __init__(
             self,
@@ -275,7 +290,6 @@ class ResidualUnit(nn.Module):
             dilation=1,
             norm_cfg=dict(type='BN'),
     ):
-        """The Residual module."""
         super().__init__()
         self.if_shortcut = stride == 1 and in_channel == out_channel
         self.if_se = use_se
@@ -323,6 +337,14 @@ class ResidualUnit(nn.Module):
 
 
 class SEModule(nn.Module):
+    """ SE Module
+
+    Args:
+        channel (int, optional): The channels of input feature.
+        reduction (int, optional): The channel reduction rate.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='PReLU').
+    """
 
     def __init__(self, channel, reduction=4, act_cfg=dict(type='ReLU')):
         super().__init__()
@@ -340,7 +362,7 @@ class SEModule(nn.Module):
             out_channels=channel,
             kernel_size=1,
             norm_cfg=None,
-            act_cfg=dict(type='Hardsigmoid'),
+            act_cfg=dict(type='Hardsigmoid', slope=0.2,offset=0.5),
         )
 
     def forward(self, x):
@@ -352,20 +374,39 @@ class SEModule(nn.Module):
 
 
 class BasicLayer(nn.Module):
+    """ The transformer basic layer
+
+    Args:
+        block_num (int): the block nums of the transformer basic layer.
+        embedding_dim (int): The feature dimension.
+        key_dim (int): the key dim.
+        num_heads (int): Parallel attention heads.
+        mlp_ratio (float): the mlp ratio.
+        attn_ratio (float): the attention ratio.
+        drop (float): Probability of an element to be zeroed
+            after the feed forward layer.Default: 0.0.
+        attn_drop (float): The drop out rate for attention layer.
+            Default: 0.0.
+        drop_path (float): stochastic depth rate. Default 0.0.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='PReLU').
+        stride_attention (bool, optional): whether to stride attention in
+            each attention layer.
+    """
 
     def __init__(
-        self,
-        block_num,
-        embedding_dim,
-        key_dim,
-        num_heads,
-        mlp_ratio=4.0,
-        attn_ratio=2.0,
-        drop=0.0,
-        attn_drop=0.0,
-        drop_path=None,
-        act_cfg=None,
-        stride_attention=None,
+            self,
+            block_num,
+            embedding_dim,
+            key_dim,
+            num_heads,
+            mlp_ratio=4.0,
+            attn_ratio=2.0,
+            drop=0.0,
+            attn_drop=0.0,
+            drop_path=None,
+            act_cfg=None,
+            stride_attention=None,
     ):
         super().__init__()
         self.block_num = block_num
@@ -393,18 +434,34 @@ class BasicLayer(nn.Module):
 
 
 class Block(nn.Module):
+    """ the block of the transformer basic layer
+
+    Args:
+        dim (int): The feature dimension.
+        key_dim (int): The key dimension.
+        num_heads (int): Parallel attention heads.
+        mlp_ratio (float): the mlp ratio.
+        attn_ratio (float): the attention ratio.
+        drop (float): Probability of an element to be zeroed
+            after the feed forward layer.Default: 0.0.
+        drop_path (float): stochastic depth rate. Default 0.0.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='PReLU').
+        stride_attention (bool, optional): whether to stride attention in
+            each attention layer.
+    """
 
     def __init__(
-        self,
-        dim,
-        key_dim,
-        num_heads,
-        mlp_ratio=4.0,
-        attn_ratio=2.0,
-        drop=0.0,
-        drop_path=0.0,
-        act_cfg=None,
-        stride_attention=None,
+            self,
+            dim,
+            key_dim,
+            num_heads,
+            mlp_ratio=4.0,
+            attn_ratio=2.0,
+            drop=0.0,
+            drop_path=0.0,
+            act_cfg=None,
+            stride_attention=None,
     ):
         super().__init__()
         self.dim = dim
@@ -425,7 +482,7 @@ class Block(nn.Module):
         self.mlp = MLP(
             in_features=dim,
             hidden_features=mlp_hidden_dim,
-            act_layer=act_cfg,
+            act_cfg=act_cfg,
             drop=drop,
         )
 
@@ -437,6 +494,12 @@ class Block(nn.Module):
 
 
 class SqueezeAxialPositionalEmbedding(nn.Module):
+    """ the Squeeze Axial Positional Embedding
+
+    Args:
+        dim (int): The feature dimension.
+        shape (int): The patch size.
+    """
 
     def __init__(self, dim, shape):
         super().__init__()
@@ -446,11 +509,25 @@ class SqueezeAxialPositionalEmbedding(nn.Module):
     def forward(self, x):
         B, C, N = x.shape
         x = x + F.interpolate(
-            self.pos_embed, size=(N, ), mode='linear', align_corners=False)
+            self.pos_embed, size=(N,), mode='linear', align_corners=False)
         return x
 
 
 class SeaAttention(nn.Module):
+    """ The sea attention
+
+    Args:
+        dim (int): The feature dimension.
+        key_dim (int):  The key dimension.
+        num_heads (int): number of attention heads.
+        attn_ratio (float): the attention ratio.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='PReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='LN')
+        stride_attention (bool, optional): whether to stride attention in
+            each attention layer.
+    """
 
     def __init__(
             self,
@@ -462,9 +539,10 @@ class SeaAttention(nn.Module):
             norm_cfg=dict(type='BN'),
             stride_attention=False,
     ):
+
         super().__init__()
         self.num_heads = num_heads
-        self.scale = key_dim**-0.5
+        self.scale = key_dim ** -0.5
         self.nh_kd = nh_kd = key_dim * num_heads
         self.d = int(attn_ratio * key_dim)
         self.dh = int(attn_ratio * key_dim) * num_heads
@@ -552,7 +630,7 @@ class SeaAttention(nn.Module):
 
         qrow = (self.pos_emb_rowq(q.mean(-1)).reshape(
             [B, self.num_heads, -1, H]).permute(
-                (0, 1, 3, 2)))  # [B, nhead, H, dim]
+            (0, 1, 3, 2)))  # [B, nhead, H, dim]
         krow = self.pos_emb_rowk(k.mean(-1)).reshape(
             [B, self.num_heads, -1, H])  # [B, nhead, dim, H]
         vrow = (v.mean(-1).reshape([B, self.num_heads, -1,
@@ -595,13 +673,26 @@ class SeaAttention(nn.Module):
 
 
 class MLP(nn.Module):
+    """ the Multilayer Perceptron
+
+    Args:
+        in_features (int): the input feature.
+        hidden_features (int): the hidden feature.
+        out_features (int): the output feature.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='PReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN')
+        drop (float): Probability of an element to be zeroed.
+            Default 0.0
+    """
 
     def __init__(
             self,
             in_features,
             hidden_features=None,
             out_features=None,
-            act_layer=None,
+            act_cfg=None,
             norm_cfg=dict(type='BN'),
             drop=0.0,
     ):
@@ -623,7 +714,7 @@ class MLP(nn.Module):
             padding=1,
             groups=hidden_features,
             norm_cfg=None,
-            act_cfg=act_layer,
+            act_cfg=act_cfg,
         )
 
         self.fc2 = ConvModule(
@@ -646,6 +737,17 @@ class MLP(nn.Module):
 
 
 class FusionBlock(nn.Module):
+    """ The feature fusion block.
+
+    Args:
+        in_channel (int): the input channel.
+        out_channel (int): the output channel.
+        embed_dim (int): embedding dimension.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN')
+    """
 
     def __init__(
             self,
@@ -692,6 +794,16 @@ class FusionBlock(nn.Module):
 
 
 class InjectionMultiSumallmultiallsum(nn.Module):
+    """ the Aggregate Attention Module
+
+    Args:
+        in_channels (tuple): the input channel.
+        out_channels (int): the output channel.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN')
+    """
 
     def __init__(
             self,
@@ -745,13 +857,23 @@ class InjectionMultiSumallmultiallsum(nn.Module):
             mode='bilinear')
 
         res = (
-            low_feat1_act * low_feat2_act * high_feat_act *
-            (low_feat1 + low_feat2) + high_feat)
+                low_feat1_act * low_feat2_act * high_feat_act *
+                (low_feat1 + low_feat2) + high_feat)
 
         return res
 
 
 class InjectionMultiSumallmultiallsumSimpx8(nn.Module):
+    """ the Aggregate Attention Module
+
+    Args:
+        in_channels (tuple): the input channel.
+        out_channels (int): the output channel.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN')
+    """
 
     def __init__(
             self,
@@ -819,34 +941,19 @@ def _make_divisible(v, divisor=8, min_value=None):
 
 
 @MODELS.register_module()
-class HSigmoid(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.relu = nn.ReLU6()
-
-    def forward(self, x):
-        return self.relu(x + 3) / 6
-
-
-@MODELS.register_module()
-class Hardswish(nn.Module):
-
-    def __init__(self, inplace=False):
-        super().__init__()
-        self.relu = nn.Hardswish(inplace=inplace)
-
-    def forward(self, x):
-        return self.relu(x)
-
-
-@MODELS.register_module()
 class Hardsigmoid(nn.Module):
+    """the hardsigmoid activation
 
-    def __init__(self, slope=0.2, offset=0.5, inplace=False):
+    Args:
+        slope (float, optional): The slope of hardsigmoid function. Default is 0.1666667.
+        offset (float, optional): The offset of hardsigmoid function. Default is 0.5.
+        inplace (bool): can optionally do the operation in-place. Default: ``False``
+    """
+
+    def __init__(self, slope=0.1666667, offset=0.5, inplace=False):
         super().__init__()
         self.slope = slope
         self.offset = offset
 
     def forward(self, x):
-        return x.mul(self.slope).add(self.offset).clamp(0, 1)
+        return (x*self.slope + self.offset).clamp(0, 1)

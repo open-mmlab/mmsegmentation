@@ -12,7 +12,25 @@ from mmseg.registry import MODELS
 
 @MODELS.register_module()
 class PPMobileSegHead(nn.Module):
+    """ the segmentation head
 
+    Args:
+        num_classes (int): the classes num.
+        in_channels (int): the input channels.
+        use_dw (bool): if to use deepwith convolution.
+        dropout_ratio (float): Probability of an element to be zeroed.
+            Default 0.0。
+        align_corners (bool, optional): Geometrically, we consider the pixels
+            of the input and output as squares rather than points.
+        upsample (str): the upsample method.
+        out_channels (int): the output channel.
+        conv_cfg (dict): Config dict for convolution layer.
+        act_cfg (dict): Config dict for activation layer.
+            Default: dict(type='ReLU').
+        norm_cfg (dict): Config dict for normalization layer.
+            Default: dict(type='BN').
+
+    """
     def __init__(self,
                  num_classes,
                  in_channels,
@@ -24,6 +42,7 @@ class PPMobileSegHead(nn.Module):
                  conv_cfg=dict(type='Conv'),
                  act_cfg=dict(type='ReLU'),
                  norm_cfg=dict(type='BN')):
+
         super().__init__()
         self.align_corners = align_corners
         self.last_channels = in_channels

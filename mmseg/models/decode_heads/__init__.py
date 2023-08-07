@@ -23,7 +23,6 @@ from .nl_head import NLHead
 from .ocr_head import OCRHead
 from .pid_head import PIDHead
 from .point_head import PointHead
-from .pp_mobileseg_head import PPMobileSegHead
 from .psa_head import PSAHead
 from .psp_head import PSPHead
 from .segformer_head import SegformerHead
@@ -73,5 +72,4 @@ __all__ = [
     'LightHamHead',
     'PIDHead',
     'DDRHead',
-    'PPMobileSegHead',
 ]

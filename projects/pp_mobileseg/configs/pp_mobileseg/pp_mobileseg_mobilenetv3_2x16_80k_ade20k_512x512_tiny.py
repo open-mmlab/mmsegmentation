@@ -13,14 +13,15 @@ model = dict(
         type='StrideFormer',
         mobileV3_cfg=[
             # k t c, s
-            [[3, 16, 16, True, 'ReLU', 1], [3, 64, 32, False, 'ReLU', 2],
+            [[3, 16, 16, True, 'ReLU', 1],
+             [3, 64, 32, False, 'ReLU', 2],
              [3, 48, 24, False, 'ReLU', 1]],  # cfg1
-            [[5, 96, 32, True, 'hardswish', 2],
-             [5, 96, 32, True, 'hardswish', 1]],  # cfg2
-            [[5, 160, 64, True, 'hardswish', 2],
-             [5, 160, 64, True, 'hardswish', 1]],  # cfg3
-            [[3, 384, 128, True, 'hardswish', 2],
-             [3, 384, 128, True, 'hardswish', 1]],  # cfg4
+            [[5, 96, 32, True, 'HSwish', 2],
+             [5, 96, 32, True, 'HSwish', 1]],  # cfg2
+            [[5, 160, 64, True, 'HSwish', 2],
+             [5, 160, 64, True, 'HSwish', 1]],  # cfg3
+            [[3, 384, 128, True, 'HSwish', 2],
+             [3, 384, 128, True, 'HSwish', 1]],  # cfg4
         ],
         channels=[16, 24, 32, 64, 128],
         depths=[2, 2],
