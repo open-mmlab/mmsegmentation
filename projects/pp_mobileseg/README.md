@@ -30,8 +30,8 @@ Extensive experiments show that PP-MobileSeg achieves a superior params-accuracy
 ### ADE20K
 | Model | Backbone | Training Iters | Batchsize | Train Resolution | mIoU(%) | latency(ms)* | params(M) | config | Links |
 |-|-|-|-|-|-|-|-|-|-|
-|PP-MobileSeg-Base|StrideFormer-Base|80000|32|512x512|41.57%|265.5|5.62|[config]()|[model]()\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_base/train.log)|
-|PP-MobileSeg-Tiny|StrideFormer-Tiny|80000|32|512x512|36.39%|215.3|1.61|[config]()|[model]()\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_tiny/train.log)|
+|PP-MobileSeg-Base|StrideFormer-Base|80000|32|512x512|41.57%|265.5|5.62|[config](https://github.com/Yang-Changhui/mmsegmentation/tree/add_ppmobileseg/projects/pp_mobileseg/configs/pp_mobileseg)|[model]()\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_base/train.log)|
+|PP-MobileSeg-Tiny|StrideFormer-Tiny|80000|32|512x512|36.39%|215.3|1.61|[config](https://github.com/Yang-Changhui/mmsegmentation/tree/add_ppmobileseg/projects/pp_mobileseg/configs/pp_mobileseg)|[model]()\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_tiny/train.log)|
 
 
 
