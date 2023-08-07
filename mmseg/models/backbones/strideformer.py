@@ -818,6 +818,7 @@ def _make_divisible(v, divisor=8, min_value=None):
     return new_v
 
 
+@MODELS.register_module()
 class HSigmoid(nn.Module):
 
     def __init__(self):
@@ -828,10 +829,8 @@ class HSigmoid(nn.Module):
         return self.relu(x + 3) / 6
 
 
-MODELS.register_module(module=HSigmoid, name='HSigmoid')
-
-
-class hardswish(nn.Module):
+@MODELS.register_module()
+class Hardswish(nn.Module):
 
     def __init__(self, inplace=False):
         super().__init__()
@@ -841,9 +840,7 @@ class hardswish(nn.Module):
         return self.relu(x)
 
 
-MODELS.register_module(module=hardswish, name='hardswish')
-
-
+@MODELS.register_module()
 class Hardsigmoid(nn.Module):
 
     def __init__(self, slope=0.2, offset=0.5, inplace=False):
@@ -853,6 +850,3 @@ class Hardsigmoid(nn.Module):
 
     def forward(self, x):
         return x.mul(self.slope).add(self.offset).clamp(0, 1)
-
-
-MODELS.register_module(module=Hardsigmoid, name='Hardsigmoid')
