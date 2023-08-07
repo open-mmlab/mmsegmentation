@@ -1,14 +1,18 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+from typing import List
+
 import torch
 import torch.nn as nn
-from mmseg.registry import MODELS
-from mmcv.cnn import build_conv_layer, ConvModule
 import torch.nn.functional as F
-from typing import List
+from mmcv.cnn import ConvModule, build_conv_layer
 from torch import Tensor
+
+from mmseg.registry import MODELS
 
 
 @MODELS.register_module()
 class PPMobileSegHead(nn.Module):
+
     def __init__(self,
                  num_classes,
                  in_channels,
@@ -19,8 +23,7 @@ class PPMobileSegHead(nn.Module):
                  out_channels=None,
                  conv_cfg=dict(type='Conv'),
                  act_cfg=dict(type='ReLU'),
-                 norm_cfg=dict(type='BN')
-                 ):
+                 norm_cfg=dict(type='BN')):
         super().__init__()
         self.align_corners = align_corners
         self.last_channels = in_channels
@@ -61,7 +64,7 @@ class PPMobileSegHead(nn.Module):
 
             x = pred_retrieve
         else:
-            raise NotImplementedError(self.upsample, " is not implemented")
+            raise NotImplementedError(self.upsample, ' is not implemented')
 
         return [x]
 

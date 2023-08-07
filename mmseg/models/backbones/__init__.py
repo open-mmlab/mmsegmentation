@@ -18,12 +18,12 @@ from .resnest import ResNeSt
 from .resnet import ResNet, ResNetV1c, ResNetV1d
 from .resnext import ResNeXt
 from .stdc import STDCContextPathNet, STDCNet
+from .strideformer import StrideFormer
 from .swin import SwinTransformer
 from .timm_backbone import TIMMBackbone
 from .twins import PCPVT, SVT
 from .unet import UNet
 from .vit import VisionTransformer
-from .strideformer import StrideFormer
 
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',

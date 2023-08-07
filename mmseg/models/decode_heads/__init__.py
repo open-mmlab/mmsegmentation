@@ -23,6 +23,7 @@ from .nl_head import NLHead
 from .ocr_head import OCRHead
 from .pid_head import PIDHead
 from .point_head import PointHead
+from .pp_mobileseg_head import PPMobileSegHead
 from .psa_head import PSAHead
 from .psp_head import PSPHead
 from .segformer_head import SegformerHead
@@ -33,15 +34,44 @@ from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
 from .stdc_head import STDCHead
 from .uper_head import UPerHead
-from .pp_mobileseg_head import PPMobileSegHead
 
 __all__ = [
-    'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
-    'UPerHead', 'DepthwiseSeparableASPPHead', 'ANNHead', 'DAHead', 'OCRHead',
-    'EncHead', 'DepthwiseSeparableFCNHead', 'FPNHead', 'EMAHead', 'DNLHead',
-    'PointHead', 'APCHead', 'DMHead', 'LRASPPHead', 'SETRUPHead',
-    'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
-    'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
-    'KernelUpdateHead', 'KernelUpdator', 'MaskFormerHead', 'Mask2FormerHead',
-    'LightHamHead', 'PIDHead', 'DDRHead', 'PPMobileSegHead',
+    'FCNHead',
+    'PSPHead',
+    'ASPPHead',
+    'PSAHead',
+    'NLHead',
+    'GCHead',
+    'CCHead',
+    'UPerHead',
+    'DepthwiseSeparableASPPHead',
+    'ANNHead',
+    'DAHead',
+    'OCRHead',
+    'EncHead',
+    'DepthwiseSeparableFCNHead',
+    'FPNHead',
+    'EMAHead',
+    'DNLHead',
+    'PointHead',
+    'APCHead',
+    'DMHead',
+    'LRASPPHead',
+    'SETRUPHead',
+    'SETRMLAHead',
+    'DPTHead',
+    'SETRMLAHead',
+    'SegmenterMaskTransformerHead',
+    'SegformerHead',
+    'ISAHead',
+    'STDCHead',
+    'IterativeDecodeHead',
+    'KernelUpdateHead',
+    'KernelUpdator',
+    'MaskFormerHead',
+    'Mask2FormerHead',
+    'LightHamHead',
+    'PIDHead',
+    'DDRHead',
+    'PPMobileSegHead',
 ]
