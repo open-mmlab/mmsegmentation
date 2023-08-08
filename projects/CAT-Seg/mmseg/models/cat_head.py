@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule
 
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.registry import MODELS
-from .decode_head import BaseDecodeHead
 
 
 class UpBlock(nn.Module):

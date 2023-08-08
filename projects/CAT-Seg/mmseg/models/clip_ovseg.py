@@ -8,9 +8,9 @@ import torch.nn.functional as F
 from huggingface_hub.utils._errors import LocalEntryNotFoundError
 from mmengine.model import BaseModule
 
-from mmseg.models.utils import clip_wrapper
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, clip_templates
+from ..utils import clip_wrapper
 
 
 @MODELS.register_module()

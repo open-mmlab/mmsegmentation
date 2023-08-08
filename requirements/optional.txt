@@ -1,5 +1,2 @@
 cityscapesscripts
-ftfy==6.0.1
-huggingface-hub
 nibabel
-regex

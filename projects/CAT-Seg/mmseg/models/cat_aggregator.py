@@ -7,8 +7,8 @@ from mmcv.cnn.bricks.transformer import FFN, build_dropout
 from mmengine.model import BaseModule
 from mmengine.utils import to_2tuple
 
-from mmseg.models.utils import FullAttention, LinearAttention
 from mmseg.registry import MODELS
+from ..utils import FullAttention, LinearAttention
 
 
 class AGWindowMSA(BaseModule):

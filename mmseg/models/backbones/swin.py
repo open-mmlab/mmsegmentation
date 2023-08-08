@@ -640,7 +640,6 @@ class SwinTransformer(BaseModule):
         self._freeze_stages()
 
     def _freeze_stages(self):
-        """Freeze stages before the given stage (including)."""
         if self.frozen_stages >= 0:
             self.patch_embed.eval()
             for param in self.patch_embed.parameters():
@@ -663,7 +662,6 @@ class SwinTransformer(BaseModule):
                 param.requires_grad = False
 
     def init_weights(self):
-        """Initialize the model weights."""
         if self.init_cfg is None:
             print_log(f'No pre-trained weights for '
                       f'{self.__class__.__name__}, '

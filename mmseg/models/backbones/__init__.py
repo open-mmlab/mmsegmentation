@@ -3,7 +3,6 @@ from .beit import BEiT
 from .bisenetv1 import BiSeNetV1
 from .bisenetv2 import BiSeNetV2
 from .cgnet import CGNet
-from .clip_ovseg import CLIPOVCATSeg
 from .ddrnet import DDRNet
 from .erfnet import ERFNet
 from .fast_scnn import FastSCNN
@@ -31,5 +30,5 @@ __all__ = [
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
     'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'PCPVT',
     'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE', 'PIDNet', 'MSCAN',
-    'DDRNet', 'CLIPOVCATSeg'
+    'DDRNet'
 ]
