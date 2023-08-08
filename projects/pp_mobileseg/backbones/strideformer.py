@@ -760,7 +760,7 @@ class FusionBlock(nn.Module):
         super().__init__()
         self.local_embedding = ConvModule(
             in_channels=in_channel,
-            out_channels=out_channel,
+            out_channels=embed_dim,
             kernel_size=1,
             bias=False,
             norm_cfg=norm_cfg,
