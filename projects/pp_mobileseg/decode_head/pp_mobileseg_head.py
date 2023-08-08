@@ -12,7 +12,7 @@ from mmseg.registry import MODELS
 
 @MODELS.register_module()
 class PPMobileSegHead(nn.Module):
-    """ the segmentation head
+    """the segmentation head.
 
     Args:
         num_classes (int): the classes num.
@@ -29,8 +29,8 @@ class PPMobileSegHead(nn.Module):
             Default: dict(type='ReLU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='BN').
-
     """
+
     def __init__(self,
                  num_classes,
                  in_channels,
