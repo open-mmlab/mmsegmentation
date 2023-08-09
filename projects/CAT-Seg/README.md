@@ -67,9 +67,9 @@ mim test mmsegmentation ${CONFIG} --checkpoint ${CHECKPOINT} --launcher pytorch 
 
 ### ADE20K-150-ZeroShot
 
-| Method  | Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device  | mIoU | mIoU(ms+flip) |                                                                                      config | download                                 |
-| ------- | ------------- | --------- | ------- | -------: | -------------- | ------- | ---- | ------------: | ------------------------------------------------------------------------------------------: | ---------------------------------------- |
-| CAT-Seg | R-101 & ViT-B | 384x384   | 80000   |        - | -              | RTX3090 | 27.2 |             - | [config](./configs/cat_seg/catseg_vitb-r101_4xb1-warmcoslr2e-4-adamw-80k_ade20k-384x384.py) | [model](https://download.openmmlab.com/) |
+| Method  | Backbone      | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device  | mIoU | mIoU(ms+flip) |                                                                                      config | download                                                                                                                                      |
+| ------- | ------------- | --------- | ------- | -------: | -------------- | ------- | ---- | ------------: | ------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| CAT-Seg | R-101 & ViT-B | 384x384   | 80000   |        - | -              | RTX3090 | 27.2 |             - | [config](./configs/cat_seg/catseg_vitb-r101_4xb1-warmcoslr2e-4-adamw-80k_ade20k-384x384.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/cat_seg/catseg_vitb-r101_4xb1-warmcoslr2e-4-adamw-80k_ade20k-384x384-54194d72.pth) |
 
 Note:
 
