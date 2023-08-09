@@ -25,8 +25,8 @@ class LinearAttention(nn.Module):
         Returns:
             queried_values: (N, L, H, D)
         """
-        Q = F.elu(queries)
-        K = F.elu(keys)
+        Q = F.elu(queries) + 1
+        K = F.elu(keys) + 1
 
         v_length = values.size(1)
         values = values / v_length  # prevent fp16 overflow
