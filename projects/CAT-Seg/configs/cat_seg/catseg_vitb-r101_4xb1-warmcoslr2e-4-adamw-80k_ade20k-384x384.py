@@ -3,6 +3,8 @@ _base_ = [
     '../_base_/datasets/ade20k_384x384.py'
 ]
 
+custom_imports = dict(imports=['cat_seg'])
+
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 crop_size = (384, 384)
 data_preprocessor = dict(
