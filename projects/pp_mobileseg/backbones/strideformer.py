@@ -108,15 +108,13 @@ class StrideFormer(BaseModule):
         self.inj_type = inj_type
         if self.inj_type == 'AAM':
             self.inj_module = InjectionMultiSumallmultiallsum(
-                in_channels=out_feat_chs,
-                out_channels=out_channels)
+                in_channels=out_feat_chs, out_channels=out_channels)
             self.feat_channels = [
                 out_channels,
             ]
         elif self.inj_type == 'AAMSx8':
             self.inj_module = InjectionMultiSumallmultiallsumSimpx8(
-                in_channels=out_feat_chs,
-                out_channels=out_channels)
+                in_channels=out_feat_chs, out_channels=out_channels)
             self.feat_channels = [
                 out_channels,
             ]
