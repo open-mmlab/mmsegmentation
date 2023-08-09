@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # yapf: disable
-from .class_names import (ade_classes, ade_palette, cityscapes_classes,
+from .class_names import (ade_classes, ade_palette, bdd100k_classes,
+                          bdd100k_palette, cityscapes_classes,
                           cityscapes_palette, cocostuff_classes,
                           cocostuff_palette, dataset_aliases, get_classes,
                           get_palette, isaid_classes, isaid_palette,
@@ -27,5 +28,6 @@ __all__ = [
     'cityscapes_palette', 'ade_palette', 'voc_palette', 'cocostuff_palette',
     'loveda_palette', 'potsdam_palette', 'vaihingen_palette', 'isaid_palette',
     'stare_palette', 'dataset_aliases', 'get_classes', 'get_palette',
-    'datafrombytes', 'synapse_palette', 'synapse_classes'
+    'datafrombytes', 'synapse_palette', 'synapse_classes', 'bdd100k_classes',
+    'bdd100k_palette'
 ]
