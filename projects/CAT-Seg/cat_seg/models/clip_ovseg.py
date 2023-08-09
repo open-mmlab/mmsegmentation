@@ -9,8 +9,10 @@ from huggingface_hub.utils._errors import LocalEntryNotFoundError
 from mmengine.model import BaseModule
 
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType, clip_templates
+from mmseg.utils import ConfigType
 from ..utils import clip_wrapper
+from ..utils.clip_templates import (IMAGENET_TEMPLATES,
+                                    IMAGENET_TEMPLATES_SELECT)
 
 
 @MODELS.register_module()
@@ -88,9 +90,9 @@ class CLIPOVCATSeg(BaseModule):
         # prepare clip templates
         self.prompt_ensemble_type = prompt_ensemble_type
         if self.prompt_ensemble_type == 'imagenet_select':
-            prompt_templates = clip_templates.IMAGENET_TEMPLATES_SELECT
+            prompt_templates = IMAGENET_TEMPLATES_SELECT
         elif self.prompt_ensemble_type == 'imagenet':
-            prompt_templates = clip_templates.IMAGENET_TEMPLATES
+            prompt_templates = IMAGENET_TEMPLATES
         elif self.prompt_ensemble_type == 'single':
             prompt_templates = [
                 'A photo of a {} in the scene',
