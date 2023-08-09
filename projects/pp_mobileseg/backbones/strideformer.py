@@ -109,7 +109,6 @@ class StrideFormer(BaseModule):
         if self.inj_type == 'AAM':
             self.inj_module = InjectionMultiSumallmultiallsum(
                 in_channels=out_feat_chs,
-                act_cfg=act_cfg,
                 out_channels=out_channels)
             self.feat_channels = [
                 out_channels,
@@ -117,7 +116,6 @@ class StrideFormer(BaseModule):
         elif self.inj_type == 'AAMSx8':
             self.inj_module = InjectionMultiSumallmultiallsumSimpx8(
                 in_channels=out_feat_chs,
-                act_cfg=act_cfg,
                 out_channels=out_channels)
             self.feat_channels = [
                 out_channels,
@@ -808,8 +806,8 @@ class InjectionMultiSumallmultiallsum(nn.Module):
     def __init__(
             self,
             in_channels=(64, 128, 256, 384),
-            act_cfg=None,
             out_channels=256,
+            act_cfg=dict(type='Sigmoid'),
             norm_cfg=dict(type='BN'),
     ):
         super().__init__()
@@ -878,8 +876,8 @@ class InjectionMultiSumallmultiallsumSimpx8(nn.Module):
     def __init__(
             self,
             in_channels=(64, 128, 256, 384),
-            act_cfg=None,
             out_channels=256,
+            act_cfg=dict(type='Sigmoid'),
             norm_cfg=dict(type='BN'),
     ):
         super().__init__()
