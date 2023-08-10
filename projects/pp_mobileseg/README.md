@@ -30,10 +30,18 @@ Extensive experiments show that PP-MobileSeg achieves a superior params-accuracy
 
 ### ADE20K
 
-| Model             | Backbone          | Training Iters | Batchsize | Train Resolution | mIoU(%) | latency(ms)\* | params(M) | config                                                                                                                    | Links                                                                                                                                                                                                                          |
-| ----------------- | ----------------- | -------------- | --------- | ---------------- | ------- | ------------- | --------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| PP-MobileSeg-Base | StrideFormer-Base | 80000          | 32        | 512x512          | 41.57%  | 265.5         | 5.62      | [config](https://github.com/Yang-Changhui/mmsegmentation/tree/add_ppmobileseg/projects/pp_mobileseg/configs/pp_mobileseg) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pp_mobileseg/pp_mobileseg_mobilenetv3_2x16_80k_ade20k_512x512_base-ed0be681.pth)\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_base/train.log) |
-| PP-MobileSeg-Tiny | StrideFormer-Tiny | 80000          | 32        | 512x512          | 36.39%  | 215.3         | 1.61      | [config](https://github.com/Yang-Changhui/mmsegmentation/tree/add_ppmobileseg/projects/pp_mobileseg/configs/pp_mobileseg) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pp_mobileseg/pp_mobileseg_mobilenetv3_2x16_80k_ade20k_512x512_tiny-e4b35e96.pth)\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_tiny/train.log) |
+| Model             | Backbone          | Training Iters | Batchsize | Train Resolution | mIoU(%) | latency(ms)\* | params(M) | config                                                                                                                    | Links                                                                                                                                                                                                                                |
+| ----------------- | ----------------- | -------------- | --------- | ---------------- | ------- | ------------- | --------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| PP-MobileSeg-Base | StrideFormer-Base | 80000          | 32        | 512x512          | 41.57%  | 265.5         | 5.62      | [config](https://github.com/Yang-Changhui/mmsegmentation/tree/add_ppmobileseg/projects/pp_mobileseg/configs/pp_mobileseg) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pp_mobileseg/pp_mobileseg_mobilenetv3_2xb16_3rdparty-base_512x512-ade20k-f12b44f3.pth)\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_base/train.log) |
+| PP-MobileSeg-Tiny | StrideFormer-Tiny | 80000          | 32        | 512x512          | 36.39%  | 215.3         | 1.61      | [config](https://github.com/Yang-Changhui/mmsegmentation/tree/add_ppmobileseg/projects/pp_mobileseg/configs/pp_mobileseg) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/pp_mobileseg/pp_mobileseg_mobilenetv3_2xb16_3rdparty-tiny_512x512-ade20k-a351ebf5.pth)\|[log](https://bj.bcebos.com/paddleseg/dygraph/ade20k/pp_mobileseg_tiny/train.log) |
+
+## Usage
+
+Same as other models in MMsegmentation, you can run the following command to test the model at ${MMSEG_ROOT}:
+
+```shell
+./tools/dist_test.sh projects/pp_mobileseg/configs/pp_mobileseg/pp_mobileseg_mobilenetv3_2x16_80k_ade20k_512x512_base.py checkpoints/pp_mobileseg_mobilenetv3_2xb16_3rdparty-base_512x512-ade20k-f12b44f3.pth 8
+```
 
 ## Citation
 
