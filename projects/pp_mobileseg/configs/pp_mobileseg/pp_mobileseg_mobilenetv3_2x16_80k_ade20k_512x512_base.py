@@ -2,6 +2,7 @@ _base_ = [
     '../_base_/models/pp_mobile.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_80k.py'
 ]
+# the custom import path is determined by your workspace path (i.e., where you run the command from) # noqa
 custom_imports = dict(
     imports=[
         'projects.pp_mobileseg.backbones', 'projects.pp_mobileseg.decode_head'
