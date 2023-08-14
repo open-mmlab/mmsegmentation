@@ -1,3 +1,4 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -7,10 +8,10 @@ from mmseg.registry import MODELS
 
 @MODELS.register_module()
 class KLDivLoss(nn.Module):
-    def __init__(self,
-                 temperature=1.0,
-                 reduction='mean'):
-        """Kullback-Leibler divergence Loss
+
+    def __init__(self, temperature=1.0, reduction='mean'):
+        """Kullback-Leibler divergence Loss.
+
         <https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence>
 
         Args:
@@ -20,15 +21,16 @@ class KLDivLoss(nn.Module):
             and "mean"
         """
 
-        assert isinstance(temperature, (float, int)), "Expected temperature to be" \
-            f"float or int, but got {temperature.__class__.__name__} instead"
-        assert temperature != 0., "Temperature must not be zero"
+        assert isinstance(temperature, (float, int)), \
+            'Expected temperature to be' \
+            f'float or int, but got {temperature.__class__.__name__} instead'
+        assert temperature != 0., 'Temperature must not be zero'
 
-        assert reduction in ["mean", "none", "sum"], \
+        assert reduction in ['mean', 'none', 'sum'], \
             "Reduction must be one of the options ('mean', " \
             f"'sum', 'none'), but got {reduction}"
 
-        super(KLDivLoss, self).__init__()
+        super().__init__()
         self.temperature = temperature
         self.reduction = reduction
 
@@ -49,14 +51,14 @@ class KLDivLoss(nn.Module):
         Returns:
             (Tensor): Reduced loss.
         """
-        assert isinstance(input, torch.Tensor), "Expected input to" \
-            f"be Tensor, but got {input.__class__.__name__} instead"
-        assert isinstance(target, torch.Tensor), "Expected target to" \
-            f"be Tensor, but got {target.__class__.__name__} instead"
+        assert isinstance(input, torch.Tensor), 'Expected input to' \
+            f'be Tensor, but got {input.__class__.__name__} instead'
+        assert isinstance(target, torch.Tensor), 'Expected target to' \
+            f'be Tensor, but got {target.__class__.__name__} instead'
 
-        assert input.shape == target.shape, "Input and target " \
-            "must have same shape," \
-            f"but got shapes {input.shape} and {target.shape}"
+        assert input.shape == target.shape, 'Input and target ' \
+            'must have same shape,' \
+            f'but got shapes {input.shape} and {target.shape}'
 
         input = F.softmax(input / self.temperature, dim=1)
         target = F.softmax(target / self.temperature, dim=1)
@@ -77,4 +79,3 @@ class KLDivLoss(nn.Module):
             return torch.mean(loss, dim=1)
 
         return loss
-
