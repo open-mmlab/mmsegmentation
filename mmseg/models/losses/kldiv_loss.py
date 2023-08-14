@@ -27,8 +27,8 @@ class KLDivLoss(nn.Module):
         assert temperature != 0., 'Temperature must not be zero'
 
         assert reduction in ['mean', 'none', 'sum'], \
-            "Reduction must be one of the options ('mean', " \
-            f"'sum', 'none'), but got {reduction}"
+            'Reduction must be one of the options ("mean", ' \
+            f'"sum", "none"), but got {reduction}'
 
         super().__init__()
         self.temperature = temperature
