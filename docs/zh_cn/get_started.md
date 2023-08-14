@@ -68,7 +68,7 @@ pip install mmsegmentation
 ```
 
 **注意：**
-如果你想使用 albumentations，我们建议使用 pip install-U albumentations --no-binary qudida,albumentations 进行安装。如果您仅使用 pip install albumentations>=0.3.2 进行安装，它将同时安装 opencv-python-headless（即使您已经安装了 opencv-python）。我们建议在安装了 albumentations 后检查环境，以确保没有同时安装 opencv-python 和 opencv-python-headless，因为如果两者都安装了，可能会导致意外问题。请参阅[官方文档](https://albumentations.ai/docs/getting_started/installation/#note-on-opencv-dependencies)了解更多详细信息。
+如果你想使用 albumentations，我们建议使用 pip install -U albumentations --no-binary qudida,albumentations 进行安装。如果您仅使用 pip install albumentations>=0.3.2 进行安装，它将同时安装 opencv-python-headless（即使您已经安装了 opencv-python）。我们建议在安装了 albumentations 后检查环境，以确保没有同时安装 opencv-python 和 opencv-python-headless，因为如果两者都安装了，可能会导致意外问题。请参阅[官方文档](https://albumentations.ai/docs/getting_started/installation/#note-on-opencv-dependencies)了解更多详细信息。
 
 ## 验证安装
 
@@ -80,7 +80,7 @@ pip install mmsegmentation
 mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --dest .
 ```
 
-下载将需要几秒钟或更长时间，这取决于你的网络环境。完成后，你会在当前文件夹中发现两个文件`pspnet_r50-d8_512x1024_40k_cityscapes.py`和`pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth`。
+下载将需要几秒钟或更长时间，这取决于你的网络环境。完成后，你会在当前文件夹中发现两个文件 `pspnet_r50-d8_512x1024_40k_cityscapes.py`和 `pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth`。
 
 **第二步** 验证推理示例
 
@@ -90,7 +90,7 @@ mim download mmsegmentation --config pspnet_r50-d8_512x1024_40k_cityscapes --des
 python demo/image_demo.py demo/demo.png pspnet_r50-d8_512x1024_40k_cityscapes.py pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth --device cpu --out-file result.jpg
 ```
 
-你会在你的当前文件夹中看到一个新的图像`result.jpg`，其中的分割掩膜覆盖在所有对象上。
+你会在你的当前文件夹中看到一个新的图像 `result.jpg`，其中的分割掩膜覆盖在所有对象上。
 
 如果您是**作为 PyThon 包安装**，那么可以打开您的 Python 解释器，复制并粘贴如下代码：
 
