@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import pytest
 import torch
 
 from mmseg.models.losses.kldiv_loss import KLDivLoss
@@ -14,7 +13,7 @@ def test_kldiv_loss_with_none_reduction():
     # Test loss forward
     loss = loss_class(reduction=reduction)(pred, target)
     assert isinstance(loss, torch.Tensor)
-    assert loss.shape == (8, 5, 5), f"{loss.shape}"
+    assert loss.shape == (8, 5, 5), f'{loss.shape}'
 
 
 def test_kldiv_loss_with_mean_reduction():
@@ -26,7 +25,7 @@ def test_kldiv_loss_with_mean_reduction():
     # Test loss forward
     loss = loss_class(reduction=reduction)(pred, target)
     assert isinstance(loss, torch.Tensor)
-    assert loss.shape == (8,), f"{loss.shape}"
+    assert loss.shape == (8,), f'{loss.shape}'
 
 
 def test_kldiv_loss_with_sum_reduction():
@@ -38,5 +37,4 @@ def test_kldiv_loss_with_sum_reduction():
     # Test loss forward
     loss = loss_class(reduction=reduction)(pred, target)
     assert isinstance(loss, torch.Tensor)
-    assert loss.shape == (8,), f"{loss.shape}"
-
+    assert loss.shape == (8,), f'{loss.shape}'
