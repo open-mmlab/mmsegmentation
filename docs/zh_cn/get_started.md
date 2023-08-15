@@ -111,7 +111,7 @@ show_result_pyplot(model, img, result, show=True, out_file='result.jpg', opacity
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
    result = inference_model(model, frame)
-   show_result_pyplot(model, result, wait_time=1)
+   show_result_pyplot(model, frame, result, wait_time=1)
 ```
 
 您可以修改上面的代码来测试单个图像或视频，这两个选项都可以验证安装是否成功。
