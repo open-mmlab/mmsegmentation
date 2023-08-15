@@ -14,6 +14,7 @@ from .fcn_head import FCNHead
 from .fpn_head import FPNHead
 from .gc_head import GCHead
 from .ham_head import LightHamHead
+from .hrnetconstrast_head import HRNetContrastHead
 from .isa_head import ISAHead
 from .knet_head import IterativeDecodeHead, KernelUpdateHead, KernelUpdator
 from .lraspp_head import LRASPPHead
@@ -33,7 +34,6 @@ from .setr_mla_head import SETRMLAHead
 from .setr_up_head import SETRUPHead
 from .stdc_head import STDCHead
 from .uper_head import UPerHead
-from .hrnetconstrast_head import HRNetContrastHead
 
 __all__ = [
     'FCNHead', 'PSPHead', 'ASPPHead', 'PSAHead', 'NLHead', 'GCHead', 'CCHead',
@@ -43,5 +43,5 @@ __all__ = [
     'SETRMLAHead', 'DPTHead', 'SETRMLAHead', 'SegmenterMaskTransformerHead',
     'SegformerHead', 'ISAHead', 'STDCHead', 'IterativeDecodeHead',
     'KernelUpdateHead', 'KernelUpdator', 'MaskFormerHead', 'Mask2FormerHead',
-    'LightHamHead', 'PIDHead', 'DDRHead','HRNetContrastHead'
+    'LightHamHead', 'PIDHead', 'DDRHead', 'HRNetContrastHead'
 ]

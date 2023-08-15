@@ -41,23 +41,23 @@ model = dict(
                 num_blocks=(4, 4, 4, 4),
                 num_channels=(18, 36, 72, 144)))),
     decode_head=dict(
-            type='HRNetContrastHead',
-            in_channels=[18, 36, 72, 144],
-            in_index=(0, 1, 2, 3),
-            channels=sum([18, 36, 72, 144]),
+        type='HRNetContrastHead',
+        in_channels=[18, 36, 72, 144],
+        in_index=(0, 1, 2, 3),
+        channels=sum([18, 36, 72, 144]),
+        input_transform='resize_concat',
+        proj_n=256,
+        proj_mode='convmlp',
+        drop_p=0.1,
+        dropout_ratio=-1,
+        num_classes=19,
+        norm_cfg=norm_cfg,
+        align_corners=False,
+        loss_decode=dict(
+            type='PixelContrastCrossEntropyLoss',
+            base_temperature=0.07,
+            temperature=0.1)),
 
-            input_transform='resize_concat',
-            proj_n=256,
-            proj_mode="convmlp",
-            drop_p=0.1,
-            dropout_ratio=-1,
-            num_classes=19,
-            norm_cfg=norm_cfg,
-            align_corners=False,
-
-            loss_decode=dict(
-            type='PixelContrastCrossEntropyLoss', base_temperature=0.07,temperature=0.1)),
-    
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))

@@ -2,9 +2,9 @@
 import pytest
 import torch
 
-from mmseg.models.losses import PixelContrastCrossEntropyLoss
 from mmseg.models.decode_heads import HRNetContrastHead
-import torch.nn as nn
+from mmseg.models.losses import PixelContrastCrossEntropyLoss
+
 
 def test_pixel_contrast_crossentropy_loss():
     # temperature should >=0 and base_temperature should >0
@@ -18,7 +18,7 @@ def test_pixel_contrast_crossentropy_loss():
         PixelContrastCrossEntropyLoss(ignore_index=256)
     with pytest.raises(KeyError):
         PixelContrastCrossEntropyLoss(ignore_index=[255])
-    
+
     # max_samples should be an int and >=0
     with pytest.raises(KeyError):
         PixelContrastCrossEntropyLoss(max_samples=-1)
@@ -33,7 +33,8 @@ def test_pixel_contrast_crossentropy_loss():
 
     target = torch.rand((1, 23, 23))
     inputs = [torch.randn(1, 8, 23, 23)]
-    head = HRNetContrastHead(in_channels=8, channels=4, num_classes=19, proj_mode='linear')
+    head = HRNetContrastHead(
+        in_channels=8, channels=4, num_classes=19, proj_mode='linear')
     loss = PixelContrastCrossEntropyLoss()
     with pytest.raises(AssertionError):
         # pred must be a dict that output from HRNetContrastHead
@@ -44,9 +45,8 @@ def test_pixel_contrast_crossentropy_loss():
     loss = loss(pred, target)
     assert isinstance(loss, torch.Tensor)
 
-
-
-    head = HRNetContrastHead(in_channels=8, channels=4, num_classes=19, proj_mode='convmlp')
+    head = HRNetContrastHead(
+        in_channels=8, channels=4, num_classes=19, proj_mode='convmlp')
     loss = PixelContrastCrossEntropyLoss()
     with pytest.raises(AssertionError):
         # pred must be a dict that output from HRNetContrastHead
@@ -56,15 +56,13 @@ def test_pixel_contrast_crossentropy_loss():
     pred = head(inputs)
     loss = loss(pred, target)
     assert isinstance(loss, torch.Tensor)
-
-
 
     target = torch.rand((1, 23, 23))
     inputs = [torch.randn(1, 10, 23, 23)]
-    head = HRNetContrastHead(in_channels=10, channels=6, num_classes=19, proj_mode='convmlp')
+    head = HRNetContrastHead(
+        in_channels=10, channels=6, num_classes=19, proj_mode='convmlp')
     loss = PixelContrastCrossEntropyLoss()
 
     pred = head(inputs)
     loss = loss(pred, target)
     assert isinstance(loss, torch.Tensor)
-
