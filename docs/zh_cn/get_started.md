@@ -110,7 +110,7 @@ show_result_pyplot(model, img, result, show=True, out_file='result.jpg', opacity
 # 在一段视频上测试并可视化分割结果
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
-   result = inference_segmentor(model, frame)
+   result = inference_model(model, frame)
    show_result_pyplot(model, result, wait_time=1)
 ```
 
