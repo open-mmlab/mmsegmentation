@@ -650,12 +650,9 @@ class LoadDepthAnnotation(BaseTransform):
 
     Args:
         decode_backend (str): The data decoding backend type. Options are
-            'numpy'and 'nifti', and there is a convention that when backend is
-            'nifti' the axis of data loaded is XYZ, and when backend is
-            'numpy', the the axis is ZYX. The data will be transposed if the
-            backend is 'nifti'. Defaults to 'nifti'.
+            'numpy', 'nifti', and 'cv2'. Defaults to 'cv2'.
         to_float32 (bool): Whether to convert the loaded depth map to a float32
-            numpy array. If set to False, the loaded image is an float64 array.
+            numpy array. If set to False, the loaded image is an uint16 array.
             Defaults to True.
         depth_rescale_factor (float): Factor to rescale the depth value to
             limit the range. Defaults to 1.0.
