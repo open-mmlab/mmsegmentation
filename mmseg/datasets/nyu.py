@@ -24,6 +24,7 @@ class NYUDataset(BaseSegDataset):
         │   │   ├── annotations
         │   │   │   ├── train
         │   │   │   │   ├── scene_xxx.png
+        │   │   │   │   ├── ...
         │   │   │   ├── test
 
     Args:
@@ -33,7 +34,7 @@ class NYUDataset(BaseSegDataset):
         data_root (str, optional): The root directory for ``data_prefix`` and
             ``ann_file``. Defaults to None.
         data_prefix (dict, optional): Prefix for training data. Defaults to
-            dict(img_path=None, seg_map_path=None).
+            dict(img_path='images', depth_map_path='annotations').
         img_suffix (str): Suffix of images. Default: '.jpg'
         seg_map_suffix (str): Suffix of segmentation maps. Default: '.png'
         filter_cfg (dict, optional): Config for filter data. Defaults to None.
@@ -73,11 +74,16 @@ class NYUDataset(BaseSegDataset):
                  'computer_lab', 'classroom', 'office', 'bookstore'))
 
     def __init__(self,
+                 data_prefix=dict(
+                     img_path='images', depth_map_path='annotations'),
                  img_suffix='.jpg',
                  depth_map_suffix='.png',
                  **kwargs) -> None:
         super().__init__(
-            img_suffix=img_suffix, seg_map_suffix=depth_map_suffix, **kwargs)
+            data_prefix=data_prefix,
+            img_suffix=img_suffix,
+            seg_map_suffix=depth_map_suffix,
+            **kwargs)
 
     def _get_category_id_from_filename(self, image_fname: str) -> int:
         """Retrieve the category ID from the given image filename."""
@@ -110,8 +116,6 @@ class NYUDataset(BaseSegDataset):
             if ann_dir is not None:
                 depth_map = img[:-_suffix_len] + self.seg_map_suffix
                 data_info['depth_map_path'] = osp.join(ann_dir, depth_map)
-            data_info['label_map'] = self.label_map
-            data_info['reduce_zero_label'] = self.reduce_zero_label
             data_info['seg_fields'] = []
             data_info['category_id'] = self._get_category_id_from_filename(img)
             data_list.append(data_info)

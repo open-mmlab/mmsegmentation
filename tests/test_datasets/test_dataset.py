@@ -9,7 +9,7 @@ from mmseg.datasets import (ADE20KDataset, BaseSegDataset, BDD100KDataset,
                             CityscapesDataset, COCOStuffDataset,
                             DecathlonDataset, DSDLSegDataset, ISPRSDataset,
                             LIPDataset, LoveDADataset, MapillaryDataset_v1,
-                            MapillaryDataset_v2, PascalVOCDataset,
+                            MapillaryDataset_v2, NYUDataset, PascalVOCDataset,
                             PotsdamDataset, REFUGEDataset, SynapseDataset,
                             iSAIDDataset)
 from mmseg.registry import DATASETS
@@ -462,3 +462,14 @@ def test_dsdlseg_dataset():
         assert len(dataset.metainfo['classes']) == 21
     else:
         ImportWarning('Package `dsdl` is not installed.')
+
+
+def test_nyu_dataset():
+    dataset = NYUDataset(
+        data_root='tests/data/pseudo_nyu_dataset',
+        data_prefix=dict(img_path='images', depth_map_path='annotations'),
+    )
+    assert len(dataset) == 1
+    data = dataset[0]
+    assert data.get('depth_map_path', None) is not None
+    assert data.get('category_id', -1) == 26
