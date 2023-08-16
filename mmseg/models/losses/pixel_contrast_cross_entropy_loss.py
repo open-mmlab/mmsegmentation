@@ -37,13 +37,12 @@ def hard_anchor_sampling(X, y_hat, y, ignore_index, max_views, max_samples):
 
     n_view = max_samples // total_classes
     n_view = min(n_view, max_views)
-    if(torch.cuda.is_available()):
+    if (torch.cuda.is_available()):
         X_ = torch.zeros((total_classes, n_view, feat_dim),
-                        dtype=torch.float).cuda()
+                         dtype=torch.float).cuda()
         y_ = torch.zeros(total_classes, dtype=torch.float).cuda()
     else:
-        X_ = torch.zeros((total_classes, n_view, feat_dim),
-                     dtype=torch.float)
+        X_ = torch.zeros((total_classes, n_view, feat_dim), dtype=torch.float)
         y_ = torch.zeros(total_classes, dtype=torch.float)
 
     X_ptr = 0
@@ -99,7 +98,7 @@ def contrastive(embed, label, temperature, base_temperature):
     anchor_num, n_view = embed.shape[0], embed.shape[1]
 
     label = label.reshape((-1, 1))
-    if(torch.cuda.is_available()):
+    if (torch.cuda.is_available()):
         mask = torch.eq(label, label.permute([1, 0])).float().cuda()
     else:
         mask = torch.eq(label, label.permute([1, 0])).float()
@@ -119,11 +118,13 @@ def contrastive(embed, label, temperature, base_temperature):
     mask = torch.tile(mask, [anchor_count, contrast_count])
     neg_mask = 1 - mask
 
-    if(torch.cuda.is_available()):
-        logits_mask = torch.ones_like(mask).scatter_(1,
+    if (torch.cuda.is_available()):
+        logits_mask = torch.ones_like(mask).scatter_(
+            1,
             torch.arange(anchor_num * anchor_count).view(-1, 1).cuda(), 0)
     else:
-        logits_mask = torch.ones_like(mask).scatter_(1,
+        logits_mask = torch.ones_like(mask).scatter_(
+            1,
             torch.arange(anchor_num * anchor_count).view(-1, 1), 0)
 
     mask = mask * logits_mask
