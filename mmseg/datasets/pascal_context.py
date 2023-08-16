@@ -10,8 +10,8 @@ class PascalContextDataset(BaseSegDataset):
     """PascalContext dataset.
 
     In segmentation map annotation for PascalContext, 0 stands for background,
-    which is included in 60 categories. ``reduce_zero_label`` is set to True.
-    The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
+    which is included in 60 categories. ``reduce_zero_label`` is fixed to
+    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
     fixed to '.png'.
 
     Args:
@@ -49,7 +49,7 @@ class PascalContextDataset(BaseSegDataset):
                  ann_file='',
                  img_suffix='.jpg',
                  seg_map_suffix='.png',
-                 reduce_zero_label=True,
+                 reduce_zero_label=False,
                  **kwargs) -> None:
         super().__init__(
             img_suffix=img_suffix,
@@ -66,8 +66,10 @@ class PascalContextDataset59(BaseSegDataset):
 
     In segmentation map annotation for PascalContext, 0 stands for background,
     which is included in 60 categories. ``reduce_zero_label`` is fixed to
-    False. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
+    True. The ``img_suffix`` is fixed to '.jpg' and ``seg_map_suffix`` is
     fixed to '.png'.
+    Noted: If the background is 255 and the ids of categories are from 0 to 58,
+    ``reduce_zero_label`` needs to be set to False.
 
     Args:
         ann_file (str): Annotation file path.
@@ -103,7 +105,7 @@ class PascalContextDataset59(BaseSegDataset):
                  ann_file='',
                  img_suffix='.jpg',
                  seg_map_suffix='.png',
-                 reduce_zero_label=False,
+                 reduce_zero_label=True,
                  **kwargs):
         super().__init__(
             img_suffix=img_suffix,

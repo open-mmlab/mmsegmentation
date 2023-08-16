@@ -110,8 +110,8 @@ show_result_pyplot(model, img, result, show=True, out_file='result.jpg', opacity
 # 在一段视频上测试并可视化分割结果
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
-   result = inference_segmentor(model, frame)
-   show_result_pyplot(model, result, wait_time=1)
+   result = inference_model(model, frame)
+   show_result_pyplot(model, frame, result, wait_time=1)
 ```
 
 您可以修改上面的代码来测试单个图像或视频，这两个选项都可以验证安装是否成功。
