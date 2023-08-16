@@ -5,14 +5,20 @@ import tempfile
 
 import pytest
 
-from mmseg.datasets import (ADE20KDataset, BaseSegDataset, CityscapesDataset,
-                            COCOStuffDataset, DecathlonDataset, ISPRSDataset,
+from mmseg.datasets import (ADE20KDataset, BaseSegDataset, BDD100KDataset,
+                            CityscapesDataset, COCOStuffDataset,
+                            DecathlonDataset, DSDLSegDataset, ISPRSDataset,
                             LIPDataset, LoveDADataset, MapillaryDataset_v1,
                             MapillaryDataset_v2, PascalVOCDataset,
                             PotsdamDataset, REFUGEDataset, SynapseDataset,
                             iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
+
+try:
+    from dsdl.dataset import DSDLDataset
+except ImportError:
+    DSDLDataset = None
 
 
 def test_classes():
@@ -32,7 +38,7 @@ def test_classes():
         MapillaryDataset_v1.METAINFO['classes']) == get_classes('mapillary_v1')
     assert list(
         MapillaryDataset_v2.METAINFO['classes']) == get_classes('mapillary_v2')
-
+    assert list(BDD100KDataset.METAINFO['classes']) == get_classes('bdd100k')
     with pytest.raises(ValueError):
         get_classes('unsupported')
 
@@ -89,7 +95,7 @@ def test_palette():
         MapillaryDataset_v1.METAINFO['palette']) == get_palette('mapillary_v1')
     assert list(
         MapillaryDataset_v2.METAINFO['palette']) == get_palette('mapillary_v2')
-
+    assert list(BDD100KDataset.METAINFO['palette']) == get_palette('bdd100k')
     with pytest.raises(ValueError):
         get_palette('unsupported')
 
@@ -326,6 +332,19 @@ def test_mapillary():
     assert len(test_dataset) == 1
 
 
+def test_bdd100k():
+    test_dataset = BDD100KDataset(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_bdd100k_dataset/images/10k/val'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_bdd100k_dataset/labels/sem_seg/masks/val')))
+    assert len(test_dataset) == 3
+
+
 @pytest.mark.parametrize('dataset, classes', [
     ('ADE20KDataset', ('wall', 'building')),
     ('CityscapesDataset', ('road', 'sidewalk')),
@@ -433,3 +452,13 @@ def test_custom_dataset_custom_palette():
             ann_file=tempfile.mkdtemp(),
             metainfo=dict(classes=('bus', 'car'), palette=[[200, 200, 200]]),
             lazy_init=True)
+
+
+def test_dsdlseg_dataset():
+    if DSDLDataset is not None:
+        dataset = DSDLSegDataset(
+            data_root='tests/data/dsdl_seg', ann_file='set-train/train.yaml')
+        assert len(dataset) == 3
+        assert len(dataset.metainfo['classes']) == 21
+    else:
+        ImportWarning('Package `dsdl` is not installed.')

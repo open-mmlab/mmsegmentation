@@ -123,7 +123,7 @@ def add_mim_extension():
     else:
         return
 
-    filenames = ['tools', 'configs', 'model-index.yml']
+    filenames = ['tools', 'configs', 'model-index.yml', 'dataset-index.yml']
     repo_path = osp.dirname(__file__)
     mim_path = osp.join(repo_path, 'mmseg', '.mim')
     os.makedirs(mim_path, exist_ok=True)
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         author='MMSegmentation Contributors',
         author_email='openmmlab@gmail.com',
         keywords='computer vision, semantic segmentation',
-        url='http://github.com/open-mmlab/mmsegmentation',
+        url='https://github.com/open-mmlab/mmsegmentation',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
         include_package_data=True,
         classifiers=[

@@ -1,9 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-"""MMSegmentation provides 17 registry nodes to support using modules across
+"""MMSegmentation provides 21 registry nodes to support using modules across
 projects. Each node is a child of the root registry in MMEngine.
 
 More details can be found at
-https://mmengine.readthedocs.io/en/latest/tutorials/registry.html.
+https://mmengine.readthedocs.io/en/latest/advanced_tutorials/registry.html.
 """
 
 from mmengine.registry import DATA_SAMPLERS as MMENGINE_DATA_SAMPLERS
@@ -46,10 +46,7 @@ HOOKS = Registry(
 # manage data-related modules
 DATASETS = Registry(
     'dataset', parent=MMENGINE_DATASETS, locations=['mmseg.datasets'])
-DATA_SAMPLERS = Registry(
-    'data sampler',
-    parent=MMENGINE_DATA_SAMPLERS,
-    locations=['mmseg.datasets.samplers'])
+DATA_SAMPLERS = Registry('data sampler', parent=MMENGINE_DATA_SAMPLERS)
 TRANSFORMS = Registry(
     'transform',
     parent=MMENGINE_TRANSFORMS,
@@ -85,9 +82,7 @@ OPTIM_WRAPPER_CONSTRUCTORS = Registry(
     locations=['mmseg.engine.optimizers'])
 # mangage all kinds of parameter schedulers like `MultiStepLR`
 PARAM_SCHEDULERS = Registry(
-    'parameter scheduler',
-    parent=MMENGINE_PARAM_SCHEDULERS,
-    locations=['mmseg.engine.schedulers'])
+    'parameter scheduler', parent=MMENGINE_PARAM_SCHEDULERS)
 
 # manage all kinds of metrics
 METRICS = Registry(

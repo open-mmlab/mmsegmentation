@@ -1,0 +1,64 @@
+Collections:
+- Name: DDRNet
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - Cityscapes
+  Paper:
+    Title: Deep Dual-resolution Networks for Real-time and Accurate Semantic Segmentation
+      of Road Scenes
+    URL: http://arxiv.org/abs/2101.06085
+  README: configs/ddrnet/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024
+  In Collection: DDRNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 77.84
+      mIoU(ms+flip): 80.15
+  Config: configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 12
+    Architecture:
+    - DDRNet23-slim
+    - DDRNet
+    Training Resources: 2x A100 GPUS
+    Memory (GB): 1.7
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024_20230426_145312-6a5e5174.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024_20230426_145312.json
+  Paper:
+    Title: Deep Dual-resolution Networks for Real-time and Accurate Semantic Segmentation
+      of Road Scenes
+    URL: http://arxiv.org/abs/2101.06085
+  Code: ''
+  Framework: PyTorch
+- Name: ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024
+  In Collection: DDRNet
+  Results:
+    Task: Semantic Segmentation
+    Dataset: Cityscapes
+    Metrics:
+      mIoU: 79.99
+      mIoU(ms+flip): 81.71
+  Config: configs/ddrnet/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+  Metadata:
+    Training Data: Cityscapes
+    Batch Size: 12
+    Architecture:
+    - DDRNet23
+    - DDRNet
+    Training Resources: 2x A100 GPUS
+    Memory (GB): 7.26
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024_20230425_162633-81601db0.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024_20230425_162633.json
+  Paper:
+    Title: Deep Dual-resolution Networks for Real-time and Accurate Semantic Segmentation
+      of Road Scenes
+    URL: http://arxiv.org/abs/2101.06085
+  Code: ''
+  Framework: PyTorch
