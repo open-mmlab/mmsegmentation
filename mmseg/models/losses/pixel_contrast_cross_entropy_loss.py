@@ -95,7 +95,7 @@ def contrastive(embed, label, temperature, base_temperature):
     anchor_num, n_view = embed.shape[0], embed.shape[1]
 
     label = label.reshape((-1, 1))
-    mask = torch.eq(label, torch.permute(label, [1, 0])).float().cuda()
+    mask = torch.eq(label, label.permute([1, 0])).float().cuda()
 
     contrast_count = n_view
     contrast_feature = torch.concat(torch.unbind(embed, dim=1), dim=0)
@@ -104,7 +104,7 @@ def contrastive(embed, label, temperature, base_temperature):
     anchor_count = contrast_count
 
     anchor_dot_contrast = torch.div(
-        torch.matmul(anchor_feature, torch.permute(contrast_feature, [1, 0])),
+        torch.matmul(anchor_feature, contrast_feature.permute([1, 0])),
         temperature)
     logits_max = torch.max(anchor_dot_contrast, dim=1, keepdim=True)[0]
     logits = anchor_dot_contrast - logits_max
@@ -153,7 +153,7 @@ def contrast_criterion(
     batch_size = feats.shape[0]
     labels = labels.reshape((batch_size, -1))
     predict = predict.reshape((batch_size, -1))
-    feats = torch.permute(feats, [0, 2, 3, 1])
+    feats = feats.permute([0, 2, 3, 1])
     feats = feats.reshape((feats.shape[0], -1, feats.shape[-1]))
 
     feats_, labels_ = hard_anchor_sampling(feats, labels, predict,
