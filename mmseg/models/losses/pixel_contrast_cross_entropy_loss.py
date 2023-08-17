@@ -104,7 +104,7 @@ def contrastive(embed, label, temperature, base_temperature):
         mask = torch.eq(label, label.permute([1, 0])).float()
 
     contrast_count = n_view
-    contrast_feature = torch.concat(torch.unbind(embed, dim=1), dim=0)
+    contrast_feature = torch.cat(torch.unbind(embed, dim=1), dim=0)
 
     anchor_feature = contrast_feature
     anchor_count = contrast_count
