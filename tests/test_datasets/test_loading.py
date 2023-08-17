@@ -7,10 +7,11 @@ import mmcv
 import numpy as np
 from mmcv.transforms import LoadImageFromFile
 
-from mmseg.datasets.transforms import (LoadAnnotations,
-                                       LoadBiomedicalAnnotation,
+from mmseg.datasets.transforms import LoadAnnotations  # noqa
+from mmseg.datasets.transforms import (LoadBiomedicalAnnotation,
                                        LoadBiomedicalData,
                                        LoadBiomedicalImageFromFile,
+                                       LoadDepthAnnotation,
                                        LoadImageFromNDArray)
 
 
@@ -276,3 +277,19 @@ class TestLoading:
                                    "decode_backend='numpy', "
                                    'to_xyz=False, '
                                    'backend_args=None)')
+
+    def test_load_depth_annotation(self):
+        input_results = dict(
+            img_path='tests/data/pseudo_nyu_dataset/images/'
+            'bookstore_0001d_00001.jpg',
+            depth_map_path='tests/data/pseudo_nyu_dataset/'
+            'annotations/bookstore_0001d_00001.png',
+            category_id=-1,
+            seg_fields=[])
+        transform = LoadDepthAnnotation(depth_rescale_factor=0.001)
+        results = transform(input_results)
+        assert 'gt_depth_map' in results
+        assert results['gt_depth_map'].shape[:2] == mmcv.imread(
+            input_results['depth_map_path']).shape[:2]
+        assert results['gt_depth_map'].dtype == np.float32
+        assert 'gt_depth_map' in results['seg_fields']

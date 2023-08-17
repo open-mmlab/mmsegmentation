@@ -198,6 +198,13 @@ mmsegmentation
 |   │   │   │   └── rles
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
+│   ├── nyu
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── test
 ```
 
 ## 用 MIM 下载数据集
@@ -731,3 +738,13 @@ mmsegmentation
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
 ```
+
+## NYU
+
+- 您可以从 [这个链接](https://drive.google.com/file/d/1wC-io-14RCIL4XTUrQLk6lBqU2AexLVp/view?usp=share_link) 下载 NYU 数据集
+
+- 下载完成后，您可以使用 [tools/dataset_converters/nyu.py](/tools/dataset_converters/nyu.py) 脚本来解压和组织数据到所需的格式
+
+  ```bash
+  python tools/dataset_converters/nyu.py nyu.zip
+  ```
