@@ -1,4 +1,5 @@
 # 将 MMSeg 模型调优及部署到 NVIDIA Jetson 平台教程
+请先查阅[MMSegmentation 模型部署](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/5_deployment.md)文档
 **本教程所用 mmsegmentation 版本：v1.1.1**  
 **本教程所用 NVIDIA Jetson 设备：NVIDIA Jetson AGX Orin 64G**
 <div align="center">
@@ -32,12 +33,17 @@
 ## 4 通过 OpenMMLab deployee 进行模型转换及测速
 ### 4.1 模型转换
 在该部分中，OpenMMLab 官网提供了模型转换及模型测速的 GUI 界面，无需任何代码，即可通过确认对应选项完成模型 ONNX 格式`xxxx.onnx` 和 TensorRT `.engine`格式的转换。
-如您的自定义 config 文件中有相对引用关系，如
+如您的自定义 config 文件中有相对引用关系，如：
 ```python
 # xxxx.py
-_base_ = ['../_base_/models/']
+_base_ = [
+    '../_base_/models/deeplabv3plus_r50-d8.py',
+    '../_base_/datasets/potsdam.py',        
+    '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_80k.py'
+]
 ```
-请使用以下代码消除相对引用关系，以上传完整的 config
+您可以使用以下代码消除相对引用关系，以生成完整的 config 文件。
 ```python 
 import mmengine
 
@@ -56,4 +62,5 @@ mmengine.Config.fromfile("configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_p
     ```bash
     git clone xxxxx
     ```
-### 5.2 如您的config
+### 5.2 模型转换
+如您的 config 中含有相对引用，仍需进行消除，如[4.1 模型转换](#4.1-模型转换)所述
