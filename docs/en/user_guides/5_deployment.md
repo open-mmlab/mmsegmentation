@@ -17,7 +17,7 @@
 
 ______________________________________________________________________
 
-[MMSegmentation](https://github.com/open-mmlab/mmsegmentation/tree/main), also known as `mmseg`, is an open source object segmentation toolbox based on Pytorch. It's a part of the [OpenMMLab]((https://openmmlab.com/)) object.
+[MMSegmentation](https://github.com/open-mmlab/mmsegmentation/tree/main), also known as `mmseg`, is an open source object segmentation toolbox based on Pytorch. It's a part of the [OpenMMLab](<(https://openmmlab.com/)>) object.
 
 ## Installation
 
@@ -35,7 +35,7 @@ Please follow the [Installation overview](https://mmdeploy.readthedocs.io/zh_CN/
 
 **The second way to install:**  Automatic Installation script
 
-If the deployment platform is **Ubuntu 18.04 +**, please follow the [scription installation](../01-how-to-build/build_from_script.md) to install. 
+If the deployment platform is **Ubuntu 18.04 +**, please follow the [scription installation](../01-how-to-build/build_from_script.md) to install.
 For example, the following commands describe how to install mmdeploy and inference engine-`ONNX Runtime`.
 
 ```shell
@@ -53,11 +53,11 @@ export LD_LIBRARY_PATH=$(pwd)/../mmdeploy-dep/onnxruntime-linux-x64-1.8.1/lib/:$
 
 **The third way to install:**  Build MMDeploy from source
 
-If the first two methods aren't suitable, please [Build MMDeploy from source]((../01-how-to-build/build_from_source.md))
+If the first two methods aren't suitable, please [Build MMDeploy from source](<(../01-how-to-build/build_from_source.md)>)
 
 ## Convert model
 
-[tools/deploy.py](https://github.com/open-mmlab/mmdeploy/tree/main/tools/deploy.py) can convert mmseg Model to backend model conveniently. See [this](https://github.com/open-mmlab/mmdeploy/tree/main/docs/en/02-how-to-run/convert_model.md#usage) for detailed information. 
+[tools/deploy.py](https://github.com/open-mmlab/mmdeploy/tree/main/tools/deploy.py) can convert mmseg Model to backend model conveniently. See [this](https://github.com/open-mmlab/mmdeploy/tree/main/docs/en/02-how-to-run/convert_model.md#usage) for detailed information.
 
 Then convert `unet` to onnx model as follows:
 
@@ -101,6 +101,7 @@ When converting mmsegmentation models to tensorrt models, --device should be set
 Before moving on to model inference chapter, let's know more about the converted model structure which is very important for model inference.
 
 The converted model locates in the working directory like `mmdeploy_models/mmseg/ort` in the previous example. It includes:
+
 ```
 mmdeploy_models/mmseg/ort
 ├── deploy.json
@@ -234,4 +235,4 @@ Besides python API, mmdeploy SDK also provides other FFI (Foreign Function Inter
 
 - For models that only support static shapes, should use the static shape deployment config file, such as `configs/mmseg/segmentation_tensorrt_static-1024x2048.py`
 
-- To deploy models to generate probabilistic feature maps, please add `codebase_config = dict(with_argmax=False)` to deployment config flie.
+- To deploy models to generate probabilistic feature maps, please add `codebase_config = dict(with_argmax=False)` to deployment config file.
