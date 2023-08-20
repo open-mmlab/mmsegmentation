@@ -50,7 +50,8 @@ export LD_LIBRARY_PATH=$(pwd)/../mmdeploy-dep/onnxruntime-linux-x64-1.8.1/lib/:$
 
 - 把 `$(pwd)/build/lib` 添加到 `PYTHONPATH`，目的是为了加载 mmdeploy SDK python 包 `mmdeploy_runtime`，在章节 [SDK模型推理](#sdk模型推理)中讲述其用法。
 - 在[使用 ONNX Runtime推理后端模型](#后端模型推理)时，需要加载自定义算子库，需要把 ONNX Runtime 库的路径加入环境变量 `LD_LIBRARY_PATH`中。
-  **方式三：** 源码安装
+
+**方式三：** 源码安装
 
 在方式一、二都满足不了的情况下，请参考[源码安装说明](../01-how-to-build/build_from_source.md) 安装 mmdeploy 以及所需推理引擎。
 
