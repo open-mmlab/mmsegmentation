@@ -68,7 +68,7 @@ class KLDivLoss(nn.Module):
         target = F.softmax(target / self.temperature, dim=1)
 
         loss = F.kl_div(input, target, reduction='none', log_target=False)
-        loss = loss * self.temperature * self.temperature
+        loss = loss * self.temperature**2
 
         batch_size = input.shape[0]
 
