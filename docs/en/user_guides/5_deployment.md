@@ -2,22 +2,22 @@
 
 # MMSegmentation Model Deployment
 
-- [Tutorial 5: Model Deployment](#Tutorial-5:-Model-Deployment)
-- [MMSegmentation Model Deployment](#MMSegmentation-Model-Deployment)
-  - [Installation](#Installation)
-    - [Install mmseg](#Install-mmseg)
-    - [Install mmdeploy](#Install-mmdeploy)
-  - [Convert model](#Convert-model)
-  - [Model specification](#Model-specification)
-  - [Model inference](#Model-inference)
-    - [Backend model inference](#Backend-model-inference)
-    - [SDK model inference](#SDK-model-inference)
-  - [Supported models](#Supported-models)
-  - [Note](#Note)
+- [Tutorial 5: Model Deployment](#tutorial-5-model-deployment)
+- [MMSegmentation Model Deployment](#mmsegmentation-model-deployment)
+  - [Installation](#installation)
+    - [Install mmseg](#install-mmseg)
+    - [Install mmdeploy](#install-mmdeploy)
+  - [Convert model](#convert-model)
+  - [Model specification](#model-specification)
+  - [Model inference](#model-inference)
+    - [Backend model inference](#backend-model-inference)
+    - [SDK model inference](#sdk-model-inference)
+  - [Supported models](#supported-models)
+  - [Note](#note)
 
 ______________________________________________________________________
 
-[MMSegmentation](https://github.com/open-mmlab/mmsegmentation/tree/main), also known as `mmseg`, is an open source object segmentation toolbox based on Pytorch. It's a part of the [OpenMMLab](<(https://openmmlab.com/)>) object.
+[MMSegmentation](https://github.com/open-mmlab/mmsegmentation/tree/main), also known as `mmseg`, is an open source semantic segmentation toolbox based on Pytorch. It's a part of the [OpenMMLab](<(https://openmmlab.com/)>) object.
 
 ## Installation
 
@@ -27,13 +27,13 @@ Please follow the [Installation Guide](https://mmsegmentation.readthedocs.io/en/
 
 ### Install mmdeploy
 
-Following installation  for mmdeploy:
+`mmdeploy` can be installed as follows:
 
-**The first way to install:** Install precompiled package
+**Option 1:** Install precompiled package
 
 Please follow the [Installation overview](https://mmdeploy.readthedocs.io/zh_CN/latest/get_started.html#mmdeploy)
 
-**The second way to install:**  Automatic Installation script
+**Option 2:**  Automatic Installation script
 
 If the deployment platform is **Ubuntu 18.04 +**, please follow the [scription installation](../01-how-to-build/build_from_script.md) to install.
 For example, the following commands describe how to install mmdeploy and inference engine-`ONNX Runtime`.
@@ -51,9 +51,26 @@ export LD_LIBRARY_PATH=$(pwd)/../mmdeploy-dep/onnxruntime-linux-x64-1.8.1/lib/:$
 - Add `$(pwd)/build/lib` to `PYTHONPATH`, can loading mmdeploy SDK python package `mmdeploy_runtime`. See [SDK model inference](#SDK-model-inference) for more information.
 - With [ONNX Runtime model inference](#Backend-model-inference), need to load custom operator library and add ONNX Runtime Library's PATH to `LD_LIBRARY_PATH`.
 
-**The third way to install:**  Build MMDeploy from source
+**Option 3:**  Install with mim
 
-If the first two methods aren't suitable, please [Build MMDeploy from source](<(../01-how-to-build/build_from_source.md)>)
+1. Use mim to install mmcv
+
+```shell
+pip install -U openmim
+mim install "mmcv>=2.0.0rc2"
+```
+
+2. Install mmdeploy
+
+```shell
+git clone https://github.com/open-mmlab/mmdeploy.git
+cd mmdeploy
+mim install -e.
+```
+
+**Option 4:**  Build MMDeploy from source
+
+If the first three methods aren't suitable, please [Build MMDeploy from source](<(../01-how-to-build/build_from_source.md)>)
 
 ## Convert model
 
