@@ -65,7 +65,7 @@ mim install "mmcv>=2.0.0rc2"
 ```shell
 git clone https://github.com/open-mmlab/mmdeploy.git
 cd mmdeploy
-mim install -e.
+mim install -e .
 ```
 
 **Option 4:**  Build MMDeploy from source
