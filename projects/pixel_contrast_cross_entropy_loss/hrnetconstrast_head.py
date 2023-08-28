@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
-'''Modified from https://github.com/PaddlePaddle/PaddleSeg/
+"""Modified from https://github.com/PaddlePaddle/PaddleSeg/
 blob/2c8c35a8949fef74599f5ec557d340a14415f20d/
-paddleseg/models/hrnet_contrast.py(Apache-2.0 License)'''
+paddleseg/models/hrnet_contrast.py(Apache-2.0 License)"""
 
 from typing import List, Tuple
 
@@ -11,11 +11,11 @@ import torch.nn.functional as F
 from mmcv.cnn import ConvModule
 from torch import Tensor
 
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
+from mmseg.models.losses import accuracy
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, SampleList
-from mmseg.models.losses import accuracy
-from mmseg.models.decode_heads.decode_head import BaseDecodeHead
-from mmseg.models.utils import resize
+
 
 class ProjectionHead(nn.Module):
     """The projection head used by contrast learning.
@@ -27,10 +27,9 @@ class ProjectionHead(nn.Module):
             The output dimensions of projection head. Default: 256.
         proj (str, optional): The type of projection head,
             only support 'linear' and 'convmlp'. Default: 'convmlp'.
-
     """
 
-    def __init__(self, in_channels:int, out_channels=256, proj='convmlp'):
+    def __init__(self, in_channels: int, out_channels=256, proj='convmlp'):
         super().__init__()
         if proj == 'linear':
             self.proj = nn.Conv2d(in_channels, out_channels, kernel_size=1)
@@ -43,7 +42,7 @@ class ProjectionHead(nn.Module):
             raise KeyError("The type of project head only support 'linear' \
                         and 'convmlp', but got {}.".format(proj))
 
-    def forward(self, x:Tensor)->Tensor:
+    def forward(self, x: Tensor) -> Tensor:
         return F.normalize(self.proj(x), p=2.0, dim=1)
 
 
@@ -58,10 +57,9 @@ class SegmentationHead(nn.Module):
         proj (str, optional):
             The type of projection head,
             only support 'linear' and 'convmlp'. Default: 'convmlp'.
-
     """
 
-    def __init__(self, in_channels:int, out_channels=19, drop_prob=0.1):
+    def __init__(self, in_channels: int, out_channels=19, drop_prob=0.1):
         super().__init__()
 
         self.seg = nn.Sequential(
@@ -70,7 +68,7 @@ class SegmentationHead(nn.Module):
             nn.Conv2d(in_channels, out_channels, kernel_size=1),
         )
 
-    def forward(self, x:Tensor)->Tensor:
+    def forward(self, x: Tensor) -> Tensor:
         return self.seg(x)
 
 
@@ -85,7 +83,6 @@ class ContrastHead(BaseDecodeHead):
             Each pixel will be projected into a vector with length of proj_n.
         proj_mode (str):
             The mode for project head ,'linear' or 'convmlp'.
-
     """
 
     def __init__(self, drop_p=0.1, proj_n=256, proj_mode='convmlp', **kwargs):
@@ -129,7 +126,7 @@ class ContrastHead(BaseDecodeHead):
 
         seg_label = self._stack_batch_gt(batch_data_samples)
         loss = dict()
-        
+
         if self.sampler is not None:
             seg_weight = self.sampler.sample(seg_logits[0], seg_label)
         else:
@@ -143,7 +140,11 @@ class ContrastHead(BaseDecodeHead):
 
         for loss_decode in losses_decode:
             if loss_decode.loss_name == 'loss_ce':
-                pred = F.interpolate(input=seg_logits[0], size=seg_label.shape[-2:], mode='bilinear', align_corners=True)
+                pred = F.interpolate(
+                    input=seg_logits[0],
+                    size=seg_label.shape[-2:],
+                    mode='bilinear',
+                    align_corners=True)
                 loss[loss_decode.loss_name] = loss_decode(
                     pred,
                     seg_label,
@@ -151,10 +152,9 @@ class ContrastHead(BaseDecodeHead):
                     ignore_index=self.ignore_index)
             elif loss_decode.loss_name == 'loss_pixel_contrast_cross_entropy':
                 loss[loss_decode.loss_name] = loss_decode(
-                    seg_logits,
-                    seg_label)
+                    seg_logits, seg_label)
             else:
-                raise KeyError("loss_name not matched")
+                raise KeyError('loss_name not matched')
 
         loss['acc_seg'] = accuracy(
             F.interpolate(seg_logits[0], seg_label.shape[1:]),

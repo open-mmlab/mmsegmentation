@@ -55,18 +55,17 @@ model = dict(
         num_classes=19,
         norm_cfg=norm_cfg,
         align_corners=False,
-        loss_decode=[dict(
-            type='PixelContrastCrossEntropyLoss',
-            base_temperature=0.07,
-            temperature=0.1,
-            ignore_index=255,
-            max_samples=1024,
-            max_views=100,
-            loss_weight=0.1),
-            dict(type='CrossEntropyLoss',
-                loss_weight=1.0)
-            ]
-        ),
+        loss_decode=[
+            dict(
+                type='PixelContrastCrossEntropyLoss',
+                base_temperature=0.07,
+                temperature=0.1,
+                ignore_index=255,
+                max_samples=1024,
+                max_views=100,
+                loss_weight=0.1),
+            dict(type='CrossEntropyLoss', loss_weight=1.0)
+        ]),
 
     # model training and testing settings
     train_cfg=dict(),

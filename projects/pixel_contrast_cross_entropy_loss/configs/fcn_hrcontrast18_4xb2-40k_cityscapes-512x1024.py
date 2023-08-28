@@ -1,8 +1,11 @@
 _base_ = [
     './fcn_hrcontrast18.py', '../../../configs/_base_/datasets/cityscapes.py',
-    '../../../configs/_base_/default_runtime.py', '../../../configs/_base_/schedules/schedule_40k.py'
+    '../../../configs/_base_/default_runtime.py',
+    '../../../configs/_base_/schedules/schedule_40k.py'
 ]
-data_root = 'C:/Users/hehaolan007/Desktop/After-class Learning/MMLab/mmsegmentation/data/cityscapes/'
+data_root = 'C:/Users/hehaolan007/Desktop/After-class Learning/\
+    MMLab/mmsegmentation/data/cityscapes/'
+
 train_dataloader = dict(dataset=dict(data_root=data_root))
 val_dataloader = dict(dataset=dict(data_root=data_root))
 test_dataloader = dict(dataset=dict(data_root=data_root))
