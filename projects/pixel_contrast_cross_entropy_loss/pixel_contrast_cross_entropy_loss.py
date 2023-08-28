@@ -1,11 +1,24 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
+'''Modified from https://github.com/PaddlePaddle/PaddleSeg/
+blob/2c8c35a8949fef74599f5ec557d340a14415f20d/paddleseg/
+models/losses/pixel_contrast_cross_entropy_loss.py(Apache-2.0 License)'''
+
 import torch
 import torch.nn as nn
-
+from torch import Tensor
 from mmseg.registry import MODELS
+from typing import List,Tuple
 
 
-def hard_anchor_sampling(X, y_hat, y, ignore_index, max_views, max_samples):
+
+def hard_anchor_sampling(X:Tensor,
+                        y_hat:Tensor,
+                        y:Tensor,
+                        ignore_index:int,
+                        max_views:int,
+                        max_samples:int
+                        ):
     """
     Args:
         X (torch.Tensor): embedding, shape = [N, H * W, C]
@@ -15,6 +28,10 @@ def hard_anchor_sampling(X, y_hat, y, ignore_index, max_views, max_samples):
             and does not contribute to the input gradient. Default 255.
         max_samples (int, optional): Max sampling anchors. Default: 1024.
         max_views (int): Sampled samplers of a class. Default: 100.
+    Returns:
+        tuple[Tensor]: A tuple contains two Tensors.
+            - X_ (torch.Tensor): The sampled features,shape (total_classes, n_view, feat_dim).
+            - y_ (torch.Tensor): The labels for X_ ,shape (total_classes, 1)
     """
     batch_size, feat_dim = X.shape[0], X.shape[-1]
 
@@ -86,14 +103,27 @@ def hard_anchor_sampling(X, y_hat, y, ignore_index, max_views, max_samples):
     return X_, y_
 
 
-def contrastive(embed, label, temperature, base_temperature):
+def contrastive(embed:Tensor,
+                label:Tensor,
+                temperature:float,
+                base_temperature:float
+                )->Tensor:
     """
     Args:
         embed (torch.Tensor):
             sampled pixel, shape = [total_classes, n_view, feat_dim],
             total_classes = batch_size * single image classes
         label (torch.Tensor):
-            label, shape = [total_classes]
+            The corresponding label for embed features, shape = [total_classes]
+        temperature (float, optional):
+            Controlling the numerical similarity of features.
+            Default: 0.1.
+        base_temperature (float, optional):
+            Controlling the numerical range of contrast loss.
+            Default: 0.07.
+
+    Returns:
+        loss (torch.Tensor): The calculated loss.
     """
     anchor_num, n_view = embed.shape[0], embed.shape[1]
 
@@ -145,15 +175,31 @@ def contrastive(embed, label, temperature, base_temperature):
 
 
 def contrast_criterion(
-    feats,
-    labels,
-    predict,
-    ignore_index,
-    max_views,
-    max_samples,
-    temperature,
-    base_temperature,
-):
+    feats:Tensor,
+    labels:Tensor,
+    predict:Tensor,
+    ignore_index = 255,
+    max_views = 100,
+    max_samples = 1024,
+    temperature = 0.1,
+    base_temperature = 0.07,
+)->Tensor:
+    '''
+    Args:
+        feats (torch.Tensor): embedding, shape = [N, H * W, C]
+        labels (torch.Tensor): label, shape = [N, H * W]
+        predict (torch.Tensor): predict mask, shape = [N, H * W]
+        ignore_index (int, optional): Specifies a target value that is ignored
+            and does not contribute to the input gradient. Default 255.
+        max_samples (int, optional): Max sampling anchors. Default: 1024.
+        max_views (int): Sampled samplers of a class. Default: 100.
+        temperature (float):A hyper-parameter in contrastive loss, controlling the numerical similarity of features.
+            Default: 0.1.
+        base_temperature (float):A hyper-parameter in contrastive loss, controlling the numerical range of contrast loss.
+            Default: 0.07.
+    Returns:
+        loss (torch.Tensor): The calculated loss
+    '''
     labels = labels.unsqueeze(1).float().clone()
     labels = torch.nn.functional.interpolate(
         labels, (feats.shape[2], feats.shape[3]), mode='nearest')
@@ -214,9 +260,11 @@ class PixelContrastCrossEntropyLoss(nn.Module):
                  base_temperature=0.07,
                  ignore_index=255,
                  max_samples=1024,
-                 max_views=100):
+                 max_views=100,
+                 loss_weight=0.1):
         super().__init__()
         self._loss_name = loss_name
+        self.loss_weight = loss_weight
         if (temperature < 0 or base_temperature <= 0):
             raise KeyError(
                 'temperature should >=0 and base_temperature should >0')
@@ -233,7 +281,7 @@ class PixelContrastCrossEntropyLoss(nn.Module):
             raise KeyError('max_views should be an int and >=0')
         self.max_views = max_views
 
-    def forward(self, pred, target):
+    def forward(self, pred:List, target:Tensor)->Tensor:
         """Forward function.
 
         Args:
@@ -251,17 +299,11 @@ class PixelContrastCrossEntropyLoss(nn.Module):
             torch.Tensor: The calculated loss
         """
 
-        assert isinstance(pred, dict), 'Only HRNetContrastHead \
+        assert isinstance(pred, list) and len(pred) == 2, 'Only ContrastHead \
                 is suitable for PixelContrastCrossEntropyLoss'
 
-        assert 'seg' in pred, "The input of PixelContrastCrossEntropyLoss \
-                should include 'seg' output, but not found."
-
-        assert 'proj' in pred, "The input of PixelContrastCrossEntropyLoss \
-                should include 'pred' output, but not found."
-
-        seg = pred['seg']
-        embedding = pred['proj']
+        seg = pred[0]
+        embedding = pred[1]
 
         predict = torch.argmax(seg, dim=1)
 
@@ -270,17 +312,17 @@ class PixelContrastCrossEntropyLoss(nn.Module):
                                   self.max_samples, self.temperature,
                                   self.base_temperature)
 
-        return loss
+        return loss * self.loss_weight
 
     @property
-    def loss_name(self):
+    def loss_name(self)->str:
         """Loss Name.
-
         This function must be implemented and will return the name of this
         loss function. This name will be used to combine different loss items
         by simple sum operation. In addition, if you want this loss item to be
         included into the backward graph, `loss_` must be the prefix of the
         name.
+
         Returns:
             str: The name of this loss item.
         """

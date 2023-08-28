@@ -1,6 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-# Originally from https://github.com/visual-attention-network/segnext
-# Licensed under the Apache License, Version 2.0 (the "License")
+# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
+'''Modified from https://github.com/PaddlePaddle/PaddleSeg/
+blob/2c8c35a8949fef74599f5ec557d340a14415f20d/
+paddleseg/models/hrnet_contrast.py(Apache-2.0 License)'''
+
 from typing import List, Tuple
 
 import torch.nn as nn
@@ -10,9 +13,9 @@ from torch import Tensor
 
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, SampleList
-from ..losses import accuracy
-from .decode_head import BaseDecodeHead
-
+from mmseg.models.losses import accuracy
+from mmseg.models.decode_heads.decode_head import BaseDecodeHead
+from mmseg.models.utils import resize
 
 class ProjectionHead(nn.Module):
     """The projection head used by contrast learning.
@@ -24,9 +27,10 @@ class ProjectionHead(nn.Module):
             The output dimensions of projection head. Default: 256.
         proj (str, optional): The type of projection head,
             only support 'linear' and 'convmlp'. Default: 'convmlp'.
+
     """
 
-    def __init__(self, in_channels, out_channels=256, proj='convmlp'):
+    def __init__(self, in_channels:int, out_channels=256, proj='convmlp'):
         super().__init__()
         if proj == 'linear':
             self.proj = nn.Conv2d(in_channels, out_channels, kernel_size=1)
@@ -39,7 +43,7 @@ class ProjectionHead(nn.Module):
             raise KeyError("The type of project head only support 'linear' \
                         and 'convmlp', but got {}.".format(proj))
 
-    def forward(self, x):
+    def forward(self, x:Tensor)->Tensor:
         return F.normalize(self.proj(x), p=2.0, dim=1)
 
 
@@ -54,9 +58,10 @@ class SegmentationHead(nn.Module):
         proj (str, optional):
             The type of projection head,
             only support 'linear' and 'convmlp'. Default: 'convmlp'.
+
     """
 
-    def __init__(self, in_channels, out_channels=19, drop_prob=0.1):
+    def __init__(self, in_channels:int, out_channels=19, drop_prob=0.1):
         super().__init__()
 
         self.seg = nn.Sequential(
@@ -65,12 +70,12 @@ class SegmentationHead(nn.Module):
             nn.Conv2d(in_channels, out_channels, kernel_size=1),
         )
 
-    def forward(self, x):
+    def forward(self, x:Tensor)->Tensor:
         return self.seg(x)
 
 
 @MODELS.register_module()
-class HRNetContrastHead(BaseDecodeHead):
+class ContrastHead(BaseDecodeHead):
     """The segmentation head used by contrast learning.
 
     Args:
@@ -80,6 +85,7 @@ class HRNetContrastHead(BaseDecodeHead):
             Each pixel will be projected into a vector with length of proj_n.
         proj_mode (str):
             The mode for project head ,'linear' or 'convmlp'.
+
     """
 
     def __init__(self, drop_p=0.1, proj_n=256, proj_mode='convmlp', **kwargs):
@@ -99,19 +105,20 @@ class HRNetContrastHead(BaseDecodeHead):
 
     def forward(self, inputs):
         inputs = self._transform_inputs(inputs)
-        output = {}
-        output['seg'] = self.seghead(inputs)
-
-        output['proj'] = self.projhead(inputs)
+        output = []
+        output.append(self.seghead(inputs))
+        output.append(self.projhead(inputs))
 
         return output
 
-    def loss_by_feat(self, seg_logits: dict,
+    def loss_by_feat(self, seg_logits: List,
                      batch_data_samples: SampleList) -> dict:
         """Compute segmentation loss.
 
         Args:
-            seg_logits (dict): The output from decode head forward function.
+            seg_logits (List): The output from decode head forward function.
+                seg_logits[0] is the output of seghead
+                seg_logits[1] is the output of projhead
             batch_data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
                 as `metainfo` and `gt_sem_seg`.
@@ -122,9 +129,9 @@ class HRNetContrastHead(BaseDecodeHead):
 
         seg_label = self._stack_batch_gt(batch_data_samples)
         loss = dict()
-
+        
         if self.sampler is not None:
-            seg_weight = self.sampler.sample(seg_logits['seg'], seg_label)
+            seg_weight = self.sampler.sample(seg_logits[0], seg_label)
         else:
             seg_weight = None
         seg_label = seg_label.squeeze(1)
@@ -133,22 +140,24 @@ class HRNetContrastHead(BaseDecodeHead):
             losses_decode = [self.loss_decode]
         else:
             losses_decode = self.loss_decode
+
         for loss_decode in losses_decode:
-            if loss_decode.loss_name not in loss:
+            if loss_decode.loss_name == 'loss_ce':
+                pred = F.interpolate(input=seg_logits[0], size=seg_label.shape[-2:], mode='bilinear', align_corners=True)
+                loss[loss_decode.loss_name] = loss_decode(
+                    pred,
+                    seg_label,
+                    weight=seg_weight,
+                    ignore_index=self.ignore_index)
+            elif loss_decode.loss_name == 'loss_pixel_contrast_cross_entropy':
                 loss[loss_decode.loss_name] = loss_decode(
                     seg_logits,
-                    seg_label,
-                    weight=seg_weight,
-                    ignore_index=self.ignore_index)
+                    seg_label)
             else:
-                loss[loss_decode.loss_name] += loss_decode(
-                    seg_logits,
-                    seg_label,
-                    weight=seg_weight,
-                    ignore_index=self.ignore_index)
+                raise KeyError("loss_name not matched")
 
         loss['acc_seg'] = accuracy(
-            F.interpolate(seg_logits['seg'], seg_label.shape[1:]),
+            F.interpolate(seg_logits[0], seg_label.shape[1:]),
             seg_label,
             ignore_index=self.ignore_index)
         return loss
@@ -169,6 +178,6 @@ class HRNetContrastHead(BaseDecodeHead):
         Returns:
             Tensor: Outputs segmentation logits map.
         """
-        seg_logits = self.forward(inputs)['seg']
+        seg_logits = self.forward(inputs)
 
         return self.predict_by_feat(seg_logits, batch_img_metas)

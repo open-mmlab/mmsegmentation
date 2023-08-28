@@ -1,4 +1,6 @@
 # model settings
+
+custom_imports = dict(imports=['projects.pixel_contrast_cross_entropy_loss'])
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
@@ -41,7 +43,7 @@ model = dict(
                 num_blocks=(4, 4, 4, 4),
                 num_channels=(18, 36, 72, 144)))),
     decode_head=dict(
-        type='HRNetContrastHead',
+        type='ContrastHead',
         in_channels=[18, 36, 72, 144],
         in_index=(0, 1, 2, 3),
         channels=sum([18, 36, 72, 144]),
@@ -53,10 +55,18 @@ model = dict(
         num_classes=19,
         norm_cfg=norm_cfg,
         align_corners=False,
-        loss_decode=dict(
+        loss_decode=[dict(
             type='PixelContrastCrossEntropyLoss',
             base_temperature=0.07,
-            temperature=0.1)),
+            temperature=0.1,
+            ignore_index=255,
+            max_samples=1024,
+            max_views=100,
+            loss_weight=0.1),
+            dict(type='CrossEntropyLoss',
+                loss_weight=1.0)
+            ]
+        ),
 
     # model training and testing settings
     train_cfg=dict(),
