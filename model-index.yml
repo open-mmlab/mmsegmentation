@@ -14,7 +14,6 @@ Import:
 - configs/dmnet/metafile.yaml
 - configs/dnlnet/metafile.yaml
 - configs/dpt/metafile.yaml
-- configs/dsdl/metafile.yaml
 - configs/emanet/metafile.yaml
 - configs/encnet/metafile.yaml
 - configs/erfnet/metafile.yaml

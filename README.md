@@ -88,7 +88,7 @@ MMSegmentation v1.x brings remarkable improvements over the 0.x release, offerin
 
 ## What's New
 
-v1.1.0 was released on 07/04/2023.
+v1.1.1 was released on 07/24/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
 - Support 24 medical image datasets in [projects](./projects/medical/).
@@ -253,6 +253,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isaid)
 - [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
 - [x] [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#levir-cd)
+- [x] [BDD100K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#bdd100K)
 
 </details>
 
