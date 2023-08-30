@@ -5,11 +5,15 @@ from queue import Queue
 from typing import List, Optional, Tuple, Union
 
 import numpy as np
+import torch
+from mmengine import Config
 from mmengine.model import BaseModel
+from mmengine.registry import init_default_scope
 from mmengine.runner import load_checkpoint
 from osgeo import gdal
 
-from mmseg.apis import inference_model, init_model
+from mmseg.registry import MODELS
+from .utils import _preprare_data
 
 
 class RSImage:
@@ -163,7 +167,9 @@ class RSInferencer:
             checkpoint_path (str): Checkpoint path.
             batch_size (int, optional): Batch size. Defaults to 1.
         """
-        model = init_model(config_path, checkpoint_path, device=device)
+        init_default_scope('mmseg')
+        cfg = Config.fromfile(config_path)
+        model = MODELS.build(cfg.model)
         return cls(model, batch_size, thread)
 
     @classmethod
@@ -211,7 +217,9 @@ class RSInferencer:
                 self.read_buffer.put(self.END_FLAG)
                 self.write_buffer.put(item)
                 break
-            result = inference_model(self.model, item[1])
+            data, _ = _preprare_data(item[1], self.model)
+            with torch.no_grad():
+                result = self.model(**data, return_loss=False)
             item[1] = result.pred_sem_seg.cpu().data.numpy()[0]
             self.write_buffer.put(item)
             self.read_buffer.task_done()

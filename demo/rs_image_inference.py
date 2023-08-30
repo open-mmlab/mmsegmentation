@@ -19,9 +19,9 @@ def main():
         default=1,
         help='maximum number of windows inferred simultaneously')
     parser.add_argument(
-        '--window-size ',
+        '--window-size',
         help='window xsize,ysize',
-        default=[224, 224],
+        default=(224, 224),
         type=int,
         nargs=2)
     parser.add_argument(
@@ -35,16 +35,16 @@ def main():
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
-
+    print(args)
     inferencer = RSInferencer.from_config_path(
         args.config,
         args.checkpoint,
         batch_size=args.batch_size,
         thread=args.thread,
         device=args.device)
-    image = RSImage(args.image_path)
+    image = RSImage(args.image)
 
-    inferencer.run(image, args.win_size, args.stride)
+    inferencer.run(image, args.window_size, args.stride, args.output_path)
 
 
 if __name__ == '__main__':

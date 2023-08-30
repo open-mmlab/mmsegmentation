@@ -1,14 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
-from collections import defaultdict
 from pathlib import Path
-from typing import Optional, Sequence, Union
+from typing import Optional, Union
 
 import mmcv
 import numpy as np
 import torch
 from mmengine import Config
-from mmengine.dataset import Compose
 from mmengine.registry import init_default_scope
 from mmengine.runner import load_checkpoint
 from mmengine.utils import mkdir_or_exist
@@ -18,6 +16,7 @@ from mmseg.registry import MODELS
 from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList, dataset_aliases, get_classes, get_palette
 from mmseg.visualization import SegLocalVisualizer
+from .utils import ImageType, _preprare_data
 
 
 def init_model(config: Union[str, Path, Config],
@@ -88,41 +87,6 @@ def init_model(config: Union[str, Path, Config],
     model.to(device)
     model.eval()
     return model
-
-
-ImageType = Union[str, np.ndarray, Sequence[str], Sequence[np.ndarray]]
-
-
-def _preprare_data(imgs: ImageType, model: BaseSegmentor):
-
-    cfg = model.cfg
-    for t in cfg.test_pipeline:
-        if t.get('type') == 'LoadAnnotations':
-            cfg.test_pipeline.remove(t)
-
-    is_batch = True
-    if not isinstance(imgs, (list, tuple)):
-        imgs = [imgs]
-        is_batch = False
-
-    if isinstance(imgs[0], np.ndarray):
-        cfg.test_pipeline[0]['type'] = 'LoadImageFromNDArray'
-
-    # TODO: Consider using the singleton pattern to avoid building
-    # a pipeline for each inference
-    pipeline = Compose(cfg.test_pipeline)
-
-    data = defaultdict(list)
-    for img in imgs:
-        if isinstance(img, np.ndarray):
-            data_ = dict(img=img)
-        else:
-            data_ = dict(img_path=img)
-        data_ = pipeline(data_)
-        data['inputs'].append(data_['inputs'])
-        data['data_samples'].append(data_['data_samples'])
-
-    return data, is_batch
 
 
 def inference_model(model: BaseSegmentor,
