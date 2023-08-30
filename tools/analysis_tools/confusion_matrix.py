@@ -1,12 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os
 import argparse
-
+import os
+import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
-import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
-
 from mmseg.registry import DATASETS
 from mmengine.config import Config, DictAction
 from mmengine.registry import init_default_scope
