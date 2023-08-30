@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import threading
 from queue import Queue
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -26,7 +26,7 @@ class RSImage:
         img (str or gdal.Dataset): Image file path or gdal.Dataset.
     """
 
-    def __init__(self, image: Union[str, gdal.Dataset]):
+    def __init__(self, image):
         self.dataset = gdal.Open(image, gdal.GA_ReadOnly) if isinstance(
             image, str) else image
         assert isinstance(self.dataset, gdal.Dataset), \
