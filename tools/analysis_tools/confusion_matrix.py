@@ -8,8 +8,10 @@ from matplotlib.ticker import MultipleLocator
 from mmengine.config import Config, DictAction
 from mmengine.registry import init_default_scope
 from mmengine.utils import progressbar
-from mmseg.registry import DATASETS
 from PIL import Image
+
+from mmseg.registry import DATASETS
+
 init_default_scope('mmseg')
 
 
