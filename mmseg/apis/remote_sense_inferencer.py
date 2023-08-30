@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import os
 import threading
 from queue import Queue
 from typing import List, Optional, Tuple, Union
@@ -10,7 +9,11 @@ from mmengine import Config
 from mmengine.model import BaseModel
 from mmengine.registry import init_default_scope
 from mmengine.runner import load_checkpoint
-from osgeo import gdal
+
+try:
+    from osgeo import gdal
+except ImportError:
+    gdal = None
 
 from mmseg.registry import MODELS
 from .utils import _preprare_data
@@ -24,7 +27,8 @@ class RSImage:
     """
 
     def __init__(self, image: Union[str, gdal.Dataset]):
-        self.dataset = gdal.Open(image) if isinstance(image, str) else image
+        self.dataset = gdal.Open(image, gdal.GA_ReadOnly) if isinstance(
+            image, str) else image
         assert isinstance(self.dataset, gdal.Dataset), \
             f'{image} is not a image'
         self.width = self.dataset.RasterXSize
@@ -49,11 +53,12 @@ class RSImage:
             return np.einsum('ijk->jki', self.dataset.ReadAsArray())
         assert len(
             grid) >= 4, 'grid must be a list containing at least 4 elements'
-        return np.einsum('ijk->jki', self.dataset.ReadAsArray(*grid[:4]))
+        data = self.dataset.ReadAsArray(*grid[:4])
+        if data.ndim == 2:
+            data = data[np.newaxis, ...]
+        return np.einsum('ijk->jki', data)
 
-    def write(self,
-              grid: Optional[List] = None,
-              data: Optional[np.ndarray] = None):
+    def write(self, data: Optional[np.ndarray], grid: Optional[List] = None):
         """Write image data.
 
         Args:
@@ -78,9 +83,7 @@ class RSImage:
 
     def create_seg_map(self, output_path: Optional[str] = None):
         if output_path is None:
-            base_name = os.path.basename(self.path)
-            file_name, _ = os.path.splitext(base_name)
-            output_path = f'{file_name}_label.tif'
+            output_path = 'output_label.tif'
         driver = gdal.GetDriverByName('GTiff')
         seg_map = driver.Create(output_path, self.width, self.height, 1,
                                 gdal.GDT_Byte)
@@ -170,12 +173,16 @@ class RSInferencer:
         init_default_scope('mmseg')
         cfg = Config.fromfile(config_path)
         model = MODELS.build(cfg.model)
+        model.cfg = cfg
+        load_checkpoint(model, checkpoint_path, map_location='cpu')
+        model.to(device)
+        model.eval()
         return cls(model, batch_size, thread)
 
     @classmethod
     def from_model(cls,
                    model: BaseModel,
-                   checkpoint_path: Optional[str],
+                   checkpoint_path: Optional[str] = None,
                    batch_size: int = 1,
                    thread: int = 1,
                    device: Optional[str] = 'cpu'):
@@ -219,8 +226,8 @@ class RSInferencer:
                 break
             data, _ = _preprare_data(item[1], self.model)
             with torch.no_grad():
-                result = self.model(**data, return_loss=False)
-            item[1] = result.pred_sem_seg.cpu().data.numpy()[0]
+                result = self.model.test_step(data)
+            item[1] = result[0].pred_sem_seg.cpu().data.numpy()[0]
             self.write_buffer.put(item)
             self.read_buffer.task_done()
 
@@ -237,7 +244,7 @@ class RSInferencer:
             item = self.write_buffer.get()
             if item == self.END_FLAG:
                 break
-            seg_map.write(grid=item[0], data=item[1])
+            seg_map.write(data=item[1], grid=item[0])
             self.write_buffer.task_done()
 
     def run(self,
