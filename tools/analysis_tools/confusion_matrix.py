@@ -59,7 +59,8 @@ def calculate_confusion_matrix(dataset, results):
     prog_bar = progressbar.ProgressBar(len(results))
     for idx, per_img_res in enumerate(results):
         res_segm = per_img_res
-        gt_segm = dataset[idx]['data_samples'].gt_sem_seg.data.squeeze().numpy()
+        gt_segm = \
+            dataset[idx]['data_samples'].gt_sem_seg.data.squeeze().numpy()
         gt_segm, res_segm = gt_segm.flatten(), res_segm.flatten()
         to_ignore = gt_segm == ignore_index
 
