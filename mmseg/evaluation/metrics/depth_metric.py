@@ -177,9 +177,8 @@ class DepthMetric(BaseMetric):
 
         Returns:
             Dict[str, float]: The computed metrics. The keys are the names of
-                the metrics, and the values are corresponding results. The key
-                mainly includes aAcc, mIoU, mAcc, mDice, mFscore, mPrecision,
-                mRecall.
+                the metrics, and the values are corresponding results. The keys
+                are identical with self.metrics.
         """
         logger: MMLogger = MMLogger.get_current_instance()
         if self.format_only:
@@ -197,7 +196,7 @@ class DepthMetric(BaseMetric):
         for key, val in metrics.items():
             table_data.add_column(key, [round(val, 5)])
 
-        print_log('per class results:', logger)
+        print_log('results:', logger)
         print_log('\n' + table_data.get_string(), logger=logger)
 
         return metrics
