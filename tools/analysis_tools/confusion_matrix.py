@@ -1,14 +1,15 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os
+
 import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image
 from matplotlib.ticker import MultipleLocator
-from mmseg.registry import DATASETS
 from mmengine.config import Config, DictAction
 from mmengine.registry import init_default_scope
 from mmengine.utils import progressbar
+from mmseg.registry import DATASETS
+from PIL import Image
 init_default_scope('mmseg')
 
 
