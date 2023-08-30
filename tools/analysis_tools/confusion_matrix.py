@@ -156,7 +156,6 @@ def plot_confusion_matrix(confusion_matrix,
         plt.show()
 
 
-
 def main():
     args = parse_args()
 
