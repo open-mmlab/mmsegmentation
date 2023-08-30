@@ -1,6 +1,5 @@
 codecov
 flake8
-GDAL
 interrogate
 pytest
 xdoctest>=0.10.0
