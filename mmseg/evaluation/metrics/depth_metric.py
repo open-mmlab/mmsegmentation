@@ -107,7 +107,6 @@ class DepthMetric(BaseMetric):
                 output_mask = pred_label.cpu().numpy(
                 ) * self.depth_scale_factor
 
-                # output = Image.fromarray(output_mask.astype(np.uint8))
                 cv2.imwrite(png_filename, output_mask.astype(np.uint16),
                             [cv2.IMWRITE_PNG_COMPRESSION, 0])
 
