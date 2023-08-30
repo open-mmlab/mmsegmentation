@@ -13,6 +13,7 @@ from mmengine.registry import init_default_scope
 from mmengine.utils import progressbar
 init_default_scope('mmseg')
 
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Generate confusion matrix from segmentation results')
@@ -59,7 +60,8 @@ def calculate_confusion_matrix(dataset, results):
     prog_bar = progressbar.ProgressBar(len(results))
     for idx, per_img_res in enumerate(results):
         res_segm = per_img_res
-        gt_segm = dataset[idx]['data_samples'].gt_sem_seg.data.squeeze().numpy()
+        gt_segm = \
+            dataset[idx]['data_samples'].gt_sem_seg.data.squeeze().numpy()
         gt_segm, res_segm = gt_segm.flatten(), res_segm.flatten()
         to_ignore = gt_segm == ignore_index
 
@@ -124,8 +126,8 @@ def plot_confusion_matrix(confusion_matrix,
     # draw label
     ax.set_xticks(np.arange(num_classes))
     ax.set_yticks(np.arange(num_classes))
-    ax.set_xticklabels(labels,fontsize=20)
-    ax.set_yticklabels(labels,fontsize=20)
+    ax.set_xticklabels(labels, fontsize=20)
+    ax.set_yticklabels(labels, fontsize=20)
 
     ax.tick_params(
         axis='x', bottom=False, top=True, labelbottom=False, labeltop=True)
