@@ -35,7 +35,6 @@ def main():
     parser.add_argument(
         '--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
-    print(args)
     inferencer = RSInferencer.from_config_path(
         args.config,
         args.checkpoint,
