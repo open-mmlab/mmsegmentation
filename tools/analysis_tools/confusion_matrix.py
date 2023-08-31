@@ -7,7 +7,7 @@ import numpy as np
 from matplotlib.ticker import MultipleLocator
 from mmengine.config import Config, DictAction
 from mmengine.registry import init_default_scope
-from mmengine.utils import progressbar
+from mmengine.utils import mkdir_or_exist, progressbar
 from PIL import Image
 
 from mmseg.registry import DATASETS
@@ -58,12 +58,15 @@ def calculate_confusion_matrix(dataset, results):
     confusion_matrix = np.zeros(shape=[n, n])
     assert len(dataset) == len(results)
     ignore_index = dataset.ignore_index
+    reduce_zero_label = dataset.reduce_zero_label
     prog_bar = progressbar.ProgressBar(len(results))
     for idx, per_img_res in enumerate(results):
         res_segm = per_img_res
-        gt_segm = \
-            dataset[idx]['data_samples'].gt_sem_seg.data.squeeze().numpy()
+        gt_segm = dataset[idx]['data_samples'] \
+            .gt_sem_seg.data.squeeze().numpy().astype(np.uint8)
         gt_segm, res_segm = gt_segm.flatten(), res_segm.flatten()
+        if reduce_zero_label:
+            gt_segm = gt_segm - 1
         to_ignore = gt_segm == ignore_index
 
         gt_segm, res_segm = gt_segm[~to_ignore], res_segm[~to_ignore]
@@ -153,6 +156,7 @@ def plot_confusion_matrix(confusion_matrix,
 
     fig.tight_layout()
     if save_dir is not None:
+        mkdir_or_exist(save_dir)
         plt.savefig(
             os.path.join(save_dir, 'confusion_matrix.png'), format='png')
     if show:
