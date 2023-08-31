@@ -27,8 +27,11 @@ class DepthMetric(BaseMetric):
             Defaults to 0.0.
         max_depth_eval (float): Maximum depth value for evaluation.
             Defaults to infinity.
-        crop_type (str, optional): Type of cropping to be used during
-            evaluation.
+        crop_type (str, optional): Specifies the type of cropping to be used
+            during evaluation. This option can affect how the evaluation mask
+            is generated. Currently, 'nyu_crop' is supported, but other
+            types can be added in future. Defaults to None if no cropping
+            should be applied.
         depth_scale_factor (float): Factor to scale the depth values.
             Defaults to 1.0.
         collect_device (str): Device name used for collecting results from
@@ -69,6 +72,11 @@ class DepthMetric(BaseMetric):
                     f'supported. Please use metrics in {self.METRICS}'
             self.metrics = depth_metrics
 
+        # Validate crop_type, if provided
+        assert crop_type in [
+            None, 'nyu_crop'
+        ], (f'Invalid value for crop_type: {crop_type}. Supported values are '
+            'None or \'nyu_crop\'.')
         self.crop_type = crop_type
         self.min_depth_eval = min_depth_eval
         self.max_depth_eval = max_depth_eval
@@ -124,6 +132,8 @@ class DepthMetric(BaseMetric):
                                        gt_depth < self.max_depth_eval)
 
         if self.crop_type == 'nyu_crop':
+            # this implementation is adapted from
+            # https://github.com/zhyever/Monocular-Depth-Estimation-Toolbox/blob/main/depth/datasets/nyu.py  # noqa
             crop_mask = torch.zeros_like(valid_mask)
             crop_mask[45:471, 41:601] = 1
         else:
