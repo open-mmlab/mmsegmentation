@@ -42,7 +42,7 @@ model = dict(
         act_cfg=dict(type='QuickGELU'),
         norm_eval=False,
         interpolate_mode='bicubic',
-        frozen_exclude='pos_embed'),
+        frozen_exclude=['pos_embed']),
     text_encoder=dict(
         type='CLIPTextEncoder',
         dataset_name=None,
@@ -115,16 +115,17 @@ model = dict(
                         weight=5.0,
                         pred_act=True,
                         eps=1.0)
-                ]),
-            sampler=dict(type='MaskPseudoSampler')),
+                ])),
         loss_decode=[dict(type='CrossEntropyLoss',
                           loss_name='loss_cls_ce',
                           loss_weight=2.0,
                           class_weight=[1.0] * num_classes + [0.1]),
                      dict(type='CrossEntropyLoss',
+                          use_sigmoid=True,
                           loss_name='loss_mask_ce',
                           loss_weight=5.0),
                      dict(type='DiceLoss',
+                          ignore_index=None,
                           loss_name='loss_mask_dice',
                           loss_weight=5.0)
                      ]),

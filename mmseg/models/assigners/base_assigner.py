@@ -6,7 +6,7 @@ from mmengine.structures import InstanceData
 
 
 class BaseAssigner(metaclass=ABCMeta):
-    """Base assigner that assigns boxes to ground truth boxes."""
+    """Base assigner that assigns masks to ground truth class labels."""
 
     @abstractmethod
     def assign(self,
@@ -14,4 +14,5 @@ class BaseAssigner(metaclass=ABCMeta):
                gt_instances: InstanceData,
                gt_instances_ignore: Optional[InstanceData] = None,
                **kwargs):
-        """Assign boxes to either a ground truth boxes or a negative boxes."""
+        """Assign masks to either a ground truth class label or a negative
+        label."""

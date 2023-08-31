@@ -500,8 +500,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                 num_points=train_cfg.num_points,
                 num_queries=san_cfg.num_queries,
                 num_classes=num_classes,
-                assigner=train_cfg.assigner,
-                sampler=train_cfg.sampler)
+                assigner=train_cfg.assigner)
 
     def init_weights(self):
 
@@ -614,8 +613,8 @@ class SideAdapterCLIPHead(BaseDecodeHead):
             dict[str, Tensor]: a dictionary of loss components.
         """
         # batch SegDataSample to InstanceDataSample
-        batch_gt_instances, batch_img_metas = seg_data_to_instance_data(
-            self.ignore_index, batch_data_samples)
+        batch_gt_instances = seg_data_to_instance_data(self.ignore_index,
+                                                       batch_data_samples)
 
         # forward
         all_mask_props, all_mask_logits = self.forward(
@@ -623,13 +622,13 @@ class SideAdapterCLIPHead(BaseDecodeHead):
 
         # loss
         losses = self.loss_by_feat(all_mask_logits, all_mask_props,
-                                   batch_gt_instances, batch_img_metas)
+                                   batch_gt_instances)
 
         return losses
 
-    def loss_by_feat(self, all_cls_scores: Tensor, all_mask_preds: Tensor,
-                     batch_gt_instances: List[InstanceData],
-                     batch_img_metas: List[dict]) -> Dict[str, Tensor]:
+    def loss_by_feat(
+            self, all_cls_scores: Tensor, all_mask_preds: Tensor,
+            batch_gt_instances: List[InstanceData]) -> Dict[str, Tensor]:
         """Loss function.
 
         Args:
@@ -641,7 +640,6 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                 shape (num_decoder, batch_size, num_queries, h, w).
             batch_gt_instances (list[obj:`InstanceData`]): each contains
                 ``labels`` and ``masks``.
-            batch_img_metas (list[dict]): List of image meta information.
 
         Returns:
             dict[str, Tensor]: A dictionary of loss components.
@@ -650,19 +648,17 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         batch_gt_instances_list = [
             batch_gt_instances for _ in range(num_dec_layers)
         ]
-        img_metas_list = [batch_img_metas for _ in range(num_dec_layers)]
 
         losses = []
         for i in range(num_dec_layers):
             cls_scores = all_cls_scores[i]
             mask_preds = all_mask_preds[i]
-            (labels, label_weights, mask_targets, mask_weights,
+            # matching N mask predictions to K category labels
+            (labels, mask_targets, mask_weights,
              avg_factor) = self.match_masks.get_targets(
-                 cls_scores, mask_preds, batch_gt_instances_list[i],
-                 img_metas_list[i])
+                 cls_scores, mask_preds, batch_gt_instances_list[i])
             cls_scores = cls_scores.flatten(0, 1)
             labels = labels.flatten(0, 1)
-            label_weights = label_weights.flatten(0, 1)
 
             num_total_masks = reduce_mean(cls_scores.new_tensor([avg_factor]))
             num_total_masks = max(num_total_masks, 1)
@@ -696,7 +692,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                 if 'loss_cls' in loss_decode.loss_name:
                     if loss_decode.loss_name == 'loss_cls_ce':
                         loss[loss_decode.loss_name] = loss_decode(
-                            cls_scores, labels, weight=label_weights)
+                            cls_scores, labels)
                     else:
                         assert False, "Only support 'CrossEntropyLoss' in" \
                                       ' classification loss'
@@ -706,8 +702,8 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                         loss[loss_decode.loss_name] = mask_preds.sum()
                     elif loss_decode.loss_name == 'loss_mask_ce':
                         loss[loss_decode.loss_name] = loss_decode(
-                            mask_point_preds.reshape(-1),
-                            mask_point_targets.reshape(-1),
+                            mask_point_preds,
+                            mask_point_targets,
                             avg_factor=num_total_masks *
                             self.train_cfg.num_points)
                     elif loss_decode.loss_name == 'loss_mask_dice':

@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from abc import abstractmethod
-from typing import Optional, Union
+from typing import Union
 
 import torch
 import torch.nn.functional as F
@@ -21,25 +21,15 @@ class BaseMatchCost:
         self.weight = weight
 
     @abstractmethod
-    def __call__(self,
-                 pred_instances: InstanceData,
-                 gt_instances: InstanceData,
-                 img_meta: Optional[dict] = None,
-                 **kwargs) -> Tensor:
+    def __call__(self, pred_instances: InstanceData,
+                 gt_instances: InstanceData, **kwargs) -> Tensor:
         """Compute match cost.
 
         Args:
-            pred_instances (:obj:`InstanceData`): Instances of model
-                predictions. It includes ``priors``, and the priors can
-                be anchors or points, or the bboxes predicted by the
-                previous stage, has shape (n, 4). The bboxes predicted by
-                the current model or stage will be named ``bboxes``,
-                ``labels``, and ``scores``, the same as the ``InstanceData``
-                in other places.
-            gt_instances (:obj:`InstanceData`): Ground truth of instance
-                annotations. It usually includes ``bboxes``, with shape (k, 4),
-                and ``labels``, with shape (k, ).
-            img_meta (dict, optional): Image information.
+            pred_instances (InstanceData): Instances of model predictions.
+            It often includes "labels" and "scores".
+            gt_instances (InstanceData): Ground truth of instance
+            annotations. It usually includes "labels".
 
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
@@ -55,7 +45,7 @@ class ClassificationCost(BaseMatchCost):
         weight (Union[float, int]): Cost weight. Defaults to 1.
 
     Examples:
-        >>> from mmseg.models.task_modules.assigners import ClassificationCost
+        >>> from mmseg.models.assigners import ClassificationCost
         >>> import torch
         >>> self = ClassificationCost()
         >>> cls_pred = torch.rand(4, 3)
@@ -71,20 +61,16 @@ class ClassificationCost(BaseMatchCost):
     def __init__(self, weight: Union[float, int] = 1) -> None:
         super().__init__(weight=weight)
 
-    def __call__(self,
-                 pred_instances: InstanceData,
-                 gt_instances: InstanceData,
-                 img_meta: Optional[dict] = None,
-                 **kwargs) -> Tensor:
+    def __call__(self, pred_instances: InstanceData,
+                 gt_instances: InstanceData, **kwargs) -> Tensor:
         """Compute match cost.
 
         Args:
-            pred_instances (:obj:`InstanceData`): ``scores`` inside is
+            pred_instances (InstanceData): "scores" inside is
                 predicted classification logits, of shape
                 (num_queries, num_class).
-            gt_instances (:obj:`InstanceData`): ``labels`` inside should have
+            gt_instances (InstanceData): "labels" inside should have
                 shape (num_gt, ).
-            img_meta (Optional[dict]): _description_. Defaults to None.
 
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
@@ -147,19 +133,15 @@ class DiceCost(BaseMatchCost):
         loss = 1 - (numerator + self.eps) / (denominator + self.eps)
         return loss
 
-    def __call__(self,
-                 pred_instances: InstanceData,
-                 gt_instances: InstanceData,
-                 img_meta: Optional[dict] = None,
-                 **kwargs) -> Tensor:
+    def __call__(self, pred_instances: InstanceData,
+                 gt_instances: InstanceData, **kwargs) -> Tensor:
         """Compute match cost.
 
         Args:
-            pred_instances (:obj:`InstanceData`): Predicted instances which
-                must contain ``masks``.
-            gt_instances (:obj:`InstanceData`): Ground truth which must contain
-                ``mask``.
-            img_meta (Optional[dict]): Image information. Defaults to None.
+            pred_instances (InstanceData): Predicted instances which
+                must contain "masks".
+            gt_instances (InstanceData): Ground truth which must contain
+                "mask".
 
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
@@ -214,11 +196,8 @@ class CrossEntropyLossCost(BaseMatchCost):
 
         return cls_cost
 
-    def __call__(self,
-                 pred_instances: InstanceData,
-                 gt_instances: InstanceData,
-                 img_meta: Optional[dict] = None,
-                 **kwargs) -> Tensor:
+    def __call__(self, pred_instances: InstanceData,
+                 gt_instances: InstanceData, **kwargs) -> Tensor:
         """Compute match cost.
 
         Args:
@@ -226,7 +205,6 @@ class CrossEntropyLossCost(BaseMatchCost):
                 must contain ``scores`` or ``masks``.
             gt_instances (:obj:`InstanceData`): Ground truth which must contain
                 ``labels`` or ``masks``.
-            img_meta (Optional[dict]): Image information. Defaults to None.
 
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
