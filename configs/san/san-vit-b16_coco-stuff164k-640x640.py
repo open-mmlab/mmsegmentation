@@ -29,6 +29,11 @@ train_dataloader = dict(batch_size=2, dataset=dict(pipeline=train_pipeline))
 val_dataloader = dict(batch_size=1, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
+data_preprocessor = dict(
+    mean=[122.7709, 116.7460, 104.0937],
+    std=[68.5005, 66.6322, 70.3232],
+    size_divisor=640,
+    test_cfg=dict(size_divisor=32))
 model = dict(
     pretrained='pretrain/clip_vit_base_patch16_224.pth',
     text_encoder=dict(dataset_name='coco-stuff164k'),

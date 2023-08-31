@@ -1,6 +1,8 @@
 codecov
 flake8
+ftfy
 interrogate
 pytest
+regex
 xdoctest>=0.10.0
 yapf

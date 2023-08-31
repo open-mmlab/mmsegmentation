@@ -290,8 +290,6 @@ class RecWithAttnbias(nn.Module):
             Default: 768.
         mlp_ratio (int): Ratio of mlp hidden dim to embedding dim.
             Default: 4.
-        num_fcs (int): Number of fully-connected layers for FFNs.
-            Default: 2.
         qkv_bias (int): Whether to use bias in multihead-attention.
             Default: True.
         out_dims (int): Number of channels of the output mask proposals.
@@ -322,6 +320,9 @@ class RecWithAttnbias(nn.Module):
                  frozen_exclude: List = []):
         super().__init__()
 
+        assert sos_token_format in [
+            'cls_token', 'learnable_token', 'pos_embedding'
+        ]
         self.sos_token_format = sos_token_format
         self.sos_token_num = sos_token_num
         self.frozen_exclude = frozen_exclude
@@ -334,19 +335,6 @@ class RecWithAttnbias(nn.Module):
             self.frozen.append('sos_token')
 
         layers = []
-        '''
-        for i in range(num_layers):
-            layers.append(
-                TransformerEncoderLayer(
-                    embed_dims=embed_dims,
-                    num_heads=num_heads,
-                    feedforward_channels=mlp_ratio * embed_dims,
-                    num_fcs=num_fcs,
-                    qkv_bias=qkv_bias,
-                    act_cfg=act_cfg,
-                    norm_cfg=norm_cfg,
-                    batch_first=False))
-        '''
         for i in range(num_layers):
             layers.append(
                 BaseTransformerLayer(
@@ -355,7 +343,7 @@ class RecWithAttnbias(nn.Module):
                         embed_dims=embed_dims,
                         num_heads=num_heads,
                         batch_first=False,
-                        bias=True),
+                        bias=qkv_bias),
                     ffn_cfgs=dict(
                         type='FFN',
                         embed_dims=embed_dims,

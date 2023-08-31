@@ -90,7 +90,6 @@ model = dict(
             embed_dims=768,
             num_heads=12,
             mlp_ratio=4,
-            num_fcs=2,
             qkv_bias=True,
             out_dims=512,
             final_norm=True,
