@@ -1,23 +1,28 @@
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
+
 data_preprocessor = dict(
     type='SegDataPreProcessor',
-    mean=[123.675, 116.28, 103.53],
-    std=[58.395, 57.12, 57.375],
+    mean=[122.7709, 116.7460, 104.0937],
+    std=[68.5005, 66.6322, 70.3232],
     bgr_to_rgb=True,
     pad_val=0,
-    seg_pad_val=255)
+    seg_pad_val=255,
+    size_divisor=640,
+    test_cfg=dict(size_divisor=32))
 
+num_classes = 171
 model = dict(
     type='MultimodalEncoderDecoder',
     data_preprocessor=data_preprocessor,
-    pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
+    pretrained='pretrain/clip_vit_base_patch16_224.pth',
     asymetric_input=True,
     encoder_resolution=0.5,
     image_encoder=dict(
         type='VisionTransformer',
         img_size=(224, 224),
         patch_size=16,
+        patch_pad=0,
         in_channels=3,
         embed_dims=768,
         num_layers=9,
@@ -36,7 +41,8 @@ model = dict(
         norm_cfg=dict(type='LN', eps=1e-5),
         act_cfg=dict(type='QuickGELU'),
         norm_eval=False,
-        interpolate_mode='bicubic'),
+        interpolate_mode='bicubic',
+        frozen_exclude=['pos_embed']),
     text_encoder=dict(
         type='CLIPTextEncoder',
         dataset_name=None,
@@ -52,7 +58,8 @@ model = dict(
         ),
     decode_head=dict(
         type='SideAdapterCLIPHead',
-        num_classes=19,
+        num_classes=num_classes,
+        deep_supervision_idxs=[7],
         san_cfg=dict(
             in_channels=3,
             clip_channels=768,
@@ -87,13 +94,41 @@ model = dict(
             out_dims=512,
             final_norm=True,
             act_cfg=dict(type='QuickGELU'),
-            norm_cfg=dict(type='LN', eps=1e-5)
+            norm_cfg=dict(type='LN', eps=1e-5),
+            frozen_exclude=[]
         ),
         align_corners=False,
-        loss_decode=[
-            dict(type='DiceLoss', loss_weight=5.0),
-            dict(type='CrossEntropyLoss', loss_weight=5.0),
-            dict(type='CrossEntropyLoss', loss_weight=2.0)]),
+        train_cfg=dict(
+            num_points=12544,
+            oversample_ratio=3.0,
+            importance_sample_ratio=0.75,
+            assigner=dict(
+                type='HungarianAssigner',
+                match_costs=[
+                    dict(type='ClassificationCost', weight=2.0),
+                    dict(
+                        type='CrossEntropyLossCost',
+                        weight=5.0,
+                        use_sigmoid=True),
+                    dict(
+                        type='DiceCost',
+                        weight=5.0,
+                        pred_act=True,
+                        eps=1.0)
+                ])),
+        loss_decode=[dict(type='CrossEntropyLoss',
+                          loss_name='loss_cls_ce',
+                          loss_weight=2.0,
+                          class_weight=[1.0] * num_classes + [0.1]),
+                     dict(type='CrossEntropyLoss',
+                          use_sigmoid=True,
+                          loss_name='loss_mask_ce',
+                          loss_weight=5.0),
+                     dict(type='DiceLoss',
+                          ignore_index=None,
+                          loss_name='loss_mask_dice',
+                          loss_weight=5.0)
+                     ]),
 
     # model training and testing settings
     train_cfg=dict(),

@@ -84,9 +84,19 @@ class MultimodalEncoderDecoder(BaseSegmentor):
         super().__init__(
             data_preprocessor=data_preprocessor, init_cfg=init_cfg)
         if pretrained is not None:
-            assert image_encoder.get('pretrained') is None, \
-                'both backbone and segmentor set pretrained weight'
-            image_encoder.pretrained = pretrained
+            image_encoder.init_cfg = dict(
+                type='Pretrained_Part',
+                checkpoint=pretrained,
+                partname='image_encoder')
+            text_encoder.init_cfg = dict(
+                type='Pretrained_Part',
+                checkpoint=pretrained,
+                partname='text_encoder')
+            decode_head.init_cfg = dict(
+                type='Pretrained_Part',
+                checkpoint=pretrained,
+                partname='decode_head.rec_with_attnbias')
+
         if asymetric_input:
             assert encoder_resolution is not None, \
                 'if asymetric_input set True, ' \
@@ -156,12 +166,17 @@ class MultimodalEncoderDecoder(BaseSegmentor):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
-
-        x = self.extract_feat(inputs)
+        classifier_embeds = self.text_encoder()
+        clip_inputs = inputs
+        if self.asymetric_input:
+            clip_inputs = F.interpolate(
+                inputs, scale_factor=self.encoder_resolution, mode='bilinear')
+        x = self.image_encoder(clip_inputs)
 
         losses = dict()
 
-        loss_decode = self._decode_head_forward_train(x, data_samples)
+        loss_decode = self._decode_head_forward_train(
+            [inputs, x, classifier_embeds], data_samples)
         losses.update(loss_decode)
 
         return losses

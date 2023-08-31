@@ -6,13 +6,20 @@ import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 from mmcv.cnn.bricks.transformer import BaseTransformerLayer
+from mmcv.ops import point_sample
+from mmengine.model.weight_init import (caffe2_xavier_init, normal_init,
+                                        trunc_normal_)
+from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
+from mmengine.structures import InstanceData
 from torch import Tensor
 from torch.nn import functional as F
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType
-from ..utils import MLP, LayerNorm, PatchEmbed, cross_attn_layer, resize
+from mmseg.utils import (ConfigType, MatchMasks, SampleList, reduce_mean,
+                         seg_data_to_instance_data)
+from ..utils import (MLP, LayerNorm, PatchEmbed, cross_attn_layer,
+                     get_uncertain_point_coords_with_randomness, resize)
 from .decode_head import BaseDecodeHead
 
 
@@ -137,7 +144,8 @@ class SideAdapterNetwork(nn.Module):
         )
         ori_h, ori_w = self.patch_embed.init_out_size
         num_patches = ori_h * ori_w
-        self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, embed_dims))
+        self.pos_embed = nn.Parameter(
+            torch.randn(1, num_patches, embed_dims) * .02)
         self.query_pos_embed = nn.Parameter(
             torch.zeros(1, num_queries, embed_dims))
         self.query_embed = nn.Parameter(
@@ -173,14 +181,12 @@ class SideAdapterNetwork(nn.Module):
             mlp_num_layers=cfg_decoder.num_mlp,
             rescale_attn_bias=cfg_decoder.rescale)
 
-    '''
-    def init_para(self):
-        """init weight when training."""
+    def init_weights(self):
+        trunc_normal_(self.pos_embed, std=0.02)
         nn.init.normal_(self.query_embed, std=0.02)
         nn.init.normal_(self.query_pos_embed, std=0.02)
         for i in range(len(self.conv_clips)):
-            weight_init.c2_xavier_fill(self.conv_clips[i])
-    '''
+            caffe2_xavier_init(self.conv_clips[i][1].conv)
 
     def fuse_clip(self, fused_index: int, x: torch.Tensor,
                   clip_feature: torch.Tensor, hwshape: Tuple[int,
@@ -195,9 +201,9 @@ class SideAdapterNetwork(nn.Module):
         x = torch.cat([x[:, :-L, ...], x[:, -L:, ...] + fused_clip], dim=1)
         return x
 
-    def encode_feature(
-            self, image: torch.Tensor, clip_features: List[torch.Tensor]
-    ) -> List[Dict[str, torch.Tensor]]:
+    def encode_feature(self, image: torch.Tensor,
+                       clip_features: List[torch.Tensor],
+                       deep_supervision_idxs: List[int]) -> List[List]:
         """Encode images by a lightweight vision transformer."""
         assert len(self.fusion_index) == len(clip_features)
         x, hwshape = self.patch_embed(image)
@@ -224,6 +230,7 @@ class SideAdapterNetwork(nn.Module):
         if self.fusion_index[fused_index] == 0:
             x = self.fuse_clip(fused_index, x, clip_features[0][0], hwshape, L)
             fused_index += 1
+        outs = []
         for index, block in enumerate(self.encode_layers, start=1):
             x = block(x)
             if index < len(self.fusion_index
@@ -231,21 +238,36 @@ class SideAdapterNetwork(nn.Module):
                 x = self.fuse_clip(fused_index, x,
                                    clip_features[fused_index][0], hwshape, L)
                 fused_index += 1
+            x_query = x[:, :-L, ...]
+            x_feat = x[:, -L:, ...].permute(0, 2, 1)\
+                .reshape(x.shape[0], x.shape[-1], hwshape[0], hwshape[1])
+
+            if index in deep_supervision_idxs or index == len(
+                    self.encode_layers):
+                outs.append({'query': x_query, 'x': x_feat})
+
             if index < len(self.encode_layers):
                 x = x + pos_embed
-        return [
-            x[:, :-L, ...],
-            x[:, -L:, ...].permute(0, 2, 1).reshape(x.shape[0], x.shape[-1],
-                                                    hwshape[0], hwshape[1])
-        ]
+        return outs
+
+    def decode_feature(self, features):
+        mask_embeds = []
+        attn_biases = []
+        for feature in features:
+            mask_embed, attn_bias = self.mask_decoder(**feature)
+            mask_embeds.append(mask_embed)
+            attn_biases.append(attn_bias)
+        return mask_embeds, attn_biases
 
     def forward(
-        self, image: torch.Tensor, clip_features: List[torch.Tensor]
+        self, image: torch.Tensor, clip_features: List[torch.Tensor],
+        deep_supervision_idxs: List[int]
     ) -> Tuple[List[torch.Tensor], List[List[torch.Tensor]]]:
         """Forward function."""
-        query, feature = self.encode_feature(image, clip_features)
-        mask_embeds, attn_bias = self.mask_decoder(query, feature)
-        return mask_embeds, attn_bias
+        features = self.encode_feature(image, clip_features,
+                                       deep_supervision_idxs)
+        mask_embeds, attn_biases = self.decode_feature(features)
+        return mask_embeds, attn_biases
 
 
 class RecWithAttnbias(nn.Module):
@@ -258,7 +280,6 @@ class RecWithAttnbias(nn.Module):
             Default: 'cls_token'.
         sos_token_num (int): Number of sos token. It should be equal to
             the number of quries. Default: 100.
-        frozen (List): The parameters to be frozen when training.
         num_layers (int): Number of rest CLIP layers for mask recognition.
             Default: 3.
         cross_attn (bool): Whether use cross attention to update sos token.
@@ -279,24 +300,24 @@ class RecWithAttnbias(nn.Module):
             Default: dict(type='GELU').
         norm_cfg (dict): Config dict for normalization layer.
             Default: dict(type='LN').
+        frozen_exclude (List): List of parameters that are not to be frozen.
     """
 
-    def __init__(
-            self,
-            sos_token_format: str = 'cls_token',
-            sos_token_num: int = 100,
-            frozen: List = [],
-            num_layers: int = 3,
-            cross_attn: bool = False,
-            embed_dims: int = 768,
-            num_heads: int = 12,
-            mlp_ratio: int = 4,
-            qkv_bias: bool = True,
-            out_dims: int = 512,
-            final_norm: bool = True,
-            act_cfg: dict = dict(type='GELU'),
-            norm_cfg: dict = dict(type='LN'),
-    ):
+    def __init__(self,
+                 sos_token_format: str = 'cls_token',
+                 sos_token_num: int = 100,
+                 num_layers: int = 3,
+                 cross_attn: bool = False,
+                 embed_dims: int = 768,
+                 num_heads: int = 12,
+                 mlp_ratio: int = 4,
+                 num_fcs: int = 2,
+                 qkv_bias: bool = True,
+                 out_dims: int = 512,
+                 final_norm: bool = True,
+                 act_cfg: dict = dict(type='GELU'),
+                 norm_cfg: dict = dict(type='LN'),
+                 frozen_exclude: List = []):
         super().__init__()
 
         assert sos_token_format in [
@@ -304,7 +325,7 @@ class RecWithAttnbias(nn.Module):
         ]
         self.sos_token_format = sos_token_format
         self.sos_token_num = sos_token_num
-        self.frozen = frozen
+        self.frozen_exclude = frozen_exclude
         self.cross_attn = cross_attn
         self.num_layers = num_layers
         self.num_heads = num_heads
@@ -335,6 +356,22 @@ class RecWithAttnbias(nn.Module):
         self.proj = nn.Linear(embed_dims, out_dims, bias=False)
 
         self.final_norm = final_norm
+        self._freeze()
+
+    def init_weights(self, rec_state_dict):
+        if hasattr(self, 'sos_token'):
+            normal_init(self.sos_token, std=0.02)
+        if rec_state_dict is not None:
+            load_state_dict(self, rec_state_dict, strict=False, logger=None)
+        else:
+            super().init_weights()
+
+    def _freeze(self):
+        if 'all' in self.frozen_exclude:
+            return
+        for name, param in self.named_parameters():
+            if not any([exclude in name for exclude in self.frozen_exclude]):
+                param.requires_grad = False
 
     def init_para(self):
         if hasattr(self, 'sos_token'):
@@ -415,7 +452,7 @@ class RecWithAttnbias(nn.Module):
         else:
             x = torch.cat([sos_token, x], dim=0)
             for i, block in enumerate(self.layers):
-                x = block(x, attn_masks=attn_biases[i])
+                x = block(x, attn_masks=[attn_biases[i]])
             sos_token = x[:self.sos_token_num]
 
         sos_token = sos_token.permute(1, 0, 2)  # LND -> NLD
@@ -443,7 +480,8 @@ class SideAdapterCLIPHead(BaseDecodeHead):
     """
 
     def __init__(self, num_classes: int, san_cfg: ConfigType,
-                 maskgen_cfg: ConfigType, **kwargs):
+                 maskgen_cfg: ConfigType, deep_supervision_idxs: List[int],
+                 train_cfg: ConfigType, **kwargs):
         super().__init__(
             in_channels=san_cfg.in_channels,
             channels=san_cfg.embed_dims,
@@ -455,8 +493,38 @@ class SideAdapterCLIPHead(BaseDecodeHead):
 
         self.side_adapter_network = SideAdapterNetwork(**san_cfg)
         self.rec_with_attnbias = RecWithAttnbias(**maskgen_cfg)
+        self.deep_supervision_idxs = deep_supervision_idxs
+        self.train_cfg = train_cfg
+        if train_cfg:
+            self.match_masks = MatchMasks(
+                num_points=train_cfg.num_points,
+                num_queries=san_cfg.num_queries,
+                num_classes=num_classes,
+                assigner=train_cfg.assigner)
 
-    def forward(self, inputs: Tuple[Tensor]) -> Tuple[List]:
+    def init_weights(self):
+
+        rec_state_dict = None
+        if isinstance(self.init_cfg, dict) and \
+                self.init_cfg.get('type') == 'Pretrained_Part':
+            checkpoint = CheckpointLoader.load_checkpoint(
+                self.init_cfg['checkpoint'], logger=None, map_location='cpu')
+
+            rec_state_dict = checkpoint.copy()
+            para_prefix = self.init_cfg.get('partname')
+            assert para_prefix.split('.')[1] == 'rec_with_attnbias', \
+                'part-pretrain only support for Module RecWithAttnbias'
+            prefix_len = len(para_prefix) + 1
+            for k, v in checkpoint.items():
+                rec_state_dict.pop(k)
+                if self.init_cfg.get('partname') in k:
+                    rec_state_dict[k[prefix_len:]] = v
+
+        self.side_adapter_network.init_weights()
+        self.rec_with_attnbias.init_weights(rec_state_dict)
+
+    def forward(self, inputs: Tuple[Tensor],
+                deep_supervision_idxs) -> Tuple[List]:
         """Forward function.
 
         Args:
@@ -470,18 +538,16 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         """
         imgs, clip_feature, class_embeds = inputs
         # predict mask proposals and attention bias
-        mask_props, attn_biases = self.side_adapter_network(imgs, clip_feature)
-        if not isinstance(mask_props, List):
-            mask_props = [mask_props]
-            attn_biases = [attn_biases]
+        mask_props, attn_biases = self.side_adapter_network(
+            imgs, clip_feature, deep_supervision_idxs)
 
         # mask recognition with attention bias
         mask_embeds = [
             self.rec_with_attnbias(att_bias, clip_feature[-1])
             for att_bias in attn_biases
         ]
-        # Obtain class prediction of masks by comparing the similarity between
-        # the image token and the text embedding of class names.
+        # Obtain class prediction of masks by comparing the similarity
+        # between the image token and the text embedding of class names.
         mask_logits = [
             torch.einsum('bqc,nc->bqn', mask_embed, class_embeds)
             for mask_embed in mask_embeds
@@ -505,7 +571,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         Returns:
             Tensor: Outputs segmentation logits map.
         """
-        mask_props, mask_logits = self.forward(inputs)
+        mask_props, mask_logits = self.forward(inputs, [])
 
         return self.predict_by_feat([mask_props[-1], mask_logits[-1]],
                                     batch_img_metas)
@@ -529,3 +595,135 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         mask_pred = mask_pred.sigmoid()
         seg_logits = torch.einsum('bqc,bqhw->bchw', mask_cls, mask_pred)
         return seg_logits
+
+    def loss(self, x: Tuple[Tensor], batch_data_samples: SampleList,
+             train_cfg: ConfigType) -> dict:
+        """Perform forward propagation and loss calculation of the decoder head
+        on the features of the upstream network.
+
+        Args:
+            x (tuple[Tensor]): Multi-level features from the upstream
+                network, each is a 4D-tensor.
+            batch_data_samples (List[:obj:`SegDataSample`]): The Data
+                Samples. It usually includes information such as
+                `gt_sem_seg`.
+            train_cfg (ConfigType): Training config.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components.
+        """
+        # batch SegDataSample to InstanceDataSample
+        batch_gt_instances = seg_data_to_instance_data(self.ignore_index,
+                                                       batch_data_samples)
+
+        # forward
+        all_mask_props, all_mask_logits = self.forward(
+            x, self.deep_supervision_idxs)
+
+        # loss
+        losses = self.loss_by_feat(all_mask_logits, all_mask_props,
+                                   batch_gt_instances)
+
+        return losses
+
+    def loss_by_feat(
+            self, all_cls_scores: Tensor, all_mask_preds: Tensor,
+            batch_gt_instances: List[InstanceData]) -> Dict[str, Tensor]:
+        """Loss function.
+
+        Args:
+            all_cls_scores (Tensor): Classification scores for all decoder
+                layers with shape (num_decoder, batch_size, num_queries,
+                cls_out_channels). Note `cls_out_channels` should includes
+                background.
+            all_mask_preds (Tensor): Mask scores for all decoder layers with
+                shape (num_decoder, batch_size, num_queries, h, w).
+            batch_gt_instances (list[obj:`InstanceData`]): each contains
+                ``labels`` and ``masks``.
+
+        Returns:
+            dict[str, Tensor]: A dictionary of loss components.
+        """
+        num_dec_layers = len(all_cls_scores)
+        batch_gt_instances_list = [
+            batch_gt_instances for _ in range(num_dec_layers)
+        ]
+
+        losses = []
+        for i in range(num_dec_layers):
+            cls_scores = all_cls_scores[i]
+            mask_preds = all_mask_preds[i]
+            # matching N mask predictions to K category labels
+            (labels, mask_targets, mask_weights,
+             avg_factor) = self.match_masks.get_targets(
+                 cls_scores, mask_preds, batch_gt_instances_list[i])
+            cls_scores = cls_scores.flatten(0, 1)
+            labels = labels.flatten(0, 1)
+
+            num_total_masks = reduce_mean(cls_scores.new_tensor([avg_factor]))
+            num_total_masks = max(num_total_masks, 1)
+
+            # extract positive ones
+            # shape (batch_size, num_queries, h, w) -> (num_total_gts, h, w)
+            mask_preds = mask_preds[mask_weights > 0]
+
+            if mask_targets.shape[0] != 0:
+                with torch.no_grad():
+                    points_coords = get_uncertain_point_coords_with_randomness(
+                        mask_preds.unsqueeze(1), None,
+                        self.train_cfg.num_points,
+                        self.train_cfg.oversample_ratio,
+                        self.train_cfg.importance_sample_ratio)
+                    # shape (num_total_gts, h, w)
+                    # -> (num_total_gts, num_points)
+                    mask_point_targets = point_sample(
+                        mask_targets.unsqueeze(1).float(),
+                        points_coords).squeeze(1)
+                # shape (num_queries, h, w) -> (num_queries, num_points)
+                mask_point_preds = point_sample(
+                    mask_preds.unsqueeze(1), points_coords).squeeze(1)
+
+            if not isinstance(self.loss_decode, nn.ModuleList):
+                losses_decode = [self.loss_decode]
+            else:
+                losses_decode = self.loss_decode
+            loss = dict()
+            for loss_decode in losses_decode:
+                if 'loss_cls' in loss_decode.loss_name:
+                    if loss_decode.loss_name == 'loss_cls_ce':
+                        loss[loss_decode.loss_name] = loss_decode(
+                            cls_scores, labels)
+                    else:
+                        assert False, "Only support 'CrossEntropyLoss' in" \
+                                      ' classification loss'
+
+                elif 'loss_mask' in loss_decode.loss_name:
+                    if mask_targets.shape[0] == 0:
+                        loss[loss_decode.loss_name] = mask_preds.sum()
+                    elif loss_decode.loss_name == 'loss_mask_ce':
+                        loss[loss_decode.loss_name] = loss_decode(
+                            mask_point_preds,
+                            mask_point_targets,
+                            avg_factor=num_total_masks *
+                            self.train_cfg.num_points)
+                    elif loss_decode.loss_name == 'loss_mask_dice':
+                        loss[loss_decode.loss_name] = loss_decode(
+                            mask_point_preds,
+                            mask_point_targets,
+                            avg_factor=num_total_masks)
+                    else:
+                        assert False, "Only support 'CrossEntropyLoss' and" \
+                                      " 'DiceLoss' in mask loss"
+                else:
+                    assert False, "Only support for 'loss_cls' and 'loss_mask'"
+
+            losses.append(loss)
+
+        loss_dict = dict()
+        # loss from the last decoder layer
+        loss_dict.update(losses[-1])
+        # loss from other decoder layers
+        for i, loss in enumerate(losses[:-1]):
+            for k, v in loss.items():
+                loss_dict[f'd{self.deep_supervision_idxs[i]}.{k}'] = v
+        return loss_dict
