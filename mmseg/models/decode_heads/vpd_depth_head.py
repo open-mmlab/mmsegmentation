@@ -7,8 +7,12 @@ import torch.nn.functional as F
 from mmcv.cnn import (ConvModule, build_conv_layer, build_norm_layer,
                       build_upsample_layer)
 from mmengine.model import BaseModule
+from torch import Tensor
 
 from mmseg.registry import MODELS
+from mmseg.utils import ConfigType, SampleList
+from ..builder import build_loss
+from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 
@@ -117,17 +121,18 @@ class VPDDepthHead(BaseDecodeHead):
     out_channels = 1
 
     def __init__(
-        self,
-        max_depth: float,
-        in_channels: Sequence[int] = (320, 640, 1280, 1280),
-        embed_dim: int = 192,
-        feature_dim: int = 1024,
-        num_deconv: int = 3,
-        num_filters: Sequence[int] = (32, 32, 32),
-        deconv_kernels: Sequence[int] = (2, 2, 2),
-        fmap_border: Union[int, Sequence[int]] = 0,
-        align_corners: bool = False,
-        init_cfg=None,
+            self,
+            max_depth: float,
+            in_channels: Sequence[int] = (320, 640, 1280, 1280),
+            embed_dim: int = 192,
+            feature_dim: int = 1024,
+            num_deconv: int = 3,
+            num_filters: Sequence[int] = (32, 32, 32),
+            deconv_kernels: Sequence[int] = (2, 2, 2),
+            fmap_border: Union[int, Sequence[int]] = 0,
+            align_corners: bool = False,
+            loss_decode: dict = dict(type='SiLogLoss'),
+            init_cfg=None,
     ):
 
         super(BaseDecodeHead, self).__init__(init_cfg=init_cfg)
@@ -163,6 +168,23 @@ class VPDDepthHead(BaseDecodeHead):
             nn.ReLU(inplace=False),
             nn.Conv2d(embed_dim, 1, kernel_size=3, stride=1, padding=1))
 
+        # build loss
+        if isinstance(loss_decode, dict):
+            self.loss_decode = build_loss(loss_decode)
+        elif isinstance(loss_decode, (list, tuple)):
+            self.loss_decode = nn.ModuleList()
+            for loss in loss_decode:
+                self.loss_decode.append(build_loss(loss))
+        else:
+            raise TypeError(f'loss_decode must be a dict or sequence of dict,\
+                but got {type(loss_decode)}')
+
+    def _stack_batch_gt(self, batch_data_samples: SampleList) -> Tensor:
+        gt_depth_maps = [
+            data_sample.gt_depth_map.data for data_sample in batch_data_samples
+        ]
+        return torch.stack(gt_depth_maps, dim=0)
+
     def forward(self, x):
         x = [
             x[0], x[1],
@@ -178,3 +200,39 @@ class VPDDepthHead(BaseDecodeHead):
         depth = torch.sigmoid(out) * self.max_depth
 
         return depth
+
+    def loss_by_feat(self, seg_logits: Tensor,
+                     batch_data_samples: SampleList) -> dict:
+        """Compute segmentation loss.
+
+        Args:
+            seg_logits (Tensor): The output from decode head forward function.
+            batch_data_samples (List[:obj:`SegDataSample`]): The seg
+                data samples. It usually includes information such
+                as `metainfo` and `gt_sem_seg`.
+
+        Returns:
+            dict[str, Tensor]: a dictionary of loss components
+        """
+
+        seg_label = self._stack_batch_gt(batch_data_samples)
+        loss = dict()
+        seg_logits = resize(
+            input=seg_logits,
+            size=seg_label.shape[2:],
+            mode='bilinear',
+            align_corners=self.align_corners)
+
+        if not isinstance(self.loss_decode, nn.ModuleList):
+            losses_decode = [self.loss_decode]
+        else:
+            losses_decode = self.loss_decode
+        for loss_decode in losses_decode:
+            if loss_decode.loss_name not in loss:
+                loss[loss_decode.loss_name] = loss_decode(
+                    seg_logits, seg_label)
+            else:
+                loss[loss_decode.loss_name] += loss_decode(
+                    seg_logits, seg_label)
+
+        return loss

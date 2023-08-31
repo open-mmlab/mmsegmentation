@@ -415,18 +415,23 @@ class VPD(BaseModule):
 
         # class embeddings & text adapter
         class_embeddings = torch.load(class_embed_path)
-        self.register_buffer('class_embeddings', class_embeddings)
         text_dim = class_embeddings.size(-1)
-        self.gamma = nn.Parameter(torch.ones(text_dim) * gamma)
 
         if text_adapter == 'TextAdapter':
             self.text_adapter = TextAdapter(text_dim=text_dim)
             self.class_embed_select = False
         elif text_adapter == 'TextAdapterDepth':
             self.text_adapter = TextAdapterDepth(text_dim=text_dim)
+            class_embeddings = torch.cat(
+                (class_embeddings, class_embeddings.mean(dim=0,
+                                                         keepdims=True)),
+                dim=0)
             self.class_embed_select = True
         else:
             raise ValueError
+
+        self.register_buffer('class_embeddings', class_embeddings)
+        self.gamma = nn.Parameter(torch.ones(text_dim) * gamma)
 
     def forward(self, x):
         """Extract features from images."""
@@ -434,11 +439,10 @@ class VPD(BaseModule):
         if self.class_embed_select:
             if isinstance(x, (tuple, list)):
                 x, class_ids = x[:2]
-                class_embeddings = self.class_embeddings[class_ids.tolist()]
+                class_ids = class_ids.tolist()
             else:
-                class_embeddings = self.class_embeddings.mean(
-                    dim=0, keepdims=True).repeat(x.size(0), 1)
-
+                class_ids = [-1] * x.size(0)
+            class_embeddings = self.class_embeddings[class_ids]
         else:
             class_embeddings = self.class_embeddings
 

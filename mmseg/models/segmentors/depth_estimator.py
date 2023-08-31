@@ -160,8 +160,21 @@ class DepthEstimator(EncoderDecoder):
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
+        if data_samples is not None:
+            batch_img_metas = [
+                data_sample.metainfo for data_sample in data_samples
+            ]
+        else:
+            raise NotImplementedError
+            batch_img_metas = [
+                dict(
+                    ori_shape=inputs.shape[2:],
+                    img_shape=inputs.shape[2:],
+                    pad_shape=inputs.shape[2:],
+                    padding_size=[0, 0, 0, 0])
+            ] * inputs.shape[0]
 
-        x = self.extract_feat(inputs, data_samples)
+        x = self.extract_feat(inputs, batch_img_metas)
 
         losses = dict()
 

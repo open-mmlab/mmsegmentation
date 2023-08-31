@@ -2318,3 +2318,41 @@ class ConcatCDInput(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'(input_keys={self.input_keys}, '
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class RandomDepthMix(BaseTransform):
+
+    def __init__(
+        self,
+        prob: float = 0.25,
+        mix_scale_ratio: float = 0.75,
+    ):
+        super().__init__()
+
+        self.prob = prob
+        self.mix_scale_ratio = mix_scale_ratio
+
+    def transform(self, results: dict) -> dict:
+        if random.random() > self.prob:
+            return results
+
+        h, w = results['img_shape']
+        left = int(w * random.random())
+        width_ratio = self.mix_scale_ratio * random.random()
+        width = int(max(1, (w - left) * width_ratio))
+
+        img = results['img']
+        depth_rescale_factor = results.get('depth_rescale_factor', 1)
+        depth_map = results['gt_depth_map'] / depth_rescale_factor
+
+        if img.ndim == 3:
+            for c in range(img.shape[-1]):
+                img[:, left:left + width, c] = depth_map[:, left:left + width]
+        elif img.ndim == 2:
+            img[:, left:left + width] = depth_map[:, left:left + width]
+        else:
+            raise ValueError(f'encounter invalid image shape ({img.shape})')
+
+        results['img'] = img
+        return results
