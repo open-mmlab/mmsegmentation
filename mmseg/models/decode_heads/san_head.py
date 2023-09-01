@@ -490,7 +490,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         assert san_cfg.num_queries == maskgen_cfg.sos_token_num, \
             'num_queries in san_cfg should be equal to sos_token_num ' \
             'in maskgen_cfg'
-
+        del self.conv_seg
         self.side_adapter_network = SideAdapterNetwork(**san_cfg)
         self.rec_with_attnbias = RecWithAttnbias(**maskgen_cfg)
         self.deep_supervision_idxs = deep_supervision_idxs

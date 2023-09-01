@@ -24,8 +24,8 @@ test_pipeline = [
     dict(type='PackSegInputs')
 ]
 
-# By default, models are trained on 8 GPUs with 2 images per GPU
-train_dataloader = dict(batch_size=2, dataset=dict(pipeline=train_pipeline))
+# By default, models are trained on 4 GPUs with 8 images per GPU
+train_dataloader = dict(batch_size=8, dataset=dict(pipeline=train_pipeline))
 val_dataloader = dict(batch_size=1, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
@@ -38,6 +38,11 @@ model = dict(
     pretrained='pretrain/clip_vit_base_patch16_224.pth',
     text_encoder=dict(dataset_name='coco-stuff164k'),
     decode_head=dict(num_classes=171))
+
+# training schedule for 60k
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=60000, val_interval=6000)
+default_hooks = dict(
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=6000))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -60,7 +65,7 @@ param_scheduler = [
         eta_min=0.0,
         power=1.0,
         begin=0,
-        end=160000,
+        end=60000,
         by_epoch=False,
     )
 ]

@@ -162,6 +162,14 @@ class MatchMasks:
         """
         gt_labels = gt_instances.labels
         gt_masks = gt_instances.masks
+        # when "gt_labels" is empty, classify all queries to background
+        if len(gt_labels) == 0:
+            labels = gt_labels.new_full((self.num_queries, ),
+                                        self.num_classes,
+                                        dtype=torch.long)
+            mask_targets = gt_labels
+            mask_weights = gt_labels.new_zeros((self.num_queries, ))
+            return labels, mask_targets, mask_weights
         # sample points
         num_queries = cls_score.shape[0]
         num_gts = gt_labels.shape[0]

@@ -64,9 +64,6 @@ class HungarianAssigner(BaseAssigner):
             matched_label_inds (Tensor): The indexes of matched labels.
         """
         assert isinstance(gt_instances.labels, Tensor)
-        num_gts = len(gt_instances)
-        assert num_gts > 0, 'The ground truth should have at least one ' \
-                            'valid category label.'
         gt_labels = gt_instances.labels
         device = gt_labels.device
 
