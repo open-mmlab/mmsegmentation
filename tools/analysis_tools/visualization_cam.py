@@ -27,7 +27,6 @@ from mmseg.utils import register_all_modules
 
 class SemanticSegmentationTarget:
     """wrap the model.
-    Reference: https://jacobgil.github.io/pytorch-gradcam-book/Class%20Activation%20Maps%20for%20Semantic%20Segmentation.html
 
     requirement: pip install grad-cam
 
@@ -46,7 +45,9 @@ class SemanticSegmentationTarget:
 
     def __call__(self, model_output):
         model_output = torch.unsqueeze(model_output, dim=0)
-        model_output = F.interpolate(model_output, size=self.size, mode='bilinear')
+        model_output = F.interpolate(model_output,
+                                     size=self.size,
+                                     mode='bilinear')
         model_output = torch.squeeze(model_output, dim=0)
 
         return (model_output[self.category, :, :] * self.mask).sum()
@@ -57,9 +58,11 @@ def main():
 
     parser.add_argument('--img', default='car.jpg',
                         help='Image file')
-    parser.add_argument('--config', default='configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-769x769.py',
+    parser.add_argument('--config',
+                        default='configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-769x769.py',
                         help='Config file')
-    parser.add_argument('--checkpoint', default='deeplabv3_r50-d8_769x769_40k_cityscapes.pth',
+    parser.add_argument('--checkpoint',
+                        default='deeplabv3_r50-d8_769x769_40k_cityscapes.pth',
                         help='Checkpoint file')
     parser.add_argument('--out-file', default='prediction.png',
                         help='Path to output prediction file')
@@ -91,7 +94,8 @@ def main():
     prediction_data = result.pred_sem_seg.data
     pre_np_data = prediction_data.cpu().numpy().squeeze(0)
 
-    # select visualization layer, e.g. model.backbone.layer4[2] in deeplabv3_r50, it can be multiple layers
+    # select visualization layer, e.g. model.backbone.layer4[2] in deeplabv3_r50
+    # it can be multiple layers
     target_layers = [model.backbone.layer4[2]]
 
     # select visualization class, e.g. traffic sign(index:7)
@@ -102,13 +106,22 @@ def main():
     image = np.array(Image.open(args.img))
     Height, Width = image.shape[0], image.shape[1]
     rgb_img = np.float32(image) / 255
-    input_tensor = preprocess_image(rgb_img, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    input_tensor = preprocess_image(rgb_img,
+                                    mean=[0.485, 0.456, 0.406],
+                                    std=[0.229, 0.224, 0.225])
 
     # Grad CAM(Class Activation Maps)
-    targets = [SemanticSegmentationTarget(car_category, car_mask_float, (Height, Width))]
-    with GradCAM(model=model, target_layers=target_layers, use_cuda=torch.cuda.is_available()) as cam:
-        grayscale_cam = cam(input_tensor=input_tensor, targets=targets)[0, :]
-        cam_image = show_cam_on_image(rgb_img, grayscale_cam, use_rgb=True)
+    targets = [SemanticSegmentationTarget(car_category,
+                                          car_mask_float,
+                                          (Height, Width))]
+    with GradCAM(model=model,
+                 target_layers=target_layers,
+                 use_cuda=torch.cuda.is_available()) as cam:
+        grayscale_cam = cam(input_tensor=input_tensor,
+                            targets=targets)[0, :]
+        cam_image = show_cam_on_image(rgb_img,
+                                      grayscale_cam,
+                                      use_rgb=True)
 
         # save cam file
         Image.fromarray(cam_image).save(args.cam_file)
