@@ -50,7 +50,7 @@ optim_wrapper = dict(
     _delete_=True,
     type='OptimWrapper',
     optimizer=dict(
-        type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.001),
+        type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001),
     paramwise_cfg=dict(
         custom_keys={
             'img_encoder': dict(lr_mult=0.1, decay_mult=1.0),
