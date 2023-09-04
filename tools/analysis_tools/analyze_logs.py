@@ -124,6 +124,7 @@ def main():
         assert json_log.endswith('.json')
     log_dicts = load_json_logs(json_logs)
     plot_curve(log_dicts, args)
+    print('done')
 
 
 if __name__ == '__main__':
