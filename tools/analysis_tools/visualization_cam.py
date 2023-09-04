@@ -48,7 +48,7 @@ class SemanticSegmentationTarget:
 def main():
     parser = ArgumentParser()
     default_cfg = 'configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-769x769.py'  # noqa
-    parser.add_argument('--img', default='car.jpg', help='Image file')
+    parser.add_argument('--img', default='demo/demo.png', help='Image file')
     parser.add_argument('--config', default=default_cfg, help='Config file')
     parser.add_argument(
         '--checkpoint',
