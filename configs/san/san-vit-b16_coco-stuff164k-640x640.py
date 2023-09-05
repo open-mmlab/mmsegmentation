@@ -25,7 +25,7 @@ test_pipeline = [
 ]
 
 # By default, models are trained on 4 GPUs with 8 images per GPU
-train_dataloader = dict(batch_size=8, dataset=dict(pipeline=train_pipeline))
+train_dataloader = dict(batch_size=2, dataset=dict(pipeline=train_pipeline))
 val_dataloader = dict(batch_size=1, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
@@ -40,15 +40,23 @@ model = dict(
     decode_head=dict(num_classes=171))
 
 # training schedule for 60k
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=60000, val_interval=6000)
+train_cfg = dict(
+    type='IterBasedTrainLoop',
+    max_iters=60000,
+    val_interval=500,
+    val_begin=55000)
 default_hooks = dict(
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=6000))
+    checkpoint=dict(
+        type='CheckpointHook',
+        by_epoch=False,
+        interval=10000,
+        save_best='mIoU'))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
 optim_wrapper = dict(
     _delete_=True,
-    type='OptimWrapper',
+    type='AmpOptimWrapper',
     optimizer=dict(
         type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001),
     paramwise_cfg=dict(
@@ -57,7 +65,9 @@ optim_wrapper = dict(
             'pos_embed': dict(decay_mult=0.),
             'cls_token': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)
-        }))
+        }),
+    loss_scale='dynamic',
+    clip_grad=dict(max_norm=0.01, norm_type=2))
 
 param_scheduler = [
     dict(

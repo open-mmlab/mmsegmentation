@@ -6,6 +6,7 @@ from mmengine import ConfigDict
 from mmengine.structures import InstanceData
 from scipy.optimize import linear_sum_assignment
 from torch import Tensor
+from torch.cuda.amp import autocast
 
 from mmseg.registry import TASK_UTILS
 from .base_assigner import BaseAssigner
@@ -69,11 +70,12 @@ class HungarianAssigner(BaseAssigner):
 
         # compute weighted cost
         cost_list = []
-        for match_cost in self.match_costs:
-            cost = match_cost(
-                pred_instances=pred_instances, gt_instances=gt_instances)
-            cost_list.append(cost)
-        cost = torch.stack(cost_list).sum(dim=0)
+        with autocast(enabled=False):
+            for match_cost in self.match_costs:
+                cost = match_cost(
+                    pred_instances=pred_instances, gt_instances=gt_instances)
+                cost_list.append(cost)
+            cost = torch.stack(cost_list).sum(dim=0)
 
         # do Hungarian matching on CPU using linear_sum_assignment
         cost = cost.detach().cpu()
