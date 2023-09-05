@@ -94,7 +94,7 @@ def main():
     car_mask_float = np.float32(pre_np_data == car_category)
 
     # data processing
-    image = np.array(Image.open(args.img))
+    image = np.array(Image.open(args.img).convert('RGB'))
     Height, Width = image.shape[0], image.shape[1]
     rgb_img = np.float32(image) / 255
     input_tensor = preprocess_image(
