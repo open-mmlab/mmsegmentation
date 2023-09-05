@@ -704,7 +704,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                         loss[loss_decode.loss_name] = loss_decode(
                             mask_point_preds,
                             mask_point_targets,
-                            avg_factor=num_total_masks *
+                            avg_factor=num_total_masks.float() *
                             self.train_cfg.num_points)
                     elif loss_decode.loss_name == 'loss_mask_dice':
                         loss[loss_decode.loss_name] = loss_decode(
