@@ -118,6 +118,7 @@ model = dict(
                 ])),
         loss_decode=[dict(type='CrossEntropyLoss',
                           loss_name='loss_cls_ce',
+                          naive_reduction=True,
                           loss_weight=2.0,
                           class_weight=[1.0] * num_classes + [0.1]),
                      dict(type='CrossEntropyLoss',

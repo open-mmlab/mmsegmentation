@@ -8,7 +8,7 @@ train_pipeline = [
     dict(type='LoadAnnotations'),
     dict(
         type='RandomChoiceResize',
-        scales=[int(640 * x * 0.1) for x in range(5, 16)],
+        scales=[int(640 * x * 0.1) for x in range(5, 17)],
         resize_type='ResizeShortestEdge',
         max_size=2560),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=1.0),
@@ -25,7 +25,7 @@ test_pipeline = [
 ]
 
 # By default, models are trained on 4 GPUs with 8 images per GPU
-train_dataloader = dict(batch_size=2, dataset=dict(pipeline=train_pipeline))
+train_dataloader = dict(batch_size=8, dataset=dict(pipeline=train_pipeline))
 val_dataloader = dict(batch_size=1, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
