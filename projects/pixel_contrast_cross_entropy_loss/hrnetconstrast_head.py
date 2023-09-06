@@ -4,7 +4,9 @@
 blob/2c8c35a8949fef74599f5ec557d340a14415f20d/
 paddleseg/models/hrnet_contrast.py(Apache-2.0 License)"""
 
+import warnings
 from typing import List, Tuple
+
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
@@ -14,7 +16,7 @@ from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.models.losses import accuracy
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, SampleList
-import warnings
+
 
 def resize(input,
            size=None,
@@ -36,6 +38,7 @@ def resize(input,
                         f'input size {(input_h, input_w)} is `x+1` and '
                         f'out size {(output_h, output_w)} is `nx+1`')
     return F.interpolate(input, size, scale_factor, mode, align_corners)
+
 
 class ProjectionHead(nn.Module):
     """The projection head used by contrast learning.
@@ -100,35 +103,36 @@ class ContrastHead(BaseDecodeHead):
                      norm_cfg=dict(type='SyncBN', requires_grad=True),
                      align_corners=False),
                  loss_decode=[
-                    dict(type='PixelContrastCrossEntropyLoss',
-                        base_temperature=0.07,
-                        temperature=0.1,
-                        ignore_index=255,
-                        max_samples=1024,
-                        max_views=100,
-                        loss_weight=0.1),
-                    dict(type='CrossEntropyLoss', loss_weight=1.0)
-                    ],
-                    **kwargs):
-        super().__init__(in_channels,
-                 channels,
-                 num_classes = num_classes,
-                 loss_decode = loss_decode,
-                 **kwargs)
-
+                     dict(
+                         type='PixelContrastCrossEntropyLoss',
+                         base_temperature=0.07,
+                         temperature=0.1,
+                         ignore_index=255,
+                         max_samples=1024,
+                         max_views=100,
+                         loss_weight=0.1),
+                     dict(type='CrossEntropyLoss', loss_weight=1.0)
+                 ],
+                 **kwargs):
+        super().__init__(
+            in_channels,
+            channels,
+            num_classes=num_classes,
+            loss_decode=loss_decode,
+            **kwargs)
 
         if proj_n <= 0:
             raise KeyError('proj_n must >0')
         if drop_p < 0 or drop_p > 1 or not isinstance(drop_p, float):
             raise KeyError('drop_p must be a float >=0')
         self.proj_n = proj_n
-            
+
         self.seghead = MODELS.build(seg_head)
         self.projhead = ProjectionHead(
             in_channels=self.in_channels, proj_n=proj_n, proj_mode=proj_mode)
-        
+
     def cls_seg(self):
-        '''Remove cls_seg, or distributed training will encounter an error'''
+        """Remove cls_seg, or distributed training will encounter an error."""
         pass
 
     def forward(self, inputs):
@@ -199,10 +203,11 @@ class ContrastHead(BaseDecodeHead):
                 raise KeyError('loss_name not matched')
 
         loss['acc_seg'] = accuracy(
-            F.interpolate(seg_logits[0], 
-                          size=seg_label.shape[-2:],
-                          mode='bilinear',
-                          align_corners=True),
+            F.interpolate(
+                seg_logits[0],
+                size=seg_label.shape[-2:],
+                mode='bilinear',
+                align_corners=True),
             seg_label,
             ignore_index=self.ignore_index)
         return loss
