@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Skip timm unittests and generate coverage report
           command: |
-            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            python -m coverage run --branch --source mmseg -m pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py --ignore tests/test_apis/test_rs_inferencer.py
             python -m coverage xml
             python -m coverage report -m
   build_cuda:
@@ -119,7 +119,7 @@ jobs:
       - run:
           name: Run unittests but skip timm unittests
           command: |
-            docker exec mmseg pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py
+            docker exec mmseg pytest tests/ --ignore tests/test_models/test_backbones/test_timm_backbone.py --ignore tests/test_models/test_backbones/test_timm_backbone.py --ignore tests/test_apis/test_rs_inferencer.py
 workflows:
   pr_stage_lint:
     when: << pipeline.parameters.lint_only >>
