@@ -2,7 +2,8 @@
 from mmengine import ConfigDict
 
 from mmseg.models import build_segmentor
-from .utils import _segmentor_predict
+from tests.test_models.test_segmentors.utils import \
+    _segmentor_forward_train_test
 
 
 def test_multimodal_encoder_decoder():
@@ -20,5 +21,4 @@ def test_multimodal_encoder_decoder():
         train_cfg=None,
         test_cfg=dict(mode='whole'))
     segmentor = build_segmentor(cfg)
-    # test predict
-    _segmentor_predict(segmentor)
+    _segmentor_forward_train_test(segmentor)
