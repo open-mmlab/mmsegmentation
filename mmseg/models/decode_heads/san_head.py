@@ -660,8 +660,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
             cls_scores = cls_scores.flatten(0, 1)
             labels = labels.flatten(0, 1)
 
-            num_total_masks = reduce_mean(
-                cls_scores.new_tensor([avg_factor], dtype=torch.float))
+            num_total_masks = reduce_mean(cls_scores.new_tensor([avg_factor]))
             num_total_masks = max(num_total_masks, 1)
 
             # extract positive ones
@@ -705,7 +704,7 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                         loss[loss_decode.loss_name] = loss_decode(
                             mask_point_preds,
                             mask_point_targets,
-                            avg_factor=num_total_masks *
+                            avg_factor=num_total_masks.float() *
                             self.train_cfg.num_points)
                     elif loss_decode.loss_name == 'loss_mask_dice':
                         loss[loss_decode.loss_name] = loss_decode(

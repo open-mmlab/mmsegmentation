@@ -14,7 +14,6 @@ def cross_entropy(pred,
                   weight=None,
                   class_weight=None,
                   reduction='mean',
-                  naive_reduction=False,
                   avg_factor=None,
                   ignore_index=-100,
                   avg_non_ignore=False):
@@ -41,10 +40,6 @@ def cross_entropy(pred,
             `New in version 0.23.0.`
     """
 
-    if naive_reduction:
-        loss = F.cross_entropy(
-            pred, label, weight=class_weight, ignore_index=ignore_index)
-        return loss
     # class_weight is a manual rescaling weight given to each class.
     # If given, has to be a Tensor of size C element-wise losses
     loss = F.cross_entropy(
@@ -224,7 +219,6 @@ class CrossEntropyLoss(nn.Module):
                  use_sigmoid=False,
                  use_mask=False,
                  reduction='mean',
-                 naive_reduction=False,
                  class_weight=None,
                  loss_weight=1.0,
                  loss_name='loss_ce',
@@ -234,7 +228,6 @@ class CrossEntropyLoss(nn.Module):
         self.use_sigmoid = use_sigmoid
         self.use_mask = use_mask
         self.reduction = reduction
-        self.naive_reduction = naive_reduction
         self.loss_weight = loss_weight
         self.class_weight = get_class_weight(class_weight)
         self.avg_non_ignore = avg_non_ignore
@@ -281,7 +274,6 @@ class CrossEntropyLoss(nn.Module):
             weight,
             class_weight=class_weight,
             reduction=reduction,
-            naive_reduction=self.naive_reduction,
             avg_factor=avg_factor,
             avg_non_ignore=self.avg_non_ignore,
             ignore_index=ignore_index,
