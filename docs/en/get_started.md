@@ -110,8 +110,8 @@ show_result_pyplot(model, img, result, show=True, out_file='result.jpg', opacity
 # test a video and show the results
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
-   result = inference_segmentor(model, frame)
-   show_result_pyplot(model, result, wait_time=1)
+   result = inference_model(model, frame)
+   show_result_pyplot(model, frame, result, wait_time=1)
 ```
 
 You can modify the code above to test a single image or a video, both of these options can verify that the installation was successful.

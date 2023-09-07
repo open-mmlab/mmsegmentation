@@ -198,6 +198,32 @@ mmsegmentation
 |   │   │   │   └── rles
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
+│   ├── nyu
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── test
+```
+
+## 用 MIM 下载数据集
+
+通过使用 [OpenXLab](https://openxlab.org.cn/datasets)，您可以直接下载开源数据集。通过平台的搜索功能，您可以快速轻松地找到他们正在寻找的数据集。使用平台上的格式化数据集，您可以高效地跨数据集执行任务。
+
+如果您使用 MIM 下载，请确保版本大于 v0.3.8。您可以使用以下命令进行更新、安装、登录和数据集下载：
+
+```shell
+# upgrade your MIM
+pip install -U openmim
+
+# install OpenXLab CLI tools
+pip install -U openxlab
+# log in OpenXLab
+openxlab login
+
+# download ADE20K by MIM
+mim download mmsegmentation --dataset ade20k
 ```
 
 ## Cityscapes
@@ -712,3 +738,13 @@ mmsegmentation
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
 ```
+
+## NYU
+
+- 您可以从 [这个链接](https://drive.google.com/file/d/1wC-io-14RCIL4XTUrQLk6lBqU2AexLVp/view?usp=share_link) 下载 NYU 数据集
+
+- 下载完成后，您可以使用 [tools/dataset_converters/nyu.py](/tools/dataset_converters/nyu.py) 脚本来解压和组织数据到所需的格式
+
+  ```bash
+  python tools/dataset_converters/nyu.py nyu.zip
+  ```
