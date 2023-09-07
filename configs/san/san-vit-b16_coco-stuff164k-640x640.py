@@ -25,7 +25,7 @@ test_pipeline = [
 ]
 
 # By default, models are trained on 4 GPUs with 8 images per GPU
-train_dataloader = dict(batch_size=2, dataset=dict(pipeline=train_pipeline))
+train_dataloader = dict(batch_size=8, dataset=dict(pipeline=train_pipeline))
 val_dataloader = dict(batch_size=1, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
