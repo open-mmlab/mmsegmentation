@@ -2,11 +2,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer
+
 from mmseg.registry import MODELS
 
 
 class PatchTransformerEncoder(nn.Module):
-    """ the Patch Transformer Encoder
+    """the Patch Transformer Encoder.
 
     Args:
         in_channels (int): the channels of input
@@ -15,6 +16,7 @@ class PatchTransformerEncoder(nn.Module):
         num_heads (int): the number of encoder head
         conv_cfg (dict): Config dict for convolution layer.
     """
+
     def __init__(self,
                  in_channels,
                  patch_size=10,
@@ -22,9 +24,11 @@ class PatchTransformerEncoder(nn.Module):
                  num_heads=4,
                  conv_cfg=dict(type='Conv')):
 
-        super(PatchTransformerEncoder, self).__init__()
-        encoder_layers = nn.TransformerEncoderLayer(embedding_dim, num_heads, dim_feedforward=1024)
-        self.transformer_encoder = nn.TransformerEncoder(encoder_layers, num_layers=4)  # takes shape S,N,E
+        super().__init__()
+        encoder_layers = nn.TransformerEncoderLayer(
+            embedding_dim, num_heads, dim_feedforward=1024)
+        self.transformer_encoder = nn.TransformerEncoder(
+            encoder_layers, num_layers=4)  # takes shape S,N,E
 
         self.embedding_convPxP = build_conv_layer(
             conv_cfg,
@@ -32,11 +36,14 @@ class PatchTransformerEncoder(nn.Module):
             embedding_dim,
             kernel_size=patch_size,
             stride=patch_size)
-        self.positional_encodings = nn.Parameter(torch.rand(500, embedding_dim), requires_grad=True)
+        self.positional_encodings = nn.Parameter(
+            torch.rand(500, embedding_dim), requires_grad=True)
 
     def forward(self, x):
-        embeddings = self.embedding_convPxP(x).flatten(2)  # .shape = n,c,s = n, embedding_dim, s
-        embeddings = embeddings + self.positional_encodings[:embeddings.shape[2], :].T.unsqueeze(0)
+        embeddings = self.embedding_convPxP(x).flatten(
+            2)  # .shape = n,c,s = n, embedding_dim, s
+        embeddings = embeddings + self.positional_encodings[:embeddings.shape[
+            2], :].T.unsqueeze(0)
 
         # change to S,N,E format required by transformer
         embeddings = embeddings.permute(2, 0, 1)
@@ -45,22 +52,26 @@ class PatchTransformerEncoder(nn.Module):
 
 
 class PixelWiseDotProduct(nn.Module):
-    """ the pixel wise dot product """
+    """the pixel wise dot product."""
+
     def __init__(self):
 
-        super(PixelWiseDotProduct, self).__init__()
+        super().__init__()
 
     def forward(self, x, K):
         n, c, h, w = x.size()
         _, cout, ck = K.size()
-        assert c == ck, "Number of channels in x and Embedding dimension (at dim 2) of K matrix must match"
-        y = torch.matmul(x.view(n, c, h * w).permute(0, 2, 1), K.permute(0, 2, 1))  # .shape = n, hw, cout
+        assert c == ck, 'Number of channels in x and Embedding dimension ' \
+            '(at dim 2) of K matrix must match'
+        y = torch.matmul(
+            x.view(n, c, h * w).permute(0, 2, 1),
+            K.permute(0, 2, 1))  # .shape = n, hw, cout
         return y.permute(0, 2, 1).view(n, cout, h, w)
 
 
 @MODELS.register_module()
 class AdabinsHead(nn.Module):
-    """ the head of the adabins,include mViT
+    """the head of the adabins,include mViT.
 
     Args:
         in_channels (int):the channels of the input
@@ -76,6 +87,7 @@ class AdabinsHead(nn.Module):
         align_corners (bool, optional): Geometrically, we consider the pixels
             of the input and output as squares rather than points.
     """
+
     def __init__(self,
                  in_channels,
                  n_query_channels=128,
@@ -87,9 +99,8 @@ class AdabinsHead(nn.Module):
                  max_val=10,
                  conv_cfg=dict(type='Conv'),
                  norm='linear',
-                 align_corners=False
-                 ):
-        super(AdabinsHead, self).__init__()
+                 align_corners=False):
+        super().__init__()
         self.out_channels = n_bins
         self.align_corners = align_corners
         self.norm = norm
@@ -97,7 +108,8 @@ class AdabinsHead(nn.Module):
         self.min_val = min_val
         self.max_val = max_val
         self.n_query_channels = n_query_channels
-        self.patch_transformer = PatchTransformerEncoder(in_channels, patch_size, embedding_dim, num_heads)
+        self.patch_transformer = PatchTransformerEncoder(
+            in_channels, patch_size, embedding_dim, num_heads)
         self.dot_product_layer = PixelWiseDotProduct()
 
         self.conv3x3 = build_conv_layer(
@@ -107,14 +119,11 @@ class AdabinsHead(nn.Module):
             kernel_size=3,
             stride=1,
             padding=1)
-        self.regressor = nn.Sequential(nn.Linear(embedding_dim, 256),
-                                       nn.LeakyReLU(),
-                                       nn.Linear(256, 256),
-                                       nn.LeakyReLU(),
-                                       nn.Linear(256, n_bins))
+        self.regressor = nn.Sequential(
+            nn.Linear(embedding_dim, 256), nn.LeakyReLU(), nn.Linear(256, 256),
+            nn.LeakyReLU(), nn.Linear(256, n_bins))
         self.conv_out = nn.Sequential(
-            build_conv_layer(
-                conv_cfg, in_channels, n_bins, kernel_size=1),
+            build_conv_layer(conv_cfg, in_channels, n_bins, kernel_size=1),
             nn.Softmax(dim=1))
 
     def forward(self, x):
@@ -123,11 +132,14 @@ class AdabinsHead(nn.Module):
 
         x = self.conv3x3(x)
 
-        regression_head, queries = tgt[0, ...], tgt[1:self.n_query_channels + 1, ...]
+        regression_head, queries = tgt[0,
+                                       ...], tgt[1:self.n_query_channels + 1,
+                                                 ...]
 
         # Change from S, N, E to N, S, E
         queries = queries.permute(1, 0, 2)
-        range_attention_maps = self.dot_product_layer(x, queries)  # .shape = n, n_query_channels, h, w
+        range_attention_maps = self.dot_product_layer(
+            x, queries)  # .shape = n, n_query_channels, h, w
 
         y = self.regressor(regression_head)  # .shape = N, dim_out
         if self.norm == 'linear':
@@ -141,13 +153,15 @@ class AdabinsHead(nn.Module):
         bin_widths_normed = y / y.sum(dim=1, keepdim=True)
         out = self.conv_out(range_attention_maps)
 
-        bin_widths = (self.max_val - self.min_val) * bin_widths_normed  # .shape = N, dim_out
-        bin_widths = F.pad(bin_widths, (1, 0), mode='constant', value=self.min_val)
+        bin_widths = (self.max_val -
+                      self.min_val) * bin_widths_normed  # .shape = N, dim_out
+        bin_widths = F.pad(
+            bin_widths, (1, 0), mode='constant', value=self.min_val)
         bin_edges = torch.cumsum(bin_widths, dim=1)
 
         centers = 0.5 * (bin_edges[:, :-1] + bin_edges[:, 1:])
-        n, dout = centers.size()
-        centers = centers.view(n, dout, 1, 1)
+        n, dim_out = centers.size()
+        centers = centers.view(n, dim_out, 1, 1)
 
         pred = torch.sum(out * centers, dim=1, keepdim=True)
         return bin_edges, pred
