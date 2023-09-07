@@ -14,7 +14,7 @@ model = dict(
     # pretrained='open-mmlab://resnet50_v1c',
     backbone=dict(
         type='AdabinsBackbone',
-        #tf_efficientnet_b5_ap
+        # tf_efficientnet_b5_ap
         basemodel_name='tf_efficientnet_b5_ap',
         num_features=2048,
         num_classes=128,
