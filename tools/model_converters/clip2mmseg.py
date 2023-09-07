@@ -134,11 +134,12 @@ def main():
     parser.add_argument('dst', help='save path')
     args = parser.parse_args()
 
-    if 'B-16' or 'b16' or 'base-16' in args.src:
+    if any([s in args.src for s in ['B-16', 'b16', 'base_patch16']]):
         visual_split = 9
-    elif 'L-14' or 'l14' or 'large-16' in args.src:
+    elif any([s in args.src for s in ['L-14', 'l14', 'large_patch14']]):
         visual_split = 18
     else:
+        print('Make sure the clip model is ViT-B/16 or ViT-L/14!')
         visual_split = -1
     checkpoint = CheckpointLoader.load_checkpoint(args.src, map_location='cpu')
     if isinstance(checkpoint, torch.jit.RecursiveScriptModule):

@@ -2,7 +2,7 @@ _base_ = ['./san-vit-b16_coco-stuff164k-640x640.py']
 
 model = dict(
     type='MultimodalEncoderDecoder',
-    pretrained='pretrain/jx_vit_base_p16_224-80ecf9dd.pth',
+    pretrained='pretrain/clip_vit_large_patch14_336.pth',
     encoder_resolution=0.7,
     image_encoder=dict(
         type='VisionTransformer',
@@ -23,7 +23,6 @@ model = dict(
     ),
     decode_head=dict(
         type='SideAdapterCLIPHead',
-        num_classes=19,
         san_cfg=dict(clip_channels=1024, cfg_decoder=dict(num_heads=16)),
         maskgen_cfg=dict(
             num_layers=6,
