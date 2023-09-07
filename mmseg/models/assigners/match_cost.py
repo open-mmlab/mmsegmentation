@@ -75,6 +75,10 @@ class ClassificationCost(BaseMatchCost):
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
         """
+        assert hasattr(pred_instances, 'scores'), \
+            "pred_instances must contain 'scores'"
+        assert hasattr(gt_instances, 'labels'), \
+            "gt_instances must contain 'labels'"
         pred_scores = pred_instances.scores
         gt_labels = gt_instances.labels
 
@@ -146,6 +150,10 @@ class DiceCost(BaseMatchCost):
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
         """
+        assert hasattr(pred_instances, 'masks'), \
+            "pred_instances must contain 'masks'"
+        assert hasattr(gt_instances, 'masks'), \
+            "gt_instances must contain 'masks'"
         pred_masks = pred_instances.masks
         gt_masks = gt_instances.masks
 
@@ -202,13 +210,17 @@ class CrossEntropyLossCost(BaseMatchCost):
 
         Args:
             pred_instances (:obj:`InstanceData`): Predicted instances which
-                must contain ``scores`` or ``masks``.
+                must contain ``masks``.
             gt_instances (:obj:`InstanceData`): Ground truth which must contain
-                ``labels`` or ``masks``.
+                ``masks``.
 
         Returns:
             Tensor: Match Cost matrix of shape (num_preds, num_gts).
         """
+        assert hasattr(pred_instances, 'masks'), \
+            "pred_instances must contain 'masks'"
+        assert hasattr(gt_instances, 'masks'), \
+            "gt_instances must contain 'masks'"
         pred_masks = pred_instances.masks
         gt_masks = gt_instances.masks
         if self.use_sigmoid:

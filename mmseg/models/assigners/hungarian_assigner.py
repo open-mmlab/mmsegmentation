@@ -5,7 +5,6 @@ import torch
 from mmengine import ConfigDict
 from mmengine.structures import InstanceData
 from scipy.optimize import linear_sum_assignment
-from torch import Tensor
 from torch.cuda.amp import autocast
 
 from mmseg.registry import TASK_UTILS
@@ -64,10 +63,6 @@ class HungarianAssigner(BaseAssigner):
             matched_quiery_inds (Tensor): The indexes of matched quieres.
             matched_label_inds (Tensor): The indexes of matched labels.
         """
-        assert isinstance(gt_instances.labels, Tensor)
-        gt_labels = gt_instances.labels
-        device = gt_labels.device
-
         # compute weighted cost
         cost_list = []
         with autocast(enabled=False):
@@ -77,6 +72,7 @@ class HungarianAssigner(BaseAssigner):
                 cost_list.append(cost)
             cost = torch.stack(cost_list).sum(dim=0)
 
+        device = cost.device
         # do Hungarian matching on CPU using linear_sum_assignment
         cost = cost.detach().cpu()
         if linear_sum_assignment is None:
