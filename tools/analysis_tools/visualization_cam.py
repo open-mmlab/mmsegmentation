@@ -11,7 +11,7 @@ import torch
 import torch.nn.functional as F
 from mmengine.model import revert_sync_batchnorm
 from PIL import Image
-from pytorch_grad_cam import GradCAM, LayerCAM
+from pytorch_grad_cam import GradCAM, LayerCAM, XGradCAM, GradCAMPlusPlus, EigenCAM, EigenGradCAM
 from pytorch_grad_cam.utils.image import preprocess_image, show_cam_on_image
 
 from mmseg.apis import inference_model, init_model, show_result_pyplot
