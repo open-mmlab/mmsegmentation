@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import Union
+from typing import Optional, Union
 
 import torch
 import torch.nn as nn
@@ -9,25 +9,41 @@ from mmseg.registry import MODELS
 from .utils import weight_reduce_loss
 
 
-def silog_loss(
-    pred: torch.Tensor,
-    target: torch.Tensor,
-    weight: Union[Tensor, None],
-    lambd: float = 0.5,
-    eps: float = 1e-6,
-    reduction: Union[str, None] = 'mean',
-    avg_factor: Union[int, None] = None,
-):
+def silog_loss(pred: Tensor,
+               target: Tensor,
+               weight: Optional[Tensor] = None,
+               eps: float = 1e-4,
+               reduction: Union[str, None] = 'mean',
+               avg_factor: Optional[int] = None) -> Tensor:
+    """Computes the Scale-Invariant Logarithmic (SI-Log) loss between
+    prediction and target.
+
+    Args:
+        pred (Tensor): Predicted output.
+        target (Tensor): Ground truth.
+        weight (Optional[Tensor]): Optional weight to apply on the loss.
+        eps (float): Epsilon value to avoid division and log(0).
+        reduction (Union[str, None]): Specifies the reduction to apply to the
+            output: 'mean', 'sum' or None.
+        avg_factor (Optional[int]): Optional average factor for the loss.
+
+    Returns:
+        Tensor: The calculated SI-Log loss.
+    """
     pred, target = pred.flatten(1), target.flatten(1)
-    valid_mask = (target > 0).detach().float()
-    diff_log = torch.log(target.clip(min=eps)) - torch.log(pred.clip(min=eps))
-    diff_log_sq_mean = diff_log.pow(2).sum(dim=1) / valid_mask.sum(dim=1)
-    diff_log_mean = diff_log.sum(dim=1) / valid_mask.sum(dim=1)
-    loss = torch.sqrt(diff_log_sq_mean - lambd * diff_log_mean.pow(2))
+    valid_mask = (target > eps).detach().float()
+
+    diff_log = torch.log(target.clamp(min=eps)) - torch.log(
+        pred.clamp(min=eps))
+    diff_log_sq_mean = (diff_log.pow(2) * valid_mask).sum(
+        dim=1) / valid_mask.sum(dim=1).clamp(min=eps)
+    diff_log_mean = (diff_log * valid_mask).sum(dim=1) / valid_mask.sum(
+        dim=1).clamp(min=eps)
+
+    loss = torch.sqrt(diff_log_sq_mean - 0.5 * diff_log_mean.pow(2))
 
     if weight is not None:
-        assert weight.ndim == loss.ndim
-        assert len(weight) == len(pred)
+        weight = weight.float()
 
     loss = weight_reduce_loss(loss, weight, reduction, avg_factor)
     return loss
@@ -49,13 +65,11 @@ class SiLogLoss(nn.Module):
     """
 
     def __init__(self,
-                 lambd=0.5,
                  reduction='mean',
                  loss_weight=1.0,
                  eps=1e-6,
                  loss_name='loss_silog'):
         super().__init__()
-        self.lambd = lambd
         self.reduction = reduction
         self.loss_weight = loss_weight
         self.eps = eps
@@ -81,7 +95,6 @@ class SiLogLoss(nn.Module):
             pred,
             target,
             weight,
-            lambd=self.lambd,
             eps=self.eps,
             reduction=reduction,
             avg_factor=avg_factor,

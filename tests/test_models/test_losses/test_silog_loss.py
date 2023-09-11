@@ -16,5 +16,5 @@ class TestSiLogLoss(TestCase):
         loss_module = SiLogLoss()
         loss = loss_module.forward(pred, target, weight)
 
-        expected_loss = 4.91
+        expected_loss = 0.02
         self.assertAlmostEqual(loss.item(), expected_loss, places=2)
