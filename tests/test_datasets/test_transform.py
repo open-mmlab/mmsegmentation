@@ -184,6 +184,14 @@ def test_flip():
     assert np.equal(original_img, results['img']).all()
     assert np.equal(original_seg, results['gt_semantic_seg']).all()
 
+    results['gt_depth_map'] = seg
+    results['seg_fields'] = ['gt_depth_map']
+    results = flip_module(results)
+    flip_module = TRANSFORMS.build(transform)
+    results = flip_module(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_depth_map']).all()
+
 
 def test_random_rotate_flip():
     with pytest.raises(AssertionError):

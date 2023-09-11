@@ -10,9 +10,10 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
                          BioMedicalRandomGamma, ConcatCDInput, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomDepthMix, RandomMosaic, RandomRotate,
-                         RandomRotFlip, Rerange, ResizeShortestEdge,
-                         ResizeToMultiple, RGB2Gray, SegRescale)
+                         RandomDepthMix, RandomFlip, RandomMosaic,
+                         RandomRotate, RandomRotFlip, Rerange,
+                         ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
+                         SegRescale)
 
 # yapf: enable
 __all__ = [
@@ -24,5 +25,6 @@ __all__ = [
     'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedical3DRandomFlip', 'BioMedicalRandomGamma', 'BioMedical3DPad',
     'RandomRotFlip', 'Albu', 'LoadSingleRSImageFromFile', 'ConcatCDInput',
-    'LoadMultipleRSImageFromFile', 'LoadDepthAnnotation', 'RandomDepthMix'
+    'LoadMultipleRSImageFromFile', 'LoadDepthAnnotation', 'RandomDepthMix',
+    'RandomFlip'
 ]
