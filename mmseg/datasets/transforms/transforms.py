@@ -2411,6 +2411,14 @@ class ConcatCDInput(BaseTransform):
 
 @TRANSFORMS.register_module()
 class RandomDepthMix(BaseTransform):
+    """This class implements the RandomDepthMix transform.
+
+    Args:
+        prob (float): Probability of applying the transformation.
+            Defaults to 0.25.
+        mix_scale_ratio (float): Ratio to scale the mix width.
+            Defaults to 0.75.
+    """
 
     def __init__(
         self,
@@ -2426,7 +2434,7 @@ class RandomDepthMix(BaseTransform):
         if random.random() > self.prob:
             return results
 
-        h, w = results['img_shape']
+        h, w = results['img_shape'][:2]
         left = int(w * random.random())
         width_ratio = self.mix_scale_ratio * random.random()
         width = int(max(1, (w - left) * width_ratio))
@@ -2441,7 +2449,7 @@ class RandomDepthMix(BaseTransform):
         elif img.ndim == 2:
             img[:, left:left + width] = depth_map[:, left:left + width]
         else:
-            raise ValueError(f'encounter invalid image shape ({img.shape})')
+            raise ValueError(f'Invalid image shape ({img.shape})')
 
         results['img'] = img
         return results

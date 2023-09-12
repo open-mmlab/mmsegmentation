@@ -73,7 +73,7 @@ stable_diffusion_cfg = dict(
             target='ldm.modules.encoders.modules.AbstractEncoder')))
 
 model = dict(
-    type='EncoderDecoder',
+    type='DepthEstimator',
     data_preprocessor=data_preprocessor,
     backbone=dict(
         type='VPD',

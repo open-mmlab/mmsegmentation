@@ -125,11 +125,12 @@ class VPDDepthHead(BaseDecodeHead):
 
     num_classes = 1
     out_channels = 1
+    input_transform = None
 
     def __init__(
         self,
         max_depth: float = 10.0,
-        in_channels: Sequence[int] = (320, 640, 1280, 1280),
+        in_channels: Sequence[int] = [320, 640, 1280, 1280],
         embed_dim: int = 192,
         feature_dim: int = 1536,
         num_deconv_layers: int = 3,
@@ -144,6 +145,7 @@ class VPDDepthHead(BaseDecodeHead):
         super(BaseDecodeHead, self).__init__(init_cfg=init_cfg)
 
         # initialize parameters
+        self.in_channels = in_channels
         self.max_depth = max_depth
         self.align_corners = align_corners
 

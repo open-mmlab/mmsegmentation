@@ -17,6 +17,7 @@ model = dict(
     ),
     decode_head=dict(
         type='VPDDepthHead',
+        in_channels=[320, 640, 1280, 1280],
         max_depth=10,
         fmap_border=(1, 1),
     ),
