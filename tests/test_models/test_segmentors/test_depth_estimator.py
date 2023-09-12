@@ -41,8 +41,7 @@ class TestDepthEstimator(TestCase):
         inputs = torch.randn(1, 3, 64, 80)
         data_sample = SegDataSample()
         data_sample.gt_depth_map = PixelData(data=torch.rand(1, 64, 80))
-        data_sample.set_metainfo(
-            dict(img_shape=(64, 80), ori_shape=(64, 80)))
+        data_sample.set_metainfo(dict(img_shape=(64, 80), ori_shape=(64, 80)))
         self.data = dict(inputs=inputs, data_samples=[data_sample])
 
     def test_slide_flip_inference(self):
