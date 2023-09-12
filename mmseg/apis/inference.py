@@ -53,7 +53,6 @@ def init_model(config: Union[str, Path, Config],
     model = MODELS.build(config.model)
     if checkpoint is not None:
         checkpoint = load_checkpoint(model, checkpoint, map_location='cpu')
-        checkpoint['meta'] = {}
         dataset_meta = checkpoint['meta'].get('dataset_meta', None)
         # save the dataset_meta in the model for convenience
         if 'dataset_meta' in checkpoint.get('meta', {}):
