@@ -6,7 +6,7 @@ train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadDepthAnnotation', depth_rescale_factor=1e-3),
     dict(type='RandomDepthMix', prob=0.25),
-    dict(type='RandomRotFlip', rotate_prob=0, flip_prob=0.5),
+    dict(type='RandomFlip', prob=0.5),
     dict(type='RandomCrop', crop_size=(480, 480)),
     dict(
         type='Albu',
@@ -33,8 +33,8 @@ test_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=3,
-    num_workers=4,
+    batch_size=8,
+    num_workers=8,
     persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
@@ -59,5 +59,8 @@ val_dataloader = dict(
 test_dataloader = val_dataloader
 
 val_evaluator = dict(
-    type='DepthMetric', max_depth_eval=10.0, crop_type='nyu_crop')
+    type='DepthMetric',
+    min_depth_eval=0.001,
+    max_depth_eval=10.0,
+    crop_type='nyu_crop')
 test_evaluator = val_evaluator
