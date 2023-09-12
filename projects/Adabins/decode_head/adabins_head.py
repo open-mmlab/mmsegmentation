@@ -2,8 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer
-
+from typing import List, Tuple
 from mmseg.registry import MODELS
+from torch import Tensor
 
 
 class PatchTransformerEncoder(nn.Module):
@@ -23,7 +24,6 @@ class PatchTransformerEncoder(nn.Module):
                  embedding_dim=128,
                  num_heads=4,
                  conv_cfg=dict(type='Conv')):
-
         super().__init__()
         encoder_layers = nn.TransformerEncoderLayer(
             embedding_dim, num_heads, dim_feedforward=1024)
@@ -55,14 +55,13 @@ class PixelWiseDotProduct(nn.Module):
     """the pixel wise dot product."""
 
     def __init__(self):
-
         super().__init__()
 
     def forward(self, x, K):
         n, c, h, w = x.size()
         _, cout, ck = K.size()
         assert c == ck, 'Number of channels in x and Embedding dimension ' \
-            '(at dim 2) of K matrix must match'
+                        '(at dim 2) of K matrix must match'
         y = torch.matmul(
             x.view(n, c, h * w).permute(0, 2, 1),
             K.permute(0, 2, 1))  # .shape = n, hw, cout
@@ -99,7 +98,8 @@ class AdabinsHead(nn.Module):
                  max_val=10,
                  conv_cfg=dict(type='Conv'),
                  norm='linear',
-                 align_corners=False):
+                 align_corners=False,
+                 threshold=0):
         super().__init__()
         self.out_channels = n_bins
         self.align_corners = align_corners
@@ -111,7 +111,7 @@ class AdabinsHead(nn.Module):
         self.patch_transformer = PatchTransformerEncoder(
             in_channels, patch_size, embedding_dim, num_heads)
         self.dot_product_layer = PixelWiseDotProduct()
-
+        self.threshold = threshold
         self.conv3x3 = build_conv_layer(
             conv_cfg,
             in_channels,
@@ -134,7 +134,7 @@ class AdabinsHead(nn.Module):
 
         regression_head, queries = tgt[0,
                                        ...], tgt[1:self.n_query_channels + 1,
-                                                 ...]
+                                             ...]
 
         # Change from S, N, E to N, S, E
         queries = queries.permute(1, 0, 2)
@@ -165,3 +165,13 @@ class AdabinsHead(nn.Module):
 
         pred = torch.sum(out * centers, dim=1, keepdim=True)
         return bin_edges, pred
+
+    def predict(self, inputs: Tuple[Tensor], batch_img_metas: List[dict],
+                test_cfg, **kwargs) -> Tensor:
+        """Forward function for testing, only ``pam_cam`` is used."""
+        pred = self.forward(inputs)[-1]
+        final = torch.clamp(pred, self.min_val, self.max_val)
+
+        final[torch.isinf(final)] = self.max_val
+        final[torch.isnan(final)] = self.min_val
+        return final
