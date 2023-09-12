@@ -23,29 +23,29 @@ class TestVPD(TestCase):
             class_embed_path='https://download.openmmlab.com/mmsegmentation/'
             'v0.5/vpd/nyu_class_embeddings.pth',
             class_embed_select=True,
-            pad_shape=512,
+            pad_shape=64,
             unet_cfg=dict(use_attn=False),
         )
 
     def test_forward(self):
         # test forward without class_id
-        x = torch.randn(1, 3, 480, 480)
+        x = torch.randn(1, 3, 60, 60)
         with torch.no_grad():
             out = self.vpd_model(x)
 
         self.assertEqual(len(out), 4)
-        self.assertListEqual(list(out[0].shape), [1, 320, 64, 64])
-        self.assertListEqual(list(out[1].shape), [1, 640, 32, 32])
-        self.assertListEqual(list(out[2].shape), [1, 1280, 16, 16])
-        self.assertListEqual(list(out[3].shape), [1, 1280, 8, 8])
+        self.assertListEqual(list(out[0].shape), [1, 320, 8, 8])
+        self.assertListEqual(list(out[1].shape), [1, 640, 4, 4])
+        self.assertListEqual(list(out[2].shape), [1, 1280, 2, 2])
+        self.assertListEqual(list(out[3].shape), [1, 1280, 1, 1])
 
         # test forward with class_id
-        x = torch.randn(1, 3, 480, 480)
+        x = torch.randn(1, 3, 60, 60)
         with torch.no_grad():
             out = self.vpd_model((x, torch.tensor([2])))
 
         self.assertEqual(len(out), 4)
-        self.assertListEqual(list(out[0].shape), [1, 320, 64, 64])
-        self.assertListEqual(list(out[1].shape), [1, 640, 32, 32])
-        self.assertListEqual(list(out[2].shape), [1, 1280, 16, 16])
-        self.assertListEqual(list(out[3].shape), [1, 1280, 8, 8])
+        self.assertListEqual(list(out[0].shape), [1, 320, 8, 8])
+        self.assertListEqual(list(out[1].shape), [1, 640, 4, 4])
+        self.assertListEqual(list(out[2].shape), [1, 1280, 2, 2])
+        self.assertListEqual(list(out[3].shape), [1, 1280, 1, 1])
