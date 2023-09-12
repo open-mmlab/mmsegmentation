@@ -82,7 +82,9 @@ OPTIM_WRAPPER_CONSTRUCTORS = Registry(
     locations=['mmseg.engine.optimizers'])
 # mangage all kinds of parameter schedulers like `MultiStepLR`
 PARAM_SCHEDULERS = Registry(
-    'parameter scheduler', parent=MMENGINE_PARAM_SCHEDULERS)
+    'parameter scheduler',
+    parent=MMENGINE_PARAM_SCHEDULERS,
+    locations=['mmseg.engine.schedulers'])
 
 # manage all kinds of metrics
 METRICS = Registry(

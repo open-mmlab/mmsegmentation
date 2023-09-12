@@ -1,45 +1,56 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from typing import Sequence, Union
+from typing import Dict, List, Optional, Sequence, Union
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import (ConvModule, build_conv_layer, build_norm_layer,
-                      build_upsample_layer)
+from mmcv.cnn import build_conv_layer, build_norm_layer, build_upsample_layer
 from mmengine.model import BaseModule
 from torch import Tensor
 
 from mmseg.registry import MODELS
-from mmseg.utils import ConfigType, SampleList
+from mmseg.utils import SampleList
 from ..builder import build_loss
 from ..utils import resize
 from .decode_head import BaseDecodeHead
 
 
-class Decoder(BaseModule):
+class VPDDepthDecoder(BaseModule):
+    """VPD Depth Decoder class.
+
+    Args:
+        in_channels (int): Number of input channels.
+        out_channels (int): Number of output channels.
+        num_deconv_layers (int): Number of deconvolution layers.
+        num_deconv_filters (List[int]): List of output channels for
+            deconvolution layers.
+        init_cfg (Optional[Union[Dict, List[Dict]]], optional): Configuration
+            for weight initialization. Defaults to Normal for Conv2d and
+            ConvTranspose2d layers.
+    """
 
     def __init__(self,
-                 in_channels,
-                 out_channels,
-                 num_deconv,
-                 num_filters,
-                 deconv_kernels,
-                 init_cfg=None):
+                 in_channels: int,
+                 out_channels: int,
+                 num_deconv_layers: int,
+                 num_deconv_filters: List[int],
+                 init_cfg: Optional[Union[Dict, List[Dict]]] = dict(
+                     type='Normal',
+                     std=0.001,
+                     layer=['Conv2d', 'ConvTranspose2d'])):
         super().__init__(init_cfg=init_cfg)
-        self.deconv = num_deconv
         self.in_channels = in_channels
 
         self.deconv_layers = self._make_deconv_layer(
-            num_deconv,
-            num_filters,
-            deconv_kernels,
+            num_deconv_layers,
+            num_deconv_filters,
         )
 
         conv_layers = []
         conv_layers.append(
             build_conv_layer(
                 dict(type='Conv2d'),
-                in_channels=num_filters[-1],
+                in_channels=num_deconv_filters[-1],
                 out_channels=out_channels,
                 kernel_size=3,
                 stride=1,
@@ -48,102 +59,100 @@ class Decoder(BaseModule):
         conv_layers.append(nn.ReLU(inplace=True))
         self.conv_layers = nn.Sequential(*conv_layers)
 
-        # self.conv_layers = ConvModule(
-
-        #     in_channels=num_filters[-1],
-        #     out_channels=out_channels,
-        #     kernel_size=3,
-        #     stride=1,
-        #     padding=1,
-        #     norm_cfg=dict(type='BN'),
-        #     act_cfg=dict(type='ReLU')
-        # )
-
-        self.up = nn.Upsample(
+        self.up_sample = nn.Upsample(
             scale_factor=2, mode='bilinear', align_corners=False)
 
     def forward(self, x):
-        # import pdb; pdb.set_trace()
+        """Forward pass through the decoder network."""
         out = self.deconv_layers(x)
         out = self.conv_layers(out)
 
-        out = self.up(out)
-        out = self.up(out)
+        out = self.up_sample(out)
+        out = self.up_sample(out)
 
         return out
 
-    def _make_deconv_layer(self, num_layers, num_filters, num_kernels):
+    def _make_deconv_layer(self, num_layers, num_deconv_filters):
         """Make deconv layers."""
 
         layers = []
-        in_planes = self.in_channels
+        in_channels = self.in_channels
         for i in range(num_layers):
-            kernel, padding, output_padding = \
-                self._get_deconv_cfg(num_kernels[i])
 
-            planes = num_filters[i]
+            num_channels = num_deconv_filters[i]
             layers.append(
                 build_upsample_layer(
                     dict(type='deconv'),
-                    in_channels=in_planes,
-                    out_channels=planes,
-                    kernel_size=kernel,
+                    in_channels=in_channels,
+                    out_channels=num_channels,
+                    kernel_size=2,
                     stride=2,
-                    padding=padding,
-                    output_padding=output_padding,
+                    padding=0,
+                    output_padding=0,
                     bias=False))
-            layers.append(nn.BatchNorm2d(planes))
+            layers.append(nn.BatchNorm2d(num_channels))
             layers.append(nn.ReLU(inplace=True))
-            in_planes = planes
+            in_channels = num_channels
 
         return nn.Sequential(*layers)
-
-    def _get_deconv_cfg(self, deconv_kernel):
-        """Get configurations for deconv layers."""
-        if deconv_kernel == 4:
-            padding = 1
-            output_padding = 0
-        elif deconv_kernel == 3:
-            padding = 1
-            output_padding = 1
-        elif deconv_kernel == 2:
-            padding = 0
-            output_padding = 0
-        else:
-            raise ValueError(f'Not supported num_kernels ({deconv_kernel}).')
-
-        return deconv_kernel, padding, output_padding
 
 
 @MODELS.register_module()
 class VPDDepthHead(BaseDecodeHead):
+    """Depth Prediction Head for VPD.
+
+    .. _`VPD`: https://arxiv.org/abs/2303.02153
+
+    Args:
+        max_depth (float): Maximum depth value. Defaults to 10.0.
+        in_channels (Sequence[int]): Number of input channels for each
+            convolutional layer.
+        embed_dim (int): Dimension of embedding. Defaults to 192.
+        feature_dim (int): Dimension of aggregated feature. Defaults to 1536.
+        num_deconv_layers (int): Number of deconvolution layers in the
+            decoder. Defaults to 3.
+        num_deconv_filters (Sequence[int]): Number of filters for each deconv
+            layer. Defaults to (32, 32, 32).
+        fmap_border (Union[int, Sequence[int]]): Feature map border for
+            cropping. Defaults to 0.
+        align_corners (bool): Flag for align_corners in interpolation.
+            Defaults to False.
+        loss_decode (dict): Configurations for the loss function. Defaults to
+            dict(type='SiLogLoss').
+        init_cfg (dict): Initialization configurations. Defaults to
+            dict(type='TruncNormal', std=0.02, layer=['Conv2d', 'Linear']).
+    """
+
     num_classes = 1
     out_channels = 1
 
     def __init__(
-            self,
-            max_depth: float,
-            in_channels: Sequence[int] = (320, 640, 1280, 1280),
-            embed_dim: int = 192,
-            feature_dim: int = 1024,
-            num_deconv: int = 3,
-            num_filters: Sequence[int] = (32, 32, 32),
-            deconv_kernels: Sequence[int] = (2, 2, 2),
-            fmap_border: Union[int, Sequence[int]] = 0,
-            align_corners: bool = False,
-            loss_decode: dict = dict(type='SiLogLoss'),
-            init_cfg=None,
+        self,
+        max_depth: float = 10.0,
+        in_channels: Sequence[int] = (320, 640, 1280, 1280),
+        embed_dim: int = 192,
+        feature_dim: int = 1536,
+        num_deconv_layers: int = 3,
+        num_deconv_filters: Sequence[int] = (32, 32, 32),
+        fmap_border: Union[int, Sequence[int]] = 0,
+        align_corners: bool = False,
+        loss_decode: dict = dict(type='SiLogLoss'),
+        init_cfg=dict(
+            type='TruncNormal', std=0.02, layer=['Conv2d', 'Linear']),
     ):
 
         super(BaseDecodeHead, self).__init__(init_cfg=init_cfg)
 
+        # initialize parameters
         self.max_depth = max_depth
         self.align_corners = align_corners
 
+        # feature map border
         if isinstance(fmap_border, int):
             fmap_border = (fmap_border, fmap_border)
         self.fmap_border = fmap_border
 
+        # define network layers
         self.conv1 = nn.Sequential(
             nn.Conv2d(in_channels[0], in_channels[0], 3, stride=2, padding=1),
             nn.GroupNorm(16, in_channels[0]),
@@ -159,8 +168,11 @@ class VPDDepthHead(BaseDecodeHead):
             nn.ReLU(),
         )
 
-        self.decoder = Decoder(embed_dim * 8, embed_dim, num_deconv,
-                               num_filters, deconv_kernels)
+        self.decoder = VPDDepthDecoder(
+            in_channels=embed_dim * 8,
+            out_channels=embed_dim,
+            num_deconv_layers=num_deconv_layers,
+            num_deconv_filters=num_deconv_filters)
 
         self.depth_pred_layer = nn.Sequential(
             nn.Conv2d(
@@ -194,32 +206,34 @@ class VPDDepthHead(BaseDecodeHead):
         x = self.conv_aggregation(x)
 
         x = x[:, :, :x.size(2) - self.fmap_border[0], :x.size(3) -
-              self.fmap_border[1]]
+              self.fmap_border[1]].contiguous()
         x = self.decoder(x)
         out = self.depth_pred_layer(x)
+
         depth = torch.sigmoid(out) * self.max_depth
 
         return depth
 
-    def loss_by_feat(self, seg_logits: Tensor,
+    def loss_by_feat(self, pred_depth_map: Tensor,
                      batch_data_samples: SampleList) -> dict:
-        """Compute segmentation loss.
+        """Compute depth estimation loss.
 
         Args:
-            seg_logits (Tensor): The output from decode head forward function.
+            pred_depth_map (Tensor): The output from decode head forward
+                function.
             batch_data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
-                as `metainfo` and `gt_sem_seg`.
+                as `metainfo` and `gt_dpeth_map`.
 
         Returns:
             dict[str, Tensor]: a dictionary of loss components
         """
 
-        seg_label = self._stack_batch_gt(batch_data_samples)
+        gt_depth_map = self._stack_batch_gt(batch_data_samples)
         loss = dict()
-        seg_logits = resize(
-            input=seg_logits,
-            size=seg_label.shape[2:],
+        pred_depth_map = resize(
+            input=pred_depth_map,
+            size=gt_depth_map.shape[2:],
             mode='bilinear',
             align_corners=self.align_corners)
 
@@ -230,9 +244,9 @@ class VPDDepthHead(BaseDecodeHead):
         for loss_decode in losses_decode:
             if loss_decode.loss_name not in loss:
                 loss[loss_decode.loss_name] = loss_decode(
-                    seg_logits, seg_label)
+                    pred_depth_map, gt_depth_map)
             else:
                 loss[loss_decode.loss_name] += loss_decode(
-                    seg_logits, seg_label)
+                    pred_depth_map, gt_depth_map)
 
         return loss

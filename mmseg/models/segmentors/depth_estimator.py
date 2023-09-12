@@ -19,7 +19,7 @@ from .encoder_decoder import EncoderDecoder
 
 @MODELS.register_module()
 class DepthEstimator(EncoderDecoder):
-    """Encoder Decoder segmentors.
+    """Encoder Decoder depth estimator.
 
     EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
     Note that auxiliary_head is only used for deep supervision during training,
@@ -36,15 +36,15 @@ class DepthEstimator(EncoderDecoder):
      _decode_head_forward_train(): decode_head.loss()
      _auxiliary_head_forward_train(): auxiliary_head.loss (optional)
 
-    2. The ``predict`` method is used to predict segmentation results,
+    2. The ``predict`` method is used to predict depth estimation results,
     which includes two steps: (1) Run inference function to obtain the list of
     depth (2) Call post-processing function to obtain list of
-    ``SegDataSample`` including ``pred_sem_seg`` and ``depth``.
+    ``SegDataSample`` including ``pred_depth_map``.
 
     .. code:: text
 
      predict(): inference() -> postprocess_result()
-     infercen(): whole_inference()/slide_inference()
+     inference(): whole_inference()/slide_inference()
      whole_inference()/slide_inference(): encoder_decoder()
      encoder_decoder(): extract_feat() -> decode_head.predict()
 
@@ -58,12 +58,12 @@ class DepthEstimator(EncoderDecoder):
 
     Args:
 
-        backbone (ConfigType): The config for the backnone of segmentor.
-        decode_head (ConfigType): The config for the decode head of segmentor.
-        neck (OptConfigType): The config for the neck of segmentor.
+        backbone (ConfigType): The config for the backnone of depth estimator.
+        decode_head (ConfigType): The config for the decode head of depth estimator.
+        neck (OptConfigType): The config for the neck of depth estimator.
             Defaults to None.
         auxiliary_head (OptConfigType): The config for the auxiliary head of
-            segmentor. Defaults to None.
+            depth estimator. Defaults to None.
         train_cfg (OptConfigType): The config for training. Defaults to None.
         test_cfg (OptConfigType): The config for testing. Defaults to None.
         data_preprocessor (dict, optional): The pre-process config of
@@ -114,8 +114,8 @@ class DepthEstimator(EncoderDecoder):
 
     def encode_decode(self, inputs: Tensor,
                       batch_img_metas: List[dict]) -> Tensor:
-        """Encode images with backbone and decode into a semantic segmentation
-        map of the same size as input."""
+        """Encode images with backbone and decode into a depth map of the same
+        size as input."""
         x = self.extract_feat(inputs, batch_img_metas)
         depth = self.decode_head.predict(x, batch_img_metas, self.test_cfg)
 
@@ -155,7 +155,7 @@ class DepthEstimator(EncoderDecoder):
             inputs (Tensor): Input images.
             data_samples (list[:obj:`SegDataSample`]): The seg data samples.
                 It usually includes information such as `metainfo` and
-                `gt_sem_seg`.
+                `gt_depth_map`.
 
         Returns:
             dict[str, Tensor]: a dictionary of loss components
@@ -165,7 +165,6 @@ class DepthEstimator(EncoderDecoder):
                 data_sample.metainfo for data_sample in data_samples
             ]
         else:
-            raise NotImplementedError
             batch_img_metas = [
                 dict(
                     ori_shape=inputs.shape[2:],
@@ -197,15 +196,13 @@ class DepthEstimator(EncoderDecoder):
             inputs (Tensor): Inputs with shape (N, C, H, W).
             data_samples (List[:obj:`SegDataSample`], optional): The seg data
                 samples. It usually includes information such as `metainfo`
-                and `gt_sem_seg`.
+                and `gt_depth_map`.
 
         Returns:
-            list[:obj:`SegDataSample`]: Segmentation results of the
+            list[:obj:`SegDataSample`]: Depth estimation results of the
             input images. Each SegDataSample usually contain:
 
-            - ``pred_sem_seg``(PixelData): Prediction of semantic segmentation.
-            - ``depth``(PixelData): Predicted logits of semantic
-                segmentation before normalization.
+            - ``pred_depth_max``(PixelData): Prediction of depth estimation.
         """
         if data_samples is not None:
             batch_img_metas = [
@@ -233,7 +230,7 @@ class DepthEstimator(EncoderDecoder):
             inputs (Tensor): Inputs with shape (N, C, H, W).
             data_samples (List[:obj:`SegDataSample`]): The seg
                 data samples. It usually includes information such
-                as `metainfo` and `gt_sem_seg`.
+                as `metainfo` and `gt_depth_map`.
 
         Returns:
             Tensor: Forward output of model without any post-processes.
@@ -243,7 +240,7 @@ class DepthEstimator(EncoderDecoder):
 
     def slide_flip_inference(self, inputs: Tensor,
                              batch_img_metas: List[dict]) -> Tensor:
-        """Inference by sliding-window with overlap.
+        """Inference by sliding-window with overlap and flip.
 
         If h_crop > h_img or w_crop > w_img, the small patch will be used to
         decode without padding.
@@ -258,8 +255,7 @@ class DepthEstimator(EncoderDecoder):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            Tensor: The segmentation results, depth from model of each
-                input image.
+            Tensor: The depth estimation results.
         """
 
         h_stride, w_stride = self.test_cfg.stride
@@ -281,14 +277,17 @@ class DepthEstimator(EncoderDecoder):
                 crop_img = inputs[:, :, y1:y2, x1:x2]
                 # change the image shape to patch shape
                 batch_img_metas[0]['img_shape'] = crop_img.shape[2:]
-                # the output of encode_decode is seg logits tensor map
+                # the output of encode_decode is depth tensor map
                 # with shape [N, C, H, W]
-                crop_seg_logit = self.encode_decode(crop_img, batch_img_metas)
-                crop_seg_logit_flip = self.encode_decode(
+                crop_depth_map = self.encode_decode(crop_img, batch_img_metas)
+
+                # average out the original and flipped prediction
+                crop_depth_map_flip = self.encode_decode(
                     crop_img.flip(dims=(3, )), batch_img_metas)
-                crop_seg_logit_flip = crop_seg_logit_flip.flip(dims=(3, ))
-                crop_seg_logit = (crop_seg_logit + crop_seg_logit_flip) / 2.0
-                preds += F.pad(crop_seg_logit,
+                crop_depth_map_flip = crop_depth_map_flip.flip(dims=(3, ))
+                crop_depth_map = (crop_depth_map + crop_depth_map_flip) / 2.0
+
+                preds += F.pad(crop_depth_map,
                                (int(x1), int(preds.shape[3] - x2), int(y1),
                                 int(preds.shape[2] - y2)))
 
@@ -310,12 +309,12 @@ class DepthEstimator(EncoderDecoder):
                 `mmseg/datasets/pipelines/formatting.py:PackSegInputs`.
 
         Returns:
-            Tensor: The segmentation results, depth from model of each
-                input image.
+            Tensor: The depth estimation results.
         """
-        assert self.test_cfg.get('mode', 'whole') in ['slide', 'whole', 'slide_flip'], \
-            f'Only "slide", "slide_flip" or "whole" test mode are supported, but got ' \
-            f'{self.test_cfg["mode"]}.'
+        assert self.test_cfg.get('mode', 'whole') in ['slide', 'whole',
+                                                      'slide_flip'], \
+            f'Only "slide", "slide_flip" or "whole" test mode are ' \
+            f'supported, but got {self.test_cfg["mode"]}.'
         ori_shape = batch_img_metas[0]['ori_shape']
         if not all(_['ori_shape'] == ori_shape for _ in batch_img_metas):
             print_log(
@@ -323,31 +322,28 @@ class DepthEstimator(EncoderDecoder):
                 logger='current',
                 level=logging.WARN)
         if self.test_cfg.mode == 'slide':
-            seg_logit = self.slide_inference(inputs, batch_img_metas)
+            depth_map = self.slide_inference(inputs, batch_img_metas)
         if self.test_cfg.mode == 'slide_flip':
-            seg_logit = self.slide_flip_inference(inputs, batch_img_metas)
+            depth_map = self.slide_flip_inference(inputs, batch_img_metas)
         else:
-            seg_logit = self.whole_inference(inputs, batch_img_metas)
+            depth_map = self.whole_inference(inputs, batch_img_metas)
 
-        return seg_logit
+        return depth_map
 
     def postprocess_result(self,
                            depth: Tensor,
                            data_samples: OptSampleList = None) -> SampleList:
         """ Convert results list to `SegDataSample`.
         Args:
-            depth (Tensor): The segmentation results, depth from
-                model of each input image.
+            depth (Tensor): The depth estimation results.
             data_samples (list[:obj:`SegDataSample`]): The seg data samples.
                 It usually includes information such as `metainfo` and
-                `gt_sem_seg`. Default to None.
+                `gt_depth_map`. Default to None.
         Returns:
-            list[:obj:`SegDataSample`]: Segmentation results of the
+            list[:obj:`SegDataSample`]: Depth estomation results of the
             input images. Each SegDataSample usually contain:
 
-            - ``pred_sem_seg``(PixelData): Prediction of semantic segmentation.
-            - ``depth``(PixelData): Predicted logits of semantic
-                segmentation before normalization.
+            - ``pred_depth_map``(PixelData): Prediction of depth estimation.
         """
         batch_size, C, H, W = depth.shape
 
