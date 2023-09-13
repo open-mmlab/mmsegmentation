@@ -1,5 +1,5 @@
 dataset_type = 'NYUDataset'
-data_root = 'H:/google_download/nyu_test'
+data_root = 'data/nyu'
 
 test_pipeline = [
     dict(dict(type='LoadImageFromFile', to_float32=True)),
