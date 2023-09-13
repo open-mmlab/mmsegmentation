@@ -69,7 +69,7 @@ class DepthMetric(BaseMetric):
         elif isinstance(depth_metrics, [tuple, list]):
             for metric in depth_metrics:
                 assert metric in self.METRICS, f'the metric {metric} is not ' \
-                                               f'supported. Please use metrics in {self.METRICS}'
+                    f'supported. Please use metrics in {self.METRICS}'
             self.metrics = depth_metrics
 
         # Validate crop_type, if provided
@@ -102,6 +102,7 @@ class DepthMetric(BaseMetric):
             if not self.format_only:
                 gt_depth = data_sample['gt_depth_map']['data'].squeeze().to(
                     pred_label)
+
                 eval_mask = self._get_eval_mask(gt_depth)
                 self.results.append(
                     (gt_depth[eval_mask], pred_label[eval_mask]))
@@ -145,13 +146,14 @@ class DepthMetric(BaseMetric):
     def _calc_all_metrics(gt_depth, pred_depth):
         """Computes final evaluation metrics based on accumulated results."""
         assert gt_depth.shape == pred_depth.shape
+
         thresh = torch.max((gt_depth / pred_depth), (pred_depth / gt_depth))
         diff = pred_depth - gt_depth
         diff_log = torch.log(pred_depth) - torch.log(gt_depth)
 
         d1 = torch.sum(thresh < 1.25).float() / len(thresh)
-        d2 = torch.sum(thresh < 1.25 ** 2).float() / len(thresh)
-        d3 = torch.sum(thresh < 1.25 ** 3).float() / len(thresh)
+        d2 = torch.sum(thresh < 1.25**2).float() / len(thresh)
+        d3 = torch.sum(thresh < 1.25**3).float() / len(thresh)
 
         abs_rel = torch.mean(torch.abs(diff) / gt_depth)
         sq_rel = torch.mean(torch.pow(diff, 2) / gt_depth)
