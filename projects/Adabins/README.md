@@ -21,14 +21,26 @@ Our main contributions are the following:
 - We analyze our findings and investigate different modifications on the proposed AdaBins block and study their effect on the accuracy of the depth estimation.
 
 <div align="center">
-<img src="https://github.com/Yang-Changhui/mmsegmentation/blob/add_adabins/projects/Adabins/image-20230816181703680.png"  width = "1000" />
+<img src="https://github.com/open-mmlab/mmsegmentation/assets/15952744/915bcd5a-9dc2-4602-a6e7-055ff5d4889f"  width = "1000" />
 </div>
 
 ## <img src="https://user-images.githubusercontent.com/34859558/190044217-8f6befc2-7f20-473d-b356-148e06265205.png" width="25"/> Performance
 
 ### NYU and KITTI
 
-| Model         | Encoder         | Training epoch | Batchsize | Train Resolution | δ1    | δ2    | δ3    | REL   | RMS   | RMS log | params(M) | Links       |
-| ------------- | --------------- | -------------- | --------- | ---------------- | ----- | ----- | ----- | ----- | ----- | ------- | --------- | ----------- |
-| AdaBins_nyu   | EfficientNet-B5 | 25             | 16        | 416x544          | 0.903 | 0.984 | 0.997 | 0.103 | 0.364 | 0.044   | 78        | [model](<>) |
-| AdaBins_kitti | EfficientNet-B5 | 25             | 16        | 352x764          | 0.964 | 0.995 | 0.999 | 0.058 | 2.360 | 0.088   | 78        | [model](<>) |
+| Model         | Encoder         | Training epoch | Batchsize | Train Resolution | δ1    | δ2    | δ3    | REL   | RMS   | RMS log | params(M) | Links                                                                                                                   |
+| ------------- | --------------- | -------------- | --------- | ---------------- | ----- | ----- | ----- | ----- | ----- | ------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| AdaBins_nyu   | EfficientNet-B5 | 25             | 16        | 416x544          | 0.903 | 0.984 | 0.997 | 0.103 | 0.364 | 0.044   | 78        | [model](https://download.openmmlab.com/mmsegmentation/v0.5/adabins/adabins_efficient_b5_nyu_third-party-f68d6bd3.pth)   |
+| AdaBins_kitti | EfficientNet-B5 | 25             | 16        | 352x764          | 0.964 | 0.995 | 0.999 | 0.058 | 2.360 | 0.088   | 78        | [model](https://download.openmmlab.com/mmsegmentation/v0.5/adabins/adabins_efficient-b5_kitty_third-party-a1aa6f36.pth) |
+
+## Citation
+
+```bibtex
+@article{10.1109/cvpr46437.2021.00400,
+    author = {Bhat, S. A. and Alhashim, I. and Wonka, P.},
+    title = {Adabins: depth estimation using adaptive bins},
+    journal = {2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    year = {2021},
+    doi = {10.1109/cvpr46437.2021.00400}
+}
+```
