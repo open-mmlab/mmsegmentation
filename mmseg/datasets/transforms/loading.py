@@ -647,6 +647,8 @@ class LoadDepthAnnotation(BaseTransform):
 
     - gt_depth_map (np.ndarray): Depth map with shape (Y, X) by
         default, and data type is float32 if set to_float32 = True.
+    - depth_rescale_factor (float): The rescale factor of depth map, which
+        can be used to recover the original value of depth map.
 
     Args:
         decode_backend (str): The data decoding backend type. Options are
@@ -691,6 +693,7 @@ class LoadDepthAnnotation(BaseTransform):
         gt_depth_map *= self.depth_rescale_factor
         results['gt_depth_map'] = gt_depth_map
         results['seg_fields'].append('gt_depth_map')
+        results['depth_rescale_factor'] = self.depth_rescale_factor
         return results
 
     def __repr__(self):

@@ -110,6 +110,8 @@ jobs:
             docker exec mmseg mim install mmcv>=2.0.0
             docker exec mmseg pip install mmpretrain>=1.0.0rc7
             docker exec mmseg mim install mmdet>=3.0.0
+            docker exec mmseg apt-get update
+            docker exec mmseg apt-get install -y git
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
             docker exec mmseg python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - run:
