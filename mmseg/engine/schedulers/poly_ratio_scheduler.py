@@ -8,7 +8,7 @@ from mmseg.registry import PARAM_SCHEDULERS
 
 @PARAM_SCHEDULERS.register_module()
 class PolyLRRatio(PolyLR):
-    """Implements a polynomial learning rate decay schedule.
+    """Implements polynomial learning rate decay with ratio.
 
     This scheduler adjusts the learning rate of each parameter group
     following a polynomial decay equation. The decay can occur in
@@ -43,17 +43,20 @@ class PolyLRRatio(PolyLR):
     def _get_value(self):
         """Compute value using chainable form of the scheduler."""
 
-        def _get_eta_min(base_value):
-            if self.eta_min_ratio is None:
-                return self.eta_min
-            return base_value * self.eta_min_ratio
-
         if self.last_step == 0:
             return [
                 group[self.param_name] for group in self.optimizer.param_groups
             ]
 
-        return [(group[self.param_name] - _get_eta_min(base_value)) *
-                (1 - 1 / (self.total_iters - self.last_step + 1))**self.power +
-                _get_eta_min(base_value) for base_value, group in zip(
-                    self.base_values, self.optimizer.param_groups)]
+        param_groups_value = []
+        for base_value, param_group in zip(self.base_values,
+                                           self.optimizer.param_groups):
+            eta_min = self.eta_min if self.eta_min_ratio is None else \
+                base_value * self.eta_min_ratio
+            step_ratio = (1 - 1 /
+                          (self.total_iters - self.last_step + 1))**self.power
+            step_value = (param_group[self.param_name] -
+                          eta_min) * step_ratio + eta_min
+            param_groups_value.append(step_value)
+
+        return param_groups_value

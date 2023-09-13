@@ -953,9 +953,9 @@ class RandomRotFlip(BaseTransform):
 
 @TRANSFORMS.register_module()
 class RandomFlip(MMCV_RandomFlip):
-    """Flip the image & bbox & keypoints & segmentation map. Added or Updated
-    keys: flip, flip_direction, img, gt_bboxes, gt_seg_map, gt_depth_map and
-    gt_keypoints. There are 3 flip modes:
+    """Flip the image & bbox & segmentation map. Added or Updated
+    keys: flip, flip_direction, img, gt_bboxes, gt_seg_map, and gt_depth_map.
+    There are 3 flip modes:
 
     - ``prob`` is float, ``direction`` is string: the image will be
       ``direction``ly flipped with probability of ``prob`` .
@@ -982,7 +982,6 @@ class RandomFlip(MMCV_RandomFlip):
     - gt_bboxes (optional)
     - gt_seg_map (optional)
     - gt_depth_map (optional)
-    - gt_keypoints (optional)
 
     Modified Keys:
 
@@ -990,7 +989,6 @@ class RandomFlip(MMCV_RandomFlip):
     - gt_bboxes (optional)
     - gt_seg_map (optional)
     - gt_depth_map (optional)
-    - gt_keypoints (optional)
 
     Added Keys:
 
@@ -1012,8 +1010,7 @@ class RandomFlip(MMCV_RandomFlip):
     """
 
     def _flip(self, results: dict) -> None:
-        """Flip images, bounding boxes, semantic segmentation map and
-        keypoints."""
+        """Flip images, bounding boxes and semantic segmentation map."""
         # flip image
         results['img'] = mmcv.imflip(
             results['img'], direction=results['flip_direction'])
@@ -1025,11 +1022,6 @@ class RandomFlip(MMCV_RandomFlip):
             results['gt_bboxes'] = self._flip_bbox(results['gt_bboxes'],
                                                    img_shape,
                                                    results['flip_direction'])
-
-        # flip keypoints
-        if results.get('gt_keypoints', None) is not None:
-            results['gt_keypoints'] = self._flip_keypoints(
-                results['gt_keypoints'], img_shape, results['flip_direction'])
 
         # flip seg map
         for key in results.get('seg_fields', []):
