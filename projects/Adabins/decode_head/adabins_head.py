@@ -1,10 +1,12 @@
+from typing import List, Tuple
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import build_conv_layer
-from typing import List, Tuple
-from mmseg.registry import MODELS
 from torch import Tensor
+
+from mmseg.registry import MODELS
 
 
 class PatchTransformerEncoder(nn.Module):
@@ -134,7 +136,7 @@ class AdabinsHead(nn.Module):
 
         regression_head, queries = tgt[0,
                                        ...], tgt[1:self.n_query_channels + 1,
-                                             ...]
+                                                 ...]
 
         # Change from S, N, E to N, S, E
         queries = queries.permute(1, 0, 2)

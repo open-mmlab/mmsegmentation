@@ -25,7 +25,8 @@ val_dataloader = dict(
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
-val_evaluator = dict(type='DepthMetric', max_depth_eval=10.0, crop_type='nyu_crop')
+val_evaluator = dict(
+    type='DepthMetric', max_depth_eval=10.0, crop_type='nyu_crop')
 test_evaluator = val_evaluator
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')

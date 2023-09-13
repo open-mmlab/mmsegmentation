@@ -131,7 +131,7 @@ class AdabinsBackbone(BaseModule):
     def forward(self, x):
         features = self.encoder(x)
         x_block0, x_block1, x_block2, x_block3, x_block4 = features[
-                                                               3], features[4], features[5], features[7], features[10]
+            3], features[4], features[5], features[7], features[10]
         x_d0 = self.conv2(x_block4)
         x_d1 = self.up1(x_d0, x_block3)
         x_d2 = self.up2(x_d1, x_block2)
