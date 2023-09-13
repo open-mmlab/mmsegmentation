@@ -11,8 +11,7 @@ from .class_names import (ade_classes, ade_palette, bdd100k_classes,
                           vaihingen_palette, voc_classes, voc_palette)
 # yapf: enable
 from .collect_env import collect_env
-from .dist_utils import (all_reduce_dict, allreduce_grads, reduce_mean,
-                         sync_random_seed)
+from .dist_utils import reduce_mean
 from .get_templates import get_predefined_templates
 from .io import datafrombytes
 from .misc import add_prefix, stack_batch
@@ -67,10 +66,7 @@ __all__ = [
     'tokenize',
     'seg_data_to_instance_data',
     'MatchMasks',
-    'all_reduce_dict',
-    'allreduce_grads',
     'reduce_mean',
-    'sync_random_seed',
     'bdd100k_classes',
     'bdd100k_palette',
 ]

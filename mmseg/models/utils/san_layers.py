@@ -1,4 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+# Modified from https://github.com/MendelXu/SAN/blob/main/san/model/attn_helper.py  # noqa: E501
+# Copyright (c) 2023 MendelXu.
+# Licensed under the MIT License
+
 import warnings
 from typing import Optional
 
@@ -7,8 +11,6 @@ from torch import Tensor, nn
 from torch.nn import functional as F
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
-
-# Modified from https://github.com/MendelXu/SAN/blob/main/san/model/attn_helper.py  # noqa: E501
 
 
 def cross_attn_with_self_bias(self, query, key, value, attn_mask=None):
@@ -383,7 +385,7 @@ def cross_attn_layer(self: TransformerEncoderLayer, x, mem, attn_bias):
     return x
 
 
-class LayerNorm(nn.Module):
+class LayerNorm2d(nn.Module):
     """A LayerNorm variant, popularized by Transformers, that performs point-
     wise mean and variance normalization over the channel dimension for inputs
     that have shape (batch_size, channels, height, width).

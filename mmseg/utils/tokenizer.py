@@ -6,7 +6,6 @@ Copied from https://github.com/openai/CLIP. Originally MIT License, Copyright
 """
 import gzip
 import html
-# https://stackoverflow.com/q/62691279
 import os
 from functools import lru_cache
 from typing import List, Union

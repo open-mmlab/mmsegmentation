@@ -18,7 +18,7 @@ from mmseg.models.backbones.vit import TransformerEncoderLayer
 from mmseg.registry import MODELS
 from mmseg.utils import (ConfigType, MatchMasks, SampleList, reduce_mean,
                          seg_data_to_instance_data)
-from ..utils import (MLP, LayerNorm, PatchEmbed, cross_attn_layer,
+from ..utils import (MLP, LayerNorm2d, PatchEmbed, cross_attn_layer,
                      get_uncertain_point_coords_with_randomness, resize)
 from .decode_head import BaseDecodeHead
 
@@ -163,7 +163,7 @@ class SideAdapterNetwork(nn.Module):
         for i in range(len(fusion_index)):
             conv_clips.append(
                 nn.Sequential(
-                    LayerNorm(clip_channels),
+                    LayerNorm2d(clip_channels),
                     ConvModule(
                         clip_channels,
                         embed_dims,
@@ -471,7 +471,9 @@ class SideAdapterCLIPHead(BaseDecodeHead):
     This decode head is the implementation of `Side Adapter Network
     for Open-Vocabulary Semantic Segmentation`
     <https://arxiv.org/abs/2302.12242>.
-    Modified from https://github.com/MendelXu/SAN.git.
+    Modified from https://github.com/MendelXu/SAN/blob/main/san/model/side_adapter/side_adapter.py # noqa:E501
+    Copyright (c) 2023 MendelXu.
+    Licensed under the MIT License
 
     Args:
         num_classes (int): the number of classes.

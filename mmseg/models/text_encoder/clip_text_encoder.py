@@ -18,6 +18,10 @@ from mmseg.utils import get_classes, get_predefined_templates, tokenizer
 class CLIPTextEncoder(BaseModule):
     """A text encoder with transformer architecture to encode the label text.
 
+    Modified from https://github.com/MendelXu/SAN/blob/main/san/model/clip_utils/classifier.py # noqa:E501
+    Copyright (c) 2023 MendelXu.
+    Licensed under the MIT License
+
     Args:
         dataset_name: (str|None): The name of the dataset to which
             the data belongs.
