@@ -8,6 +8,7 @@ import cv2
 import mmcv
 import mmengine
 import numpy as np
+from mmcv.transforms import RandomFlip as MMCV_RandomFlip
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
@@ -948,6 +949,86 @@ class RandomRotFlip(BaseTransform):
                     f'flip_prob={self.flip_prob}, ' \
                     f'degree={self.degree})'
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class RandomFlip(MMCV_RandomFlip):
+    """Flip the image & bbox & segmentation map. Added or Updated
+    keys: flip, flip_direction, img, gt_bboxes, gt_seg_map, and gt_depth_map.
+    There are 3 flip modes:
+
+    - ``prob`` is float, ``direction`` is string: the image will be
+      ``direction``ly flipped with probability of ``prob`` .
+      E.g., ``prob=0.5``, ``direction='horizontal'``,
+      then image will be horizontally flipped with probability of 0.5.
+
+    - ``prob`` is float, ``direction`` is list of string: the image will
+      be ``direction[i]``ly flipped with probability of
+      ``prob/len(direction)``.
+      E.g., ``prob=0.5``, ``direction=['horizontal', 'vertical']``,
+      then image will be horizontally flipped with probability of 0.25,
+      vertically with probability of 0.25.
+
+    - ``prob`` is list of float, ``direction`` is list of string:
+      given ``len(prob) == len(direction)``, the image will
+      be ``direction[i]``ly flipped with probability of ``prob[i]``.
+      E.g., ``prob=[0.3, 0.5]``, ``direction=['horizontal',
+      'vertical']``, then image will be horizontally flipped with
+      probability of 0.3, vertically with probability of 0.5.
+
+    Required Keys:
+
+    - img
+    - gt_bboxes (optional)
+    - gt_seg_map (optional)
+    - gt_depth_map (optional)
+
+    Modified Keys:
+
+    - img
+    - gt_bboxes (optional)
+    - gt_seg_map (optional)
+    - gt_depth_map (optional)
+
+    Added Keys:
+
+    - flip
+    - flip_direction
+    - swap_seg_labels (optional)
+
+    Args:
+        prob (float | list[float], optional): The flipping probability.
+            Defaults to None.
+        direction(str | list[str]): The flipping direction. Options
+            If input is a list, the length must equal ``prob``. Each
+            element in ``prob`` indicates the flip probability of
+            corresponding direction. Defaults to 'horizontal'.
+        swap_seg_labels (list, optional): The label pair need to be swapped
+            for ground truth, like 'left arm' and 'right arm' need to be
+            swapped after horizontal flipping. For example, ``[(1, 5)]``,
+            where 1/5 is the label of the left/right arm. Defaults to None.
+    """
+
+    def _flip(self, results: dict) -> None:
+        """Flip images, bounding boxes and semantic segmentation map."""
+        # flip image
+        results['img'] = mmcv.imflip(
+            results['img'], direction=results['flip_direction'])
+
+        img_shape = results['img'].shape[:2]
+
+        # flip bboxes
+        if results.get('gt_bboxes', None) is not None:
+            results['gt_bboxes'] = self._flip_bbox(results['gt_bboxes'],
+                                                   img_shape,
+                                                   results['flip_direction'])
+
+        # flip seg map
+        for key in results.get('seg_fields', []):
+            if results.get(key, None) is not None:
+                results[key] = self._flip_seg_map(
+                    results[key], direction=results['flip_direction'])
+                results['swap_seg_labels'] = self.swap_seg_labels
 
 
 @TRANSFORMS.register_module()
@@ -2318,3 +2399,49 @@ class ConcatCDInput(BaseTransform):
         repr_str = self.__class__.__name__
         repr_str += f'(input_keys={self.input_keys}, '
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class RandomDepthMix(BaseTransform):
+    """This class implements the RandomDepthMix transform.
+
+    Args:
+        prob (float): Probability of applying the transformation.
+            Defaults to 0.25.
+        mix_scale_ratio (float): Ratio to scale the mix width.
+            Defaults to 0.75.
+    """
+
+    def __init__(
+        self,
+        prob: float = 0.25,
+        mix_scale_ratio: float = 0.75,
+    ):
+        super().__init__()
+
+        self.prob = prob
+        self.mix_scale_ratio = mix_scale_ratio
+
+    def transform(self, results: dict) -> dict:
+        if random.random() > self.prob:
+            return results
+
+        h, w = results['img_shape'][:2]
+        left = int(w * random.random())
+        width_ratio = self.mix_scale_ratio * random.random()
+        width = int(max(1, (w - left) * width_ratio))
+
+        img = results['img']
+        depth_rescale_factor = results.get('depth_rescale_factor', 1)
+        depth_map = results['gt_depth_map'] / depth_rescale_factor
+
+        if img.ndim == 3:
+            for c in range(img.shape[-1]):
+                img[:, left:left + width, c] = depth_map[:, left:left + width]
+        elif img.ndim == 2:
+            img[:, left:left + width] = depth_map[:, left:left + width]
+        else:
+            raise ValueError(f'Invalid image shape ({img.shape})')
+
+        results['img'] = img
+        return results

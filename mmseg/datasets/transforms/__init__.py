@@ -10,7 +10,8 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
                          BioMedicalRandomGamma, ConcatCDInput, GenerateEdge,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
-                         RandomMosaic, RandomRotate, RandomRotFlip, Rerange,
+                         RandomDepthMix, RandomFlip, RandomMosaic,
+                         RandomRotate, RandomRotFlip, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
                          SegRescale)
 
@@ -24,5 +25,6 @@ __all__ = [
     'ResizeShortestEdge', 'BioMedicalGaussianNoise', 'BioMedicalGaussianBlur',
     'BioMedical3DRandomFlip', 'BioMedicalRandomGamma', 'BioMedical3DPad',
     'RandomRotFlip', 'Albu', 'LoadSingleRSImageFromFile', 'ConcatCDInput',
-    'LoadMultipleRSImageFromFile', 'LoadDepthAnnotation'
+    'LoadMultipleRSImageFromFile', 'LoadDepthAnnotation', 'RandomDepthMix',
+    'RandomFlip'
 ]
