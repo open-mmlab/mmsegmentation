@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
 import os.path as osp
+from unittest import TestCase
 
 import mmcv
 import numpy as np
@@ -11,7 +12,8 @@ from PIL import Image
 from mmseg.datasets.transforms import *  # noqa
 from mmseg.datasets.transforms import (LoadBiomedicalData,
                                        LoadBiomedicalImageFromFile,
-                                       PhotoMetricDistortion, RandomCrop)
+                                       PhotoMetricDistortion, RandomCrop,
+                                       RandomDepthMix)
 from mmseg.registry import TRANSFORMS
 
 init_default_scope('mmseg')
@@ -183,6 +185,14 @@ def test_flip():
     results = flip_module(results)
     assert np.equal(original_img, results['img']).all()
     assert np.equal(original_seg, results['gt_semantic_seg']).all()
+
+    results['gt_depth_map'] = seg
+    results['seg_fields'] = ['gt_depth_map']
+    results = flip_module(results)
+    flip_module = TRANSFORMS.build(transform)
+    results = flip_module(results)
+    assert np.equal(original_img, results['img']).all()
+    assert np.equal(original_seg, results['gt_depth_map']).all()
 
 
 def test_random_rotate_flip():
@@ -1218,3 +1228,46 @@ def test_albu_channel_order():
     with pytest.raises(AssertionError):
         np.testing.assert_array_equal(results_albu['img'][..., 0],
                                       results_load['img'][..., 0])
+
+
+class TestRandomDepthMix(TestCase):
+
+    def setUp(self):
+        self.transform = RandomDepthMix(prob=1.0)
+
+    def test_transform_shape(self):
+        # Create a dummy result dict
+        results = {
+            'img_shape': (10, 10),
+            'img': np.random.rand(10, 10, 3),
+            'gt_depth_map': np.random.rand(10, 10)
+        }
+        transformed = self.transform.transform(results)
+
+        # Check if the shape remains the same
+        self.assertEqual(results['img'].shape, transformed['img'].shape)
+
+    def test_transform_values(self):
+        # Create a dummy result dict
+        results = {
+            'img_shape': (10, 10),
+            'img': np.zeros((10, 10, 3)),
+            'gt_depth_map': np.ones((10, 10))
+        }
+        transformed = self.transform.transform(results)
+
+        # Assuming the transformation modifies a portion of the image,
+        # it shouldn't remain all zeros
+        self.assertFalse(np.all(transformed['img'] == 0))
+
+    def test_invalid_image_dimension(self):
+        # Create a dummy result dict with invalid image dimension
+        results = {
+            'img_shape': (10, 10),
+            'img': np.random.rand(10, 10, 3, 3),
+            'gt_depth_map': np.random.rand(10, 10)
+        }
+
+        # Check if a ValueError is raised for invalid dimension
+        with self.assertRaises(ValueError):
+            self.transform.transform(results)
