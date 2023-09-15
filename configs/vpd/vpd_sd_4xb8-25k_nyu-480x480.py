@@ -27,7 +27,7 @@ default_hooks = dict(checkpoint=dict(save_best='rmse', rule='less'))
 
 # custom optimizer
 optim_wrapper = dict(
-    type='ForceDefaultOptimWrapperConstructor',
+    constructor='ForceDefaultOptimWrapperConstructor',
     paramwise_cfg=dict(
         bias_decay_mult=0,
         force_default_settings=True,
