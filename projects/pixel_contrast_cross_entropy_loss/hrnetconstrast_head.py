@@ -4,7 +4,9 @@
 blob/2c8c35a8949fef74599f5ec557d340a14415f20d/
 paddleseg/models/hrnet_contrast.py(Apache-2.0 License)"""
 
+import warnings
 from typing import List, Tuple
+
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
@@ -14,7 +16,7 @@ from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.models.losses import accuracy
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, SampleList
-import warnings
+
 
 def resize(input,
            size=None,
@@ -36,6 +38,7 @@ def resize(input,
                         f'input size {(input_h, input_w)} is `x+1` and '
                         f'out size {(output_h, output_w)} is `nx+1`')
     return F.interpolate(input, size, scale_factor, mode, align_corners)
+
 
 class ProjectionHead(nn.Module):
     """The projection head used by contrast learning.
@@ -123,14 +126,14 @@ class ContrastHead(BaseDecodeHead):
         if drop_p < 0 or drop_p > 1 or not isinstance(drop_p, float):
             raise KeyError('drop_p must be a float >=0')
         self.proj_n = proj_n
-            
+
         self.seghead = MODELS.build(seg_head)
         self.projhead = ProjectionHead(
             in_channels=self.in_channels, proj_n=proj_n, proj_mode=proj_mode)
         del self.conv_seg
         
     def cls_seg(self):
-        '''Remove cls_seg, or distributed training will encounter an error'''
+        """Remove cls_seg, or distributed training will encounter an error."""
         pass
 
     def forward(self, inputs):
