@@ -14,4 +14,3 @@ test_dataloader = dict(dataset=dict(data_root=data_root))
 crop_size = (512, 1024)
 data_preprocessor = dict(size=crop_size)
 model = dict(data_preprocessor=data_preprocessor)
-

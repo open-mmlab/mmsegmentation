@@ -21,7 +21,7 @@ Here the configs for HRNet-W18 and HRNet-W48 with pixel_contrast_cross_entropy_l
 After putting Cityscapes dataset into "mmsegmentation/data/" dir, train the network by:
 
 ```python
-python tools/train.py projects/pixel_contrast_cross_entropy_loss/configs/fcn_hrcontrast18_4xb2-40k_cityscapes-512x1024.py
+python tools/train.py projects/pixel_contrast_cross_entropy_loss/configs/fcn_hrcontrast48_4xb2-40k_cityscapes-512x1024.py
 ```
 
 ## Citation

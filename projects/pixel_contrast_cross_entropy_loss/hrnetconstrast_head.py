@@ -103,23 +103,24 @@ class ContrastHead(BaseDecodeHead):
                      norm_cfg=dict(type='SyncBN', requires_grad=True),
                      align_corners=False),
                  loss_decode=[
-                    dict(type='PixelContrastCrossEntropyLoss',
-                        base_temperature=0.07,
-                        temperature=0.1,
-                        ignore_index=255,
-                        max_samples=1024,
-                        max_views=100,
-                        loss_weight=0.1),
-                    dict(type='CrossEntropyLoss', loss_weight=1.0)
-                    ],
-                    **kwargs):
-        super().__init__(in_channels,
-                 channels,
-                 num_classes = num_classes,
-                 loss_decode = loss_decode,
-                 init_cfg = dict(type='Normal', std=0.01),
-                 **kwargs)
-
+                     dict(
+                         type='PixelContrastCrossEntropyLoss',
+                         base_temperature=0.07,
+                         temperature=0.1,
+                         ignore_index=255,
+                         max_samples=1024,
+                         max_views=100,
+                         loss_weight=0.1),
+                     dict(type='CrossEntropyLoss', loss_weight=1.0)
+                 ],
+                 **kwargs):
+        super().__init__(
+            in_channels,
+            channels,
+            num_classes=num_classes,
+            loss_decode=loss_decode,
+            init_cfg=dict(type='Normal', std=0.01),
+            **kwargs)
 
         if proj_n <= 0:
             raise KeyError('proj_n must >0')
@@ -131,7 +132,7 @@ class ContrastHead(BaseDecodeHead):
         self.projhead = ProjectionHead(
             in_channels=self.in_channels, proj_n=proj_n, proj_mode=proj_mode)
         del self.conv_seg
-        
+
     def cls_seg(self):
         """Remove cls_seg, or distributed training will encounter an error."""
         pass
@@ -204,10 +205,11 @@ class ContrastHead(BaseDecodeHead):
                 raise KeyError('loss_name not matched')
 
         loss['acc_seg'] = accuracy(
-            F.interpolate(seg_logits[0], 
-                          size=seg_label.shape[-2:],
-                          mode='bilinear',
-                          align_corners=self.align_corners),
+            F.interpolate(
+                seg_logits[0],
+                size=seg_label.shape[-2:],
+                mode='bilinear',
+                align_corners=self.align_corners),
             seg_label,
             ignore_index=self.ignore_index)
         return loss
