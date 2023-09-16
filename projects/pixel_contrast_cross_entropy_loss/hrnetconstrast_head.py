@@ -114,6 +114,7 @@ class ContrastHead(BaseDecodeHead):
                  channels,
                  num_classes = num_classes,
                  loss_decode = loss_decode,
+                 init_cfg = dict(type='Normal', std=0.01),
                  **kwargs)
 
 
@@ -126,6 +127,7 @@ class ContrastHead(BaseDecodeHead):
         self.seghead = MODELS.build(seg_head)
         self.projhead = ProjectionHead(
             in_channels=self.in_channels, proj_n=proj_n, proj_mode=proj_mode)
+        del self.conv_seg
         
     def cls_seg(self):
         '''Remove cls_seg, or distributed training will encounter an error'''
@@ -175,7 +177,7 @@ class ContrastHead(BaseDecodeHead):
                     input=seg_logits[0],
                     size=seg_label.shape[-2:],
                     mode='bilinear',
-                    align_corners=True)
+                    align_corners=self.align_corners)
                 if loss_decode.loss_name not in loss:
                     loss[loss_decode.loss_name] = loss_decode(
                         pred,
@@ -202,7 +204,7 @@ class ContrastHead(BaseDecodeHead):
             F.interpolate(seg_logits[0], 
                           size=seg_label.shape[-2:],
                           mode='bilinear',
-                          align_corners=True),
+                          align_corners=self.align_corners),
             seg_label,
             ignore_index=self.ignore_index)
         return loss
