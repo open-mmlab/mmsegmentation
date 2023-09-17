@@ -14,6 +14,7 @@ from PIL import Image
 from pytorch_grad_cam import GradCAM, LayerCAM, XGradCAM, GradCAMPlusPlus, EigenCAM, EigenGradCAM
 from pytorch_grad_cam.utils.image import preprocess_image, show_cam_on_image
 
+from mmengine import Config
 from mmseg.apis import inference_model, init_model, show_result_pyplot
 from mmseg.utils import register_all_modules
 
@@ -47,20 +48,29 @@ class SemanticSegmentationTarget:
 
 def main():
     parser = ArgumentParser()
-    default_cfg = 'configs/deeplabv3/deeplabv3_r50-d8_4xb2-40k_cityscapes-769x769.py'  # noqa
-    parser.add_argument('--img', default='demo/demo.png', help='Image file')
-    parser.add_argument('--config', default=default_cfg, help='Config file')
-    parser.add_argument(
-        '--checkpoint',
-        default='deeplabv3_r50-d8_769x769_40k_cityscapes.pth',
-        help='Checkpoint file')
+    parser.add_argument('img', help='Image file')
+    parser.add_argument('config', help='Config file')
+    parser.add_argument('checkpoint', help='Checkpoint file')
     parser.add_argument(
         '--out-file',
         default='prediction.png',
         help='Path to output prediction file')
     parser.add_argument(
-        '--cam-file', default='vis_cam.png', help='Path to output cam file')
-    parser.add_argument('--device', default='cuda:0', help='cuda:0 or cpu')
+        '--cam-file',
+        default='vis_cam.png',
+        help='Path to output cam file')
+    parser.add_argument(
+        '--target-layers',
+        default='backbone.layer4[2]',
+        help='Target layers to visualize CAM')
+    parser.add_argument(
+        '--category-index',
+        default='7',
+        help='Category to visualize CAM')
+    parser.add_argument(
+        '--device',
+        default='cuda:0',
+        help='Device used for inference')
     args = parser.parse_args()
 
     # build the model from a config file and a checkpoint file
@@ -85,25 +95,28 @@ def main():
     prediction_data = result.pred_sem_seg.data
     pre_np_data = prediction_data.cpu().numpy().squeeze(0)
 
-    # select visualization layer, e.g. model.backbone.layer4[2] in
-    # deeplabv3_r50 it can be multiple layers
-    target_layers = [model.backbone.layer4[2]]
+    target_layers = args.target_layers
+    target_layers = [eval(f'model.{target_layers}')]
 
-    # select visualization class, e.g. traffic sign(index:7)
-    car_category = 7  # traffic sign
-    car_mask_float = np.float32(pre_np_data == car_category)
+    category = int(args.category_index)
+    car_mask_float = np.float32(pre_np_data == category)
 
     # data processing
     image = np.array(Image.open(args.img).convert('RGB'))
-    Height, Width = image.shape[0], image.shape[1]
+    height, width = image.shape[0], image.shape[1]
     rgb_img = np.float32(image) / 255
+    config = Config.fromfile(args.config)
+    image_mean = config.data_preprocessor['mean']
+    image_std = config.data_preprocessor['std']
     input_tensor = preprocess_image(
-        rgb_img, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        rgb_img,
+        mean=[x / 255 for x in image_mean],
+        std=[x / 255 for x in image_std])
 
     # Grad CAM(Class Activation Maps)
     targets = [
-        SemanticSegmentationTarget(car_category, car_mask_float,
-                                   (Height, Width))
+        SemanticSegmentationTarget(category, car_mask_float,
+                                   (height, width))
     ]
     with GradCAM(
             model=model,
