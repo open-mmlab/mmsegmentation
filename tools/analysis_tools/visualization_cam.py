@@ -99,7 +99,7 @@ def main():
     target_layers = [eval(f'model.{target_layers}')]
 
     category = int(args.category_index)
-    car_mask_float = np.float32(pre_np_data == category)
+    mask_float = np.float32(pre_np_data == category)
 
     # data processing
     image = np.array(Image.open(args.img).convert('RGB'))
@@ -116,7 +116,7 @@ def main():
     # Grad CAM(Class Activation Maps)
     # Can also be LayerCAM, XGradCAM, GradCAMPlusPlus, EigenCAM, EigenGradCAM
     targets = [
-        SemanticSegmentationTarget(category, car_mask_float,
+        SemanticSegmentationTarget(category, mask_float,
                                    (height, width))
     ]
     with GradCAM(
