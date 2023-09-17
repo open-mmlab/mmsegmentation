@@ -114,6 +114,7 @@ def main():
         std=[x / 255 for x in image_std])
 
     # Grad CAM(Class Activation Maps)
+    # Can also be LayerCAM, XGradCAM, GradCAMPlusPlus, EigenCAM, EigenGradCAM
     targets = [
         SemanticSegmentationTarget(category, car_mask_float,
                                    (height, width))
