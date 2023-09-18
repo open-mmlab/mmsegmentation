@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- [BACKBONE] -->
+<!-- [ALGORITHM] -->
 
 <a href = "https://github.com/wl-zhao/VPD">Official Repo</a>
 

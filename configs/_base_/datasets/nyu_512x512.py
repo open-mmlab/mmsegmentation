@@ -7,7 +7,12 @@ train_pipeline = [
     dict(type='LoadDepthAnnotation', depth_rescale_factor=1e-3),
     dict(type='RandomDepthMix', prob=0.25),
     dict(type='RandomFlip', prob=0.5),
-    dict(type='RandomCrop', crop_size=(480, 480)),
+    dict(
+        type='RandomResize',
+        scale=(768, 512),
+        ratio_range=(0.8, 1.5),
+        keep_ratio=True),
+    dict(type='RandomCrop', crop_size=(512, 512)),
     dict(
         type='Albu',
         transforms=[
@@ -24,7 +29,7 @@ train_pipeline = [
 
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=(2000, 480), keep_ratio=True),
+    dict(type='Resize', scale=(2048, 512), keep_ratio=True),
     dict(dict(type='LoadDepthAnnotation', depth_rescale_factor=1e-3)),
     dict(
         type='PackSegInputs',
