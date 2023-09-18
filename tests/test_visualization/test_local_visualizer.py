@@ -155,3 +155,59 @@ class TestSegLocalVisualizer(TestCase):
         assert os.path.exists(out_file)
         drawn_img = cv2.imread(out_file)
         assert drawn_img.shape == out_shape
+
+    def test_add_datasample_depth(self):
+        h = 10
+        w = 12
+        out_file = 'out_file'
+
+        image = np.random.randint(0, 256, size=(h, w, 3)).astype('uint8')
+
+        # test gt_depth_map
+        gt_depth_map = PixelData(data=torch.rand(1, h, w))
+
+        def test_add_datasample_forward_depth(gt_depth_map):
+            data_sample = SegDataSample()
+            data_sample.gt_depth_map = gt_depth_map
+
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                seg_local_visualizer = SegLocalVisualizer(
+                    vis_backends=[dict(type='LocalVisBackend')],
+                    save_dir=tmp_dir)
+                seg_local_visualizer.dataset_meta = dict(
+                    classes=('background', 'foreground'),
+                    palette=[[120, 120, 120], [6, 230, 230]])
+
+                # test out_file
+                seg_local_visualizer.add_datasample(out_file, image,
+                                                    data_sample)
+
+                assert os.path.exists(
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
+                             out_file + '_0.png'))
+                drawn_img = cv2.imread(
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
+                             out_file + '_0.png'))
+                assert drawn_img.shape == (h * 2, w, 3)
+
+                # test gt_instances and pred_instances
+
+                pred_depth_map = PixelData(data=torch.rand(1, h, w))
+
+                data_sample.pred_depth_map = pred_depth_map
+
+                seg_local_visualizer.add_datasample(out_file, image,
+                                                    data_sample)
+                self._assert_image_and_shape(
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
+                             out_file + '_0.png'), (h * 2, w * 2, 3))
+
+                seg_local_visualizer.add_datasample(
+                    out_file, image, data_sample, draw_gt=False)
+                self._assert_image_and_shape(
+                    osp.join(tmp_dir, 'vis_data', 'vis_image',
+                             out_file + '_0.png'), (h * 2, w, 3))
+
+        if torch.cuda.is_available():
+            test_add_datasample_forward_depth(gt_depth_map.cuda())
+        test_add_datasample_forward_depth(gt_depth_map)

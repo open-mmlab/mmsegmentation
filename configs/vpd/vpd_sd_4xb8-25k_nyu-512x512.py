@@ -1,9 +1,9 @@
 _base_ = [
-    '../_base_/models/vpd_sd.py', '../_base_/datasets/nyu.py',
+    '../_base_/models/vpd_sd.py', '../_base_/datasets/nyu_512x512.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_25k.py'
 ]
 
-crop_size = (480, 480)
+crop_size = (512, 512)
 
 model = dict(
     type='DepthEstimator',
@@ -19,9 +19,8 @@ model = dict(
         type='VPDDepthHead',
         in_channels=[320, 640, 1280, 1280],
         max_depth=10,
-        fmap_border=(1, 1),
     ),
-    test_cfg=dict(mode='slide_flip', crop_size=crop_size, stride=(160, 160)))
+    test_cfg=dict(mode='slide_flip', crop_size=crop_size, stride=(128, 128)))
 
 default_hooks = dict(
     checkpoint=dict(save_best='rmse', rule='less', max_keep_ckpts=1))

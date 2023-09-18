@@ -306,17 +306,28 @@ class MMSegInferencer(BaseInferencer):
         results_dict['visualization'] = []
 
         for i, pred in enumerate(preds):
-            pred_data = pred.pred_sem_seg.numpy().data[0]
-            results_dict['predictions'].append(pred_data)
+            pred_data = dict()
+            if 'pred_sem_seg' in pred.keys():
+                pred_data['sem_seg'] = pred.pred_sem_seg.numpy().data[0]
+            elif 'pred_depth_map' in pred.keys():
+                pred_data['depth_map'] = pred.pred_depth_map.numpy().data[0]
+
             if visualization is not None:
                 vis = visualization[i]
                 results_dict['visualization'].append(vis)
             if pred_out_dir != '':
                 mmengine.mkdir_or_exist(pred_out_dir)
-                img_name = str(self.num_pred_imgs).zfill(8) + '_pred.png'
-                img_path = osp.join(pred_out_dir, img_name)
-                output = Image.fromarray(pred_data.astype(np.uint8))
-                output.save(img_path)
+                for key, data in pred_data.items():
+                    post_fix = '_pred.png' if key == 'sem_seg' else '_pred.npy'
+                    img_name = str(self.num_pred_imgs).zfill(8) + post_fix
+                    img_path = osp.join(pred_out_dir, img_name)
+                    if key == 'sem_seg':
+                        output = Image.fromarray(data.astype(np.uint8))
+                        output.save(img_path)
+                    else:
+                        np.save(img_path, data)
+            pred_data = next(iter(pred_data.values()))
+            results_dict['predictions'].append(pred_data)
             self.num_pred_imgs += 1
 
         if len(results_dict['predictions']) == 1:
@@ -344,12 +355,13 @@ class MMSegInferencer(BaseInferencer):
         """
         pipeline_cfg = cfg.test_dataloader.dataset.pipeline
         # Loading annotations is also not applicable
-        idx = self._get_transform_idx(pipeline_cfg, 'LoadAnnotations')
-        if idx != -1:
-            del pipeline_cfg[idx]
+        for transform in ('LoadAnnotations', 'LoadDepthAnnotation'):
+            idx = self._get_transform_idx(pipeline_cfg, transform)
+            if idx != -1:
+                del pipeline_cfg[idx]
+
         load_img_idx = self._get_transform_idx(pipeline_cfg,
                                                'LoadImageFromFile')
-
         if load_img_idx == -1:
             raise ValueError(
                 'LoadImageFromFile is not found in the test pipeline')
