@@ -28,7 +28,6 @@
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![Open in OpenXLab](https://cdn-static.openxlab.org.cn/app-center/openxlab_demo.svg)](https://openxlab.org.cn/apps?search=mmseg)
 
-
 Documentation: <https://mmsegmentation.readthedocs.io/en/latest/>
 
 English | [简体中文](README_zh-CN.md)
