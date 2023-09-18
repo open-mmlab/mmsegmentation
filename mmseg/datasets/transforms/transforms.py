@@ -9,6 +9,7 @@ import mmcv
 import mmengine
 import numpy as np
 from mmcv.transforms import RandomFlip as MMCV_RandomFlip
+from mmcv.transforms import Resize as MMCV_Resize
 from mmcv.transforms.base import BaseTransform
 from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
@@ -1029,6 +1030,72 @@ class RandomFlip(MMCV_RandomFlip):
                 results[key] = self._flip_seg_map(
                     results[key], direction=results['flip_direction']).copy()
                 results['swap_seg_labels'] = self.swap_seg_labels
+
+
+@TRANSFORMS.register_module()
+class Resize(MMCV_Resize):
+    """Resize images & seg & depth map.
+
+    This transform resizes the input image according to ``scale`` or
+    ``scale_factor``. Seg map, depth map and other relative annotations are
+    then resized with the same scale factor.
+    if ``scale`` and ``scale_factor`` are both set, it will use ``scale`` to
+    resize.
+
+    Required Keys:
+
+    - img
+    - gt_seg_map (optional)
+    - gt_depth_map (optional)
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+    - gt_depth_map
+
+    Added Keys:
+
+    - scale
+    - scale_factor
+    - keep_ratio
+
+    Args:
+        scale (int or tuple): Images scales for resizing. Defaults to None
+        scale_factor (float or tuple[float]): Scale factors for resizing.
+            Defaults to None.
+        keep_ratio (bool): Whether to keep the aspect ratio when resizing the
+            image. Defaults to False.
+        clip_object_border (bool): Whether to clip the objects
+            outside the border of the image. In some dataset like MOT17, the gt
+            bboxes are allowed to cross the border of images. Therefore, we
+            don't need to clip the gt bboxes in these cases. Defaults to True.
+        backend (str): Image resize backend, choices are 'cv2' and 'pillow'.
+            These two backends generates slightly different results. Defaults
+            to 'cv2'.
+        interpolation (str): Interpolation method, accepted values are
+            "nearest", "bilinear", "bicubic", "area", "lanczos" for 'cv2'
+            backend, "nearest", "bilinear" for 'pillow' backend. Defaults
+            to 'bilinear'.
+    """
+
+    def _resize_seg(self, results: dict) -> None:
+        """Resize semantic segmentation map with ``results['scale']``."""
+        for seg_key in results.get('seg_fields', []):
+            if results.get(seg_key, None) is not None:
+                if self.keep_ratio:
+                    gt_seg = mmcv.imrescale(
+                        results[seg_key],
+                        results['scale'],
+                        interpolation='nearest',
+                        backend=self.backend)
+                else:
+                    gt_seg = mmcv.imresize(
+                        results[seg_key],
+                        results['scale'],
+                        interpolation='nearest',
+                        backend=self.backend)
+                results[seg_key] = gt_seg
 
 
 @TRANSFORMS.register_module()

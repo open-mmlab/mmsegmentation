@@ -35,6 +35,11 @@ def silog_loss(pred: Tensor,
 
     diff_log = torch.log(target.clamp(min=eps)) - torch.log(
         pred.clamp(min=eps))
+
+    valid_mask = (target > eps).detach() & (~torch.isnan(diff_log))
+    diff_log[~valid_mask] = 0.0
+    valid_mask = valid_mask.float()
+
     diff_log_sq_mean = (diff_log.pow(2) * valid_mask).sum(
         dim=1) / valid_mask.sum(dim=1).clamp(min=eps)
     diff_log_mean = (diff_log * valid_mask).sum(dim=1) / valid_mask.sum(

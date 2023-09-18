@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- [BACKBONE] -->
+<!-- [ALGORITHM] -->
 
 <a href = "https://github.com/wl-zhao/VPD">Official Repo</a>
 
@@ -36,6 +36,7 @@ pip install -r requirements/optional.txt
 | Method | Backbone              | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device | RMSE  | d1    | d2    | d3    | REL   | log_10 | config                                                                                                      | download                                                                                                                                                                                                                     |
 | ------ | --------------------- | --------- | ------- | -------- | -------------- | ------ | ----- | ----- | ----- | ----- | ----- | ------ | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | VPD    | Stable-Diffusion-v1-5 | 480x480   | 25000   | -        | -              | A100   | 0.253 | 0.964 | 0.995 | 0.999 | 0.069 | 0.030  | [config](https://github.com/open-mmlab/mmsegmentation/tree/main/configs/vpd/vpd_sd_4xb8-25k_nyu-480x480.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-480x480_20230908-66144bc4.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-480x480_20230908.json) |
+| VPD    | Stable-Diffusion-v1-5 | 512x512   | 25000   | -        | -              | A100   | 0.258 | 0.963 | 0.995 | 0.999 | 0.072 | 0.031  | [config](https://github.com/open-mmlab/mmsegmentation/tree/main/configs/vpd/vpd_sd_4xb8-25k_nyu-512x512.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-512x512_20230918-60cefcff.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-512x512_20230918.json) |
 
 ## Citation
 

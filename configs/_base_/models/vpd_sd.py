@@ -5,7 +5,7 @@ data_preprocessor = dict(
     std=[127.5, 127.5, 127.5],
     bgr_to_rgb=True,
     pad_val=0,
-    seg_pad_val=255)
+    seg_pad_val=0)
 
 # adapted from stable-diffusion/configs/stable-diffusion/v1-inference.yaml
 stable_diffusion_cfg = dict(
