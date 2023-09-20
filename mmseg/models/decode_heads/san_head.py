@@ -290,7 +290,7 @@ class RecWithAttnbias(nn.Module):
             Default: 768.
         mlp_ratio (int): Ratio of mlp hidden dim to embedding dim.
             Default: 4.
-        qkv_bias (int): Whether to use bias in multihead-attention.
+        qkv_bias (bool): Whether to use bias in multihead-attention.
             Default: True.
         out_dims (int): Number of channels of the output mask proposals.
             It should be equal to the out_dims of text_encoder.
@@ -373,10 +373,6 @@ class RecWithAttnbias(nn.Module):
             if not any([exclude in name for exclude in self.frozen_exclude]):
                 param.requires_grad = False
 
-    def init_para(self):
-        if hasattr(self, 'sos_token'):
-            nn.init.normal_(self.sos_token, std=0.02)
-
     def _build_attn_biases(self, attn_biases, target_shape):
         formatted_attn_biases = []
         for attn_bias in attn_biases:
@@ -418,8 +414,13 @@ class RecWithAttnbias(nn.Module):
             ]
         return formatted_attn_biases
 
-    def forward(self, bias, feature):
-        """Forward function."""
+    def forward(self, bias: List[Tensor], feature: List[Tensor]):
+        """Forward function to recognize the category of masks
+        Args:
+            bias (List[Tensor]): Attention bias for transformer layers
+            feature (List[Tensor]): Output of the image encoder,
+            including cls_token and img_feature.
+        """
         cls_token = feature[1].unsqueeze(0)
         img_feature = feature[0]
         b, c, h, w = img_feature.shape
@@ -438,6 +439,7 @@ class RecWithAttnbias(nn.Module):
 
         # construct attn bias
         attn_biases = self._build_attn_biases(bias, target_shape=(h, w))
+
         if self.cross_attn:
             for i, block in enumerate(self.layers):
                 if self.cross_attn:
