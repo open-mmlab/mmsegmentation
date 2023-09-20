@@ -7,44 +7,12 @@ import warnings
 from typing import Optional
 
 import torch
+from mmcv.cnn.bricks.transformer import BaseTransformerLayer
 from torch import Tensor, nn
 from torch.nn import functional as F
 
-from mmseg.models.backbones.vit import TransformerEncoderLayer
 
-
-def cross_attn_with_self_bias(self, query, key, value, attn_mask=None):
-    """Implementation of cross attention layer which shares the embedding
-    weights with self-attention.
-
-    Args:
-        self: self-attention layer
-        query, key, value: map a query and a set of key-value pairs to
-        an output. See "Attention Is All You Need" for more details.
-        attn_mask: mask that prevents attention to certain positions.
-    """
-    return cross_attn_with_self_bias_func(
-        query,
-        key,
-        value,
-        self.embed_dim,
-        self.num_heads,
-        self.in_proj_weight,
-        self.in_proj_bias,
-        self.bias_k,
-        self.bias_v,
-        self.add_zero_attn,
-        self.dropout,
-        self.out_proj.weight,
-        self.out_proj.bias,
-        training=self.training,
-        attn_mask=attn_mask,
-        key_padding_mask=None,
-        need_weights=False,
-    )
-
-
-def cross_attn_with_self_bias_func(
+def cross_attn_with_self_bias(
     query: Tensor,
     key: Tensor,
     value: Tensor,
@@ -365,10 +333,11 @@ def cross_attn_with_self_bias_func(
         return attn_output, None
 
 
-def cross_attn_layer(self: TransformerEncoderLayer, x, mem, attn_bias):
-    """Implementation of transformer layer with cross attention
+def cross_attn_layer(tf_layer: BaseTransformerLayer, x, mem, attn_bias):
+    """Implementation of transformer layer with cross attention. The cross
+    attention shares the embedding weights with self-attention of tf_layer.
     Args:
-        self (TransformerEncoderLayer): The Module of vision transformer layer.
+        tf_layer: (TransformerEncoderLayer): The Module of transformer layer.
         x (Tensor): query [K,N,C]
         mem (Tensor): key and value [L,N,C]
         attn_bias (Tensor): attention bias [N*num_head,K,L]
@@ -376,12 +345,31 @@ def cross_attn_layer(self: TransformerEncoderLayer, x, mem, attn_bias):
     Return:
         x (Tensor): cross attention output [K,N,C]
     """
+    self_attn_layer = tf_layer.attentions[0].attn
+    attn_layer_paras = {
+        'embed_dim_to_check': self_attn_layer.embed_dim,
+        'num_heads': self_attn_layer.num_heads,
+        'in_proj_weight': self_attn_layer.in_proj_weight,
+        'in_proj_bias': self_attn_layer.in_proj_bias,
+        'bias_k': self_attn_layer.bias_k,
+        'bias_v': self_attn_layer.bias_v,
+        'add_zero_attn': self_attn_layer.add_zero_attn,
+        'dropout_p': self_attn_layer.dropout,
+        'out_proj_weight': self_attn_layer.out_proj.weight,
+        'out_proj_bias': self_attn_layer.out_proj.bias,
+        'training': self_attn_layer.training
+    }
 
-    q_x = self.ln1(x)
-    k_x = v_x = self.ln1(mem)
+    q_x = tf_layer.norms[0](x)
+    k_x = v_x = tf_layer.norms[0](mem)
     x = x + cross_attn_with_self_bias(
-        self.attn.attn, q_x, k_x, v_x, attn_mask=attn_bias)[0]
-    x = self.ffn(self.ln2(x), identity=x)
+        q_x,
+        k_x,
+        v_x,
+        attn_mask=attn_bias,
+        need_weights=False,
+        **attn_layer_paras)[0]
+    x = tf_layer.ffns[0](tf_layer.norms[1](x), identity=x)
     return x
 
 
