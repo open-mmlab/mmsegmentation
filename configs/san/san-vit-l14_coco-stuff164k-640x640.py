@@ -1,8 +1,9 @@
 _base_ = ['./san-vit-b16_coco-stuff164k-640x640.py']
 
+pretrained = 'https://download.openmmlab.com/mmsegmentation/v0.5/san/clip_vit-large-patch14-336_3rdparty-0b5df9cb.pth'  # noqa
 model = dict(
     type='MultimodalEncoderDecoder',
-    pretrained='pretrain/clip_vit_large_patch14_336.pth',
+    pretrained=pretrained,
     encoder_resolution=0.7,
     image_encoder=dict(
         type='VisionTransformer',

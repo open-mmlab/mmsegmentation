@@ -333,11 +333,11 @@ class VisionTransformer(BaseModule):
 
             elif self.init_cfg.get('type') == 'Pretrained_Part':
                 state_dict = checkpoint.copy()
-                para_prefix = self.init_cfg.get('partname')
+                para_prefix = 'image_encoder'
                 prefix_len = len(para_prefix) + 1
                 for k, v in checkpoint.items():
                     state_dict.pop(k)
-                    if self.init_cfg.get('partname') in k:
+                    if para_prefix in k:
                         state_dict[k[prefix_len:]] = v
 
             if 'pos_embed' in state_dict.keys():

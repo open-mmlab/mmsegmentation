@@ -85,17 +85,11 @@ class MultimodalEncoderDecoder(BaseSegmentor):
             data_preprocessor=data_preprocessor, init_cfg=init_cfg)
         if pretrained is not None:
             image_encoder.init_cfg = dict(
-                type='Pretrained_Part',
-                checkpoint=pretrained,
-                partname='image_encoder')
+                type='Pretrained_Part', checkpoint=pretrained)
             text_encoder.init_cfg = dict(
-                type='Pretrained_Part',
-                checkpoint=pretrained,
-                partname='text_encoder')
+                type='Pretrained_Part', checkpoint=pretrained)
             decode_head.init_cfg = dict(
-                type='Pretrained_Part',
-                checkpoint=pretrained,
-                partname='decode_head.rec_with_attnbias')
+                type='Pretrained_Part', checkpoint=pretrained)
 
         if asymetric_input:
             assert encoder_resolution is not None, \

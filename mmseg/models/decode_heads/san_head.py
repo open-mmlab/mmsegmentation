@@ -7,6 +7,7 @@ import torch.nn as nn
 from mmcv.cnn import ConvModule, build_norm_layer
 from mmcv.cnn.bricks.transformer import BaseTransformerLayer
 from mmcv.ops import point_sample
+from mmengine.dist import all_reduce
 from mmengine.model.weight_init import (caffe2_xavier_init, normal_init,
                                         trunc_normal_)
 from mmengine.runner.checkpoint import CheckpointLoader, load_state_dict
@@ -16,7 +17,7 @@ from torch.nn import functional as F
 
 from mmseg.models.backbones.vit import TransformerEncoderLayer
 from mmseg.registry import MODELS
-from mmseg.utils import (ConfigType, MatchMasks, SampleList, reduce_mean,
+from mmseg.utils import (ConfigType, MatchMasks, SampleList,
                          seg_data_to_instance_data)
 from ..utils import (MLP, LayerNorm2d, PatchEmbed, cross_attn_layer,
                      get_uncertain_point_coords_with_randomness, resize)
@@ -515,13 +516,11 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                 self.init_cfg['checkpoint'], logger=None, map_location='cpu')
 
             rec_state_dict = checkpoint.copy()
-            para_prefix = self.init_cfg.get('partname')
-            assert para_prefix.split('.')[1] == 'rec_with_attnbias', \
-                'part-pretrain only support for Module RecWithAttnbias'
+            para_prefix = 'decode_head.rec_with_attnbias'
             prefix_len = len(para_prefix) + 1
             for k, v in checkpoint.items():
                 rec_state_dict.pop(k)
-                if self.init_cfg.get('partname') in k:
+                if para_prefix in k:
                     rec_state_dict[k[prefix_len:]] = v
 
         self.side_adapter_network.init_weights()
@@ -663,9 +662,9 @@ class SideAdapterCLIPHead(BaseDecodeHead):
                  cls_scores, mask_preds, batch_gt_instances_list[i])
             cls_scores = cls_scores.flatten(0, 1)
             labels = labels.flatten(0, 1)
-
-            num_total_masks = reduce_mean(
-                cls_scores.new_tensor([avg_factor], dtype=torch.float))
+            num_total_masks = cls_scores.new_tensor([avg_factor],
+                                                    dtype=torch.float)
+            all_reduce(num_total_masks, op='mean')
             num_total_masks = max(num_total_masks, 1)
 
             # extract positive ones

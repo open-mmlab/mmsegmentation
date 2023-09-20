@@ -144,11 +144,11 @@ class CLIPTextEncoder(BaseModule):
                 self.init_cfg['checkpoint'], logger=None, map_location='cpu')
 
             state_dict = checkpoint.copy()
-            para_prefix = self.init_cfg.get('partname')
+            para_prefix = 'text_encoder'
             prefix_len = len(para_prefix) + 1
             for k, v in checkpoint.items():
                 state_dict.pop(k)
-                if self.init_cfg.get('partname') in k:
+                if para_prefix in k:
                     state_dict[k[prefix_len:]] = v
 
             load_state_dict(self, state_dict, strict=False, logger=None)
