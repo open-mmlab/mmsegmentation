@@ -10,13 +10,18 @@ from typing import List, Optional, Union
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from ldm.modules.diffusionmodules.util import timestep_embedding
-from ldm.util import instantiate_from_config
 from mmengine.model import BaseModule
 from mmengine.runner import CheckpointLoader, load_checkpoint
 
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, OptConfigType
+
+try:
+    from ldm.modules.diffusionmodules.util import timestep_embedding
+    from ldm.util import instantiate_from_config
+    has_ldm = True
+except ImportError:
+    has_ldm = False
 
 
 def register_attention_control(model, controller):
@@ -205,6 +210,10 @@ class UNetWrapper(nn.Module):
                  max_attn_size=None,
                  attn_selector='up_cross+down_cross'):
         super().__init__()
+
+        assert has_ldm, 'To use UNetWrapper, please install required ' \
+            'packages via `pip install -r requirements/optional.txt`.'
+
         self.unet = unet
         self.attention_store = AttentionStore(
             base_size=base_size // 8, max_size=max_attn_size)
@@ -320,6 +329,9 @@ class VPD(BaseModule):
                  init_cfg: OptConfigType = None):
 
         super().__init__(init_cfg=init_cfg)
+
+        assert has_ldm, 'To use VPD model, please install required packages' \
+            ' via `pip install -r requirements/optional.txt`.'
 
         if pad_shape is not None:
             if not isinstance(pad_shape, (list, tuple)):
