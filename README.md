@@ -89,12 +89,11 @@ MMSegmentation v1.x brings remarkable improvements over the 0.x release, offerin
 
 ## What's New
 
-v1.1.1 was released on 07/24/2023.
+v1.1.2 was released on 09/20/2023.
 Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
 
-- Support 24 medical image datasets in [projects](./projects/medical/).
-- Add GDAL backend and support remote sensing datasets [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/pull/2903).
-- Support [DDRNet](https://github.com/open-mmlab/mmsegmentation/pull/2855).
+- Support monocular depth estimation task, please refer to [VPD](configs/vpd/README.md) for more details.
+- Add new projects: [CAT-Seg](projects/CAT-Seg/README.md), [PP-MobileSeg](projects/pp_mobileseg/README.md), [AdaBins](projects/Adabins/README.md)
 
 ## Installation
 
@@ -230,6 +229,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 - [x] [PIDNet (ArXiv'2022)](configs/pidnet)
 - [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
+- [x] [VPD (ICCV'2023)](configs/vpd)
 
 </details>
 
@@ -255,6 +255,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 - [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
 - [x] [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#levir-cd)
 - [x] [BDD100K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#bdd100K)
+- [x] [NYU](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu)
 
 </details>
 

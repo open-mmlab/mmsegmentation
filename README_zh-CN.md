@@ -88,7 +88,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 
 ## 更新日志
 
-最新版本 v1.1.1 在 2023.07.24 发布。
+最新版本 v1.1.2 在 2023.09.20 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/notes/changelog.md)。
 
 ## 安装
@@ -224,6 +224,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 - [x] [PIDNet (ArXiv'2022)](configs/pidnet)
 - [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
+- [x] [VPD (ICCV'2023)](configs/vpd)
 
 </details>
 
@@ -249,6 +250,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
 - [x] [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#levir-cd)
 - [x] [BDD100K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#bdd100K)
+- [x] [NYU](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu)
 
 </details>
 
