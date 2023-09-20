@@ -9,12 +9,12 @@ from argparse import ArgumentParser
 import numpy as np
 import torch
 import torch.nn.functional as F
+from mmengine import Config
 from mmengine.model import revert_sync_batchnorm
 from PIL import Image
-from pytorch_grad_cam import GradCAM, LayerCAM, XGradCAM, GradCAMPlusPlus, EigenCAM, EigenGradCAM
+from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.image import preprocess_image, show_cam_on_image
 
-from mmengine import Config
 from mmseg.apis import inference_model, init_model, show_result_pyplot
 from mmseg.utils import register_all_modules
 
@@ -56,21 +56,15 @@ def main():
         default='prediction.png',
         help='Path to output prediction file')
     parser.add_argument(
-        '--cam-file',
-        default='vis_cam.png',
-        help='Path to output cam file')
+        '--cam-file', default='vis_cam.png', help='Path to output cam file')
     parser.add_argument(
         '--target-layers',
         default='backbone.layer4[2]',
         help='Target layers to visualize CAM')
     parser.add_argument(
-        '--category-index',
-        default='7',
-        help='Category to visualize CAM')
+        '--category-index', default='7', help='Category to visualize CAM')
     parser.add_argument(
-        '--device',
-        default='cuda:0',
-        help='Device used for inference')
+        '--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
 
     # build the model from a config file and a checkpoint file
@@ -116,8 +110,7 @@ def main():
     # Grad CAM(Class Activation Maps)
     # Can also be LayerCAM, XGradCAM, GradCAMPlusPlus, EigenCAM, EigenGradCAM
     targets = [
-        SemanticSegmentationTarget(category, mask_float,
-                                   (height, width))
+        SemanticSegmentationTarget(category, mask_float, (height, width))
     ]
     with GradCAM(
             model=model,
