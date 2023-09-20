@@ -20,3 +20,12 @@ def to_cuda(module, data):
         for i in range(len(data)):
             data[i] = data[i].cuda()
     return module, data
+
+
+def list_to_cuda(data):
+    if isinstance(data, list):
+        for i in range(len(data)):
+            data[i] = list_to_cuda(data[i])
+        return data
+    else:
+        return data.cuda()
