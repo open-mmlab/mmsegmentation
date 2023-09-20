@@ -625,3 +625,80 @@ class LoadMultipleRSImageFromFile(BaseTransform):
         repr_str = (f'{self.__class__.__name__}('
                     f'to_float32={self.to_float32})')
         return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadDepthAnnotation(BaseTransform):
+    """Load ``depth_map`` annotation provided by depth estimation dataset.
+
+    The annotation format is as the following:
+
+    .. code-block:: python
+
+        {
+            'gt_depth_map': np.ndarray [Y, X]
+        }
+
+    Required Keys:
+
+    - seg_depth_path
+
+    Added Keys:
+
+    - gt_depth_map (np.ndarray): Depth map with shape (Y, X) by
+        default, and data type is float32 if set to_float32 = True.
+    - depth_rescale_factor (float): The rescale factor of depth map, which
+        can be used to recover the original value of depth map.
+
+    Args:
+        decode_backend (str): The data decoding backend type. Options are
+            'numpy', 'nifti', and 'cv2'. Defaults to 'cv2'.
+        to_float32 (bool): Whether to convert the loaded depth map to a float32
+            numpy array. If set to False, the loaded image is an uint16 array.
+            Defaults to True.
+        depth_rescale_factor (float): Factor to rescale the depth value to
+            limit the range. Defaults to 1.0.
+        backend_args (dict, Optional): Arguments to instantiate a file backend.
+            See :class:`mmengine.fileio` for details.
+            Defaults to None.
+            Notes: mmcv>=2.0.0rc4, mmengine>=0.2.0 required.
+    """
+
+    def __init__(self,
+                 decode_backend: str = 'cv2',
+                 to_float32: bool = True,
+                 depth_rescale_factor: float = 1.0,
+                 backend_args: Optional[dict] = None) -> None:
+        super().__init__()
+        self.decode_backend = decode_backend
+        self.to_float32 = to_float32
+        self.depth_rescale_factor = depth_rescale_factor
+        self.backend_args = backend_args.copy() if backend_args else None
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load depth map.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded depth map.
+        """
+        data_bytes = fileio.get(results['depth_map_path'], self.backend_args)
+        gt_depth_map = datafrombytes(data_bytes, backend=self.decode_backend)
+
+        if self.to_float32:
+            gt_depth_map = gt_depth_map.astype(np.float32)
+
+        gt_depth_map *= self.depth_rescale_factor
+        results['gt_depth_map'] = gt_depth_map
+        results['seg_fields'].append('gt_depth_map')
+        results['depth_rescale_factor'] = self.depth_rescale_factor
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f"decode_backend='{self.decode_backend}', "
+                    f'to_float32={self.to_float32}, '
+                    f'backend_args={self.backend_args})')
+        return repr_str
