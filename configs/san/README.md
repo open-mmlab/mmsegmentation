@@ -24,13 +24,14 @@ This paper presents a new framework for open-vocabulary semantic segmentation wi
 
 ### COCO-Stuff164k
 
-| Method | Backbone | Pretrained   | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device | mIoU  | mIoU(ms+flip) | config                                                                                                                     | download                                                                                                                                                                                    |
-| ------ | -------- | ------------ | --------- | ------- | -------- | -------------- | ------ | ----- | ------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SAN    | ViT-B_16 | CLIP_ViT-B16 | 640x640   | 60000   | 12.61    | -              | V100   | 41.93 | 41.77         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-b16_20230906-fd0a7684.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-b16_20230906.log) |
-| SAN    | ViT-L_14 | CLIP_ViT-L14 | 640x640   | 60000   | 22.84    | -              | V100   | 45.78 | 43.99         | [config](https://github.com/open-mmlab/mmsegmentation/blob/main/configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py) | [model](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-l14_20230907-a11e098f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-l14_20230907.log) |
+| Method | Backbone | Pretrained   | Crop Size | Lr schd | Mem (GB) | Inf time (fps) | Device | mIoU  | mIoU(ms+flip) | config | download                                                                                                                                                                                    |
+| ------ | -------- | ------------ | --------- | ------- | -------- | -------------- | ------ | ----- | ------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SAN    | ViT-B_16 | CLIP_ViT-B16 | 640x640   | 60000   | 12.61    | -              | V100   | 41.93 | 41.77         | -      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-b16_20230906-fd0a7684.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-b16_20230906.log) |
+| SAN    | ViT-L_14 | CLIP_ViT-L14 | 640x640   | 60000   | 22.84    | -              | V100   | 45.78 | 43.99         | -      | [model](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-l14_20230907-a11e098f.pth) \| [log](https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-l14_20230907.log) |
 
 ## Notes
 
+git push
 The pretrained weights in config files are converted from open_clip models using tools/model_converters/clip2mmseg.py.
 
 ## Citation
