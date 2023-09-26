@@ -16,5 +16,6 @@
                 "ms-python.vscode-pylance"
             ]
         }
-    }
+    },
+    "shutdownAction": "none"
 }
