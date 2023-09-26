@@ -84,7 +84,7 @@ class MMSegInferencer(BaseInferencer):
             self.model = revert_sync_batchnorm(self.model)
 
         assert isinstance(self.visualizer, SegLocalVisualizer)
-        self.visualizer.set_dataset_meta(palette, classes, dataset_name)
+        self.visualizer.set_dataset_meta(classes, palette, dataset_name)
 
     def _load_weights_to_model(self, model: nn.Module,
                                checkpoint: Optional[dict],
