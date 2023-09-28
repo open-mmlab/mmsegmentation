@@ -5,6 +5,7 @@ third_part_libs = [
     'pip install mmdet==3.0.0',
     'pip install -r requirements.txt',
     'pip install timm',
+    'pip install -r requirements/optional.txt',
 ]
 
 default_floating_range = 0.5
