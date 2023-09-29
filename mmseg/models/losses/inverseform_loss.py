@@ -40,7 +40,9 @@ class InverseNet(nn.Module):
 # https://github.com/Qualcomm-AI-research/InverseForm/blob/main/models/loss/utils.py
 
 
-def load_model_from_dict(model: nn.Module, pretrained: str) -> nn.Module:
+def load_model_from_dict(model: nn.Module,
+                         pretrained: str,
+                         map_location: str = None) -> nn.Module:
     """load InverseFormNet pretrained weight
     Args:
         model(nn.Module): model structure.
@@ -48,7 +50,7 @@ def load_model_from_dict(model: nn.Module, pretrained: str) -> nn.Module:
     Returns:
         model(nn.Module): inverseNet model with pretrained weight.
     """
-    pretrained_dict = torch.load(pretrained)
+    pretrained_dict = torch.load(pretrained, map_location=map_location)
     model_dict = model.state_dict()
     updated_model_dict = {}
     for k_model, v_model in model_dict.items():
@@ -87,6 +89,7 @@ class InverseFormLoss(nn.Module):
                  resized_dim: int = 672,
                  inverseNet_path:
                  str = './checkpoints/distance_measures_regressor.pth',
+                 map_location: str = None,
                  loss_name: str = 'loss_inverseform'):
         super().__init__()
         self.tile_factor = tile_factor
@@ -96,7 +99,8 @@ class InverseFormLoss(nn.Module):
 
         inversenet_backbone = InverseNet()
         self.inversenet = load_model_from_dict(inversenet_backbone,
-                                               self.INVERSEFORM_MODULE)
+                                               self.INVERSEFORM_MODULE,
+                                               map_location)
         for param in self.inversenet.parameters():
             param.requires_grad = False
 
@@ -109,6 +113,7 @@ class InverseFormLoss(nn.Module):
         Returns:
             mean_square_inverse_loss(torch.tensor): InverseTransformNet loss.
         """
+        assert inputs.shape == targets.shape
         inputs = F.log_softmax(inputs)
 
         inputs = F.interpolate(
