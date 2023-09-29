@@ -3,7 +3,7 @@ import pytest
 import torch
 
 
-def test_tversky_lose():
+def test_tversky_loss():
     from mmseg.models import build_loss
 
     # test alpha + beta != 1

@@ -6,7 +6,7 @@ from .cross_entropy_loss import (CrossEntropyLoss, binary_cross_entropy,
 from .dice_loss import DiceLoss
 from .focal_loss import FocalLoss
 from .huasdorff_distance_loss import HuasdorffDisstanceLoss
-from .inverseform_loss import InverseFormLoss
+from .inverseform_loss import JointInverseFormLoss
 from .lovasz_loss import LovaszLoss
 from .ohem_cross_entropy_loss import OhemCrossEntropy
 from .tversky_loss import TverskyLoss
@@ -29,5 +29,5 @@ __all__ = [
     'OhemCrossEntropy',
     'BoundaryLoss',
     'HuasdorffDisstanceLoss',
-    'InverseFormLoss',
+    'JointInverseFormLoss',
 ]
