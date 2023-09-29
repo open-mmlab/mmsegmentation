@@ -1,4 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+import os
+
 import pytest
 import requests
 import torch
@@ -22,6 +24,7 @@ def test_inverseform_loss():
     download_folder = 'releases/download/v1.0/distance_measures_regressor.pth'
     pretraind_model_url = repo + download_folder
     print(pretraind_model_url)
+    os.makedirs('./checkpoints', exist_ok=True)
     inverseNet_path = './checkpoints/distance_measures_regressor.pth'
 
     response = requests.get(pretraind_model_url, stream=True)
