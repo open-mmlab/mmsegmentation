@@ -5,13 +5,12 @@ import tempfile
 
 import pytest
 
-from mmseg.datasets import (ADE20KDataset, BaseSegDataset, BDD100KDataset,
-                            CityscapesDataset, COCOStuffDataset,
-                            DecathlonDataset, DSDLSegDataset, ISPRSDataset,
-                            LIPDataset, LoveDADataset, MapillaryDataset_v1,
-                            MapillaryDataset_v2, NYUDataset, PascalVOCDataset,
-                            PotsdamDataset, REFUGEDataset, SynapseDataset,
-                            iSAIDDataset)
+from mmseg.datasets import (
+    ADE20KDataset, BaseSegDataset, BDD100KDataset, CityscapesDataset,
+    COCOStuffDataset, DecathlonDataset, DSDLSegDataset, HSIDrive20Dataset,
+    ISPRSDataset, LIPDataset, LoveDADataset, MapillaryDataset_v1,
+    MapillaryDataset_v2, NYUDataset, PascalVOCDataset, PotsdamDataset,
+    REFUGEDataset, SynapseDataset, iSAIDDataset)
 from mmseg.registry import DATASETS
 from mmseg.utils import get_classes, get_palette
 
@@ -39,6 +38,8 @@ def test_classes():
     assert list(
         MapillaryDataset_v2.METAINFO['classes']) == get_classes('mapillary_v2')
     assert list(BDD100KDataset.METAINFO['classes']) == get_classes('bdd100k')
+    assert list(
+        HSIDrive20Dataset.METAINFO['classes']) == get_classes('HSIDrive20')
     with pytest.raises(ValueError):
         get_classes('unsupported')
 
@@ -96,6 +97,8 @@ def test_palette():
     assert list(
         MapillaryDataset_v2.METAINFO['palette']) == get_palette('mapillary_v2')
     assert list(BDD100KDataset.METAINFO['palette']) == get_palette('bdd100k')
+    assert list(
+        HSIDrive20Dataset.METAINFO['palette']) == get_palette('HSIDrive20')
     with pytest.raises(ValueError):
         get_palette('unsupported')
 
@@ -342,6 +345,19 @@ def test_bdd100k():
             seg_map_path=osp.join(
                 osp.dirname(__file__),
                 '../data/pseudo_bdd100k_dataset/labels/sem_seg/masks/val')))
+    assert len(test_dataset) == 3
+
+
+def test_hsidrive20():
+    test_dataset = HSIDrive20Dataset(
+        pipeline=[],
+        data_prefix=dict(
+            img_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_hsidrive20_dataset/images/test'),
+            seg_map_path=osp.join(
+                osp.dirname(__file__),
+                '../data/pseudo_hsidrive20_dataset/annotations/test')))
     assert len(test_dataset) == 3
 
 
