@@ -5,4 +5,4 @@ model = dict(
 
 train_dataloader = dict(batch_size=2, num_workers=4)
 
-load_from = '/root/mmsegmentation/fpn_global_small.pth'
+# load_from = '/root/mmsegmentation/fpn_global_small.pth'

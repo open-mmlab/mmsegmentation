@@ -19,4 +19,4 @@ model = dict(
     decode_head=dict(in_channels=[64, 128, 320, 512], num_classes=150),
     auxiliary_head=dict(in_channels=320, num_classes=150))
 train_dataloader = dict(batch_size=2, num_workers=4)
-load_from = '/root/mmsegmentation/upernet_global_base.pth'
+# load_from = '/root/mmsegmentation/upernet_global_base.pth'

@@ -13,4 +13,4 @@ model = dict(
     neck=dict(in_channels=[56, 112, 224, 448]),
 )
 
-load_from = '/root/mmsegmentation/fpn_xxs.pth'
+# load_from = '/root/mmsegmentation/fpn_xxs.pth'

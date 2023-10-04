@@ -24,4 +24,4 @@ model = dict(
     decode_head=dict(num_classes=150))
 
 train_dataloader = dict(batch_size=2, num_workers=4)
-load_from = '/root/mmsegmentation/fpn_xs.pth'
+# load_from = '/root/mmsegmentation/fpn_xs.pth'
