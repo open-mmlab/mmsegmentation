@@ -78,8 +78,8 @@ class InverseFormLoss(nn.Module):
 
     Args:
         tile_factor(int): divide the image to several tile, Default 3.
-        resized_dim(int): resize input & output to (resized_dim,2*resized_dim)
-            Default 672.
+        resized_dim(int): resize input and output to
+            (resized_dim,2*resized_dim), Default 672.
         inverseNet_path(str): the path of pretrained InverseNet, download from
             https://github.com/Qualcomm-AI-research/InverseForm/releases/download/v1.0/distance_measures_regressor.pth
         map_location(str): If you want to load pretrained model to cpu,
