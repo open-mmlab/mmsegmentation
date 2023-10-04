@@ -77,8 +77,13 @@ class InverseFormLoss(nn.Module):
     """InverseForm loss, https://arxiv.org/abs/2104.02745.
 
     Args:
-        inverseNet_path: the path of pretrained InverseNet,download from
+        tile_factor(int): divide the image to several tile, Default 3.
+        resized_dim(int): resize input & output to (resized_dim,2*resized_dim)
+            Default 672.
+        inverseNet_path(str): the path of pretrained InverseNet, download from
             https://github.com/Qualcomm-AI-research/InverseForm/releases/download/v1.0/distance_measures_regressor.pth
+        map_location(str): If you want to load pretrained model to cpu,
+            using `cpu`, Default None, using in gpu.
         loss_name (str, optional): Name of the loss item. If you want this loss
             item to be included into the backward graph, `loss_` must be the
             prefix of the name. Defaults to 'loss_inverseform'.
@@ -104,8 +109,8 @@ class InverseFormLoss(nn.Module):
         for param in self.inversenet.parameters():
             param.requires_grad = False
 
-    def forward(self, inputs: torch.tensor,
-                targets: torch.tensor) -> torch.Tensor:
+    def forward(self, inputs: torch.tensor, targets: torch.tensor,
+                **kwargs) -> torch.Tensor:
         """
         Args:
             inputs(torch.tensor): pred boundary binary map.
