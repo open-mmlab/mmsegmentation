@@ -120,3 +120,4 @@ mmseg/.mim
 *.pth
 
 logs/
+*.png
