@@ -42,15 +42,17 @@ repos:
     hooks:
       - id: docformatter
         args: ["--in-place", "--wrap-descriptions", "79"]
-  - repo: local
-    hooks:
-      - id: update-model-index
-        name: update-model-index
-        description: Collect model information and update model-index.yml
-        entry: .dev_scripts/update_model_index.py
-        additional_dependencies: [pyyaml]
-        language: python
-        require_serial: true
+  # temporarily remove update-model-index to avoid conflict raised
+  # by depth estimator models
+  # - repo: local
+  #   hooks:
+  #     - id: update-model-index
+  #       name: update-model-index
+  #       description: Collect model information and update model-index.yml
+  #       entry: .dev_scripts/update_model_index.py
+  #       additional_dependencies: [pyyaml]
+  #       language: python
+  #       require_serial: true
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.0.0
     hooks:

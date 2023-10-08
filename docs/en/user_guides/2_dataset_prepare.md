@@ -198,6 +198,32 @@ mmsegmentation
 |   │   │   │   └── rles
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
+│   ├── nyu
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── test
+```
+
+## Download dataset via MIM
+
+By using [OpenXLab](https://openxlab.org.cn/datasets), you can obtain free formatted datasets in various fields. Through the search function of the platform, you may address the dataset they look for quickly and easily. Using the formatted datasets from the platform, you can efficiently conduct tasks across datasets.
+
+If you use MIM to download, make sure that the version is greater than v0.3.8. You can use the following command to update, install, login and download the dataset:
+
+```shell
+# upgrade your MIM
+pip install -U openmim
+
+# install OpenXLab CLI tools
+pip install -U openxlab
+# log in OpenXLab
+openxlab login
+
+# download ADE20K by MIM
+mim download mmsegmentation --dataset ade20k
 ```
 
 ## Cityscapes
@@ -716,3 +742,13 @@ mmsegmentation
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
 ```
+
+## NYU
+
+- To access the NYU dataset, you can download it from [this link](https://drive.google.com/file/d/1wC-io-14RCIL4XTUrQLk6lBqU2AexLVp/view?usp=share_link)
+
+- Once the download is complete, you can utilize the [tools/dataset_converters/nyu.py](/tools/dataset_converters/nyu.py) script to extract and organize the data into the required format. Run the following command in your terminal:
+
+  ```bash
+  python tools/dataset_converters/nyu.py nyu.zip
+  ```
