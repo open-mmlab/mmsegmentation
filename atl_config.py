@@ -59,7 +59,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 dataset_type = 'PotsdamDataset'
-data_root = 'data/potsdam'
+data_root = '/home/xiaopengyou1/AITianlong/Datasets/potsdam'
 crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -131,7 +131,7 @@ train_dataloader = dict(
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
         type='PotsdamDataset',
-        data_root='data/potsdam',
+        data_root='/home/xiaopengyou1/AITianlong/Datasets/potsdam',
         data_prefix=dict(
             img_path='img_dir/train', seg_map_path='ann_dir/train'),
         pipeline=[
@@ -154,7 +154,7 @@ val_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type='PotsdamDataset',
-        data_root='data/potsdam',
+        data_root='/home/xiaopengyou1/AITianlong/Datasets/potsdam',
         data_prefix=dict(img_path='img_dir/val', seg_map_path='ann_dir/val'),
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -169,7 +169,7 @@ test_dataloader = dict(
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type='PotsdamDataset',
-        data_root='data/potsdam',
+        data_root='/home/xiaopengyou1/AITianlong/Datasets/potsdam',
         data_prefix=dict(img_path='img_dir/val', seg_map_path='ann_dir/val'),
         pipeline=[
             dict(type='LoadImageFromFile'),

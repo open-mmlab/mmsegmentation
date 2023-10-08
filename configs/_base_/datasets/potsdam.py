@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'PotsdamDataset'
-data_root = 'data/potsdam'
+data_root = '/home/xiaopengyou1/AITianlong/Datasets/potsdam'
 crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
