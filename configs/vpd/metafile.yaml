@@ -1,0 +1,56 @@
+Collections:
+- Name: VPD
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - NYU
+  Paper:
+    Title: Unleashing Text-to-Image Diffusion Models for Visual Perception
+    URL: https://arxiv.org/abs/2303.02153
+  README: configs/vpd/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: vpd_sd_4xb8-25k_nyu-480x480
+  In Collection: VPD
+  Results:
+    Task: Depth Estimation
+    Dataset: NYU
+    Metrics:
+      RMSE: 0.253
+  Config: configs/vpd/vpd_sd_4xb8-25k_nyu-480x480.py
+  Metadata:
+    Training Data: NYU
+    Batch Size: 32
+    Architecture:
+    - Stable-Diffusion
+    Training Resources: 8x A100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-480x480_20230908-66144bc4.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-480x480_20230908.json
+  Paper:
+    Title: 'High-Resolution Image Synthesis with Latent Diffusion Models'
+    URL: https://arxiv.org/abs/2112.10752
+  Code: https://github.com/open-mmlab/mmsegmentation/tree/main/mmseg/models/backbones/vpd.py#L333
+  Framework: PyTorch
+- Name: vpd_sd_4xb8-25k_nyu-512x512
+  In Collection: VPD
+  Alias: vpd_depth
+  Results:
+    Task: Depth Estimation
+    Dataset: NYU
+    Metrics:
+      RMSE: 0.258
+  Config: configs/vpd/vpd_sd_4xb8-25k_nyu-512x512.py
+  Metadata:
+    Training Data: NYU
+    Batch Size: 32
+    Architecture:
+    - Stable-Diffusion
+    Training Resources: 8x A100 GPUS
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-512x512_20230918-60cefcff.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/vpd/vpd_sd_4xb8-25k_nyu-512x512_20230918.json
+  Paper:
+    Title: 'High-Resolution Image Synthesis with Latent Diffusion Models'
+    URL: https://arxiv.org/abs/2112.10752
+  Code: https://github.com/open-mmlab/mmsegmentation/tree/main/mmseg/models/backbones/vpd.py#L333
+  Framework: PyTorch

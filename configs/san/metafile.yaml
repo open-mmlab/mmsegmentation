@@ -1,0 +1,61 @@
+Collections:
+- Name: SAN
+  License: Apache License 2.0
+  Metadata:
+    Training Data:
+    - COCO-Stuff 164k
+  Paper:
+    Title: 'Side Adapter Network for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2302.12242
+  README: configs/san/README.md
+  Frameworks:
+  - PyTorch
+Models:
+- Name: san-vit-b16_coco-stuff164k-640x640
+  In Collection: SAN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 41.93
+      mIoU(ms+flip): 41.77
+  Config: configs/san/san-vit-b16_coco-stuff164k-640x640.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - SAN
+    - ViT
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 12.61
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-b16_20230906-fd0a7684.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-b16_20230906.log
+  Paper:
+    Title: 'Side Adapter Network for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2302.12242
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/san_head.py#L470
+  Framework: PyTorch
+- Name: san-vit-l14_coco-stuff164k-640x640
+  In Collection: SAN
+  Results:
+    Task: Semantic Segmentation
+    Dataset: COCO-Stuff 164k
+    Metrics:
+      mIoU: 45.78
+      mIoU(ms+flip): 43.99
+  Config: configs/san/san-vit-l14_coco-stuff164k-640x640.py
+  Metadata:
+    Training Data: COCO-Stuff 164k
+    Batch Size: 16
+    Architecture:
+    - SAN
+    - ViT
+    Training Resources: 8x V100 GPUS
+    Memory (GB): 12.61
+  Weights: https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-l14_20230907-a11e098f.pth
+  Training log: https://download.openmmlab.com/mmsegmentation/v0.5/san/san-vit-l14_20230907.log
+  Paper:
+    Title: 'Side Adapter Network for Open-Vocabulary Semantic Segmentation'
+    URL: https://arxiv.org/abs/2302.12242
+  Code: https://github.com/open-mmlab/mmsegmentation/blob/dev-1.x/mmseg/models/decode_heads/san_head.py#L470
+  Framework: PyTorch

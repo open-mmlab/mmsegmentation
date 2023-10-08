@@ -26,6 +26,7 @@
 [![license](https://img.shields.io/github/license/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/blob/main/LICENSE)
 [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
 [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmsegmentation.svg)](https://github.com/open-mmlab/mmsegmentation/issues)
+[![Open in OpenXLab](https://cdn-static.openxlab.org.cn/app-center/openxlab_demo.svg)](https://openxlab.org.cn/apps?search=mmseg)
 
 文档: <https://mmsegmentation.readthedocs.io/zh_CN/latest>
 
@@ -87,7 +88,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 
 ## 更新日志
 
-最新版本 v1.1.1 在 2023.07.24 发布。
+最新版本 v1.1.2 在 2023.09.20 发布。
 如果想了解更多版本更新细节和历史信息，请阅读[更新日志](docs/en/notes/changelog.md)。
 
 ## 安装
@@ -223,6 +224,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [x] [Mask2Former (CVPR'2022)](configs/mask2former)
 - [x] [PIDNet (ArXiv'2022)](configs/pidnet)
 - [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
+- [x] [VPD (ICCV'2023)](configs/vpd)
 
 </details>
 
@@ -248,6 +250,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
 - [x] [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#levir-cd)
 - [x] [BDD100K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#bdd100K)
+- [x] [NYU](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu)
 
 </details>
 
@@ -308,11 +311,11 @@ MMSegmentation 是一个由来自不同高校和企业的研发人员共同参�
 
 ## 欢迎加入 OpenMMLab 社区
 
-扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 [OpenMMLab 团队](https://jq.qq.com/?_wv=1027&k=aCvMxdr3) 以及 [MMSegmentation](https://jq.qq.com/?_wv=1027&k=ukevz6Ie) 的 QQ 群。
+扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，扫描下方微信二维码添加喵喵好友，进入 MMSegmentation 微信交流社群。【加好友申请格式：研究方向+地区+学校/公司+姓名】
 
 <div align="center">
- <img src="docs/zh_cn/imgs/zhihu_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/qq_group_qrcode.jpg" height="400" />  <img src="docs/zh_cn/imgs/seggroup_qrcode.jpg" height="400" />
- </div>
+<img src="docs/zh_cn/imgs/zhihu_qrcode.jpg" height="400" />  <img src="resources/miaomiao_qrcode.jpg" height="400" />
+</div>
 
 我们会在 OpenMMLab 社区为大家
 

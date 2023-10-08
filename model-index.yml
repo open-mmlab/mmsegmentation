@@ -38,6 +38,7 @@ Import:
 - configs/psanet/metafile.yaml
 - configs/pspnet/metafile.yaml
 - configs/resnest/metafile.yaml
+- configs/san/metafile.yaml
 - configs/segformer/metafile.yaml
 - configs/segmenter/metafile.yaml
 - configs/segnext/metafile.yaml
@@ -49,3 +50,4 @@ Import:
 - configs/unet/metafile.yaml
 - configs/upernet/metafile.yaml
 - configs/vit/metafile.yaml
+- configs/vpd/metafile.yaml

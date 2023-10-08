@@ -94,18 +94,28 @@ def stack_batch(inputs: List[torch.Tensor],
         # pad gt_sem_seg
         if data_samples is not None:
             data_sample = data_samples[i]
-            gt_sem_seg = data_sample.gt_sem_seg.data
-            del data_sample.gt_sem_seg.data
-            data_sample.gt_sem_seg.data = F.pad(
-                gt_sem_seg, padding_size, value=seg_pad_val)
+            pad_shape = None
+            if 'gt_sem_seg' in data_sample:
+                gt_sem_seg = data_sample.gt_sem_seg.data
+                del data_sample.gt_sem_seg.data
+                data_sample.gt_sem_seg.data = F.pad(
+                    gt_sem_seg, padding_size, value=seg_pad_val)
+                pad_shape = data_sample.gt_sem_seg.shape
             if 'gt_edge_map' in data_sample:
                 gt_edge_map = data_sample.gt_edge_map.data
                 del data_sample.gt_edge_map.data
                 data_sample.gt_edge_map.data = F.pad(
                     gt_edge_map, padding_size, value=seg_pad_val)
+                pad_shape = data_sample.gt_edge_map.shape
+            if 'gt_depth_map' in data_sample:
+                gt_depth_map = data_sample.gt_depth_map.data
+                del data_sample.gt_depth_map.data
+                data_sample.gt_depth_map.data = F.pad(
+                    gt_depth_map, padding_size, value=seg_pad_val)
+                pad_shape = data_sample.gt_depth_map.shape
             data_sample.set_metainfo({
                 'img_shape': tensor.shape[-2:],
-                'pad_shape': data_sample.gt_sem_seg.shape,
+                'pad_shape': pad_shape,
                 'padding_size': padding_size
             })
             padded_samples.append(data_sample)

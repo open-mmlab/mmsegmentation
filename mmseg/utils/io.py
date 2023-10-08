@@ -35,8 +35,8 @@ def datafrombytes(content: bytes, backend: str = 'numpy') -> np.ndarray:
             elif backend == 'numpy':
                 data = np.load(f)
             elif backend == 'cv2':
-                data = np.frombuffer(f.read(), dtype=np.uint16)
-                data = cv2.imdecode(data, 2)
+                data = np.frombuffer(f.read(), dtype=np.uint8)
+                data = cv2.imdecode(data, cv2.IMREAD_UNCHANGED)
             else:
                 raise ValueError
     return data

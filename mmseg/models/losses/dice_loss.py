@@ -66,10 +66,11 @@ def dice_loss(pred: torch.Tensor,
         ignore_index (int, optional): The label index to be ignored.
             Defaults to 255.
     """
-    num_classes = pred.shape[1]
-    pred = pred[:, torch.arange(num_classes) != ignore_index, :, :]
-    target = target[:, torch.arange(num_classes) != ignore_index, :, :]
-    assert pred.shape[1] != 0  # if the ignored index is the only class
+    if ignore_index is not None:
+        num_classes = pred.shape[1]
+        pred = pred[:, torch.arange(num_classes) != ignore_index, :, :]
+        target = target[:, torch.arange(num_classes) != ignore_index, :, :]
+        assert pred.shape[1] != 0  # if the ignored index is the only class
     input = pred.flatten(1)
     target = target.flatten(1).float()
     a = torch.sum(input * target, 1)
