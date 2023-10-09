@@ -366,6 +366,6 @@ task_processor.visualize(
 即可得到推理结果：
 
 <div align="center">
-    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/d0ae1fa8-e223-4b3f-b699-6bfa8db38133" alt="NVIDIA-Jetson" width="50%">
-    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/6d999cbe-2101-4e1b-b4a9-13115c9d1928" alt="NVIDIA-Jetson" width="50%">
+    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/d0ae1fa8-e223-4b3f-b699-6bfa8db38133" alt="NVIDIA-Jetson" width="40%">
+    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/6d999cbe-2101-4e1b-b4a9-13115c9d1928" alt="NVIDIA-Jetson" width="40%">
 </div>
