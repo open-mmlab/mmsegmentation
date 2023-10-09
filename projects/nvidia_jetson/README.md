@@ -322,11 +322,12 @@ python tools/profiler.py \
 ```
 
 测速结果
+
 ![image](https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/874e9742-ee10-490c-9e69-17da0096c49b)
 
 ## 6.4 模型推理
 
-根据[6.2.2](#6.2.2-TensorRT-模型转换)中生成的TensorRT模型文件夹，进行模型推理。
+根据[6.2.2](#6.2.2TensorRT模型转换)中生成的TensorRT模型文件夹，进行模型推理。
 
 ```python
 from mmdeploy.apis.utils import build_task_processor
