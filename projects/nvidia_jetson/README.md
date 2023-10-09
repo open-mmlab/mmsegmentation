@@ -90,14 +90,15 @@ mmengine.Config.fromfile("configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_p
     <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/6f4fc3a9-ba9d-4829-8407-ed1470ba7bf3" alt="NVIDIA-Jetson" width="100%">
 </div>
 
+测速完成后，可在页面生成完整的测速报告。[查看测速报告示例](https://openmmlab-deploee.oss-cn-shanghai.aliyuncs.com/tmp/profile_speed/4352f5.txt)
+
 ## 5 通过 OpenMMLab mmdeploy 以命令行将模型转换为ONNX格式
 
 该部分可以通过 mmdeploy 库对 mmseg 训练好的模型进行推理格式的转换。这里给出一个示例，具体文档可见[ mmdeploy 模型转换文档](../../docs/zh_cn/user_guides/5_deployment.md)。
 
 ### 5.1 通过源码构建 mmdeploy 库
 
-在您安装 mmsegmentation 库的虚拟环境下，通过 `git clone`命令从 GitHub 拉取 [mmdeploy](<>)
-`bash     git clone xxxxx     `
+在您安装 mmsegmentation 库的虚拟环境下，通过 `git clone`命令从 GitHub 克隆 [mmdeploy](https://github.com/open-mmlab/mmdeploy)
 
 ### 5.2 模型转换
 
@@ -288,4 +289,85 @@ python tools/deploy.py \
 <div align="center">
     <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/2ac1428f-b787-4fdd-beaf-6397e5b21e33" alt="NVIDIA-Jetson" width="340">
     <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/70470a39-6a4f-4fd5-a06d-9b9d59a768ef" alt="NVIDIA-Jetson" width="200">
+</div>
+
+## 6.3 模型测速
+
+执行以下命令完成模型测速，详细内容请查看[ profiler ](https://github.com/open-mmlab/mmdeploy/blob/main/docs/zh_cn/02-how-to-run/useful_tools.md#profiler)
+
+```bash
+python tools/profiler.py \
+    ${DEPLOY_CFG} \
+    ${MODEL_CFG} \
+    ${IMAGE_DIR} \
+    --model ${MODEL} \
+    --device ${DEVICE} \
+    --shape ${SHAPE} \
+    --num-iter ${NUM_ITER} \
+    --warmup ${WARMUP} \
+    --cfg-options ${CFG_OPTIONS} \
+    --batch-size ${BATCH_SIZE} \
+    --img-ext ${IMG_EXT}
+```
+
+示例：
+
+```bash
+python tools/profiler.py \
+    configs/mmseg/segmentation_tensorrt_static-512x512.py \
+    ../atl_config.py \
+    ../atl_demo_img \
+    --model /home/sirs/AI-Tianlong/OpenMMLab/atl_trt_models/end2end.engine \
+    --device cuda:0 \
+    --shape 512x512 \
+    --num-iter 100
+```
+
+测速结果
+![image](https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/874e9742-ee10-490c-9e69-17da0096c49b)
+
+## 6.4 模型推理
+
+根据[6.2.2](#6.2.2-TensorRT-模型转换)中生成的TensorRT模型文件夹，进行模型推理。
+
+```python
+from mmdeploy.apis.utils import build_task_processor
+from mmdeploy.utils import get_input_shape, load_config
+import torch
+
+deploy_cfg='./mmdeploy/configs/mmseg/segmentation_tensorrt_static-512x512.py'
+model_cfg='./atl_config.py'
+device='cuda:0'
+backend_model = ['./atl_trt_models/end2end.engine']
+image = './atl_demo_img/2_13_2048_1024_2560_1536.png'
+
+# read deploy_cfg and model_cfg
+deploy_cfg, model_cfg = load_config(deploy_cfg, model_cfg)
+
+# build task and backend model
+task_processor = build_task_processor(model_cfg, deploy_cfg, device)
+model = task_processor.build_backend_model(backend_model)
+
+# process input image
+input_shape = get_input_shape(deploy_cfg)
+model_inputs, _ = task_processor.create_input(image, input_shape)
+
+# do model inference
+with torch.no_grad():
+    result = model.test_step(model_inputs)
+
+# visualize results
+task_processor.visualize(
+    image=image,
+    model=model,
+    result=result[0],
+    window_name='visualize',
+    output_file='./output_segmentation.png')
+```
+
+即可得到推理结果：
+
+<div align="center">
+    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/d0ae1fa8-e223-4b3f-b699-6bfa8db38133" alt="NVIDIA-Jetson" width="50%">
+    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/6d999cbe-2101-4e1b-b4a9-13115c9d1928" alt="NVIDIA-Jetson" width="50%">
 </div>
