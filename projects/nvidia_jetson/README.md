@@ -1,8 +1,8 @@
 # 将 MMSeg 模型调优及部署到 NVIDIA Jetson 平台教程
 
-请先查阅[MMSegmentation 模型部署](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/5_deployment.md)文档
-**本教程所用 mmsegmentation 版本：v1.1.2**
-**本教程所用 NVIDIA Jetson 设备：NVIDIA Jetson AGX Orin 64G**
+- 请先查阅[MMSegmentation 模型部署](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/5_deployment.md)文档。
+- **本教程所用 mmsegmentation 版本： v1.1.2**
+- **本教程所用 NVIDIA Jetson 设备： NVIDIA Jetson AGX Orin 64G**
 
 <div align="center">
     <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/b5466cfd-71a9-4e06-9823-c253a97d57b5" alt="Smiley face" width="50%">
@@ -62,13 +62,7 @@ mmengine.Config.fromfile("configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_p
 
 使用上述代码后，您能够看到，在`My_config.py`包含着完整的配置文件，无相对引用。这时，上传模型 config 至网页内对应处。
 
-#### 4.1.1 新建转换任务
-
-<div align="center">
-    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/21c33be0-378e-43c0-869e-3d1afeb7d817" alt="模型转换界面" width="100%">
-</div>
-
-#### 4.1.2 创建转换任务
+#### 创建转换任务
 
 按照下图提示及自己的需求，创建转换任务并提交。
 
@@ -80,7 +74,7 @@ mmengine.Config.fromfile("configs/deeplabv3plus/deeplabv3plus_r101-d8_4xb4-80k_p
 
 在完成模型转换后可通过**模型测速**界面，完成在真实设备上的模型测速。
 
-#### 4.2.1 创建测速任务
+#### 创建测速任务
 
 <div align="center">
     <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/27340556-c81a-4ce3-8560-2c4727d3355e" alt="NVIDIA-Jetson" width="100%">
@@ -137,6 +131,10 @@ python ./tools/deploy.py \
 10/08 17:40:44 - mmengine - INFO - visualize pytorch model success.
 10/08 17:40:44 - mmengine - INFO - All process success.
 ```
+
+<div align="center">
+    <img src="https://github.com/AI-Tianlong/Useful-Tools/assets/50650583/b752ccf8-903f-4ad3-ad7c-74fc25cb89a5" alt="NVIDIA-Jetson" width="400">
+</div>
 
 # 6 在 Jetson 平台进行转换及部署
 
