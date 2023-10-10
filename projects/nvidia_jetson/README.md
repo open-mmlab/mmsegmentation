@@ -327,7 +327,7 @@ python tools/profiler.py \
 
 ## 6.4 模型推理
 
-根据[6.2.2](#6.2.2TensorRT模型转换)中生成的TensorRT模型文件夹，进行模型推理。
+根据[6.2.2](#6.2.2-TensorRT-模型转换)中生成的TensorRT模型文件夹，进行模型推理。
 
 ```python
 from mmdeploy.apis.utils import build_task_processor
