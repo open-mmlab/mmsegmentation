@@ -124,6 +124,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [教程3：使用预训练模型推理](docs/zh_cn/user_guides/3_inference.md)
 - [教程4：使用现有模型进行训练和测试](docs/zh_cn/user_guides/4_train_test.md)
 - [教程5：模型部署](docs/zh_cn/user_guides/5_deployment.md)
+- [在 Jetson 平台部署 mmsegmentation](docs/zh_cn/user_guides/deploy_jetson.md)
 - [常用工具](docs/zh_cn/user_guides/useful_tools.md)
 - [特征图可视化](docs/zh_cn/user_guides/visualization_feature_map.md)
 - [可视化](docs/zh_cn/user_guides/visualization.md)
