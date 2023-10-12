@@ -129,6 +129,7 @@ To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migratio
 - [Tutorial 3: Inference with existing models](docs/en/user_guides/3_inference.md)
 - [Tutorial 4: Train and test with existing models](docs/en/user_guides/4_train_test.md)
 - [Tutorial 5: Model deployment](docs/en/user_guides/5_deployment.md)
+- [Deploy mmsegmentation on Jetson platform](docs/zh_cn/user_guides/deploy_jetson.md)
 - [Useful Tools](docs/en/user_guides/useful_tools.md)
 - [Feature Map Visualization](docs/en/user_guides/visualization_feature_map.md)
 - [Visualization](docs/en/user_guides/visualization.md)
