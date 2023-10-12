@@ -82,7 +82,7 @@ jobs:
         type: string
       cuda:
         type: enum
-        enum: ["10.1", "10.2", "11.1", "11.7", "11.8"]
+        enum: ["10.1", "10.2", "11.1"]
       cudnn:
         type: integer
         default: 7
@@ -160,8 +160,9 @@ workflows:
             - lint
       - build_cpu:
           name: maximum_version_cpu
-          torch: 2.0.0
-          torchvision: 0.15.0
+          # TODO: Fix torch 1.13 forward crush
+          torch: 1.12.0
+          torchvision: 0.13.0
           python: 3.9.0
           requires:
             - minimum_version_cpu
@@ -171,10 +172,10 @@ workflows:
             - maximum_version_cpu
       - build_cuda:
           name: mainstream_version_gpu
-          torch: 2.0.0
+          torch: 1.8.1
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
-          cuda: "11.8"
+          cuda: "10.2"
           requires:
             - hold
   merge_stage_test:
@@ -192,15 +193,4 @@ workflows:
             branches:
               only:
                 - dev-1.x
-                - main
-      - build_cuda:
-          name: maximum_version_gpu
-          torch: 2.0.0
-          # Use double quotation mark to explicitly specify its type
-          # as string instead of number
-          cuda: "11.8"
-          cudnn: 8
-          filters:
-            branches:
-              only:
                 - main

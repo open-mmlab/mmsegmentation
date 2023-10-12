@@ -1,5 +1,19 @@
 # Changelog of v1.x
 
+## v1.2.0 (10/12/2023)
+
+### Features
+
+- Support Side Adapter Network ([#3232](https://github.com/open-mmlab/mmsegmentation/pull/3232))
+
+### Bug Fixes
+
+- fix wrong variables passing for `set_dataset_meta` ([#3348](https://github.com/open-mmlab/mmsegmentation/pull/3348))
+
+### Documentation
+
+- add documentation of Finetune ONNX Models (MMSegemetation) Inference for NVIDIA Jetson ([#3372](https://github.com/open-mmlab/mmsegmentation/pull/3372))
+
 ## v1.1.2(09/20/2023)
 
 ### Features
