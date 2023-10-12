@@ -27,7 +27,7 @@ def test_timm_backbone():
         features_only=True,
         pretrained=False,
         output_stride=32,
-        norm_layer='SyncBN')
+        norm_layer='SyncBN2d')
 
     # Test resnet18 from timm, features_only=True, output_stride=32
     model = TIMMBackbone(

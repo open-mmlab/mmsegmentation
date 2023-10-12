@@ -82,16 +82,22 @@ jobs:
         type: string
       cuda:
         type: enum
-        enum: ["10.1", "10.2", "11.1"]
+        enum: ["10.1", "10.2", "11.1", "11.7", "11.8"]
       cudnn:
         type: integer
         default: 7
     machine:
-      image: ubuntu-2004-cuda-11.4:202110-01
-      # docker_layer_caching: true
-    resource_class: gpu.nvidia.small
+      image: linux-cuda-11:default
+      docker_layer_caching: true
+    resource_class: gpu.nvidia.small.multi
     steps:
       - checkout
+      - run:
+          name: Install nvidia-container-toolkit and Restart Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y nvidia-container-toolkit
+            sudo systemctl restart docker
       - run:
           # Cloning repos in VM since Docker doesn't have access to the private key
           name: Clone Repos
@@ -154,9 +160,8 @@ workflows:
             - lint
       - build_cpu:
           name: maximum_version_cpu
-          # TODO: Fix torch 1.13 forward crush
-          torch: 1.12.0
-          torchvision: 0.13.0
+          torch: 2.0.0
+          torchvision: 0.15.0
           python: 3.9.0
           requires:
             - minimum_version_cpu
@@ -166,10 +171,10 @@ workflows:
             - maximum_version_cpu
       - build_cuda:
           name: mainstream_version_gpu
-          torch: 1.8.1
+          torch: 2.0.0
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
-          cuda: "10.2"
+          cuda: "11.8"
           requires:
             - hold
   merge_stage_test:
@@ -187,4 +192,15 @@ workflows:
             branches:
               only:
                 - dev-1.x
+                - main
+      - build_cuda:
+          name: maximum_version_gpu
+          torch: 2.0.0
+          # Use double quotation mark to explicitly specify its type
+          # as string instead of number
+          cuda: "11.8"
+          cudnn: 8
+          filters:
+            branches:
+              only:
                 - main
