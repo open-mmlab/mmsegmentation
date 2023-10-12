@@ -165,10 +165,10 @@ workflows:
       #     python: 3.9.0
       #     requires:
       #       - minimum_version_cpu
-      - hold:
-          type: approval
-          requires:
-            - maximum_version_cpu
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - maximum_version_cpu
       - build_cuda:
           name: mainstream_version_gpu
           torch: 2.0.0
@@ -176,8 +176,8 @@ workflows:
           # as string instead of number
           cuda: "11.7"
           cudnn: 8
-          requires:
-            - hold
+          # requires:
+          #   - hold
   merge_stage_test:
     when:
       not:
