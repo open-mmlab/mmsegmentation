@@ -221,7 +221,7 @@ def _test_encoder_decoder_forward(cfg_file):
         num_classes = segmentor.decode_head.num_classes
     # batch_size=2 for BatchNorm
     packed_inputs = _demo_mm_inputs(
-        batch_size=2, image_shapes=(3, 32, 32), num_classes=num_classes)
+        batch_size=2, image_shapes=(3, 4, 4), num_classes=num_classes)
     # convert to cuda Tensor if applicable
     if torch.cuda.is_available():
         segmentor = segmentor.cuda()
