@@ -82,7 +82,7 @@ jobs:
         type: string
       cuda:
         type: enum
-        enum: ["10.1", "10.2", "11.1", "11.7", "11.8"]
+        enum: ["10.1", "10.2", "11.1", "11.7"]
       cudnn:
         type: integer
         default: 7
@@ -118,7 +118,7 @@ jobs:
             docker exec mmseg mim install mmdet>=3.0.0
             docker exec mmseg apt-get update
             docker exec mmseg apt-get install -y git
-            docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
+            docker exec mmseg pip install -r requirements.txt
             docker exec mmseg python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
       - run:
           name: Build and install
