@@ -174,7 +174,7 @@ workflows:
           torch: 2.0.0
           # Use double quotation mark to explicitly specify its type
           # as string instead of number
-          cuda: "11.8"
+          cuda: "11.7"
           cudnn: 8
           requires:
             - hold
