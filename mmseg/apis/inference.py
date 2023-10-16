@@ -44,8 +44,13 @@ def init_model(config: Union[str, Path, Config],
                         'but got {}'.format(type(config)))
     if cfg_options is not None:
         config.merge_from_dict(cfg_options)
-    elif 'init_cfg' in config.model.backbone:
-        config.model.backbone.init_cfg = None
+    if config.model.type == 'EncoderDecoder':
+        if 'init_cfg' in config.model.backbone:
+            config.model.backbone.init_cfg = None
+    elif config.model.type == 'MultimodalEncoderDecoder':
+        for k, v in config.model.items():
+            if isinstance(v, dict) and 'init_cfg' in v:
+                config.model[k].init_cfg = None
     config.model.pretrained = None
     config.model.train_cfg = None
     init_default_scope(config.get('default_scope', 'mmseg'))
