@@ -89,11 +89,17 @@ MMSegmentation v1.x brings remarkable improvements over the 0.x release, offerin
 
 ## What's New
 
-v1.1.2 was released on 09/20/2023.
-Please refer to [changelog.md](docs/en/notes/changelog.md) for details and release history.
+v1.2.0 was released on 10/12/2023, from 1.1.0 to 1.2.0, we have added or updated the following features:
 
-- Support monocular depth estimation task, please refer to [VPD](configs/vpd/README.md) for more details.
-- Add new projects: [CAT-Seg](projects/CAT-Seg/README.md), [PP-MobileSeg](projects/pp_mobileseg/README.md), [AdaBins](projects/Adabins/README.md)
+### Highlights
+
+- Support for the open-vocabulary semantic segmentation algorithm [SAN](configs/san/README.md)
+
+- Support monocular depth estimation task, please refer to [VPD](configs/vpd/README.md) and [Adabins](projects/Adabins/README.md) for more details.
+
+  ![depth estimation](https://github.com/open-mmlab/mmsegmentation/assets/15952744/07afd0e9-8ace-4a00-aa1e-5bf0ca92dcbc)
+
+- Add new projects: open-vocabulary semantic segmentation algorithm [CAT-Seg](projects/CAT-Seg/README.md), real-time semantic segmentation algofithm [PP-MobileSeg](projects/pp_mobileseg/README.md)
 
 ## Installation
 
@@ -192,45 +198,46 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 <details open>
 <summary>Supported methods:</summary>
 
-- [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
-- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
-- [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
-- [x] [PSPNet (CVPR'2017)](configs/pspnet)
-- [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
-- [x] [PSANet (ECCV'2018)](configs/psanet)
-- [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
-- [x] [UPerNet (ECCV'2018)](configs/upernet)
-- [x] [ICNet (ECCV'2018)](configs/icnet)
-- [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
-- [x] [EncNet (CVPR'2018)](configs/encnet)
-- [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
-- [x] [DANet (CVPR'2019)](configs/danet)
-- [x] [APCNet (CVPR'2019)](configs/apcnet)
+- [x] [SAN (CVPR'2023)](configs/san/)
+- [x] [VPD (ICCV'2023)](configs/vpd)
+- [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
+- [x] [PIDNet (ArXiv'2022)](configs/pidnet)
+- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
+- [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
+- [x] [K-Net (NeurIPS'2021)](configs/knet)
+- [x] [SegFormer (NeurIPS'2021)](configs/segformer)
+- [x] [Segmenter (ICCV'2021)](configs/segmenter)
+- [x] [DPT (ArXiv'2021)](configs/dpt)
+- [x] [SETR (CVPR'2021)](configs/setr)
+- [x] [STDC (CVPR'2021)](configs/stdc)
+- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
+- [x] [CGNet (TIP'2020)](configs/cgnet)
+- [x] [PointRend (CVPR'2020)](configs/point_rend)
+- [x] [DNLNet (ECCV'2020)](configs/dnlnet)
+- [x] [OCRNet (ECCV'2020)](configs/ocrnet)
+- [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
+- [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
+- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
+- [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
+- [x] [ANN (ICCV'2019)](configs/ann)
 - [x] [EMANet (ICCV'2019)](configs/emanet)
 - [x] [CCNet (ICCV'2019)](configs/ccnet)
 - [x] [DMNet (ICCV'2019)](configs/dmnet)
-- [x] [ANN (ICCV'2019)](configs/ann)
-- [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
-- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
-- [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
-- [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
-- [x] [OCRNet (ECCV'2020)](configs/ocrnet)
-- [x] [DNLNet (ECCV'2020)](configs/dnlnet)
-- [x] [PointRend (CVPR'2020)](configs/point_rend)
-- [x] [CGNet (TIP'2020)](configs/cgnet)
-- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
-- [x] [STDC (CVPR'2021)](configs/stdc)
-- [x] [SETR (CVPR'2021)](configs/setr)
-- [x] [DPT (ArXiv'2021)](configs/dpt)
-- [x] [Segmenter (ICCV'2021)](configs/segmenter)
-- [x] [SegFormer (NeurIPS'2021)](configs/segformer)
-- [x] [K-Net (NeurIPS'2021)](configs/knet)
-- [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
-- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
-- [x] [PIDNet (ArXiv'2022)](configs/pidnet)
-- [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
-- [x] [VPD (ICCV'2023)](configs/vpd)
+- [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
+- [x] [DANet (CVPR'2019)](configs/danet)
+- [x] [APCNet (CVPR'2019)](configs/apcnet)
+- [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
+- [x] [EncNet (CVPR'2018)](configs/encnet)
+- [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
+- [x] [UPerNet (ECCV'2018)](configs/upernet)
+- [x] [ICNet (ECCV'2018)](configs/icnet)
+- [x] [PSANet (ECCV'2018)](configs/psanet)
+- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
+- [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
+- [x] [PSPNet (CVPR'2017)](configs/pspnet)
+- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
+- [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
+- [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
 
 </details>
 
