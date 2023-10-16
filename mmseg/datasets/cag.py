@@ -4,7 +4,7 @@ from .basesegdataset import BaseSegDataset
 
 
 @DATASETS.register_module()
-class AngiographyDataset(BaseSegDataset):
+class CoronaryAngiographyDataset(BaseSegDataset):
     """Angiography dataset.
     """
     METAINFO = dict(

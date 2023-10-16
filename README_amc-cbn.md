@@ -17,8 +17,10 @@
 
 ## Train
 ```
-tools/dist_train.sh configs/vit/vit_vit-b16_mln_upernet_8xb2-80k_ade20k-512x512.py [num_gpus] --work-dir logs/vit-upernet
-tools/dist_train.sh configs/upernet/upernet_r101_4xb4-160k_ade20k-512x512.py [num_gpus] --work-dir logs/res-101-upernet
+tools/dist_train.sh configs/vit/vit_vit-b16_mln_upernet_8xb2-80k_ade20k-512x512.py [num_gpus] --work-dir logs/vit-upernet-ade20k
+tools/dist_train.sh configs/upernet/upernet_r101_4xb4-160k_ade20k-512x512.py [num_gpus] --work-dir logs/res-101-upernet-ade20k
+
+tools/dist_train.sh configs/upernet/upernet_r101_4xb4-160k_cag-512x512.py [num_gpus] --work-dir logs/res-101-upernet-cag
 ```
 
 ## Issues
