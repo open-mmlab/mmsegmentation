@@ -1,7 +1,10 @@
 _base_ = [
-    '../_base_/models/fpn_uniformer.py', '../_base_/datasets/ade20k.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/models/fpn_uniformer.py',
+    '../../../../configs/_base_/datasets/ade20k.py',
+    '../../../../configs/_base_/default_runtime.py',
+    '../../../../configs/_base_/schedules/schedule_160k.py'
 ]
+custom_imports = dict(imports=['projects.uniformer.backbones'])
 crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 # model settings

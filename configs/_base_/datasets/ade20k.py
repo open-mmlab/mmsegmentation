@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'ADE20KDataset'
-data_root = 'data/ade/ADEChallengeData2016'
+data_root = '/root/dataset/ADEChallengeData2016/ADEChallengeData2016'
 crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),

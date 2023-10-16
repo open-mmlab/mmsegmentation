@@ -28,6 +28,62 @@ It is a challenging task to learn discriminative representation from images and 
 <img src="https://user-images.githubusercontent.com/81373517/268431897-e28fe62a-db24-4b5d-8739-b4c77820c4bf.jpg" width="100%"/>
 </div>
 
+## Results
+
+ADE20KDataset
+
+|  Method   | Backbone | mIoU  |                                                                                    Config/Log                                                                                    |
+| :-------: | :------: | :---: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| UniFormer |   FPN    | 40.33 | [config](projects/uniformer/configs/uniformer/uniformer_fpn_light_xxs_1xb2-160k_ade20k-512x512.py)/[log](https://github.com/jinxianwei/CloudImg/blob/master/20231013_143908.log) |
+
+<a href="https://github.com/Sense-X/UniFormer/tree/main/semantic_segmentation">Official Repo Result</a>
+
+## Preparation
+
+Install MMSegmentation and download ADE20K according to the guidelines in MMSegmentation.
+
+## Requirement
+
+**Step 0.** Install [MMCV](https://github.com/open-mmlab/mmcv) using [MIM](https://github.com/open-mmlab/mim).
+
+```shell
+pip install -U openmim
+mim install mmengine
+mim install "mmcv>=2.0.0"
+```
+
+**Step 1.** Install MMSegmentation.
+
+Case a: If you develop and run mmseg directly, install it from source:
+
+```shell
+git clone -b main https://github.com/open-mmlab/mmsegmentation.git
+cd mmsegmentation
+pip install -v -e .
+```
+
+Case b: If you use mmsegmentation as a dependency or third-party package, install it with pip:
+
+```shell
+pip install "mmsegmentation>=1.0.0"
+```
+
+## Training
+
+If you use 6 GPUs for training by default. Run:
+
+```bash
+bash tools/dist_train.sh projects/uniformer/configs/uniformer/uniformer_fpn_light_xxs_1xb2-160k_ade20k-512x512.py 6
+```
+
+## FLOPs
+
+To calculate FLOPs for a model, run:
+
+```bash
+python tools/analysis_tools/get_flops.py projects/uniformer/configs/uniformer/uniformer_fpn_light_xxs_1xb2-160k_ade20k-512x512.py --shape 512 512
+```
+
 ## Citation
 
 ```latex
