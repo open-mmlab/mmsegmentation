@@ -23,6 +23,9 @@ tools/dist_train.sh configs/upernet/upernet_r101_4xb4-160k_ade20k-512x512.py [nu
 tools/dist_train.sh configs/upernet/upernet_r101_4xb4-160k_cag-512x512.py [num_gpus] --work-dir logs/res-101-upernet-cag
 ```
 
+## Transforms
+- Additional augmentation functions using albumentation can be found in `mmseg/datasets/transforms/transforms.py`
+
 ## Issues
 - To create instance of `dataset` in the jupyter notebook, `init_default_scope('mmseg')` must be called.
     - https://mmsegmentation.readthedocs.io/en/latest/advanced_guides/datasets.html#main-interfaces
