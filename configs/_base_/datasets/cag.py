@@ -1,19 +1,28 @@
 # dataset settings
 dataset_type = 'CoronaryAngiographyDataset'
 data_root = 'data/cag'
+# augmentation setting from YoungIn's jupyter notebook
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
     dict(
-        type='RandomResize',
-        scale=(512, 512),
-        ratio_range=(0.9, 1.0),
-        keep_ratio=True),
-    dict(
-        type='Pad',
-        size=(512, 512),
+        type='AlbuShiftScaleRotateTransform',
+        scale_limit=(-0.2,0),
+        rotate_limit=20,
+        shift_limit=0.1,
+        border_mode=0, value=[0.3,0.4,0.5],
+        p=1
     ),
-    dict(type='PhotoMetricDistortion'),
+    dict(
+        type='AlbuRandomContrastTransform',
+        limit=0.4, 
+        p=0.5
+    ),
+    dict(
+        type='AlbuGaussNoiseTransform',
+        var_limit=(0, 0.01), 
+        p=0.5
+    ),
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
@@ -21,7 +30,7 @@ test_pipeline = [
     dict(type='Resize', scale=(512, 512), keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
-    dict(type='LoadAnnotations', reduce_zero_label=True),
+    dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
 ]
 img_ratios = [1.0]
