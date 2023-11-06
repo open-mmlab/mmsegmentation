@@ -127,10 +127,14 @@ class DepthwiseSeparableASPPContrastHead(DepthwiseSeparableASPPHead):
         # elif seg_logit.size(1) == 144 # For Mapillary dataset, 124+16+4
         # unofficial repository not release mapillary until 2023/2/6
 
+        if 'pad_shape' in batch_img_metas[0]:
+            size = batch_img_metas[0]['pad_shape']
+        else:
+            size = batch_img_metas[0]['img_shape']
         seg_logit = seg_logit[:, :-hiera_num_classes]
         seg_logit = resize(
             input=seg_logit,
-            size=batch_img_metas[0]['img_shape'],
+            size=size,
             mode='bilinear',
             align_corners=self.align_corners)
 
