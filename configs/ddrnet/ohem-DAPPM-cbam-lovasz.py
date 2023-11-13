@@ -27,7 +27,7 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False,
         init_cfg=None),
-        # init_cfg=dict(type='Pretrained', checkpoint=checkpoint)),
+    # init_cfg=dict(type='Pretrained', checkpoint=checkpoint)),
     decode_head=dict(
         type='DDRHead',
         in_channels=64 * 4,
@@ -73,8 +73,7 @@ param_scheduler = [
 ]
 
 # training schedule for 120k
-train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=iters, val_interval=100)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=iters, val_interval=100)
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(
@@ -83,9 +82,12 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(
         # type='CheckpointHook', by_epoch=False, interval=100, max_keep_ckpts=2, save_best='mIoU'),
-        type='CheckpointHook', by_epoch=False, interval=100, max_keep_ckpts=2, save_best='mDice'),
+        type='CheckpointHook',
+        by_epoch=False,
+        interval=100,
+        max_keep_ckpts=2,
+        save_best='mDice'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
 
 randomness = dict(seed=304)
-

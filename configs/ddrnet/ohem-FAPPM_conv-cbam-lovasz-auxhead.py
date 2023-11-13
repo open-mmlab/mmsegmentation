@@ -10,8 +10,6 @@ crop_size = (224, 224)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     size=crop_size,
-    # mean=[123.675, 116.28, 103.53],
-    # std=[58.395, 57.12, 57.375],
     mean=[0.609, 0.604, 0.578],
     std=[0.195, 0.192, 0.202],
     bgr_to_rgb=True,
@@ -29,7 +27,6 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False,
         init_cfg=None),
-        # init_cfg=dict(type='Pretrained', checkpoint=checkpoint)),
     decode_head=dict(
         type='DDRHead',
         in_channels=64 * 4,
@@ -40,9 +37,7 @@ model = dict(
         norm_cfg=norm_cfg,
         loss_decode=[
             dict(
-                type='LovaszLoss',
-                class_weight=class_weight,
-                loss_weight=1.0),
+                type='LovaszLoss', class_weight=class_weight, loss_weight=1.0),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
@@ -60,9 +55,7 @@ model = dict(
         norm_cfg=norm_cfg,
         loss_decode=[
             dict(
-                type='LovaszLoss',
-                class_weight=class_weight,
-                loss_weight=1.0),
+                type='LovaszLoss', class_weight=class_weight, loss_weight=1.0),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
@@ -74,8 +67,6 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-
-# train_dataloader = dict(batch_size=6, num_workers=4)
 
 iters = 6000
 # optimizer
@@ -93,8 +84,7 @@ param_scheduler = [
 ]
 
 # training schedule for 120k
-train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=iters, val_interval=100)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=iters, val_interval=100)
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
 default_hooks = dict(
@@ -102,10 +92,12 @@ default_hooks = dict(
     logger=dict(type='LoggerHook', interval=5, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(
-        # type='CheckpointHook', by_epoch=False, interval=100, max_keep_ckpts=2, save_best='mIoU'),
-        type='CheckpointHook', by_epoch=False, interval=100, max_keep_ckpts=2, save_best='mDice'),
+        type='CheckpointHook',
+        by_epoch=False,
+        interval=100,
+        max_keep_ckpts=2,
+        save_best='mDice'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
 
 randomness = dict(seed=304)
-

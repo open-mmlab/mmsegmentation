@@ -12,6 +12,7 @@ from mmseg.utils import OptConfigType
 
 
 class ChannelAttention(nn.Module):
+
     def __init__(self, in_planes, ratio=16):
         super(ChannelAttention, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
@@ -20,34 +21,43 @@ class ChannelAttention(nn.Module):
         self.relu1 = nn.ReLU()
         self.fc2 = nn.Conv2d(in_planes // ratio, in_planes, 1, bias=False)
         self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         avg_out = self.fc2(self.relu1(self.fc1(self.avg_pool(x))))
         max_out = self.fc2(self.relu1(self.fc1(self.max_pool(x))))
         out = avg_out + max_out
         return self.sigmoid(out)
 
+
 class ChannelAttention_group(nn.Module):
+
     def __init__(self, in_planes, ratio=16):
         super(ChannelAttention_group, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
-        self.fc1 = nn.Conv2d(in_planes, in_planes // ratio, 1, bias=False, groups=4)
+        self.fc1 = nn.Conv2d(
+            in_planes, in_planes // ratio, 1, bias=False, groups=4)
         self.relu1 = nn.ReLU()
-        self.fc2 = nn.Conv2d(in_planes // ratio, in_planes, 1, bias=False, groups=4)
+        self.fc2 = nn.Conv2d(
+            in_planes // ratio, in_planes, 1, bias=False, groups=4)
         self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         avg_out = self.fc2(self.relu1(self.fc1(self.avg_pool(x))))
         max_out = self.fc2(self.relu1(self.fc1(self.max_pool(x))))
         out = avg_out + max_out
         return self.sigmoid(out)
 
+
 class SpatialAttention(nn.Module):
+
     def __init__(self, kernel_size=7):
         super(SpatialAttention, self).__init__()
         assert kernel_size in (3, 7), 'kernel size must be 3 or 7'
         padding = 3 if kernel_size == 7 else 1
         self.conv1 = nn.Conv2d(2, 1, kernel_size, padding=padding, bias=False)
         self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         avg_out = torch.mean(x, dim=1, keepdim=True)
         max_out, _ = torch.max(x, dim=1, keepdim=True)
@@ -55,7 +65,9 @@ class SpatialAttention(nn.Module):
         x = self.conv1(x)
         return self.sigmoid(x)
 
+
 class CBAM(nn.Module):
+
     def __init__(self, in_planes, ratio=16, kernel_size=7):
         super(CBAM, self).__init__()
         self.ca = ChannelAttention(in_planes, ratio)
@@ -66,7 +78,9 @@ class CBAM(nn.Module):
         result = out * self.sa(out)
         return result
 
+
 class CBAM_group(nn.Module):
+
     def __init__(self, in_planes, ratio=16, kernel_size=7):
         super(CBAM_group, self).__init__()
         self.ca = ChannelAttention_group(in_planes, ratio)
@@ -77,7 +91,9 @@ class CBAM_group(nn.Module):
         result = out * self.sa(out)
         return result
 
+
 class CBAM_group_r8(nn.Module):
+
     def __init__(self, in_planes, ratio=8, kernel_size=7):
         super(CBAM_group_r8, self).__init__()
         self.ca = ChannelAttention_group(in_planes, ratio)
@@ -87,6 +103,7 @@ class CBAM_group_r8(nn.Module):
         out = x * self.ca(x)
         result = out * self.sa(out)
         return result
+
 
 class BasicBlock(BaseModule):
     """Basic block from `ResNet <https://arxiv.org/abs/1512.03385>`_.
@@ -151,6 +168,7 @@ class BasicBlock(BaseModule):
             out = self.act(out)
 
         return out
+
 
 class Bottleneck(BaseModule):
     """Bottleneck block from `ResNet <https://arxiv.org/abs/1512.03385>`_.
@@ -219,11 +237,10 @@ class Bottleneck(BaseModule):
 
         return out
 
+
 class GroupBatchnorm2d(nn.Module):
-    def __init__(self, c_num: int,
-                 group_num: int = 16,
-                 eps: float = 1e-10
-                 ):
+
+    def __init__(self, c_num: int, group_num: int = 16, eps: float = 1e-10):
         super(GroupBatchnorm2d, self).__init__()
         assert c_num >= group_num
         self.group_num = group_num
@@ -240,17 +257,20 @@ class GroupBatchnorm2d(nn.Module):
         x = x.view(N, C, H, W)
         return x * self.weight + self.bias
 
+
 class SRU(nn.Module):
+
     def __init__(self,
                  oup_channels: int,
                  group_num: int = 16,
                  gate_treshold: float = 0.5,
-                 torch_gn: bool = True
-                 ):
+                 torch_gn: bool = True):
         super().__init__()
 
-        self.gn = nn.GroupNorm(num_channels=oup_channels, num_groups=group_num) if torch_gn else GroupBatchnorm2d(
-            c_num=oup_channels, group_num=group_num)
+        self.gn = nn.GroupNorm(
+            num_channels=oup_channels,
+            num_groups=group_num) if torch_gn else GroupBatchnorm2d(
+                c_num=oup_channels, group_num=group_num)
         self.gate_treshold = gate_treshold
         self.sigomid = nn.Sigmoid()
 
@@ -260,8 +280,12 @@ class SRU(nn.Module):
         w_gamma = w_gamma.view(1, -1, 1, 1)
         reweigts = self.sigomid(gn_x * w_gamma)
         # Gate
-        w1 = torch.where(reweigts > self.gate_treshold, torch.ones_like(reweigts), reweigts)  # 大于门限值的设为1，否则保留原值
-        w2 = torch.where(reweigts > self.gate_treshold, torch.zeros_like(reweigts), reweigts)  # 大于门限值的设为0，否则保留原值
+        w1 = torch.where(reweigts > self.gate_treshold,
+                         torch.ones_like(reweigts),
+                         reweigts)  # 大于门限值的设为1，否则保留原值
+        w2 = torch.where(reweigts > self.gate_treshold,
+                         torch.zeros_like(reweigts),
+                         reweigts)  # 大于门限值的设为0，否则保留原值
         x_1 = w1 * x
         x_2 = w2 * x
         y = self.reconstruct(x_1, x_2)
@@ -272,30 +296,46 @@ class SRU(nn.Module):
         x_21, x_22 = torch.split(x_2, x_2.size(1) // 2, dim=1)
         return torch.cat([x_11 + x_22, x_12 + x_21], dim=1)
 
+
 class CRU(nn.Module):
     '''
     alpha: 0<alpha<1
     '''
 
-    def __init__(self,
-                 op_channel: int,
-                 alpha: float = 1 / 2,
-                 squeeze_radio: int = 2,
-                 group_size: int = 2,
-                 group_kernel_size: int = 3,
-                 ):
+    def __init__(
+        self,
+        op_channel: int,
+        alpha: float = 1 / 2,
+        squeeze_radio: int = 2,
+        group_size: int = 2,
+        group_kernel_size: int = 3,
+    ):
         super().__init__()
         self.up_channel = up_channel = int(alpha * op_channel)
         self.low_channel = low_channel = op_channel - up_channel
-        self.squeeze1 = nn.Conv2d(up_channel, up_channel // squeeze_radio, kernel_size=1, bias=False)
-        self.squeeze2 = nn.Conv2d(low_channel, low_channel // squeeze_radio, kernel_size=1, bias=False)
+        self.squeeze1 = nn.Conv2d(
+            up_channel, up_channel // squeeze_radio, kernel_size=1, bias=False)
+        self.squeeze2 = nn.Conv2d(
+            low_channel,
+            low_channel // squeeze_radio,
+            kernel_size=1,
+            bias=False)
         # up
-        self.GWC = nn.Conv2d(up_channel // squeeze_radio, op_channel, kernel_size=group_kernel_size, stride=1,
-                             padding=group_kernel_size // 2, groups=group_size)
-        self.PWC1 = nn.Conv2d(up_channel // squeeze_radio, op_channel, kernel_size=1, bias=False)
+        self.GWC = nn.Conv2d(
+            up_channel // squeeze_radio,
+            op_channel,
+            kernel_size=group_kernel_size,
+            stride=1,
+            padding=group_kernel_size // 2,
+            groups=group_size)
+        self.PWC1 = nn.Conv2d(
+            up_channel // squeeze_radio, op_channel, kernel_size=1, bias=False)
         # low
-        self.PWC2 = nn.Conv2d(low_channel // squeeze_radio, op_channel - low_channel // squeeze_radio, kernel_size=1,
-                              bias=False)
+        self.PWC2 = nn.Conv2d(
+            low_channel // squeeze_radio,
+            op_channel - low_channel // squeeze_radio,
+            kernel_size=1,
+            bias=False)
         self.advavg = nn.AdaptiveAvgPool2d(1)
 
     def forward(self, x):
@@ -311,30 +351,34 @@ class CRU(nn.Module):
         out1, out2 = torch.split(out, out.size(1) // 2, dim=1)
         return out1 + out2
 
+
 class ScConv(nn.Module):
-    def __init__(self,
-                 op_channel: int,
-                 group_num: int = 4,
-                 gate_treshold: float = 0.5,
-                 alpha: float = 1 / 2,
-                 squeeze_radio: int = 2,
-                 group_size: int = 2,
-                 group_kernel_size: int = 3,
-                 ):
+
+    def __init__(
+        self,
+        op_channel: int,
+        group_num: int = 4,
+        gate_treshold: float = 0.5,
+        alpha: float = 1 / 2,
+        squeeze_radio: int = 2,
+        group_size: int = 2,
+        group_kernel_size: int = 3,
+    ):
         super().__init__()
-        self.SRU = SRU(op_channel,
-                       group_num=group_num,
-                       gate_treshold=gate_treshold)
-        self.CRU = CRU(op_channel,
-                       alpha=alpha,
-                       squeeze_radio=squeeze_radio,
-                       group_size=group_size,
-                       group_kernel_size=group_kernel_size)
+        self.SRU = SRU(
+            op_channel, group_num=group_num, gate_treshold=gate_treshold)
+        self.CRU = CRU(
+            op_channel,
+            alpha=alpha,
+            squeeze_radio=squeeze_radio,
+            group_size=group_size,
+            group_kernel_size=group_kernel_size)
 
     def forward(self, x):
         x = self.SRU(x)
         x = self.CRU(x)
         return x
+
 
 class BasicBlock_cbam(BaseModule):
     """Basic block from `ResNet <https://arxiv.org/abs/1512.03385>`_.
@@ -403,6 +447,7 @@ class BasicBlock_cbam(BaseModule):
 
         return out
 
+
 class Bottleneck_cbam(BaseModule):
     """Bottleneck block from `ResNet <https://arxiv.org/abs/1512.03385>`_.
 
@@ -435,8 +480,20 @@ class Bottleneck_cbam(BaseModule):
         super().__init__(init_cfg)
         self.conv1 = ConvModule(
             in_channels, channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv2 = ConvModule(channels, channels, 3, stride, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv3 = ConvModule(channels, channels * self.expansion, 1, norm_cfg=norm_cfg, act_cfg=None)
+        self.conv2 = ConvModule(
+            channels,
+            channels,
+            3,
+            stride,
+            1,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
+        self.conv3 = ConvModule(
+            channels,
+            channels * self.expansion,
+            1,
+            norm_cfg=norm_cfg,
+            act_cfg=None)
         self.cbam2 = CBAM(channels)
         self.cbam3 = CBAM(channels * self.expansion)
         if act_cfg_out:
@@ -561,8 +618,22 @@ class Bottleneck_cbam_group(BaseModule):
         super().__init__(init_cfg)
         self.conv1 = ConvModule(
             in_channels, channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv2 = ConvModule(channels, channels, 3, stride, 1, groups=4, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv3 = ConvModule(channels, channels * self.expansion, 1, groups=4, norm_cfg=norm_cfg, act_cfg=None)
+        self.conv2 = ConvModule(
+            channels,
+            channels,
+            3,
+            stride,
+            1,
+            groups=4,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
+        self.conv3 = ConvModule(
+            channels,
+            channels * self.expansion,
+            1,
+            groups=4,
+            norm_cfg=norm_cfg,
+            act_cfg=None)
         self.cbam2 = CBAM_group(channels)
         self.cbam3 = CBAM_group(channels * self.expansion)
         if act_cfg_out:
@@ -687,8 +758,22 @@ class Bottleneck_cbam_group_r8(BaseModule):
         super().__init__(init_cfg)
         self.conv1 = ConvModule(
             in_channels, channels, 1, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv2 = ConvModule(channels, channels, 3, stride, 1, groups=4, norm_cfg=norm_cfg, act_cfg=act_cfg)
-        self.conv3 = ConvModule(channels, channels * self.expansion, 1, groups=4, norm_cfg=norm_cfg, act_cfg=None)
+        self.conv2 = ConvModule(
+            channels,
+            channels,
+            3,
+            stride,
+            1,
+            groups=4,
+            norm_cfg=norm_cfg,
+            act_cfg=act_cfg)
+        self.conv3 = ConvModule(
+            channels,
+            channels * self.expansion,
+            1,
+            groups=4,
+            norm_cfg=norm_cfg,
+            act_cfg=None)
         self.cbam2 = CBAM_group_r8(channels)
         self.cbam3 = CBAM_group_r8(channels * self.expansion)
         if act_cfg_out:

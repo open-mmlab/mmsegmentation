@@ -11,10 +11,8 @@ train_pipeline = [
         scale=img_scale,
         ratio_range=(0.5, 2.0),
         keep_ratio=True),
-    # dict(type='RandomMosaic', img_scale=img_scale, prob=0.7, ),  # batch_size是2，不知道能不能成功使用，因为它需要4张图片
     dict(type='RandomFlip', prob=0.7),
     dict(type='PhotoMetricDistortion'),
-    # dict(type='Resize', scale=crop_size, keep_ratio=False),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='PackSegInputs')
 ]
@@ -73,5 +71,6 @@ val_dataloader = dict(
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
-val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice', 'mFscore'])
+val_evaluator = dict(
+    type='IoUMetric', iou_metrics=['mIoU', 'mDice', 'mFscore'])
 test_evaluator = val_evaluator

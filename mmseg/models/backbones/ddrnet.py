@@ -12,6 +12,7 @@ from mmseg.utils import OptConfigType
 
 
 class ChannelAttention(nn.Module):
+
     def __init__(self, in_planes, ratio=16):
         super(ChannelAttention, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
@@ -20,34 +21,43 @@ class ChannelAttention(nn.Module):
         self.relu1 = nn.ReLU()
         self.fc2 = nn.Conv2d(in_planes // ratio, in_planes, 1, bias=False)
         self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         avg_out = self.fc2(self.relu1(self.fc1(self.avg_pool(x))))
         max_out = self.fc2(self.relu1(self.fc1(self.max_pool(x))))
         out = avg_out + max_out
         return self.sigmoid(out)
 
+
 class ChannelAttention_group(nn.Module):
+
     def __init__(self, in_planes, ratio=16):
         super(ChannelAttention_group, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
-        self.fc1 = nn.Conv2d(in_planes, in_planes // ratio, 1, bias=False, groups=4)
+        self.fc1 = nn.Conv2d(
+            in_planes, in_planes // ratio, 1, bias=False, groups=4)
         self.relu1 = nn.ReLU()
-        self.fc2 = nn.Conv2d(in_planes // ratio, in_planes, 1, bias=False, groups=4)
+        self.fc2 = nn.Conv2d(
+            in_planes // ratio, in_planes, 1, bias=False, groups=4)
         self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         avg_out = self.fc2(self.relu1(self.fc1(self.avg_pool(x))))
         max_out = self.fc2(self.relu1(self.fc1(self.max_pool(x))))
         out = avg_out + max_out
         return self.sigmoid(out)
 
+
 class SpatialAttention(nn.Module):
+
     def __init__(self, kernel_size=7):
         super(SpatialAttention, self).__init__()
         assert kernel_size in (3, 7), 'kernel size must be 3 or 7'
         padding = 3 if kernel_size == 7 else 1
         self.conv1 = nn.Conv2d(2, 1, kernel_size, padding=padding, bias=False)
         self.sigmoid = nn.Sigmoid()
+
     def forward(self, x):
         avg_out = torch.mean(x, dim=1, keepdim=True)
         max_out, _ = torch.max(x, dim=1, keepdim=True)
@@ -55,7 +65,9 @@ class SpatialAttention(nn.Module):
         x = self.conv1(x)
         return self.sigmoid(x)
 
+
 class CBAM(nn.Module):
+
     def __init__(self, in_planes, ratio=16, kernel_size=7):
         super(CBAM, self).__init__()
         self.ca = ChannelAttention(in_planes, ratio)
@@ -66,7 +78,9 @@ class CBAM(nn.Module):
         result = out * self.sa(out)
         return result
 
+
 class CBAM_group(nn.Module):
+
     def __init__(self, in_planes, ratio=16, kernel_size=7):
         super(CBAM_group, self).__init__()
         self.ca = ChannelAttention_group(in_planes, ratio)
@@ -77,7 +91,9 @@ class CBAM_group(nn.Module):
         result = out * self.sa(out)
         return result
 
+
 class CBAM_group_r8(nn.Module):
+
     def __init__(self, in_planes, ratio=8, kernel_size=7):
         super(CBAM_group_r8, self).__init__()
         self.ca = ChannelAttention_group(in_planes, ratio)
@@ -87,6 +103,7 @@ class CBAM_group_r8(nn.Module):
         out = x * self.ca(x)
         result = out * self.sa(out)
         return result
+
 
 @MODELS.register_module()
 class DDRNet(BaseModule):
@@ -138,7 +155,7 @@ class DDRNet(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock if i < 2 else Bottleneck,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -352,7 +369,7 @@ class DDRNet_cbam(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -364,7 +381,7 @@ class DDRNet_cbam(BaseModule):
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam6 = CBAM(channels * 2) # 64
+        self.cbam6 = CBAM(channels * 2)  # 64
 
         self.down_1 = ConvModule(
             channels * 2,
@@ -376,14 +393,13 @@ class DDRNet_cbam(BaseModule):
             act_cfg=None)
         self.cbam7 = CBAM(channels * 4)  # 128
 
-
         self.compression_2 = ConvModule(
             channels * 8,
             channels * 2,
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam8= CBAM(channels * 2)  # 64
+        self.cbam8 = CBAM(channels * 2)  # 64
 
         self.down_2 = nn.Sequential(
             ConvModule(
@@ -404,7 +420,6 @@ class DDRNet_cbam(BaseModule):
                 act_cfg=None))
         self.cbam9 = CBAM(channels * 8)  # 128
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
@@ -419,7 +434,6 @@ class DDRNet_cbam(BaseModule):
         self.spp = DAPPM_cbam(
             channels * 16, ppm_channels, channels * 4, num_scales=5)
         self.cbam13 = CBAM(channels * 4)  # 128  √
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -441,7 +455,6 @@ class DDRNet_cbam(BaseModule):
                 act_cfg=self.act_cfg),
             CBAM(channels)
         ]
-
 
         layers.extend([
             self._make_layer(BasicBlock_cbam, channels, channels, num_blocks),
@@ -583,7 +596,7 @@ class FAPPM_CONV(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -595,7 +608,7 @@ class FAPPM_CONV(BaseModule):
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam6 = CBAM(channels * 2) # 64
+        self.cbam6 = CBAM(channels * 2)  # 64
 
         self.down_1 = ConvModule(
             channels * 2,
@@ -607,14 +620,13 @@ class FAPPM_CONV(BaseModule):
             act_cfg=None)
         self.cbam7 = CBAM(channels * 4)  # 128
 
-
         self.compression_2 = ConvModule(
             channels * 8,
             channels * 2,
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam8= CBAM(channels * 2)  # 64
+        self.cbam8 = CBAM(channels * 2)  # 64
 
         self.down_2 = nn.Sequential(
             ConvModule(
@@ -635,7 +647,6 @@ class FAPPM_CONV(BaseModule):
                 act_cfg=None))
         self.cbam9 = CBAM(channels * 8)  # 128
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
@@ -650,7 +661,6 @@ class FAPPM_CONV(BaseModule):
         self.spp = FAPPM_conv(
             channels * 16, ppm_channels, channels * 4, num_scales=5)
         self.cbam13 = CBAM(channels * 4)  # 128  √
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -672,7 +682,6 @@ class FAPPM_CONV(BaseModule):
                 act_cfg=self.act_cfg),
             CBAM(channels)
         ]
-
 
         layers.extend([
             self._make_layer(BasicBlock_cbam, channels, channels, num_blocks),
@@ -762,6 +771,8 @@ class FAPPM_CONV(BaseModule):
 
         add = self.cbam13(x_s + x_c)
         return (temp_context, add) if self.training else add
+
+
 # ohem-FAPPM_conv-cbam-Lovasz-auxhead
 
 
@@ -815,7 +826,7 @@ class FAPPM_CONV_nocbam(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock if i < 2 else Bottleneck,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -836,7 +847,6 @@ class FAPPM_CONV_nocbam(BaseModule):
             padding=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-
 
         self.compression_2 = ConvModule(
             channels * 8,
@@ -863,7 +873,6 @@ class FAPPM_CONV_nocbam(BaseModule):
                 norm_cfg=self.norm_cfg,
                 act_cfg=None))
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
@@ -877,7 +886,6 @@ class FAPPM_CONV_nocbam(BaseModule):
 
         self.spp = FAPPM_conv_nocbam(
             channels * 16, ppm_channels, channels * 4, num_scales=5)
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -898,7 +906,6 @@ class FAPPM_CONV_nocbam(BaseModule):
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg),
         ]
-
 
         layers.extend([
             self._make_layer(BasicBlock, channels, channels, num_blocks),
@@ -984,7 +991,6 @@ class FAPPM_CONV_nocbam(BaseModule):
 
         add = x_s + x_c
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead
 
 
 @MODELS.register_module()
@@ -1037,7 +1043,7 @@ class FAPPM_CONV_group(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -1050,7 +1056,7 @@ class FAPPM_CONV_group(BaseModule):
             groups=4,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam6 = CBAM_group(channels * 2) # 64
+        self.cbam6 = CBAM_group(channels * 2)  # 64
 
         self.down_1 = ConvModule(
             channels * 2,
@@ -1063,7 +1069,6 @@ class FAPPM_CONV_group(BaseModule):
             act_cfg=None)
         self.cbam7 = CBAM_group(channels * 4)  # 128
 
-
         self.compression_2 = ConvModule(
             channels * 8,
             channels * 2,
@@ -1071,7 +1076,7 @@ class FAPPM_CONV_group(BaseModule):
             groups=4,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam8= CBAM_group(channels * 2)  # 64
+        self.cbam8 = CBAM_group(channels * 2)  # 64
 
         self.down_2 = nn.Sequential(
             ConvModule(
@@ -1094,13 +1099,13 @@ class FAPPM_CONV_group(BaseModule):
                 act_cfg=None))
         self.cbam9 = CBAM_group(channels * 8)  # 128
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
             self.spatial_branch_layers.append(
                 self._make_layer(
-                    block=BasicBlock_cbam_group if i < 2 else Bottleneck_cbam_group,
+                    block=BasicBlock_cbam_group
+                    if i < 2 else Bottleneck_cbam_group,
                     inplanes=channels * 2,
                     planes=channels * 2,
                     num_blocks=2 if i < 2 else 1,
@@ -1109,7 +1114,6 @@ class FAPPM_CONV_group(BaseModule):
         self.spp = FAPPM_conv_group(
             channels * 16, ppm_channels, channels * 4, num_scales=5)
         self.cbam13 = CBAM_group(channels * 4)  # 128  √
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -1133,12 +1137,16 @@ class FAPPM_CONV_group(BaseModule):
             CBAM_group(channels)
         ]
 
-
         layers.extend([
-            self._make_layer(BasicBlock_cbam_group, channels, channels, num_blocks),
+            self._make_layer(BasicBlock_cbam_group, channels, channels,
+                             num_blocks),
             nn.ReLU(),
             self._make_layer(
-                BasicBlock_cbam_group, channels, channels * 2, num_blocks, stride=2),
+                BasicBlock_cbam_group,
+                channels,
+                channels * 2,
+                num_blocks,
+                stride=2),
             nn.ReLU(),
         ])
 
@@ -1223,10 +1231,6 @@ class FAPPM_CONV_group(BaseModule):
 
         add = self.cbam13(x_s + x_c)
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead
-
-
-#  cbam ratio为16,32/16=2,无法再除以4，所以把ratio改为8
 
 
 @MODELS.register_module()
@@ -1279,7 +1283,7 @@ class FAPPM_CONV_slim(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -1291,7 +1295,7 @@ class FAPPM_CONV_slim(BaseModule):
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam6 = CBAM(channels * 2) # 64
+        self.cbam6 = CBAM(channels * 2)  # 64
 
         self.down_1 = ConvModule(
             channels * 2,
@@ -1303,14 +1307,13 @@ class FAPPM_CONV_slim(BaseModule):
             act_cfg=None)
         self.cbam7 = CBAM(channels * 4)  # 128
 
-
         self.compression_2 = ConvModule(
             channels * 8,
             channels * 2,
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam8= CBAM(channels * 2)  # 64
+        self.cbam8 = CBAM(channels * 2)  # 64
 
         self.down_2 = nn.Sequential(
             ConvModule(
@@ -1331,7 +1334,6 @@ class FAPPM_CONV_slim(BaseModule):
                 act_cfg=None))
         self.cbam9 = CBAM(channels * 8)  # 128
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
@@ -1346,7 +1348,6 @@ class FAPPM_CONV_slim(BaseModule):
         self.spp = FAPPM_conv(
             channels * 16, ppm_channels, channels * 4, num_scales=5)
         self.cbam13 = CBAM(channels * 4)  # 128  √
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -1368,7 +1369,6 @@ class FAPPM_CONV_slim(BaseModule):
                 act_cfg=self.act_cfg),
             CBAM(channels)
         ]
-
 
         layers.extend([
             self._make_layer(BasicBlock_cbam, channels, channels, num_blocks),
@@ -1458,7 +1458,6 @@ class FAPPM_CONV_slim(BaseModule):
 
         add = self.cbam13(x_s + x_c)
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead
 
 
 @MODELS.register_module()
@@ -1511,7 +1510,7 @@ class FAPPM_CONV_slim2(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -1676,7 +1675,6 @@ class FAPPM_CONV_slim2(BaseModule):
 
         add = x_s + x_c
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead
 
 
 @MODELS.register_module()
@@ -1729,7 +1727,7 @@ class FAPPM_CONV_group_slim(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -1742,7 +1740,7 @@ class FAPPM_CONV_group_slim(BaseModule):
             groups=4,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam6 = CBAM_group(channels * 2) # 64
+        self.cbam6 = CBAM_group(channels * 2)  # 64
 
         self.down_1 = ConvModule(
             channels * 2,
@@ -1755,7 +1753,6 @@ class FAPPM_CONV_group_slim(BaseModule):
             act_cfg=None)
         self.cbam7 = CBAM_group(channels * 4)  # 128
 
-
         self.compression_2 = ConvModule(
             channels * 8,
             channels * 2,
@@ -1763,7 +1760,7 @@ class FAPPM_CONV_group_slim(BaseModule):
             groups=4,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam8= CBAM_group(channels * 2)  # 64
+        self.cbam8 = CBAM_group(channels * 2)  # 64
 
         self.down_2 = nn.Sequential(
             ConvModule(
@@ -1786,13 +1783,13 @@ class FAPPM_CONV_group_slim(BaseModule):
                 act_cfg=None))
         self.cbam9 = CBAM_group(channels * 8)  # 128
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
             self.spatial_branch_layers.append(
                 self._make_layer(
-                    block=BasicBlock_cbam_group if i < 2 else Bottleneck_cbam_group,
+                    block=BasicBlock_cbam_group
+                    if i < 2 else Bottleneck_cbam_group,
                     inplanes=channels * 2,
                     planes=channels * 2,
                     num_blocks=2 if i < 2 else 1,
@@ -1801,7 +1798,6 @@ class FAPPM_CONV_group_slim(BaseModule):
         self.spp = FAPPM_conv_group(
             channels * 16, ppm_channels, channels * 4, num_scales=5)
         self.cbam13 = CBAM_group(channels * 4)  # 128  √
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -1822,15 +1818,19 @@ class FAPPM_CONV_group_slim(BaseModule):
                 groups=4,
                 norm_cfg=self.norm_cfg,
                 act_cfg=self.act_cfg),
-            CBAM_group_r8(channels)       # ratio为16,32/16=2,无法再除以4，所以把ratio改为8
+            CBAM_group_r8(channels)  # ratio为16,32/16=2,无法再除以4，所以把ratio改为8
         ]
 
-
         layers.extend([
-            self._make_layer(BasicBlock_cbam_group_r8, channels, channels, num_blocks),
+            self._make_layer(BasicBlock_cbam_group_r8, channels, channels,
+                             num_blocks),
             nn.ReLU(),
             self._make_layer(
-                BasicBlock_cbam_group_r8, channels, channels * 2, num_blocks, stride=2),
+                BasicBlock_cbam_group_r8,
+                channels,
+                channels * 2,
+                num_blocks,
+                stride=2),
             nn.ReLU(),
         ])
 
@@ -1915,7 +1915,6 @@ class FAPPM_CONV_group_slim(BaseModule):
 
         add = self.cbam13(x_s + x_c)
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead
 
 
 @MODELS.register_module()
@@ -1968,7 +1967,7 @@ class FAPPM_AVGP(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -1980,7 +1979,7 @@ class FAPPM_AVGP(BaseModule):
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam6 = CBAM(channels * 2) # 64
+        self.cbam6 = CBAM(channels * 2)  # 64
 
         self.down_1 = ConvModule(
             channels * 2,
@@ -1992,14 +1991,13 @@ class FAPPM_AVGP(BaseModule):
             act_cfg=None)
         self.cbam7 = CBAM(channels * 4)  # 128
 
-
         self.compression_2 = ConvModule(
             channels * 8,
             channels * 2,
             kernel_size=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-        self.cbam8= CBAM(channels * 2)  # 64
+        self.cbam8 = CBAM(channels * 2)  # 64
 
         self.down_2 = nn.Sequential(
             ConvModule(
@@ -2020,7 +2018,6 @@ class FAPPM_AVGP(BaseModule):
                 act_cfg=None))
         self.cbam9 = CBAM(channels * 8)  # 128
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
@@ -2032,10 +2029,8 @@ class FAPPM_AVGP(BaseModule):
                     num_blocks=2 if i < 2 else 1,
                 ))
 
-        self.spp = FAPPM_avgp(
-            channels * 16, ppm_channels, channels * 4)
+        self.spp = FAPPM_avgp(channels * 16, ppm_channels, channels * 4)
         self.cbam13 = CBAM(channels * 4)  # 128  √
-
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -2057,7 +2052,6 @@ class FAPPM_AVGP(BaseModule):
                 act_cfg=self.act_cfg),
             CBAM(channels)
         ]
-
 
         layers.extend([
             self._make_layer(BasicBlock_cbam, channels, channels, num_blocks),
@@ -2147,8 +2141,6 @@ class FAPPM_AVGP(BaseModule):
 
         add = self.cbam13(x_s + x_c)
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead
-
 
 
 @MODELS.register_module()
@@ -2201,7 +2193,7 @@ class FAPPM_AVGP_slim(BaseModule):
             self.context_branch_layers.append(
                 self._make_layer(
                     block=BasicBlock_cbam if i < 2 else Bottleneck_cbam,
-                    inplanes=channels * 2**(i + 1),
+                    inplanes=channels * 2 ** (i + 1),
                     planes=channels * 8 if i > 0 else channels * 4,
                     num_blocks=2 if i < 2 else 1,
                     stride=2))
@@ -2222,7 +2214,6 @@ class FAPPM_AVGP_slim(BaseModule):
             padding=1,
             norm_cfg=self.norm_cfg,
             act_cfg=None)
-
 
         self.compression_2 = ConvModule(
             channels * 8,
@@ -2249,7 +2240,6 @@ class FAPPM_AVGP_slim(BaseModule):
                 norm_cfg=self.norm_cfg,
                 act_cfg=None))
 
-
         # high resolution(spatial) branch
         self.spatial_branch_layers = nn.ModuleList()
         for i in range(3):
@@ -2261,9 +2251,7 @@ class FAPPM_AVGP_slim(BaseModule):
                     num_blocks=2 if i < 2 else 1,
                 ))
 
-        self.spp = FAPPM_avgp(
-            channels * 16, ppm_channels, channels * 4)
-
+        self.spp = FAPPM_avgp(channels * 16, ppm_channels, channels * 4)
 
     def _make_stem_layer(self, in_channels, channels, num_blocks):
         layers = [
@@ -2370,4 +2358,3 @@ class FAPPM_AVGP_slim(BaseModule):
 
         add = x_s + x_c
         return (temp_context, add) if self.training else add
-# ohem-FAPPM_conv-cbam-Lovasz-auxhead

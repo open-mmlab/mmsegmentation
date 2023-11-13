@@ -23,8 +23,10 @@ __all__ = [
     'ResLayer', 'SelfAttentionBlock', 'make_divisible', 'InvertedResidual',
     'UpConvBlock', 'InvertedResidualV3', 'SELayer', 'PatchEmbed',
     'nchw_to_nlc', 'nlc_to_nchw', 'nchw2nlc2nchw', 'nlc2nchw2nlc', 'Encoding',
-    'Upsample', 'resize', 'DAPPM', 'PAPPM', 'cross_attn_layer', 'LayerNorm2d', 'MLP',
-    'get_uncertain_point_coords_with_randomness', 'DAPPM_cbam', 'FAPPM_conv', 'FAPPM_avgp', 'BasicBlock', 'BasicBlock_cbam',
-    'Bottleneck', 'Bottleneck_cbam', 'FAPPM_conv_group', 'BasicBlock_cbam_group', 'Bottleneck_cbam_group',
-    'BasicBlock_cbam_group_r8', 'Bottleneck_cbam_group_r8', 'FAPPM_conv_slim', 'FAPPM_conv_nocbam'
+    'Upsample', 'resize', 'DAPPM', 'PAPPM', 'cross_attn_layer', 'LayerNorm2d',
+    'MLP', 'get_uncertain_point_coords_with_randomness', 'DAPPM_cbam',
+    'FAPPM_conv', 'FAPPM_avgp', 'BasicBlock', 'BasicBlock_cbam', 'Bottleneck',
+    'Bottleneck_cbam', 'FAPPM_conv_group', 'BasicBlock_cbam_group',
+    'Bottleneck_cbam_group', 'BasicBlock_cbam_group_r8',
+    'Bottleneck_cbam_group_r8', 'FAPPM_conv_slim', 'FAPPM_conv_nocbam'
 ]
