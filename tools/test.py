@@ -6,6 +6,9 @@ import os.path as osp
 from mmengine.config import Config, DictAction
 from mmengine.runner import Runner
 
+import mmseg.datasets.mounted_empty
+import mmseg.models.backbones.sam_vit
+import mmseg.models.backbones.mobile_sam_vit
 
 # TODO: support fuse_conv_bn, visualization, and format_only
 def parse_args():

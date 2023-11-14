@@ -1,0 +1,78 @@
+#!/bin/bash
+
+
+function print_usage {
+    printf "Usage: run_docker_mmseg.sh [OPTIONS] CMD [ARGS...]
+
+    Example usage:
+      - ./run_docker_mmseg -r /data/mmsegmentation/experiment_x python3 tools.train configs/amr_segmentation/vit_uper.py  
+      - ./run_docker_mmseg -r /data/mmsegmentation/experiment_x bash  
+
+    Options: 
+        -d data directory with 'dataset' subfolder    (default=/data/mmsegmentation/)
+        -r result directory where to store results to (default=/data/mmsegmentation/model)
+        -p pretrain directory with pretrained models  (default=/data/ml_models/models/mmsegmentation/pretrained)
+        -h prints this help\n\n"
+    if [ ! -z "$1" ]; then
+        echo "$@"
+        exit 1
+    fi  
+    exit 0
+
+}
+
+opts="d:p:r:h"
+while getopts "$opts" flag; do 
+  case "${flag}" in 
+    d) DATA_DIR="$OTPARG" ;;
+    p) PRETRAIN_DIR="$OPTARG" ;;
+    r) RESULT_DIR="$OPTARG" ;;
+    h) print_usage ;;
+    *) print_usage "Unrecognized argument '$flag'" ;;
+  esac
+done
+shift $((OPTIND-1))
+[[ ! -z $1 ]] || 1=bash
+
+
+REPO_DIR=/code/mmsegmentation
+CONTAINER_NAME="mmsegmentation"
+
+# defaults and strip tailing slash
+DATA_DIR=${DATA_DIR:-/data/mmsegmentation/}
+DATA_DIR="${DATA_DIR%%/}"
+RESULT_DIR=${RESULT_DIR:-/data/mmsegmentation/model/}
+RESULT_DIR="${RESULT_DIR%%/}"
+PRETRAIN_DIR=${PRETRAIN_DIR:-/data/ml_models/models/mmsegmentation/pretrained}
+PRETRAIN_DIR="${PRETRAIN_DIR%%/}"
+
+
+docker build --progress=plain -t mmsegmentation:latest docker/
+docker rm -f "$CONTAINER_NAME"
+
+# hack create artificial home for user, with ownership of current host user
+mkdir -p "$DATA_DIR/.home"
+mkdir -p "$RESULT_DIR"
+
+#python3 -m tools.train configs/amr_segmentation/vit_uper.py
+
+#-d --restart=unless-stopped \
+docker run \
+  -it \
+  --gpus all \
+  --shm-size=8g \
+  --name "$CONTAINER_NAME" \
+  --user "$(id -u):$(id -g)" \
+  -v "/etc/group:/etc/group:ro" \
+  -v "/etc/passwd:/etc/passwd:ro" \
+  -v "/etc/shadow:/etc/shadow:ro" \
+  -v "${DATA_DIR}:/data/" \
+  -v "$DATA_DIR/.home:$HOME:rw" \
+  -v "${PRETRAIN_DIR}:/mmsegmentation/pretrain/" \
+  -v "${RESULT_DIR}:/results/" \
+  -v "${REPO_DIR}:/mmsegmentation/" \
+  -w /mmsegmentation \
+  mmsegmentation:latest \
+  "$@"
+
+

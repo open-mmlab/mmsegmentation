@@ -4,7 +4,10 @@ data_preprocessor = dict(
     type='SegDataPreProcessor',
     mean=[123.675, 116.28, 103.53],
     std=[58.395, 57.12, 57.375],
-    bgr_to_rgb=True,
+    #bgr_to_rgb=True,
+    # # we do conversion beforehand and can accet rgb
+    bgr_to_rgb=False,
+    rgb_to_bgr=False,
     pad_val=0,
     seg_pad_val=255)
 model = dict(

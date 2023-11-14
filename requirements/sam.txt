@@ -1,0 +1,2 @@
+-e git+https://github.com/facebookresearch/segment-anything.git
+-e git+https://github.com/ChaoningZhang/MobileSAM.git

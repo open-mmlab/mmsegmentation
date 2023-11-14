@@ -9,6 +9,9 @@ from mmengine.logging import print_log
 from mmengine.runner import Runner
 
 from mmseg.registry import RUNNERS
+import mmseg.datasets.mounted_empty
+import mmseg.models.backbones.sam_vit
+import mmseg.models.backbones.mobile_sam_vit
 
 
 def parse_args():

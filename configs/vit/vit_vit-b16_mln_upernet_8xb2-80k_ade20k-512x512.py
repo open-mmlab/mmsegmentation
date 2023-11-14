@@ -1,7 +1,8 @@
 _base_ = [
     '../_base_/models/upernet_vit-b16_ln_mln.py',
-    '../_base_/datasets/ade20k.py', '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_80k.py'
+    '../_base_/datasets/mounted_empty.py',
+    '../_base_/default_runtime.py',
+    '../_base_/schedules/schedule_5k.py'
 ]
 crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
