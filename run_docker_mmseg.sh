@@ -24,7 +24,7 @@ function print_usage {
 opts="d:p:r:h"
 while getopts "$opts" flag; do 
   case "${flag}" in 
-    d) DATA_DIR="$OTPARG" ;;
+    d) DATA_DIR="$OPTARG" ;;
     p) PRETRAIN_DIR="$OPTARG" ;;
     r) RESULT_DIR="$OPTARG" ;;
     h) print_usage ;;
@@ -39,12 +39,15 @@ REPO_DIR=/code/mmsegmentation
 CONTAINER_NAME="mmsegmentation"
 
 # defaults and strip tailing slash
-DATA_DIR=${DATA_DIR:-/data/mmsegmentation/}
+DATA_DIR="${DATA_DIR:-/data/mmsegmentation/}"
 DATA_DIR="${DATA_DIR%%/}"
-RESULT_DIR=${RESULT_DIR:-/data/mmsegmentation/model/}
+echo "DATA_DIR=$DATA_DIR"
+RESULT_DIR="${RESULT_DIR:-/data/mmsegmentation/model/}"
 RESULT_DIR="${RESULT_DIR%%/}"
-PRETRAIN_DIR=${PRETRAIN_DIR:-/data/ml_models/models/mmsegmentation/pretrained}
+echo "RESULT_DIR=$RESULT_DIR"
+PRETRAIN_DIR="${PRETRAIN_DIR:-/data/ml_models/models/mmsegmentation/pretrained}"
 PRETRAIN_DIR="${PRETRAIN_DIR%%/}"
+echo "PRETRAIN_DIR=$PRETRAIN_DIR"
 
 
 docker build --progress=plain -t mmsegmentation:latest docker/
@@ -53,6 +56,7 @@ docker rm -f "$CONTAINER_NAME"
 # hack create artificial home for user, with ownership of current host user
 mkdir -p "$DATA_DIR/.home"
 mkdir -p "$RESULT_DIR"
+mkdir -p "$PRETRAIN_DIR"
 
 #python3 -m tools.train configs/amr_segmentation/vit_uper.py
 
