@@ -30,9 +30,11 @@ RUN ["/bin/bash", "-c", "mim install mmcv==${MMCV}"]
 RUN mkdir /data
 
 # Install MMSegmentation
+RUN echo changed
 RUN git clone https://github.com/logivations/mmsegmentation /mmsegmentation
 WORKDIR /mmsegmentation
 ENV FORCE_CUDA="1"
 RUN pip install -r requirements.txt
 RUN pip install --no-cache-dir -e .
-RUN pip install -r requirements/sam.txt
+RUN pip install git+https://github.com/facebookresearch/segment-anything.git
+RUN pip install git+https://github.com/ChaoningZhang/MobileSAM.git
