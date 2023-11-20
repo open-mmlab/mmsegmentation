@@ -13,7 +13,7 @@ def main(config):
         classes=("full", "empty",),
         palette=([0,0,0], [0,255,0],),
     )
-    images : Path = config.images
+    images : Path = config.images_dir
     output_dir: Path = config.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
