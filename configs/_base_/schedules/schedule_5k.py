@@ -14,7 +14,7 @@ param_scheduler = [
 # training schedule for 20k
 train_cfg = dict(
     type='IterBasedTrainLoop',
-    max_iters=500,
+    max_iters=5000,
     val_interval=20,
 )
 val_cfg = dict(type='ValLoop')
@@ -25,12 +25,18 @@ default_hooks = dict(
     logger=dict(type='LoggerHook', interval=20, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(
-        type='CheckpointHook',
+        type='TestBestModelCheckpointHook',
         by_epoch=False,
-        interval=20,
         save_best="val/mDice",
         rule="greater",
-        max_keep_ckpts=3,
+        load_best_for_testing='val/mDice',
+        save_last=False,
     ),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegVisualizationHook', draw=True, interval=1))
+    visualization=dict(
+        type='SegVisualizationHook',
+        draw=True,
+        interval=1,
+        modes=["test"],
+    ),
+)

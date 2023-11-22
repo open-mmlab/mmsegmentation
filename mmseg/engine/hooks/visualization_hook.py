@@ -1,7 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import os.path as osp
 import warnings
-from typing import Optional, Sequence
+from typing import Optional, Sequence, List
 
 import mmcv
 import mmengine.fileio as fileio
@@ -41,7 +41,8 @@ class SegVisualizationHook(Hook):
                  interval: int = 50,
                  show: bool = False,
                  wait_time: float = 0.,
-                 backend_args: Optional[dict] = None):
+                 backend_args: Optional[dict] = None,
+                 modes: List[str] = ["val", "test"]):
         self._visualizer: SegLocalVisualizer = \
             SegLocalVisualizer.get_current_instance()
         self.interval = interval
@@ -57,6 +58,7 @@ class SegVisualizationHook(Hook):
         self.wait_time = wait_time
         self.backend_args = backend_args.copy() if backend_args else None
         self.draw = draw
+        self.modes = modes
         if not self.draw:
             warnings.warn('The draw is False, it means that the '
                           'hook for visualization will not take '
@@ -78,7 +80,7 @@ class SegVisualizationHook(Hook):
             outputs (Sequence[:obj:`SegDataSample`]): Outputs from model.
             mode (str): mode (str): Current mode of runner. Defaults to 'val'.
         """
-        if self.draw is False or mode == 'train':
+        if self.draw is False or mode not in self.modes:
             return
 
         if self.every_n_inner_iters(batch_idx, self.interval):

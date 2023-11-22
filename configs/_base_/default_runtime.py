@@ -8,11 +8,13 @@ env_cfg = dict(
 )
 vis_backends = [
     dict(type='LocalVisBackend'),
-    dict(type='TensorboardVisBackend')
+    dict(type='TensorboardVisBackend'),
 ]
+
 visualizer = dict(
     type='SegLocalVisualizer',
     name='visualizer',
+    alpha=0.7,
     vis_backends=vis_backends,
 )
 

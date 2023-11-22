@@ -76,7 +76,6 @@ test_dataloader = dict(
         data_prefix=dict(img_path='test/images', seg_map_path='test/masks'),
         pipeline=test_pipeline))
 
-train_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice'], prefix="test")
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice'], prefix="val")
 test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice'], prefix="test")
 
