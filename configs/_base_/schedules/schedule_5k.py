@@ -14,7 +14,7 @@ param_scheduler = [
 # training schedule for 20k
 train_cfg = dict(
     type='IterBasedTrainLoop',
-    max_iters=5000,
+    max_iters=1500,
     val_interval=20,
 )
 val_cfg = dict(type='ValLoop')

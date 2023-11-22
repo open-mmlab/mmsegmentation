@@ -4,7 +4,7 @@ _base_ = [
     '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_5k.py'
 ]
-model_image_size= (512,512)
+model_image_size=(512,512)
 
 
 optimizer = dict(

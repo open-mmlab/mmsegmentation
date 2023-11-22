@@ -40,7 +40,7 @@ class MobileSAMImageEncoderViT( BaseModule, TinyViT):
     
     def init_weights(self):
         # extract weights from path file
-        checkpoint="/data/pretrain/mobile_sam.pt"
+        checkpoint="pretrain/mobile_sam.pt"
         state_dict_full = torch.load(checkpoint)
         prefix = "image_encoder."
         prefix_len = len(prefix)
