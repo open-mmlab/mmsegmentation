@@ -40,3 +40,6 @@ default_hooks = dict(
         modes=["test"],
     ),
 )
+custom_hooks = [
+    dict(type='ForceRunTestLoop'),
+]

@@ -11,6 +11,7 @@ from mmengine.runner import Runner
 from mmseg.registry import RUNNERS
 import mmseg.datasets.mounted_empty
 import mmseg.engine.hooks.best_model_testing_hook
+import mmseg.engine.hooks.logger_hook_force_test
 import mmseg.models.backbones.sam_vit
 import mmseg.models.backbones.mobile_sam_vit
 
@@ -102,8 +103,6 @@ def main():
 
     # start training
     runner.train()
-    runner.test()
-
 
 if __name__ == '__main__':
     main()
