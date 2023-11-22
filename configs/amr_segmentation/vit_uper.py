@@ -44,6 +44,7 @@ test_dataloader = dict(batch_size=1)
 model = dict(
     data_preprocessor=dict(size=(512,512)),
     pretrained='pretrain/deit_small_patch16_224-cd65a155.pth',
+    #pretrained='pretrain/upernet_deit-s16_512x512_160k_ade20k_20210621_160903-5110d916.pth',
     backbone=dict(num_heads=6, embed_dims=384, drop_path_rate=0.1),
     neck=None,
     decode_head=dict(

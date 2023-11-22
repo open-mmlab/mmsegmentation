@@ -32,7 +32,7 @@ model= dict(
         type ='MultiLevelNeck',
         in_channels=[256],
         out_channels=256,
-        scales=[2,1,0.5],
+        scales=[2],
     ),
     decode_head = dict(
         type='UPerHead',
