@@ -2,7 +2,7 @@ from mmseg.apis import MMSegInferencer
 # hack to load custom models
 import mmseg.models.backbones.mobile_sam_vit
 import mmseg.models.backbones.sam_vit
-import mmseg.engine.hooks.logger_hook_force_test
+import mmseg.engine.hooks.force_test_loop_hook
 import mmseg.engine.hooks.best_model_testing_hook
 
 from pathlib import Path

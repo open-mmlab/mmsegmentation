@@ -8,6 +8,7 @@ from mmseg.registry import HOOKS
 
 @HOOKS.register_module()
 class TestBestModelCheckpointHook(CheckpointHook):
+    """Loads best known checkpoint before test loop."""
 
     def __init__(self,
         interval: int = -1,

@@ -1,10 +1,6 @@
-
-from typing import Optional, Sequence
-from mmengine.hooks.logger_hook import DATA_BATCH, LoggerHook
 from mmengine.hooks import Hook
 from mmengine.runner import Runner
 from mmseg.registry import HOOKS
-
 
 
 # Force test loop before logger hook cleans up visualizer...
