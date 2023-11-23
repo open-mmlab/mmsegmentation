@@ -6,6 +6,7 @@ MODEL_DIR=${MODEL_DIR%%/}
 echo "[property]
 
 onnx-file=$MODEL_DIR/model.onnx
+model-engine-file=$MODEL_DIR/model.onnx_b1_gpu0_fp16.engine
 
 gie-unique-id=1
 net-scale-factor=0.00784313725490196
