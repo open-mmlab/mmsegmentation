@@ -101,6 +101,24 @@ def main():
         # if 'runner_type' is set in the cfg
         runner = RUNNERS.build(cfg)
 
+    def count_params(module):
+        from collections import defaultdict
+        n_params = defaultdict(int)
+        n_trainable = defaultdict(int)
+        for name, p in module.named_parameters():
+            n = p.numel()
+            prefix = name[:name.index('.')]
+            n_params["Total:"] += n
+            n_params[prefix] += n
+            if not p.requires_grad:
+                n = 0
+            n_trainable["Total:"] += n
+            n_trainable[prefix] += n
+        return n_params, n_trainable
+    n_params, n_trainable = count_params(runner.model)
+    runner.logger.info(f"Parameters(Total): {n_params}")
+    runner.logger.info(f"Parameters(Trainable): {n_trainable}")
+
     # start training
     runner.train()
 
