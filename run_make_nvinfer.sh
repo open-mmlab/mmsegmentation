@@ -8,7 +8,7 @@ echo "[property]
 onnx-file=$MODEL_DIR/model.onnx
 model-engine-file=$MODEL_DIR/model.onnx_b1_gpu0_fp16.engine
 
-gie-unique-id=1
+gie-unique-id=4
 net-scale-factor=0.00784313725490196
 offsets=123.675;116.28;103.53
 
