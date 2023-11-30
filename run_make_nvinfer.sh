@@ -2,6 +2,10 @@
 
 MODEL_DIR=$1
 MODEL_DIR=${MODEL_DIR%%/}
+shift
+
+CLASSES=( "$@" )
+CLASSES=$(IFS=';' ; echo "${CLASSES[*]}")
 
 echo "[property]
 
@@ -26,4 +30,7 @@ output-tensor-meta=1
 
 num-detected-classes=2
 output-blob-names=output
+
+[custom]
+detected-classes=$CLASSES
 " > "$MODEL_DIR/nvinfer-segmentation-config.txt"
