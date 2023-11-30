@@ -49,14 +49,14 @@ model = dict(
     neck=None,
     decode_head=dict(
         num_classes=2,
-        out_channels=1,
-        loss_decode=dict(use_sigmoid=True),
+        out_channels=2,
+        loss_decode=dict(use_sigmoid=False),
         in_channels=[384, 384, 384, 384]
     ),
     auxiliary_head=dict(
         num_classes=2, 
-        out_channels=1,
-        loss_decode=dict(use_sigmoid=True),
+        out_channels=2,
+        loss_decode=dict(use_sigmoid=False),
         in_channels=384
     ))
 

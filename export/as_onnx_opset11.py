@@ -1,6 +1,7 @@
 codebase_config= dict(
     type="mmseg",
     task="Segmentation",
+    with_argmax=False,
 )
 
 backend_config = dict(
@@ -18,6 +19,7 @@ onnx_config = dict(
     save_file="model.onnx",
     input_names=['input'],
     output_names=['output'],
+    optimize=True,
     input_shape=None,
 )
 
