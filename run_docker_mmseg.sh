@@ -69,9 +69,9 @@ mkdir -p "$RESULT_DIR"
 mkdir -p "$PRETRAIN_DIR"
 
 if [ "$INTERACTIVE" = true ]; then
-    run_mode="-it"
+    RUN_MODE="-it"
 else
-    run_mode="-t"
+    RUN_MODE="-t"
 fi
 
 
@@ -79,7 +79,7 @@ fi
 
 #-d --restart=unless-stopped \
 docker run \
-  $run_mode \
+  $RUN_MODE \
   --gpus all \
   --shm-size=8g \
   --name "$CONTAINER_NAME" \

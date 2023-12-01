@@ -2,7 +2,48 @@
 
 CONTAINER_NAME="mmdeploy"
 IMAGE_TAG=mmdeploy:1.3.0
-#docker build -t "$IMAGE_TAG" -f deploy_docker/Dockerfile . --progress=plain
+BUILD=true
+INTERACTIVE=true
+COMMAND="bash"
+
+function print_usage() {
+    printf "Usage: run_docker_mmdeploy.sh [OPTIONS] CMD [ARGS...]
+
+    Example usage:
+    - ./run_docker_mmdeploy.sh
+
+    Options: 
+        -b: Build image before running              (default: true)
+        -i: Run in interactive mode                 (default: true)
+        -c: Custom command to run in the container  (default: bash)
+        -h prints this help\n\n"
+    if [ ! -z "$1" ]; then
+        echo "$@"
+        exit 1
+    fi  
+    exit 0
+}
+
+opts="b:i:c:h"
+while getopts "$opts" flag; do 
+  case "${flag}" in 
+    b) BUILD="$OPTARG" ;;
+    i) INTERACTIVE="$OPTARG" ;;
+    c) COMMAND=$OPTARG ;;
+    h) print_usage ;;
+    *) print_usage "Unrecognized argument '$flag'" ;;
+  esac
+done
+shift $((OPTIND-1))
+[[ ! -z $1 ]] || 1=bash
+
+echo "BUILD=$BUILD"
+echo "INTERACTIVE=$INTERACTIVE"
+echo "COMMAND=$COMMAND"
+
+if [ "$BUILD" = true ]; then
+    docker build -t "$IMAGE_TAG" -f deploy_docker/Dockerfile . --progress=plain
+fi
 docker rm -f "$CONTAINER_NAME"
 
 #  python3 -m tools.torch2onnx 
@@ -12,9 +53,15 @@ docker rm -f "$CONTAINER_NAME"
 #  /data/dataset/test/images/frame0018.jpg
 #  --work-dir=/data/work_dir/
 
+if [ "$INTERACTIVE" = true ]; then
+    RUN_MODE="-it"
+else
+    RUN_MODE="-t"
+fi
+
 #-d --restart=unless-stopped \
 docker run \
-  -t \
+  $RUN_MODE \
   --gpus all \
   --shm-size=8g \
   --name "$CONTAINER_NAME" \
@@ -23,4 +70,4 @@ docker run \
   -v "/code/mmsegmentation:/code/mmsegmentation" \
   -w /root/workspace/mmdeploy \
   $IMAGE_TAG \
-  "$@"
+  $COMMAND
