@@ -2,7 +2,7 @@
 
 CONTAINER_NAME="mmdeploy"
 IMAGE_TAG=mmdeploy:1.3.0
-docker build -t "$IMAGE_TAG" -f deploy_docker/Dockerfile . --progress=plain
+#docker build -t "$IMAGE_TAG" -f deploy_docker/Dockerfile . --progress=plain
 docker rm -f "$CONTAINER_NAME"
 
 #  python3 -m tools.torch2onnx 
@@ -14,12 +14,13 @@ docker rm -f "$CONTAINER_NAME"
 
 #-d --restart=unless-stopped \
 docker run \
-  -it \
+  -t \
   --gpus all \
   --shm-size=8g \
   --name "$CONTAINER_NAME" \
   -v "/data:/data" \
+  -v "/data/label_studio_datasets:/data/label_studio_datasets" \
   -v "/code/mmsegmentation:/code/mmsegmentation" \
   -w /root/workspace/mmdeploy \
   $IMAGE_TAG \
-  bash
+  "$@"
