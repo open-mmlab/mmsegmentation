@@ -25,7 +25,7 @@ def main(config):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     start_time = time.time()
-    if config.mask_only is True:
+    if config.mask_only:
         for p in images.glob("**/*.jpg"):
             print("---", p)
             result = inference(str(p))
@@ -55,9 +55,8 @@ if __name__ == "__main__":
     parser.add_argument("output_dir", type=Path)
     parser.add_argument(
         "--mask_only",
-        choices=['True', 'False'],
-        default='False',
-        help='save masks only')
+        action="store_true",
+        help="save masks only")
     config = parser.parse_args()
     main(config)
 
