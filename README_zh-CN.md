@@ -253,6 +253,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 - [x] [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#levir-cd)
 - [x] [BDD100K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#bdd100K)
 - [x] [NYU](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu)
+- [x] [ACDC](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#acdc)
 
 </details>
 
