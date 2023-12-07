@@ -586,8 +586,11 @@ class SideAdapterCLIPHead(BaseDecodeHead):
         """
         mask_pred = seg_logits[0]
         cls_score = seg_logits[1]
-        if 'pad_shape' in batch_img_metas[0]:
-            size = batch_img_metas[0]['pad_shape']
+        if isinstance(batch_img_metas[0]['img_shape'], torch.Size):
+            # slide inference
+            size = batch_img_metas[0]['img_shape']
+        elif 'pad_shape' in batch_img_metas[0]:
+            size = batch_img_metas[0]['pad_shape'][:2]
         else:
             size = batch_img_metas[0]['img_shape']
         # upsample mask
