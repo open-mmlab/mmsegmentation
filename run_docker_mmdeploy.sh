@@ -17,6 +17,7 @@ function print_usage() {
         -b: Build image before running              (default: true)
         -i: Run in interactive mode                 (default: true)
         -c: Custom command to run in the container  (default: bash)
+        -t set custom image tag                     (default=mmdeploy:1.3.0)
         -h prints this help\n\n"
     if [ ! -z "$1" ]; then
         echo "$@"
@@ -25,12 +26,13 @@ function print_usage() {
     exit 0
 }
 
-opts="b:i:c:h"
+opts="b:i:c:t:h"
 while getopts "$opts" flag; do 
   case "${flag}" in 
     b) BUILD="$OPTARG" ;;
     i) INTERACTIVE="$OPTARG" ;;
     c) COMMAND=$OPTARG ;;
+    t) IMAGE_TAG="$OPTARG" ;;
     h) print_usage ;;
     *) print_usage "Unrecognized argument '$flag'" ;;
   esac
@@ -41,6 +43,7 @@ shift $((OPTIND-1))
 echo "BUILD=$BUILD"
 echo "INTERACTIVE=$INTERACTIVE"
 echo "COMMAND=$COMMAND"
+echo "IMAGE_TAG=$IMAGE_TAG"
 
 if [ "$BUILD" = true ]; then
     docker build -t "$IMAGE_TAG" -f deploy_docker/Dockerfile . --progress=plain

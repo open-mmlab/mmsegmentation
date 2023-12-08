@@ -28,7 +28,7 @@ function print_usage {
     exit 0
 }
 
-opts="d:p:r:b:i:h:t"
+opts="d:p:r:b:i:t:h"
 while getopts "$opts" flag; do 
   case "${flag}" in 
     d) DATA_DIR="$OPTARG" ;;
