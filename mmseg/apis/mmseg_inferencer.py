@@ -60,7 +60,8 @@ class MMSegInferencer(BaseInferencer):
     preprocess_kwargs: set = set()
     forward_kwargs: set = {'mode', 'out_dir'}
     visualize_kwargs: set = {
-        'show', 'wait_time', 'img_out_dir', 'opacity', 'return_vis', 'withLabels'
+        'show', 'wait_time', 'img_out_dir', 'opacity', 'return_vis',
+        'withLabels'
     }
     postprocess_kwargs: set = {'pred_out_dir', 'return_datasample'}
 
