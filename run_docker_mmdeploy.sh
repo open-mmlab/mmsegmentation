@@ -2,6 +2,7 @@
 
 CONTAINER_NAME="mmdeploy"
 IMAGE_TAG=mmdeploy:1.3.0
+
 BUILD=true
 INTERACTIVE=true
 COMMAND="bash"

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Initialize default values
+CONTAINER_NAME="mmsegmentation"
+IMAGE_TAG=mmsegmentation:latest
+
 BUILD=true
 INTERACTIVE=true
 
@@ -17,16 +19,16 @@ function print_usage {
         -p pretrain directory with pretrained models  (default=/data/ml_models/models/mmsegmentation/pretrained)
         -b build Docker image before running          (default=true)
         -i run Docker in interactive mode             (default=true)
+        -t set custom image tag                       (default=mmsegmentation:latest)
         -h prints this help\n\n"
     if [ ! -z "$1" ]; then
         echo "$@"
         exit 1
     fi  
     exit 0
-
 }
 
-opts="d:p:r:b:i:h"
+opts="d:p:r:b:i:h:t"
 while getopts "$opts" flag; do 
   case "${flag}" in 
     d) DATA_DIR="$OPTARG" ;;
@@ -34,6 +36,7 @@ while getopts "$opts" flag; do
     r) RESULT_DIR="$OPTARG" ;;
     b) BUILD="$OPTARG" ;;
     i) INTERACTIVE="$OPTARG" ;;
+    t) IMAGE_TAG="$OPTARG" ;;
     h) print_usage ;;
     *) print_usage "Unrecognized argument '$flag'" ;;
   esac
@@ -43,7 +46,7 @@ shift $((OPTIND-1))
 
 
 REPO_DIR=/code/mmsegmentation
-CONTAINER_NAME="mmsegmentation"
+echo "IMAGE_TAG=$IMAGE_TAG"
 
 # defaults and strip tailing slash
 DATA_DIR="${DATA_DIR:-/data/mmsegmentation/}"
@@ -58,7 +61,7 @@ echo "PRETRAIN_DIR=$PRETRAIN_DIR"
 
 
 if [ "$BUILD" = true ]; then
-    docker build --progress=plain -t mmsegmentation:latest docker/
+    docker build --progress=plain -t $IMAGE_TAG docker/
 fi
 
 docker rm -f "$CONTAINER_NAME"
@@ -93,7 +96,5 @@ docker run \
   -v "${RESULT_DIR}:/results/" \
   -v "${REPO_DIR}:/mmsegmentation/" \
   -w /mmsegmentation \
-  mmsegmentation:latest \
+  $IMAGE_TAG \
   "$@"
-
-
