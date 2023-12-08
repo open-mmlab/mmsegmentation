@@ -73,9 +73,12 @@ class SegLocalVisualizer(Visualizer):
                  palette: Optional[List] = None,
                  dataset_name: Optional[str] = None,
                  alpha: float = 0.8,
+                 segement_only: bool = False,
                  **kwargs):
         super().__init__(name, image, vis_backends, save_dir, **kwargs)
         self.alpha: float = alpha
+        if segement_only:
+            self.alpha = 1
         self.set_dataset_meta(palette, classes, dataset_name)
 
     def _get_center_loc(self, mask: np.ndarray) -> np.ndarray:
@@ -139,7 +142,7 @@ class SegLocalVisualizer(Visualizer):
         for label, color in zip(labels, colors):
             mask[sem_seg[0] == label, :] = color
 
-        if withLabels:
+        if withLabels and not self.segement_only:
             font = cv2.FONT_HERSHEY_SIMPLEX
             # (0,1] to change the size of the text relative to the image
             scale = 0.05

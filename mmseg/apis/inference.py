@@ -128,6 +128,7 @@ def show_result_pyplot(model: BaseSegmentor,
                        wait_time: float = 0,
                        show: bool = True,
                        withLabels: Optional[bool] = True,
+                       segmentation_only: bool = False,
                        save_dir=None,
                        out_file=None):
     """Visualize the segmentation results on the image.
@@ -170,7 +171,8 @@ def show_result_pyplot(model: BaseSegmentor,
     visualizer = SegLocalVisualizer(
         vis_backends=[dict(type='LocalVisBackend')],
         save_dir=save_dir,
-        alpha=opacity)
+        alpha=opacity,
+        segement_only=segmentation_only)
     visualizer.dataset_meta = dict(
         classes=model.dataset_meta['classes'],
         palette=model.dataset_meta['palette'])

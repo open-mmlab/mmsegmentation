@@ -21,6 +21,10 @@ def main():
         help='Opacity of painted segmentation map. In (0, 1] range.')
     parser.add_argument(
         '--title', default='result', help='The image identifier.')
+    parser.add_argument(
+        '--segementation-only',
+        action='store_true',
+        help='Only show the segmentation map.')
     args = parser.parse_args()
 
     # build the model from a config file and a checkpoint file
@@ -38,7 +42,8 @@ def main():
         opacity=args.opacity,
         draw_gt=False,
         show=False if args.out_file is not None else True,
-        out_file=args.out_file)
+        out_file=args.out_file,
+        segmentation_only=args.segementation_only)
 
 
 if __name__ == '__main__':
