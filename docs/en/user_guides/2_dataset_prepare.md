@@ -205,6 +205,13 @@ mmsegmentation
 │   │   ├── annotations
 │   │   │   ├── train
 │   │   │   ├── test
+│   ├── acdc
+│   │   ├── gt
+│   │   │   ├── test
+│   │   │   ├── train
+│   │   ├── rgb_anno
+│   │   │   ├── test
+│   │   │   ├── train
 ```
 
 ## Download dataset via MIM
@@ -752,3 +759,30 @@ mmsegmentation
   ```bash
   python tools/dataset_converters/nyu.py nyu.zip
   ```
+
+## ACDC Dataset
+
+The data could be found [here](https://acdc.vision.ee.ethz.ch/download).
+
+Download and unzip the data into `$ACDC`, it should have the following structure:
+
+```
+$ACDC
+├── gt
+│   ├── fog
+│   ├── night
+│   ├── rain
+│   ├── snow
+├── rgb_anon
+│   ├── fog
+│   ├── night
+│   ├── rain
+│   ├── snow
+```
+
+We provided a script to process the ACDC dataset into mmsegmentation accepted format.
+
+```shell
+# --split means the weather split, available options [fog, night, rain, snow, all]
+python tools/dataset_converters/acdc.py $ACDC --split $split
+```
