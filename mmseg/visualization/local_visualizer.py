@@ -39,6 +39,11 @@ class SegLocalVisualizer(Visualizer):
             Defaults to None.
         alpha (int, float): The transparency of segmentation mask.
                 Defaults to 0.8.
+        segement_only (bool): Only show the segmentation map, by setting this flag
+            to True, only the segmentation map will be shown, the background image
+            and the labels will not be shown. Defaults to False.
+            Warning: If withLabels is True and segmentation_only is True,
+            withLabels will be set to False. i.e. this flag will override withLabels.
 
     Examples:
         >>> import numpy as np
@@ -80,6 +85,7 @@ class SegLocalVisualizer(Visualizer):
         if segement_only:
             self.alpha = 1
         self.set_dataset_meta(palette, classes, dataset_name)
+        self.segement_only = segement_only
 
     def _get_center_loc(self, mask: np.ndarray) -> np.ndarray:
         """Get semantic seg center coordinate.

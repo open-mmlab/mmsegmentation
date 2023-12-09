@@ -137,6 +137,8 @@ gt_sem_seg = PixelData(**gt_sem_seg_data)
 data_sample = SegDataSample()
 data_sample.gt_sem_seg = gt_sem_seg
 
+# If you want to show the segement data only (without lable text and background)
+# you can use segement_only = True.
 seg_local_visualizer = SegLocalVisualizer(
     vis_backends=[dict(type='LocalVisBackend')],
     save_dir=save_dir)
