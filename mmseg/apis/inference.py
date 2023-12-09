@@ -168,6 +168,13 @@ def show_result_pyplot(model: BaseSegmentor,
     if save_dir is not None:
         mkdir_or_exist(save_dir)
     # init visualizer
+    if withLabels and segmentation_only:
+        # Issue a warning if withLabels is True and segmentation_only is True
+        warnings.simplefilter('once')
+        warnings.warn(
+            'withLabels is True and segmentation_only is True, '
+            'withLabels will be set to False')
+        withLabels = False
     visualizer = SegLocalVisualizer(
         vis_backends=[dict(type='LocalVisBackend')],
         save_dir=save_dir,
