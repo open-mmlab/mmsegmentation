@@ -5,7 +5,6 @@ IMAGE_TAG=mmdeploy:1.3.0
 
 BUILD=true
 INTERACTIVE=true
-COMMAND="bash"
 
 function print_usage() {
     printf "Usage: run_docker_mmdeploy.sh [OPTIONS] CMD [ARGS...]
@@ -16,7 +15,6 @@ function print_usage() {
     Options: 
         -b: Build image before running              (default: true)
         -i: Run in interactive mode                 (default: true)
-        -c: Custom command to run in the container  (default: bash)
         -t set custom image tag                     (default=mmdeploy:1.3.0)
         -h prints this help\n\n"
     if [ ! -z "$1" ]; then
@@ -26,12 +24,11 @@ function print_usage() {
     exit 0
 }
 
-opts="b:i:c:t:h"
+opts="b:i:t:h"
 while getopts "$opts" flag; do 
   case "${flag}" in 
     b) BUILD="$OPTARG" ;;
     i) INTERACTIVE="$OPTARG" ;;
-    c) COMMAND=$OPTARG ;;
     t) IMAGE_TAG="$OPTARG" ;;
     h) print_usage ;;
     *) print_usage "Unrecognized argument '$flag'" ;;
@@ -42,7 +39,6 @@ shift $((OPTIND-1))
 
 echo "BUILD=$BUILD"
 echo "INTERACTIVE=$INTERACTIVE"
-echo "COMMAND=$COMMAND"
 echo "IMAGE_TAG=$IMAGE_TAG"
 
 if [ "$BUILD" = true ]; then
@@ -74,4 +70,4 @@ docker run \
   -v "/code/mmsegmentation:/code/mmsegmentation" \
   -w /root/workspace/mmdeploy \
   $IMAGE_TAG \
-  $COMMAND
+  "$@"
