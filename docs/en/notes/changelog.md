@@ -1,5 +1,18 @@
 # Changelog of v1.x
 
+## v1.2.2 (12/14/2023)
+
+### Bug Fixes
+
+- Fix bug in cross entropy loss ([#3457](https://github.com/open-mmlab/mmsegmentation/pull/3457))
+- Allow custom visualizer ([#3455](https://github.com/open-mmlab/mmsegmentation/pull/3455))
+- test resize with pad_shape ([#3421](https://github.com/open-mmlab/mmsegmentation/pull/3421))
+- add with-labels args to inferencer for visualization without labels ([#3466](https://github.com/open-mmlab/mmsegmentation/pull/3466))
+
+### New Contributors
+
+- @okotaku made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3421
+
 ## v1.2.1 (10/17/2023)
 
 ### Bug Fixes
@@ -52,7 +65,7 @@
 
 - Translate doc for docs/zh_cn/user_guides/5_deployment.md ([#3281](https://github.com/open-mmlab/mmsegmentation/pull/3281))
 
-## New Contributors
+### New Contributors
 
 - @angiecao made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3235
 - @yeedrag made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3237
