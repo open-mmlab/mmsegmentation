@@ -148,7 +148,7 @@ def show_result_pyplot(model: BaseSegmentor,
             that means "forever". Defaults to 0.
         show (bool): Whether to display the drawn image.
             Default to True.
-        withLabels(bool, optional): Add semantic labels in visualization
+        with_labels(bool, optional): Add semantic labels in visualization
             result, Default to True.
         save_dir (str, optional): Save file dir for all storage backends.
             If it is None, the backend storage will not save any data.
@@ -192,7 +192,7 @@ def show_result_pyplot(model: BaseSegmentor,
         wait_time=wait_time,
         out_file=out_file,
         show=show,
-        withLabels=withLabels)
+        with_labels=with_labels)
     vis_img = visualizer.get_image()
 
     return vis_img

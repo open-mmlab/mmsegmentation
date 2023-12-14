@@ -20,6 +20,11 @@ def main():
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
     parser.add_argument(
+        '--with-labels',
+        action='store_true',
+        default=False,
+        help='Whether to display the class labels.')
+    parser.add_argument(
         '--title', default='result', help='The image identifier.')
     parser.add_argument(
         '--segementation-only',
@@ -40,6 +45,7 @@ def main():
         result,
         title=args.title,
         opacity=args.opacity,
+        with_labels=args.with_labels,
         draw_gt=False,
         show=False if args.out_file is not None else True,
         out_file=args.out_file,
