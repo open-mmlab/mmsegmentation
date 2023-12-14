@@ -10,6 +10,7 @@ The compatible MMSegmentation, MMCV and MMEngine versions are as below. Please i
 | :--------------------: | :----------------------------: | :---------------: | :---------------------------------: | :----------------------------: |
 |     dev-1.x branch     |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
 |      main branch       |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.2.2          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
 |         1.2.1          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
 |         1.2.0          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
 |         1.1.2          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
