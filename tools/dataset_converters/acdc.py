@@ -24,12 +24,6 @@ def parse_args():
 def main():
     args = parse_args()
 
-    try:
-        shutil.rmtree(args.out_dir)
-        print('Directory removed successfully')
-    except OSError as e:
-        print(f'Error: {e.strerror}')
-
     print('Making directories...')
     mkdir_or_exist(args.out_dir)
     for subdir in ['gt/test', 'rgb_anno/test', 'gt/train', 'rgb_anno/train']:
