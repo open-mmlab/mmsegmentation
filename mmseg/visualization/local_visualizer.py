@@ -103,7 +103,7 @@ class SegLocalVisualizer(Visualizer):
                       sem_seg: PixelData,
                       classes: Optional[List],
                       palette: Optional[List],
-                      withLabels: Optional[bool] = True) -> np.ndarray:
+                      with_labels: Optional[bool] = True) -> np.ndarray:
         """Draw semantic seg of GT or prediction.
 
         Args:
@@ -119,7 +119,7 @@ class SegLocalVisualizer(Visualizer):
             palette (list, optional): Input palette for result rendering, which
                 is a list of color palette responding to the classes.
                 Defaults to None.
-            withLabels(bool, optional): Add semantic labels in visualization
+            with_labels(bool, optional): Add semantic labels in visualization
                 result, Default to True.
 
         Returns:
@@ -139,7 +139,7 @@ class SegLocalVisualizer(Visualizer):
         for label, color in zip(labels, colors):
             mask[sem_seg[0] == label, :] = color
 
-        if withLabels:
+        if with_labels:
             font = cv2.FONT_HERSHEY_SIMPLEX
             # (0,1] to change the size of the text relative to the image
             scale = 0.05
@@ -265,7 +265,7 @@ class SegLocalVisualizer(Visualizer):
             # TODO: Supported in mmengine's Viusalizer.
             out_file: Optional[str] = None,
             step: int = 0,
-            withLabels: Optional[bool] = True) -> None:
+            with_labels: Optional[bool] = True) -> None:
         """Draw datasample and save to all backends.
 
         - If GT and prediction are plotted at the same time, they are
@@ -291,7 +291,7 @@ class SegLocalVisualizer(Visualizer):
             wait_time (float): The interval of show (s). Defaults to 0.
             out_file (str): Path to output file. Defaults to None.
             step (int): Global step value to record. Defaults to 0.
-            withLabels(bool, optional): Add semantic labels in visualization
+            with_labels(bool, optional): Add semantic labels in visualization
                 result, Defaults to True.
         """
         classes = self.dataset_meta.get('classes', None)
@@ -307,7 +307,7 @@ class SegLocalVisualizer(Visualizer):
                                             'visualizing semantic ' \
                                             'segmentation results.'
                 gt_img_data = self._draw_sem_seg(image, data_sample.gt_sem_seg,
-                                                 classes, palette, withLabels)
+                                                 classes, palette, with_labels)
 
             if 'gt_depth_map' in data_sample:
                 gt_img_data = gt_img_data if gt_img_data is not None else image
@@ -325,7 +325,7 @@ class SegLocalVisualizer(Visualizer):
                 pred_img_data = self._draw_sem_seg(image,
                                                    data_sample.pred_sem_seg,
                                                    classes, palette,
-                                                   withLabels)
+                                                   with_labels)
 
             if 'pred_depth_map' in data_sample:
                 pred_img_data = pred_img_data if pred_img_data is not None \
