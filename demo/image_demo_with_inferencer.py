@@ -27,6 +27,11 @@ def main():
         type=float,
         default=0.5,
         help='Opacity of painted segmentation map. In (0, 1] range.')
+    parser.add_argument(
+        '--with-labels',
+        action='store_true',
+        default=False,
+        help='Whether to display the class labels.')
     args = parser.parse_args()
 
     # build the model from a config file and a checkpoint file
@@ -38,7 +43,11 @@ def main():
 
     # test a single image
     mmseg_inferencer(
-        args.img, show=args.show, out_dir=args.out_dir, opacity=args.opacity)
+        args.img,
+        show=args.show,
+        out_dir=args.out_dir,
+        opacity=args.opacity,
+        with_labels=args.with_labels)
 
 
 if __name__ == '__main__':

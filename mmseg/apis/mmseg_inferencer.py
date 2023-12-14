@@ -61,7 +61,7 @@ class MMSegInferencer(BaseInferencer):
     forward_kwargs: set = {'mode', 'out_dir'}
     visualize_kwargs: set = {
         'show', 'wait_time', 'img_out_dir', 'opacity', 'return_vis',
-        'withLabels'
+        'with_labels'
     }
     postprocess_kwargs: set = {'pred_out_dir', 'return_datasample'}
 
@@ -203,7 +203,7 @@ class MMSegInferencer(BaseInferencer):
                   wait_time: int = 0,
                   img_out_dir: str = '',
                   opacity: float = 0.8,
-                  withLabels: Optional[bool] = True) -> List[np.ndarray]:
+                  with_labels: Optional[bool] = True) -> List[np.ndarray]:
         """Visualize predictions.
 
         Args:
@@ -257,7 +257,7 @@ class MMSegInferencer(BaseInferencer):
                 draw_gt=False,
                 draw_pred=True,
                 out_file=out_file,
-                withLabels=withLabels)
+                with_labels=with_labels)
             if return_vis:
                 results.append(self.visualizer.get_image())
             self.num_visualized_imgs += 1
