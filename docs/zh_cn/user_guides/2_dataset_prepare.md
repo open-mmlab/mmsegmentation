@@ -748,3 +748,30 @@ mmsegmentation
   ```bash
   python tools/dataset_converters/nyu.py nyu.zip
   ```
+
+## ACDC
+
+您可以从 [这个链接](https://acdc.vision.ee.ethz.ch/download) 下载 ACDC 数据集。
+
+下载完成后请将数据集解压缩到 `$ACDC`, 得到以下结构:
+
+```
+$ACDC
+├── gt
+│   ├── fog
+│   ├── night
+│   ├── rain
+│   ├── snow
+├── rgb_anon
+│   ├── fog
+│   ├── night
+│   ├── rain
+│   ├── snow
+```
+
+请运行以下命令转换 ACDC 数据集：
+
+```shell
+# --split 是天气选项, 可以从 [fog, night, rain, snow, all] 中选择
+python tools/dataset_converters/acdc.py $ACDC --split $split
+```
