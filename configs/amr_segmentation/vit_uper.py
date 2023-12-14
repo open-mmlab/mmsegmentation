@@ -23,18 +23,6 @@ optim_wrapper = dict(
             'cls_token': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)
         }))
-param_scheduler = [
-    dict(
-        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=500),
-    dict(
-        type='PolyLR',
-        eta_min=0.0,
-        power=1.0,
-        begin=100,
-        end=500,
-        by_epoch=False,
-    )
-]
 
 train_dataloader = dict(batch_size=2)
 val_dataloader = dict(batch_size=1)

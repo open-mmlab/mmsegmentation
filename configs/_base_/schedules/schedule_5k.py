@@ -4,18 +4,21 @@ optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 # learning policy
 param_scheduler = [
     dict(
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=400),
+    dict(
         type='PolyLR',
-        eta_min=1e-4,
+        eta_min=0.0,
         power=0.9,
-        begin=0,
-        end=500,
-        by_epoch=False)
+        begin=400,
+        end=4000,
+        by_epoch=False,
+    )
 ]
 # training schedule for 20k
 train_cfg = dict(
     type='IterBasedTrainLoop',
-    max_iters=1000,
-    val_interval=20,
+    max_iters=4000,
+    val_interval=100,
 )
 val_cfg = dict(type='ValLoop')
 test_cfg = dict(type='TestLoop')
