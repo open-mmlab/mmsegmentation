@@ -297,8 +297,8 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
           <li><a href="mmseg/models/decode_heads/san_head.py">SAN_Head</li>
           <li><a href="mmseg/models/decode_heads/segformer_head.py">segformer_Head</li>
           <li><a href="mmseg/models/decode_heads/segmenter_mask_head.py">segmenter_mask_Head</li>
-          <li><a href="mmseg/models/decode_heads/sap_aspp_head.py">DepthwiseSeparableASPP_Head</li>
-          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">DepthwiseSeparableFCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/sap_aspp_head.py">SapASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">SapFCN_Head</li>
           <li><a href="mmseg/models/decode_heads/setr_mla_head.py">SETRMLAHead_Head</li>
           <li><a href="mmseg/models/decode_heads/setr_up_head.py">SETRUP_Head</li>
           <li><a href="mmseg/models/decode_heads/stdc_head.py">STDC_Head</li>
