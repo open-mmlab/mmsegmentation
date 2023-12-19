@@ -193,7 +193,7 @@ To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migratio
 Results and models are available in the [model zoo](docs/en/model_zoo.md).
 
 <div align="center">
-  <b>概览</b>
+  <b>Overview</b>
 </div>
 <table align="center">
   <tbody>
