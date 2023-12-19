@@ -108,13 +108,13 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 ## 教程文档
 
 <div align="center">
-  <b>教程文档</b>
+  <b>mmsegmentation 教程文档</b>
 </div>
 <table align="center">
   <tbody>
     <tr align="center" valign="center">
       <td>
-        <b>开启 MMSeg</b>
+        <b>开启 MMSeg 之旅</b>
       </td>
       <td>
         <b>MMSeg 快速入门教程</b>
