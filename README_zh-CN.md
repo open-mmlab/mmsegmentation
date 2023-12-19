@@ -188,10 +188,10 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
   <tbody>
     <tr align="center" valign="bottom">
       <td>
-        <b>已支持的算法架构</b>
+        <b>已支持的主干网络</b>
       </td>
       <td>
-        <b>已支持的主干网络</b>
+        <b>已支持的算法架构</b>
       </td>
       <td>
         <b>已支持的分割头</b>
