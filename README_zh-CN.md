@@ -139,9 +139,9 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
           <li><a href="docs/zh_cn/user_guides/1_config.md">教程1：了解配置文件</a></li>
           <li><a href="docs/zh_cn/user_guides/2_dataset_prepare.md">教程2：准备数据集</a></li>
           <li><a href="docs/zh_cn/user_guides/3_inference.md">教程3：使用预训练模型推理</a></li>
-          <li><a href="docs/zh_cn/user_guides/4_train_test.md">教程4：使用现有模型进行训练和测试</a></li>
+          <li><a href="docs/zh_cn/user_guides/4_train_test.md">教程4：模型训练和测试</a></li>
           <li><a href="docs/zh_cn/user_guides/5_deployment.md">教程5：模型部署</a></li>
-          <li><a href="docs/zh_cn/user_guides/deploy_jetson.md">在 Jetson 平台部署 mmsegmentation</a></li>
+          <li><a href="docs/zh_cn/user_guides/deploy_jetson.md">在 Jetson 平台部署 MMSeg</a></li>
           <li><a href="docs/zh_cn/user_guides/useful_tools.md">常用工具</a></li>
           <li><a href="docs/zh_cn/user_guides/visualization_feature_map.md">特征图可视化</a></li>
           <li><a href="docs/zh_cn/user_guides/visualization.md">可视化</a></li>
@@ -167,7 +167,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
           <li><a href="docs/zh_cn/advanced_guides/customize_runtime.md">自定义运行设定</a></li>
           <li><a href="docs/zh_cn/advanced_guides/training_tricks.md">训练技巧</a></li>
           <li><a href=".github/CONTRIBUTING.md">如何给 MMSeg 贡献代码</a></li>
-          <li><a href="docs/zh_cn/advanced_guides/contribute_dataset.md">在 projects 给 MMSeg 贡献一个标准数据集</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/contribute_dataset.md">给 MMSeg 贡献数据集教程</a></li>
           <li><a href="docs/zh_cn/device/npu.md">NPU (华为 昇腾)</a></li>
           <li><a href="docs/zh_cn/migration/interface.md">0.x → 1.x 迁移文档</a></li>
           <li><a href="docs/zh_cn/migration/package.md">0.x → 1.x 库变更文档</a></li>
