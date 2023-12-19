@@ -303,23 +303,23 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
           <li><a href="mmseg/models/decode_heads/ocr_head.py">OCR_Head</li>
           <li><a href="mmseg/models/decode_heads/pid_head.py">PID_Head</li>
           <li><a href="mmseg/models/decode_heads/point_head.py">point_Head</li>
-          <li><a href="mmseg/models/decode_heads/psa_head.py">Psa_Head</li>
+          <li><a href="mmseg/models/decode_heads/psa_head.py">PSA_Head</li>
           <li><a href="mmseg/models/decode_heads/psp_head.py">PSP_Head</li>
           <li><a href="mmseg/models/decode_heads/san_head.py">SAN_Head</li>
           <li><a href="mmseg/models/decode_heads/segformer_head.py">segformer_Head</li>
           <li><a href="mmseg/models/decode_heads/segmenter_mask_head.py">segmenter_mask_Head</li>
-          <li><a href="mmseg/models/decode_heads/sap_aspp_head.py">SapASPP_Head</li>
-          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">SapFCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_aspp_head.py">SepASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">SepFCN_Head</li>
           <li><a href="mmseg/models/decode_heads/setr_mla_head.py">SETRMLAHead_Head</li>
           <li><a href="mmseg/models/decode_heads/setr_up_head.py">SETRUP_Head</li>
           <li><a href="mmseg/models/decode_heads/stdc_head.py">STDC_Head</li>
-          <li><a href="mmseg/models/decode_heads/uper_head.py">UPer_Head</li>
+          <li><a href="mmseg/models/decode_heads/uper_head.py">Uper_Head</li>
           <li><a href="mmseg/models/decode_heads/vpd_depth_head.py">VPDDepth_Head</li>
         </ul>
       </td>
       <td>
         <ul>
-          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/  docs/en/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
           <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-voc">PASCAL VOC</a></li>
           <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#ade20k">ADE20K</a></li>
           <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-context">Pascal Context</a></li>
