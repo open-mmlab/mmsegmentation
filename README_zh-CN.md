@@ -129,7 +129,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
     <tr valign="top">
       <td>
         <ul>
-        <li><a href="docs/zh_cn/overview.md)">MMSeg 概述</a></li>
+        <li><a href="docs/zh_cn/overview.md">MMSeg 概述</a></li>
         <li><a href="docs/zh_cn/get_started.md">安装和验证</a></li>
         <li><a href="docs/zh_cn/notes/faq.md">常见问题解答</a></li>
         </ul>
@@ -292,17 +292,17 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
           <li><a href="mmseg/models/decode_heads/ocr_head.py">OCR_Head</li>
           <li><a href="mmseg/models/decode_heads/pid_head.py">PID_Head</li>
           <li><a href="mmseg/models/decode_heads/point_head.py">point_Head</li>
-          <li><a href="mmseg/models/decode_heads/psa_head.py">Psa_Head</li>
+          <li><a href="mmseg/models/decode_heads/psa_head.py">PSA_Head</li>
           <li><a href="mmseg/models/decode_heads/psp_head.py">PSP_Head</li>
           <li><a href="mmseg/models/decode_heads/san_head.py">SAN_Head</li>
           <li><a href="mmseg/models/decode_heads/segformer_head.py">segformer_Head</li>
           <li><a href="mmseg/models/decode_heads/segmenter_mask_head.py">segmenter_mask_Head</li>
-          <li><a href="mmseg/models/decode_heads/sap_aspp_head.py">SapASPP_Head</li>
-          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">SapFCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_aspp_head.py">SepASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">SepFCN_Head</li>
           <li><a href="mmseg/models/decode_heads/setr_mla_head.py">SETRMLAHead_Head</li>
           <li><a href="mmseg/models/decode_heads/setr_up_head.py">SETRUP_Head</li>
           <li><a href="mmseg/models/decode_heads/stdc_head.py">STDC_Head</li>
-          <li><a href="mmseg/models/decode_heads/uper_head.py">UPer_Head</li>
+          <li><a href="mmseg/models/decode_heads/uper_head.py">Uper_Head</li>
           <li><a href="mmseg/models/decode_heads/vpd_depth_head.py">VPDDepth_Head</li>
         </ul>
       </td>
