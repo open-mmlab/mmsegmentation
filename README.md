@@ -197,7 +197,7 @@ Results and models are available in the [model zoo](docs/en/model_zoo.md).
 </div>
 <table align="center">
   <tbody>
-    <tr align="center" valign="bottom">
+    <tr align="center" valign="center">
       <td>
         <b>Supported backbones</b>
       </td>
