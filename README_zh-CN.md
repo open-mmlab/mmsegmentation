@@ -112,9 +112,9 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 </div>
 <table align="center">
   <tbody>
-    <tr align="center" valign="bottom">
+    <tr align="center" valign="center">
       <td>
-        <b>开启 MMSeg 之旅</b>
+        <b>开启 MMSeg</b>
       </td>
       <td>
         <b>MMSeg 快速入门教程</b>
