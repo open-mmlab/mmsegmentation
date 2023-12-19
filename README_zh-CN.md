@@ -107,58 +107,74 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
 
 ## 教程文档
 
-<details>
-<summary>开启 MMSeg 之旅</summary>
-
-- [MMSeg 概述](docs/zh_cn/overview.md)
-- [安装和验证](docs/zh_cn/get_started.md)
-- [常见问题解答](docs/zh_cn/notes/faq.md)
-
-</details>
-
-<details>
-<summary>MMSeg 快速入门教程</summary>
-
-- [教程1：了解配置文件](docs/zh_cn/user_guides/1_config.md)
-- [教程2：准备数据集](docs/zh_cn/user_guides/2_dataset_prepare.md)
-- [教程3：使用预训练模型推理](docs/zh_cn/user_guides/3_inference.md)
-- [教程4：使用现有模型进行训练和测试](docs/zh_cn/user_guides/4_train_test.md)
-- [教程5：模型部署](docs/zh_cn/user_guides/5_deployment.md)
-- [在 Jetson 平台部署 mmsegmentation](docs/zh_cn/user_guides/deploy_jetson.md)
-- [常用工具](docs/zh_cn/user_guides/useful_tools.md)
-- [特征图可视化](docs/zh_cn/user_guides/visualization_feature_map.md)
-- [可视化](docs/zh_cn/user_guides/visualization.md)
-
-</details>
-
-<details>
-<summary>MMSeg 细节介绍</summary>
-
-- [MMSeg 数据集介绍](docs/zh_cn/advanced_guides/datasets.md)
-- [MMSeg 模型介绍](docs/zh_cn/advanced_guides/models.md)
-- [MMSeg 数据结构介绍](docs/zh_cn/advanced_guides/structures.md)
-- [MMSeg 数据增强介绍](docs/zh_cn/advanced_guides/transforms.md)
-- [MMSeg 数据流介绍](docs/zh_cn/advanced_guides/data_flow.md)
-- [MMSeg 训练引擎介绍](docs/zh_cn/advanced_guides/engine.md)
-- [MMSeg 模型评测介绍](docs/zh_cn/advanced_guides/evaluation.md)
-
-</details>
-
-<details>
-<summary>MMSeg 开发教程</summary>
-
-- [新增自定义数据集](docs/zh_cn/advanced_guides/add_datasets.md)
-- [新增评测指标](docs/zh_cn/advanced_guides/add_metrics.md)
-- [新增自定义模型](docs/zh_cn/advanced_guides/add_models.md)
-- [新增自定义数据增强](docs/zh_cn/advanced_guides/add_transforms.md)
-- [自定义运行设定](docs/zh_cn/advanced_guides/customize_runtime.md)
-- [训练技巧](docs/zh_cn/advanced_guides/training_tricks.md)
-- [如何给 MMSeg贡献代码](.github/CONTRIBUTING.md)
-- [在 projects 给 MMSeg 贡献一个标准数据集](docs/zh_cn/advanced_guides/contribute_dataset.md)
-- [NPU (华为 昇腾)](docs/zh_cn/device/npu.md)
-- [0.x → 1.x 迁移文档](docs/zh_cn/migration/interface.md)，[0.x → 1.x 库变更文档](docs/zh_cn/migration/package.md)
-
-</details>
+<div align="center">
+  <b>教程文档</b>
+</div>
+<table align="center">
+  <tbody>
+    <tr align="center" valign="bottom">
+      <td>
+        <b>开启 MMSeg 之旅</b>
+      </td>
+      <td>
+        <b>MMSeg 快速入门教程</b>
+      </td>
+      <td>
+        <b>MMSeg 细节介绍</b>
+      </td>
+      <td>
+        <b>MMSeg 开发教程</b>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td>
+        <ul>
+        <li><a href="docs/zh_cn/overview.md)">MMSeg 概述</a></li>
+        <li><a href="docs/zh_cn/get_started.md">安装和验证</a></li>
+        <li><a href="docs/zh_cn/notes/faq.md">常见问题解答</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="docs/zh_cn/user_guides/1_config.md">教程1：了解配置文件</a></li>
+          <li><a href="docs/zh_cn/user_guides/2_dataset_prepare.md">教程2：准备数据集</a></li>
+          <li><a href="docs/zh_cn/user_guides/3_inference.md">教程3：使用预训练模型推理</a></li>
+          <li><a href="docs/zh_cn/user_guides/4_train_test.md">教程4：使用现有模型进行训练和测试</a></li>
+          <li><a href="docs/zh_cn/user_guides/5_deployment.md">教程5：模型部署</a></li>
+          <li><a href="docs/zh_cn/user_guides/deploy_jetson.md">在 Jetson 平台部署 mmsegmentation</a></li>
+          <li><a href="docs/zh_cn/user_guides/useful_tools.md">常用工具</a></li>
+          <li><a href="docs/zh_cn/user_guides/visualization_feature_map.md">特征图可视化</a></li>
+          <li><a href="docs/zh_cn/user_guides/visualization.md">可视化</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="docs/zh_cn/advanced_guides/datasets.md">MMSeg 数据集介绍</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/models.md">MMSeg 模型介绍</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/structures.md">MMSeg 数据结构介绍</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/transforms.md">MMSeg 数据增强介绍</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/data_flow.md">MMSeg 数据流介绍</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/engine.md">MMSeg 训练引擎介绍</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/evaluation.md">MMSeg 模型评测介绍</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="docs/zh_cn/advanced_guides/add_datasets.md">新增自定义数据集</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/add_metrics.md">新增评测指标</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/add_models.md">新增自定义模型</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/add_transforms.md">新增自定义数据增强</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/customize_runtime.md">自定义运行设定</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/training_tricks.md">训练技巧</a></li>
+          <li><a href=".github/CONTRIBUTING.md">如何给 MMSeg 贡献代码</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/contribute_dataset.md">在 projects 给 MMSeg 贡献一个标准数据集</a></li>
+          <li><a href="docs/zh_cn/device/npu.md">NPU (华为 昇腾)</a></li>
+          <li><a href="docs/zh_cn/migration/interface.md">0.x → 1.x 迁移文档</a>, <a href="docs/zh_cn/migration/package.md">0.x → 1.x 库变更文档</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## 基准测试和模型库
 
@@ -182,12 +198,15 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
       <td>
         <b>已支持的数据集</b>
       </td>
+      <td>
+        <b>其他</b>
+      </td>
     </tr>
     <tr valign="top">
       <td>
         <ul>
-        <li><a href="">ResNet(CVPR'2016)</a></li>
-        <li><a href="">ResNeXt (CVPR'2017)</a></li>
+        <li><a href="mmseg/models/backbones/resnet.py">ResNet(CVPR'2016)</a></li>
+        <li><a href="mmseg/models/backbones/resnext.py">ResNeXt (CVPR'2017)</a></li>
         <li><a href="configs/hrnet">HRNet (CVPR'2019)</a></li>
         <li><a href="configs/resnest">ResNeSt (ArXiv'2020)</a></li>
         <li><a href="configs/mobilenet_v2">MobileNetV2 (CVPR'2018)</a></li>
@@ -248,32 +267,84 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
       </td>
       <td>
         <ul>
-          <li>...</li>
+          <li><a href="mmseg/models/decode_heads/ann_head.py">ANN_Head</li>
+          <li><a href="mmseg/models/decode_heads/apc_head.py">APC_Head</li>
+          <li><a href="mmseg/models/decode_heads/aspp_head.py">ASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/cc_head.py">CC_Head</li>
+          <li><a href="mmseg/models/decode_heads/da_head.py">DA_Head</li>
+          <li><a href="mmseg/models/decode_heads/ddr_head.py">DDR_Head</li>
+          <li><a href="mmseg/models/decode_heads/dm_head.py">DM_Head</li>
+          <li><a href="mmseg/models/decode_heads/dnl_head.py">DNL_Head</li>
+          <li><a href="mmseg/models/decode_heads/dpt_head.py">DPT_HEAD</li>
+          <li><a href="mmseg/models/decode_heads/ema_head.py">EMA_Head</li>
+          <li><a href="mmseg/models/decode_heads/enc_head.py">ENC_Head</li>
+          <li><a href="mmseg/models/decode_heads/fcn_head.py">FCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/fpn_head.py">FPN_Head</li>
+          <li><a href="mmseg/models/decode_heads/gc_head.py">GC_Head</li>
+          <li><a href="mmseg/models/decode_heads/ham_head.py">LightHam_Head</li>
+          <li><a href="mmseg/models/decode_heads/isa_head.py">ISA_Head</li>
+          <li><a href="mmseg/models/decode_heads/knet_head.py">Knet_Head</li>
+          <li><a href="mmseg/models/decode_heads/lraspp_head.py">LRASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/mask2former_head.py">mask2former_Head</li>
+          <li><a href="mmseg/models/decode_heads/maskformer_head.py">maskformer_Head</li>
+          <li><a href="mmseg/models/decode_heads/nl_head.py">NL_Head</li>
+          <li><a href="mmseg/models/decode_heads/ocr_head.py">OCR_Head</li>
+          <li><a href="mmseg/models/decode_heads/pid_head.py">PID_Head</li>
+          <li><a href="mmseg/models/decode_heads/point_head.py">point_Head</li>
+          <li><a href="mmseg/models/decode_heads/psa_head.py">Psa_Head</li>
+          <li><a href="mmseg/models/decode_heads/psp_head.py">PSP_Head</li>
+          <li><a href="mmseg/models/decode_heads/san_head.py">SAN_Head</li>
+          <li><a href="mmseg/models/decode_heads/segformer_head.py">segformer_Head</li>
+          <li><a href="mmseg/models/decode_heads/segmenter_mask_head.py">segmenter_mask_Head</li>
+          <li><a href="mmseg/models/decode_heads/sap_aspp_head.py">DepthwiseSeparableASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">DepthwiseSeparableFCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/setr_mla_head.py">SETRMLAHead_Head</li>
+          <li><a href="mmseg/models/decode_heads/setr_up_head.py">SETRUP_Head</li>
+          <li><a href="mmseg/models/decode_heads/stdc_head.py">STDC_Head</li>
+          <li><a href="mmseg/models/decode_heads/uper_head.py">UPer_Head</li>
+          <li><a href="mmseg/models/decode_heads/vpd_depth_head.py">VPDDepth_Head</li>
         </ul>
       </td>
       <td>
-      <ul>
-      <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#pascal-voc">PASCAL VOC</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#ade20k">ADE20K</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#pascal-context">Pascal Context</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#coco-stuff-10k">COCO-Stuff 10k</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#coco-stuff-164k">COCO-Stuff 164k</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#chase-db1">CHASE_DB1</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#drive">DRIVE</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#hrf">HRF</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#stare">STARE</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#dark-zurich">Dark Zurich</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#nighttime-driving">Nighttime Driving</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#loveda">LoveDA</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#isprs-potsdam">Potsdam</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#isprs-vaihingen">Vaihingen</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#isaid">iSAID</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets">Mapillary Vistas</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#levir-cd">LEVIR-CD</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#bdd100K">BDD100K</a></li>
-        <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu">NYU</a></li>
-      </ul>
+        <ul>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/  docs/zh_cn/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#pascal-voc">PASCAL VOC</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#ade20k">ADE20K</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#pascal-context">Pascal Context</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#coco-stuff-10k">COCO-Stuff 10k</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#coco-stuff-164k">COCO-Stuff 164k</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#chase-db1">CHASE_DB1</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#drive">DRIVE</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#hrf">HRF</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#stare">STARE</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#dark-zurich">Dark Zurich</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#nighttime-driving">Nighttime Driving</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#loveda">LoveDA</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#isprs-potsdam">Potsdam</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#isprs-vaihingen">Vaihingen</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#isaid">iSAID</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets">Mapillary Vistas</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#levir-cd">LEVIR-CD</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#bdd100K">BDD100K</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu">NYU</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><b>已支持的 loss</b></li>
+        <ul>
+          <li><a href="mmseg/models/losses/boundary_loss.py">boundary_loss</a></li>
+          <li><a href="mmseg/models/losses/cross_entropy_loss.py">cross_entropy_loss</a></li>
+          <li><a href="mmseg/models/losses/dice_loss.py">dice_loss</a></li>
+          <li><a href="mmseg/models/losses/focal_loss.py">focal_loss</a></li>
+          <li><a href="mmseg/models/losses/huasdorff_distance_loss.py">huasdorff_distance_loss</a></li>
+          <li><a href="mmseg/models/losses/kldiv_loss.py">kldiv_loss</a></li>
+          <li><a href="mmseg/models/losses/lovasz_loss.py">lovasz_loss</a></li>
+          <li><a href="mmseg/models/losses/ohem_cross_entropy_loss.py">ohem_cross_entropy_loss</a></li>
+          <li><a href="mmseg/models/losses/silog_loss.py">silog_loss</a></li>
+          <li><a href="mmseg/models/losses/tversky_loss.py">tversky_loss</a></li>
+        </ul>
+        </ul>
       </td>
   </tbody>
 </table>
