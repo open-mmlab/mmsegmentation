@@ -169,7 +169,8 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
           <li><a href=".github/CONTRIBUTING.md">如何给 MMSeg 贡献代码</a></li>
           <li><a href="docs/zh_cn/advanced_guides/contribute_dataset.md">在 projects 给 MMSeg 贡献一个标准数据集</a></li>
           <li><a href="docs/zh_cn/device/npu.md">NPU (华为 昇腾)</a></li>
-          <li><a href="docs/zh_cn/migration/interface.md">0.x → 1.x 迁移文档</a>, <a href="docs/zh_cn/migration/package.md">0.x → 1.x 库变更文档</a></li>
+          <li><a href="docs/zh_cn/migration/interface.md">0.x → 1.x 迁移文档</a></li>
+          <li><a href="docs/zh_cn/migration/package.md">0.x → 1.x 库变更文档</a></li>
         </ul>
       </td>
     </tr>
