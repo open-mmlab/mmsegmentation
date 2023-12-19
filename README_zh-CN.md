@@ -308,7 +308,7 @@ MMSegmentation v1.x 在 0.x 版本的基础上有了显著的提升，提供了�
       </td>
       <td>
         <ul>
-          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/  docs/zh_cn/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
           <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#pascal-voc">PASCAL VOC</a></li>
           <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#ade20k">ADE20K</a></li>
           <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/zh_cn/user_guides/2_dataset_prepare.md#pascal-context">Pascal Context</a></li>
