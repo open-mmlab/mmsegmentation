@@ -2,7 +2,7 @@
 
 __version__ = '1.2.2'
 
-
+# parse_version_info and __version__ must be defined in the same file
 def parse_version_info(version_str):
     version_info = []
     for x in version_str.split('.'):
