@@ -118,154 +118,248 @@ To migrate from MMSegmentation 0.x, please refer to [migration](docs/en/migratio
 
 ## Tutorial
 
-<details>
-<summary>Get Started</summary>
-
-- [MMSeg overview](docs/en/overview.md)
-- [MMSeg Installation](docs/en/get_started.md)
-- [FAQ](docs/en/notes/faq.md)
-
-</details>
-
-<details>
-<summary>MMSeg Basic Tutorial</summary>
-
-- [Tutorial 1: Learn about Configs](docs/en/user_guides/1_config.md)
-- [Tutorial 2: Prepare datasets](docs/en/user_guides/2_dataset_prepare.md)
-- [Tutorial 3: Inference with existing models](docs/en/user_guides/3_inference.md)
-- [Tutorial 4: Train and test with existing models](docs/en/user_guides/4_train_test.md)
-- [Tutorial 5: Model deployment](docs/en/user_guides/5_deployment.md)
-- [Deploy mmsegmentation on Jetson platform](docs/zh_cn/user_guides/deploy_jetson.md)
-- [Useful Tools](docs/en/user_guides/useful_tools.md)
-- [Feature Map Visualization](docs/en/user_guides/visualization_feature_map.md)
-- [Visualization](docs/en/user_guides/visualization.md)
-
-</details>
-
-<details>
-<summary>MMSeg Detail Tutorial</summary>
-
-- [MMSeg Dataset](docs/en/advanced_guides/datasets.md)
-- [MMSeg Models](docs/en/advanced_guides/models.md)
-- [MMSeg Dataset Structures](docs/en/advanced_guides/structures.md)
-- [MMSeg Data Transforms](docs/en/advanced_guides/transforms.md)
-- [MMSeg Dataflow](docs/en/advanced_guides/data_flow.md)
-- [MMSeg Training Engine](docs/en/advanced_guides/engine.md)
-- [MMSeg Evaluation](docs/en/advanced_guides/evaluation.md)
-
-</details>
-
-<details>
-<summary>MMSeg Development Tutorial</summary>
-
-- [Add New Datasets](docs/en/advanced_guides/add_datasets.md)
-- [Add New Metrics](docs/en/advanced_guides/add_metrics.md)
-- [Add New Modules](docs/en/advanced_guides/add_models.md)
-- [Add New Data Transforms](docs/en/advanced_guides/add_transforms.md)
-- [Customize Runtime Settings](docs/en/advanced_guides/customize_runtime.md)
-- [Training Tricks](docs/en/advanced_guides/training_tricks.md)
-- [Contribute code to MMSeg](.github/CONTRIBUTING.md)
-- [Contribute a standard dataset in projects](docs/zh_cn/advanced_guides/contribute_dataset.md)
-- [NPU (HUAWEI Ascend)](docs/en/device/npu.md)
-- [0.x → 1.x migration](docs/en/migration/interface.md)，[0.x → 1.x package](docs/en/migration/package.md)
-
-</details>
+<div align="center">
+  <b>MMSegmentation Tutorials</b>
+</div>
+<table align="center">
+  <tbody>
+    <tr align="center" valign="center">
+      <td>
+        <b>Get Started</b>
+      </td>
+      <td>
+        <b>MMSeg Basic Tutorial</b>
+      </td>
+      <td>
+        <b>MMSeg Detail Tutorial</b>
+      </td>
+      <td>
+        <b>MMSeg Development Tutorial</b>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td>
+        <ul>
+          <li><a href="docs/en/overview.md">MMSeg overview</a></li>
+          <li><a href="docs/en/get_started.md">MMSeg Installation</a></li>
+          <li><a href="docs/en/notes/faq.md">FAQ</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="docs/en/user_guides/1_config.md">Tutorial 1: Learn about Configs</a></li>
+          <li><a href="docs/en/user_guides/2_dataset_prepare.md">Tutorial 2: Prepare datasets</a></li>
+          <li><a href="docs/en/user_guides/3_inference.md">Tutorial 3: Inference with existing models</a></li>
+          <li><a href="docs/en/user_guides/4_train_test.md">Tutorial 4: Train and test with existing models</a></li>
+          <li><a href="docs/en/user_guides/5_deployment.md">Tutorial 5: Model deployment</a></li>
+          <li><a href="docs/zh_cn/user_guides/deploy_jetson.md">Deploy mmsegmentation on Jetson platform</a></li>
+          <li><a href="docs/en/user_guides/useful_tools.md">Useful Tools</a></li>
+          <li><a href="docs/en/user_guides/visualization_feature_map.md">Feature Map Visualization</a></li>
+          <li><a href="docs/en/user_guides/visualization.md">Visualization</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="docs/en/advanced_guides/datasets.md">MMSeg Dataset</a></li>
+          <li><a href="docs/en/advanced_guides/models.md">MMSeg Models</a></li>
+          <li><a href="docs/en/advanced_guides/structures.md">MMSeg Dataset Structures</a></li>
+          <li><a href="docs/en/advanced_guides/transforms.md">MMSeg Data Transforms</a></li>
+          <li><a href="docs/en/advanced_guides/data_flow.md">MMSeg Dataflow</a></li>
+          <li><a href="docs/en/advanced_guides/engine.md">MMSeg Training Engine</a></li>
+          <li><a href="docs/en/advanced_guides/evaluation.md">MMSeg Evaluation</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="docs/en/advanced_guides/add_datasets.md">Add New Datasets</a></li>
+          <li><a href="docs/en/advanced_guides/add_metrics.md">Add New Metrics</a></li>
+          <li><a href="docs/en/advanced_guides/add_models.md">Add New Modules</a></li>
+          <li><a href="docs/en/advanced_guides/add_transforms.md">Add New Data Transforms</a></li>
+          <li><a href="docs/en/advanced_guides/customize_runtime.md">Customize Runtime Settings</a></li>
+          <li><a href="docs/en/advanced_guides/training_tricks.md">Training Tricks</a></li>
+          <li><a href=".github/CONTRIBUTING.md">Contribute code to MMSeg</a></li>
+          <li><a href="docs/zh_cn/advanced_guides/contribute_dataset.md">Contribute a standard dataset in projects</a></li>
+          <li><a href="docs/en/device/npu.md">NPU (HUAWEI Ascend)</a></li>
+          <li><a href="docs/en/migration/interface.md">0.x → 1.x migration</a></li>
+          <li><a href="docs/en/migration/package.md">0.x → 1.x package</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Benchmark and model zoo
 
 Results and models are available in the [model zoo](docs/en/model_zoo.md).
 
-<details open>
-<summary>Supported backbones:</summary>
-
-- [x] ResNet (CVPR'2016)
-- [x] ResNeXt (CVPR'2017)
-- [x] [HRNet (CVPR'2019)](configs/hrnet)
-- [x] [ResNeSt (ArXiv'2020)](configs/resnest)
-- [x] [MobileNetV2 (CVPR'2018)](configs/mobilenet_v2)
-- [x] [MobileNetV3 (ICCV'2019)](configs/mobilenet_v3)
-- [x] [Vision Transformer (ICLR'2021)](configs/vit)
-- [x] [Swin Transformer (ICCV'2021)](configs/swin)
-- [x] [Twins (NeurIPS'2021)](configs/twins)
-- [x] [BEiT (ICLR'2022)](configs/beit)
-- [x] [ConvNeXt (CVPR'2022)](configs/convnext)
-- [x] [MAE (CVPR'2022)](configs/mae)
-- [x] [PoolFormer (CVPR'2022)](configs/poolformer)
-- [x] [SegNeXt (NeurIPS'2022)](configs/segnext)
-
-</details>
-
-<details open>
-<summary>Supported methods:</summary>
-
-- [x] [SAN (CVPR'2023)](configs/san/)
-- [x] [VPD (ICCV'2023)](configs/vpd)
-- [x] [DDRNet (T-ITS'2022)](configs/ddrnet)
-- [x] [PIDNet (ArXiv'2022)](configs/pidnet)
-- [x] [Mask2Former (CVPR'2022)](configs/mask2former)
-- [x] [MaskFormer (NeurIPS'2021)](configs/maskformer)
-- [x] [K-Net (NeurIPS'2021)](configs/knet)
-- [x] [SegFormer (NeurIPS'2021)](configs/segformer)
-- [x] [Segmenter (ICCV'2021)](configs/segmenter)
-- [x] [DPT (ArXiv'2021)](configs/dpt)
-- [x] [SETR (CVPR'2021)](configs/setr)
-- [x] [STDC (CVPR'2021)](configs/stdc)
-- [x] [BiSeNetV2 (IJCV'2021)](configs/bisenetv2)
-- [x] [CGNet (TIP'2020)](configs/cgnet)
-- [x] [PointRend (CVPR'2020)](configs/point_rend)
-- [x] [DNLNet (ECCV'2020)](configs/dnlnet)
-- [x] [OCRNet (ECCV'2020)](configs/ocrnet)
-- [x] [ISANet (ArXiv'2019/IJCV'2021)](configs/isanet)
-- [x] [Fast-SCNN (ArXiv'2019)](configs/fastscnn)
-- [x] [FastFCN (ArXiv'2019)](configs/fastfcn)
-- [x] [GCNet (ICCVW'2019/TPAMI'2020)](configs/gcnet)
-- [x] [ANN (ICCV'2019)](configs/ann)
-- [x] [EMANet (ICCV'2019)](configs/emanet)
-- [x] [CCNet (ICCV'2019)](configs/ccnet)
-- [x] [DMNet (ICCV'2019)](configs/dmnet)
-- [x] [Semantic FPN (CVPR'2019)](configs/sem_fpn)
-- [x] [DANet (CVPR'2019)](configs/danet)
-- [x] [APCNet (CVPR'2019)](configs/apcnet)
-- [x] [NonLocal Net (CVPR'2018)](configs/nonlocal_net)
-- [x] [EncNet (CVPR'2018)](configs/encnet)
-- [x] [DeepLabV3+ (CVPR'2018)](configs/deeplabv3plus)
-- [x] [UPerNet (ECCV'2018)](configs/upernet)
-- [x] [ICNet (ECCV'2018)](configs/icnet)
-- [x] [PSANet (ECCV'2018)](configs/psanet)
-- [x] [BiSeNetV1 (ECCV'2018)](configs/bisenetv1)
-- [x] [DeepLabV3 (ArXiv'2017)](configs/deeplabv3)
-- [x] [PSPNet (CVPR'2017)](configs/pspnet)
-- [x] [ERFNet (T-ITS'2017)](configs/erfnet)
-- [x] [UNet (MICCAI'2016/Nat. Methods'2019)](configs/unet)
-- [x] [FCN (CVPR'2015/TPAMI'2017)](configs/fcn)
-
-</details>
-
-<details open>
-<summary>Supported datasets:</summary>
-
-- [x] [Cityscapes](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#cityscapes)
-- [x] [PASCAL VOC](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-voc)
-- [x] [ADE20K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#ade20k)
-- [x] [Pascal Context](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-context)
-- [x] [COCO-Stuff 10k](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-10k)
-- [x] [COCO-Stuff 164k](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-164k)
-- [x] [CHASE_DB1](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#chase-db1)
-- [x] [DRIVE](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#drive)
-- [x] [HRF](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#hrf)
-- [x] [STARE](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#stare)
-- [x] [Dark Zurich](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#dark-zurich)
-- [x] [Nighttime Driving](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nighttime-driving)
-- [x] [LoveDA](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#loveda)
-- [x] [Potsdam](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam)
-- [x] [Vaihingen](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen)
-- [x] [iSAID](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isaid)
-- [x] [Mapillary Vistas](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets)
-- [x] [LEVIR-CD](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#levir-cd)
-- [x] [BDD100K](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#bdd100K)
-- [x] [NYU](https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu)
-
-</details>
+<div align="center">
+  <b>Overview</b>
+</div>
+<table align="center">
+  <tbody>
+    <tr align="center" valign="center">
+      <td>
+        <b>Supported backbones</b>
+      </td>
+      <td>
+        <b>Supported methods</b>
+      </td>
+      <td>
+        <b>Supported Head</b>
+      </td>
+      <td>
+        <b>Supported datasets</b>
+      </td>
+      <td>
+        <b>Other</b>
+      </td>
+    </tr>
+    <tr valign="top">
+      <td>
+        <ul>
+        <li><a href="mmseg/models/backbones/resnet.py">ResNet(CVPR'2016)</a></li>
+        <li><a href="mmseg/models/backbones/resnext.py">ResNeXt (CVPR'2017)</a></li>
+        <li><a href="configs/hrnet">HRNet (CVPR'2019)</a></li>
+        <li><a href="configs/resnest">ResNeSt (ArXiv'2020)</a></li>
+        <li><a href="configs/mobilenet_v2">MobileNetV2 (CVPR'2018)</a></li>
+        <li><a href="configs/mobilenet_v3">MobileNetV3 (ICCV'2019)</a></li>
+        <li><a href="configs/vit">Vision Transformer (ICLR'2021)</a></li>
+        <li><a href="configs/swin">Swin Transformer (ICCV'2021)</a></li>
+        <li><a href="configs/twins">Twins (NeurIPS'2021)</a></li>
+        <li><a href="configs/beit">BEiT (ICLR'2022)</a></li>
+        <li><a href="configs/convnext">ConvNeXt (CVPR'2022)</a></li>
+        <li><a href="configs/mae">MAE (CVPR'2022)</a></li>
+        <li><a href="configs/poolformer">PoolFormer (CVPR'2022)</a></li>
+        <li><a href="configs/segnext">SegNeXt (NeurIPS'2022)</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="configs/san/">SAN (CVPR'2023)</a></li>
+          <li><a href="configs/vpd">VPD (ICCV'2023)</a></li>
+          <li><a href="configs/ddrnet">DDRNet (T-ITS'2022)</a></li>
+          <li><a href="configs/pidnet">PIDNet (ArXiv'2022)</a></li>
+          <li><a href="configs/mask2former">Mask2Former (CVPR'2022)</a></li>
+          <li><a href="configs/maskformer">MaskFormer (NeurIPS'2021)</a></li>
+          <li><a href="configs/knet">K-Net (NeurIPS'2021)</a></li>
+          <li><a href="configs/segformer">SegFormer (NeurIPS'2021)</a></li>
+          <li><a href="configs/segmenter">Segmenter (ICCV'2021)</a></li>
+          <li><a href="configs/dpt">DPT (ArXiv'2021)</a></li>
+          <li><a href="configs/setr">SETR (CVPR'2021)</a></li>
+          <li><a href="configs/stdc">STDC (CVPR'2021)</a></li>
+          <li><a href="configs/bisenetv2">BiSeNetV2 (IJCV'2021)</a></li>
+          <li><a href="configs/cgnet">CGNet (TIP'2020)</a></li>
+          <li><a href="configs/point_rend">PointRend (CVPR'2020)</a></li>
+          <li><a href="configs/dnlnet">DNLNet (ECCV'2020)</a></li>
+          <li><a href="configs/ocrnet">OCRNet (ECCV'2020)</a></li>
+          <li><a href="configs/isanet">ISANet (ArXiv'2019/IJCV'2021)</a></li>
+          <li><a href="configs/fastscnn">Fast-SCNN (ArXiv'2019)</a></li>
+          <li><a href="configs/fastfcn">FastFCN (ArXiv'2019)</a></li>
+          <li><a href="configs/gcnet">GCNet (ICCVW'2019/TPAMI'2020)</a></li>
+          <li><a href="configs/ann">ANN (ICCV'2019)</a></li>
+          <li><a href="configs/emanet">EMANet (ICCV'2019)</a></li>
+          <li><a href="configs/ccnet">CCNet (ICCV'2019)</a></li>
+          <li><a href="configs/dmnet">DMNet (ICCV'2019)</a></li>
+          <li><a href="configs/sem_fpn">Semantic FPN (CVPR'2019)</a></li>
+          <li><a href="configs/danet">DANet (CVPR'2019)</a></li>
+          <li><a href="configs/apcnet">APCNet (CVPR'2019)</a></li>
+          <li><a href="configs/nonlocal_net">NonLocal Net (CVPR'2018)</a></li>
+          <li><a href="configs/encnet">EncNet (CVPR'2018)</a></li>
+          <li><a href="configs/deeplabv3plus">DeepLabV3+ (CVPR'2018)</a></li>
+          <li><a href="configs/upernet">UPerNet (ECCV'2018)</a></li>
+          <li><a href="configs/icnet">ICNet (ECCV'2018)</a></li>
+          <li><a href="configs/psanet">PSANet (ECCV'2018)</a></li>
+          <li><a href="configs/bisenetv1">BiSeNetV1 (ECCV'2018)</a></li>
+          <li><a href="configs/deeplabv3">DeepLabV3 (ArXiv'2017)</a></li>
+          <li><a href="configs/pspnet">PSPNet (CVPR'2017)</a></li>
+          <li><a href="configs/erfnet">ERFNet (T-ITS'2017)</a></li>
+          <li><a href="configs/unet">UNet (MICCAI'2016/Nat. Methods'2019)</a></li>
+          <li><a href="configs/fcn">FCN (CVPR'2015/TPAMI'2017)</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="mmseg/models/decode_heads/ann_head.py">ANN_Head</li>
+          <li><a href="mmseg/models/decode_heads/apc_head.py">APC_Head</li>
+          <li><a href="mmseg/models/decode_heads/aspp_head.py">ASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/cc_head.py">CC_Head</li>
+          <li><a href="mmseg/models/decode_heads/da_head.py">DA_Head</li>
+          <li><a href="mmseg/models/decode_heads/ddr_head.py">DDR_Head</li>
+          <li><a href="mmseg/models/decode_heads/dm_head.py">DM_Head</li>
+          <li><a href="mmseg/models/decode_heads/dnl_head.py">DNL_Head</li>
+          <li><a href="mmseg/models/decode_heads/dpt_head.py">DPT_HEAD</li>
+          <li><a href="mmseg/models/decode_heads/ema_head.py">EMA_Head</li>
+          <li><a href="mmseg/models/decode_heads/enc_head.py">ENC_Head</li>
+          <li><a href="mmseg/models/decode_heads/fcn_head.py">FCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/fpn_head.py">FPN_Head</li>
+          <li><a href="mmseg/models/decode_heads/gc_head.py">GC_Head</li>
+          <li><a href="mmseg/models/decode_heads/ham_head.py">LightHam_Head</li>
+          <li><a href="mmseg/models/decode_heads/isa_head.py">ISA_Head</li>
+          <li><a href="mmseg/models/decode_heads/knet_head.py">Knet_Head</li>
+          <li><a href="mmseg/models/decode_heads/lraspp_head.py">LRASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/mask2former_head.py">mask2former_Head</li>
+          <li><a href="mmseg/models/decode_heads/maskformer_head.py">maskformer_Head</li>
+          <li><a href="mmseg/models/decode_heads/nl_head.py">NL_Head</li>
+          <li><a href="mmseg/models/decode_heads/ocr_head.py">OCR_Head</li>
+          <li><a href="mmseg/models/decode_heads/pid_head.py">PID_Head</li>
+          <li><a href="mmseg/models/decode_heads/point_head.py">point_Head</li>
+          <li><a href="mmseg/models/decode_heads/psa_head.py">PSA_Head</li>
+          <li><a href="mmseg/models/decode_heads/psp_head.py">PSP_Head</li>
+          <li><a href="mmseg/models/decode_heads/san_head.py">SAN_Head</li>
+          <li><a href="mmseg/models/decode_heads/segformer_head.py">segformer_Head</li>
+          <li><a href="mmseg/models/decode_heads/segmenter_mask_head.py">segmenter_mask_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_aspp_head.py">SepASPP_Head</li>
+          <li><a href="mmseg/models/decode_heads/sep_fcn_head.py">SepFCN_Head</li>
+          <li><a href="mmseg/models/decode_heads/setr_mla_head.py">SETRMLAHead_Head</li>
+          <li><a href="mmseg/models/decode_heads/setr_up_head.py">SETRUP_Head</li>
+          <li><a href="mmseg/models/decode_heads/stdc_head.py">STDC_Head</li>
+          <li><a href="mmseg/models/decode_heads/uper_head.py">Uper_Head</li>
+          <li><a href="mmseg/models/decode_heads/vpd_depth_head.py">VPDDepth_Head</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#cityscapes">Cityscapes</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-voc">PASCAL VOC</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#ade20k">ADE20K</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#pascal-context">Pascal Context</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-10k">COCO-Stuff 10k</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#coco-stuff-164k">COCO-Stuff 164k</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#chase-db1">CHASE_DB1</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#drive">DRIVE</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#hrf">HRF</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#stare">STARE</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#dark-zurich">Dark Zurich</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nighttime-driving">Nighttime Driving</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#loveda">LoveDA</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isprs-potsdam">Potsdam</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isprs-vaihingen">Vaihingen</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#isaid">iSAID</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#mapillary-vistas-datasets">Mapillary Vistas</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#levir-cd">LEVIR-CD</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#bdd100K">BDD100K</a></li>
+          <li><a href="https://github.com/open-mmlab/mmsegmentation/blob/main/docs/en/user_guides/2_dataset_prepare.md#nyu">NYU</a></li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li><b>Supported loss</b></li>
+        <ul>
+          <li><a href="mmseg/models/losses/boundary_loss.py">boundary_loss</a></li>
+          <li><a href="mmseg/models/losses/cross_entropy_loss.py">cross_entropy_loss</a></li>
+          <li><a href="mmseg/models/losses/dice_loss.py">dice_loss</a></li>
+          <li><a href="mmseg/models/losses/focal_loss.py">focal_loss</a></li>
+          <li><a href="mmseg/models/losses/huasdorff_distance_loss.py">huasdorff_distance_loss</a></li>
+          <li><a href="mmseg/models/losses/kldiv_loss.py">kldiv_loss</a></li>
+          <li><a href="mmseg/models/losses/lovasz_loss.py">lovasz_loss</a></li>
+          <li><a href="mmseg/models/losses/ohem_cross_entropy_loss.py">ohem_cross_entropy_loss</a></li>
+          <li><a href="mmseg/models/losses/silog_loss.py">silog_loss</a></li>
+          <li><a href="mmseg/models/losses/tversky_loss.py">tversky_loss</a></li>
+        </ul>
+        </ul>
+      </td>
+  </tbody>
+</table>
 
 Please refer to [FAQ](docs/en/notes/faq.md) for frequently asked questions.
 
