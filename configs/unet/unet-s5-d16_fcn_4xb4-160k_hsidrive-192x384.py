@@ -36,14 +36,14 @@ model = dict(
     test_cfg=dict(mode='whole'))
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromNpyFile'),
     dict(type='LoadAnnotations'),
     dict(type='RandomCrop', crop_size=crop_size),
     dict(type='PackSegInputs')
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromNpyFile'),
     dict(type='RandomCrop', crop_size=crop_size),
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
