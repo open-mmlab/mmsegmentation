@@ -34,20 +34,3 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
-
-train_pipeline = [
-    dict(type='LoadImageFromNpyFile'),
-    dict(type='LoadAnnotations'),
-    dict(type='RandomCrop', crop_size=crop_size),
-    dict(type='PackSegInputs')
-]
-
-test_pipeline = [
-    dict(type='LoadImageFromNpyFile'),
-    dict(type='RandomCrop', crop_size=crop_size),
-    dict(type='LoadAnnotations'),
-    dict(type='PackSegInputs')
-]
-
-train_dataloader = dict(dataset=dict(pipeline=train_pipeline))
-test_dataloader = dict(dataset=dict(pipeline=test_pipeline))
