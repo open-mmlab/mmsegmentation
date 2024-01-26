@@ -1,8 +1,9 @@
-from mmseg.models.data_preprocessor import SegDataPreProcessor
-from mmseg.models.segmentors import EncoderDecoder
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmseg.models.backbones import MixVisionTransformer
+from mmseg.models.data_preprocessor import SegDataPreProcessor
 from mmseg.models.decode_heads import SegformerHead
 from mmseg.models.losses import CrossEntropyLoss
+from mmseg.models.segmentors import EncoderDecoder
 
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)

@@ -1,12 +1,13 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmengine.config import read_base
 
 with read_base():
-    from .segformer_mit_b0_8xb2_160k_ade20k_512x512 import *
+    from .segformer_mit_b0_8xb2_160k_ade20k_512x512 import *  # noqa: F401,F403
 
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segformer/mit_b5_20220624-658746d9.pth'  # noqa
 
 # model settings
-model.update(
+model.update(  # noqa: F405
     backbone=dict(
         init_cfg=dict(checkpoint=checkpoint),
         embed_dims=64,

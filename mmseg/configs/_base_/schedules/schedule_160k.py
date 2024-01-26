@@ -1,10 +1,11 @@
-from torch.optim.sgd import SGD
-
+# Copyright (c) OpenMMLab. All rights reserved.
+from mmengine.hooks import (CheckpointHook, DistSamplerSeedHook, IterTimerHook,
+                            LoggerHook, ParamSchedulerHook)
 from mmengine.optim.optimizer.optimizer_wrapper import OptimWrapper
 from mmengine.optim.scheduler.lr_scheduler import PolyLR
 from mmengine.runner.loops import IterBasedTrainLoop, TestLoop, ValLoop
-from mmengine.hooks import (CheckpointHook, DistSamplerSeedHook, IterTimerHook,
-                            LoggerHook, ParamSchedulerHook)
+from torch.optim.sgd import SGD
+
 from mmseg.engine.hooks import SegVisualizationHook
 
 # optimizer

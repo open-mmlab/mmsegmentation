@@ -1,7 +1,9 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmengine.runner import LogProcessor
 from mmengine.visualization import LocalVisBackend
-from mmseg.visualization import SegLocalVisualizer
+
 from mmseg.models.segmentors import SegTTAModel
+from mmseg.visualization import SegLocalVisualizer
 
 default_scope = None
 env_cfg = dict(

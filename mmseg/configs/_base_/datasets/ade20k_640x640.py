@@ -1,9 +1,11 @@
+# Copyright (c) OpenMMLab. All rights reserved.
+from mmcv.transforms import RandomFlip, RandomResize, Resize, TestTimeAug
 from mmcv.transforms.loading import LoadImageFromFile
-from mmcv.transforms import RandomResize, RandomFlip, Resize, TestTimeAug
 from mmengine.dataset.sampler import DefaultSampler, InfiniteSampler
 
 from mmseg.datasets.ade import ADE20KDataset
-from mmseg.datasets.transforms import LoadAnnotations, RandomCrop, PhotoMetricDistortion, PackSegInputs
+from mmseg.datasets.transforms import (LoadAnnotations, PackSegInputs,
+                                       PhotoMetricDistortion, RandomCrop)
 from mmseg.evaluation import IoUMetric
 
 # dataset settings
