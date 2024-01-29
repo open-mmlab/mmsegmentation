@@ -13,28 +13,66 @@ from PIL import Image
 import pathlib
 import time
 
+
+class FPSLogger:
+    def __init__(self):
+        self.tottime = 0.0
+        self.count = 0
+        self.last_record = 0.0
+        self.last_print = time.time()
+        self.interval = 10
+
+    def start_record(self):
+        self.last_record = time.time()
+
+    def end_record(self):
+        self.tottime += time.time() - self.last_record
+        self.count += 1
+        self.print_fps()
+
+    def print_fps(self):
+        if time.time() - self.last_print > self.interval:
+            print(f"Inference running at {self.count / self.tottime:.3f} FPS")
+            self.last_print = time.time()
+
+
 def main(config):
+    fps_logger = FPSLogger()
     inference = MMSegInferencer(
         model=config.config,
         weights=config.checkpoint,
         classes=("full", "empty",),
         palette=([0,0,0], [0,255,0],),
     )
+    if config.silent:
+        inference.show_progress = False
+
     images : Path = config.images_dir
     output_dir: Path = config.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
     start_time = time.time()
     if config.mask_only:
-        for p in images.glob("**/*.jpg"):
-            print("---", p)
-            result = inference(str(p))
+        image_paths = list(images.glob("**/*.jpg"))
+        num_images = len(image_paths)
+        for i, p in enumerate(image_paths, 1):
+            try:
+                if i % 100 == 0:
+                    print(f"|mmseg predict| [{i}/{num_images}]")
+
+                fps_logger.start_record()
+                result = inference(str(p))
+
+                mask = result['predictions'].astype(np.uint8) * 255
+                mask_image = Image.fromarray(mask)
+                output_path = pathlib.Path(output_dir) / p.name
+                output_path = output_path.with_suffix(".png")
+
+                mask_image.save(output_path, "PNG")
+                fps_logger.end_record()
             
-            mask = result['predictions'].astype(np.uint8) * 255
-            mask_image = Image.fromarray(mask)
-            output_path = pathlib.Path(output_dir) / p.name
-            
-            mask_image.save(output_path)
+            except Exception as e:
+                print(f"Failed with {p}. {e}")
 
     else:
         for p in images.glob("**/*.jpg"):
@@ -57,7 +95,9 @@ if __name__ == "__main__":
         "--mask_only",
         action="store_true",
         help="save masks only")
+    parser.add_argument(
+        "--silent",
+        action="store_true",
+        help="suppress progress bars and verbose output")
     config = parser.parse_args()
     main(config)
-
-
