@@ -1,15 +1,23 @@
+# Copyright (c) OpenMMLab. All rights reserved.
 from mmengine.hooks import (CheckpointHook, DistSamplerSeedHook, IterTimerHook,
                             LoggerHook, ParamSchedulerHook)
 from mmengine.optim.optimizer.optimizer_wrapper import OptimWrapper
 from mmengine.optim.scheduler.lr_scheduler import PolyLR
 from mmengine.runner.loops import IterBasedTrainLoop, TestLoop, ValLoop
-# from mmengine.runner.loops import EpochBasedTrainLoop
 from torch.optim.sgd import SGD
 
 from mmseg.engine import SegVisualizationHook
 
-optimizer = dict(type=SGD, lr=0.01, momentum=0.9, weight_decay=0.0005)
+# optimizer
+optimizer = dict(
+    type=SGD,
+    #  lr=0.01,
+    #  momentum=0.9,
+    #  weight_decay=0.0005
+)
+
 optim_wrapper = dict(type=OptimWrapper, optimizer=optimizer, clip_grad=None)
+
 # learning policy
 param_scheduler = [
     dict(
@@ -17,17 +25,18 @@ param_scheduler = [
         eta_min=1e-4,
         power=0.9,
         begin=0,
-        end=240000,
+        end=80000,
         by_epoch=False)
 ]
-# training schedule for 240k
-train_cfg = dict(type=IterBasedTrainLoop, max_iters=240000, val_interval=24000)
+# training schedule for 80k
+train_cfg = dict(type=IterBasedTrainLoop, max_iters=80000, val_interval=8000)
 val_cfg = dict(type=ValLoop)
 test_cfg = dict(type=TestLoop)
+
 default_hooks = dict(
     timer=dict(type=IterTimerHook),
     logger=dict(type=LoggerHook, interval=50, log_metric_by_epoch=False),
     param_scheduler=dict(type=ParamSchedulerHook),
-    checkpoint=dict(type=CheckpointHook, by_epoch=False, interval=24000),
+    checkpoint=dict(type=CheckpointHook, by_epoch=False, interval=8000),
     sampler_seed=dict(type=DistSamplerSeedHook),
     visualization=dict(type=SegVisualizationHook))
