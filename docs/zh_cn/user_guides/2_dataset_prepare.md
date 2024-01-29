@@ -198,6 +198,41 @@ mmsegmentation
 |   │   │   │   └── rles
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
+│   ├── nyu
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── test
+│   ├── HSIDrive20
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── validation
+│   │   │   ├── test
+```
+
+## 用 MIM 下载数据集
+
+通过使用 [OpenXLab](https://openxlab.org.cn/datasets)，您可以直接下载开源数据集。通过平台的搜索功能，您可以快速轻松地找到他们正在寻找的数据集。使用平台上的格式化数据集，您可以高效地跨数据集执行任务。
+
+如果您使用 MIM 下载，请确保版本大于 v0.3.8。您可以使用以下命令进行更新、安装、登录和数据集下载：
+
+```shell
+# upgrade your MIM
+pip install -U openmim
+
+# install OpenXLab CLI tools
+pip install -U openxlab
+# log in OpenXLab
+openxlab login
+
+# download ADE20K by MIM
+mim download mmsegmentation --dataset ade20k
 ```
 
 ## Cityscapes
@@ -711,4 +746,57 @@ mmsegmentation
 |   │   │   │   └── rles
 |   │   │   │   │   ├──sem_seg_train.json
 |   │   │   │   │   └──sem_seg_val.json
+```
+
+## NYU
+
+- 您可以从 [这个链接](https://drive.google.com/file/d/1wC-io-14RCIL4XTUrQLk6lBqU2AexLVp/view?usp=share_link) 下载 NYU 数据集
+
+- 下载完成后，您可以使用 [tools/dataset_converters/nyu.py](/tools/dataset_converters/nyu.py) 脚本来解压和组织数据到所需的格式
+
+  ```bash
+  python tools/dataset_converters/nyu.py nyu.zip
+  ```
+
+## HSI Drive 2.0
+
+- 您可以从以下位置下载 HSI Drive 2.0 数据集 [here](https://ipaccess.ehu.eus/HSI-Drive/#download) 刚刚向 gded@ehu.eus 发送主题为“下载 HSI-Drive”的电子邮件后 您将收到解压缩文件的密码.
+
+- 下载后，按照以下说明解压：
+
+  ```bash
+  7z x -p"password" ./HSI_Drive_v2_0_Phyton.zip
+
+  mv ./HSIDrive20 path_to_mmsegmentation/data
+  mv ./HSI_Drive_v2_0_release_notes_Python_version.md path_to_mmsegmentation/data
+  mv ./image_numbering.pdf path_to_mmsegmentation/data
+  ```
+
+- 解压后得到:
+
+```none
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── HSIDrive20
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── images_MF
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── RGB
+│   │   ├── training_filenames.txt
+│   │   ├── validation_filenames.txt
+│   │   ├── test_filenames.txt
+│   ├── HSI_Drive_v2_0_release_notes_Python_version.md
+│   ├── image_numbering.pdf
 ```

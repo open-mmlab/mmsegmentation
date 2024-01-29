@@ -1,5 +1,83 @@
 # Changelog of v1.x
 
+## v1.2.2 (12/14/2023)
+
+### Bug Fixes
+
+- Fix bug in cross entropy loss ([#3457](https://github.com/open-mmlab/mmsegmentation/pull/3457))
+- Allow custom visualizer ([#3455](https://github.com/open-mmlab/mmsegmentation/pull/3455))
+- test resize with pad_shape ([#3421](https://github.com/open-mmlab/mmsegmentation/pull/3421))
+- add with-labels args to inferencer for visualization without labels ([#3466](https://github.com/open-mmlab/mmsegmentation/pull/3466))
+
+### New Contributors
+
+- @okotaku made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3421
+
+## v1.2.1 (10/17/2023)
+
+### Bug Fixes
+
+- Add bpe_simple_vocab_16e6.txt.gz to release ([#3386](https://github.com/open-mmlab/mmsegmentation/pull/3386))
+- Fix init api ([#3388](https://github.com/open-mmlab/mmsegmentation/pull/3388))
+
+## v1.2.0 (10/12/2023)
+
+### Features
+
+- Support Side Adapter Network ([#3232](https://github.com/open-mmlab/mmsegmentation/pull/3232))
+
+### Bug Fixes
+
+- fix wrong variables passing for `set_dataset_meta` ([#3348](https://github.com/open-mmlab/mmsegmentation/pull/3348))
+
+### Documentation
+
+- add documentation of Finetune ONNX Models (MMSegemetation) Inference for NVIDIA Jetson ([#3372](https://github.com/open-mmlab/mmsegmentation/pull/3372))
+
+## v1.1.2(09/20/2023)
+
+### Features
+
+- Add semantic label to the segmentation visualization results ([#3229](https://github.com/open-mmlab/mmsegmentation/pull/3229))
+- Support NYU depth estimation dataset ([#3269](https://github.com/open-mmlab/mmsegmentation/pull/3269))
+- Support Kullback-Leibler divergence Loss ([#3242](https://github.com/open-mmlab/mmsegmentation/pull/3242))
+- Support depth metrics ([#3297](https://github.com/open-mmlab/mmsegmentation/pull/3297))
+- Support Remote sensing inferencer ([#3131](https://github.com/open-mmlab/mmsegmentation/pull/3131))
+- Support VPD Depth Estimator ((#3321)(https://github.com/open-mmlab/mmsegmentation/pull/3321))
+- Support inference and visualization of VPD ([#3331](https://github.com/open-mmlab/mmsegmentation/pull/3331))
+- Support using the pytorch-grad-cam tool to visualize Class Activation Maps (CAM) ([#3324](https://github.com/open-mmlab/mmsegmentation/pull/3324))
+
+### New projects
+
+- Support PP-Mobileseg ([#3239](https://github.com/open-mmlab/mmsegmentation/pull/3239))
+- Support CAT-Seg (CVPR'2023) ([#3098](https://github.com/open-mmlab/mmsegmentation/pull/3098))
+- Support Adabins ([#3257](https://github.com/open-mmlab/mmsegmentation/pull/3257))
+- Add pp_mobileseg onnx inference script ([#3268](https://github.com/open-mmlab/mmsegmentation/pull/3268))
+
+### Bug Fixes
+
+- Fix module PascalContextDataset ([#3235](https://github.com/open-mmlab/mmsegmentation/pull/3235))
+- Fix one hot encoding for dice loss ([#3237](https://github.com/open-mmlab/mmsegmentation/pull/3237))
+- Fix confusion_matrix.py ([#3291](https://github.com/open-mmlab/mmsegmentation/pull/3291))
+- Fix inferencer visualization ([#3333](https://github.com/open-mmlab/mmsegmentation/pull/3333))
+
+### Documentation
+
+- Translate doc for docs/zh_cn/user_guides/5_deployment.md ([#3281](https://github.com/open-mmlab/mmsegmentation/pull/3281))
+
+### New Contributors
+
+- @angiecao made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3235
+- @yeedrag made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3237
+- @Yang-Changhui made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3239
+- @ooooo-create made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3261
+- @Ben-Louis made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3269
+- @crazysteeaam made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3284
+- @zen0no made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3242
+- @XiandongWang made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3291
+- @ZhaoQiiii made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3332
+- @zhen6618 made their first contribution in https://github.com/open-mmlab/mmsegmentation/pull/3324
+
 ## v1.1.1(07/24/2023)
 
 ### Features

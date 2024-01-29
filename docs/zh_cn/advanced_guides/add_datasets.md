@@ -18,7 +18,7 @@
            classes=('xxx', 'xxx', ...),
            palette=[[x, x, x], [x, x, x], ...])
 
-       def __init__(self, aeg1, arg2):
+       def __init__(self, arg1, arg2):
            pass
    ```
 

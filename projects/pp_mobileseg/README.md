@@ -43,6 +43,63 @@ Same as other models in MMsegmentation, you can run the following command to tes
 ./tools/dist_test.sh projects/pp_mobileseg/configs/pp_mobileseg/pp_mobileseg_mobilenetv3_2x16_80k_ade20k_512x512_base.py checkpoints/pp_mobileseg_mobilenetv3_2xb16_3rdparty-base_512x512-ade20k-f12b44f3.pth 8
 ```
 
+## Inference with ONNXRuntime
+
+### Prerequisites
+
+**1. Install onnxruntime inference engine.**
+
+Choose one of the following ways to install onnxruntime.
+
+- CPU version
+
+```shell
+pip install onnxruntime==1.15.1
+wget https://github.com/microsoft/onnxruntime/releases/download/v1.15.1/onnxruntime-linux-x64-1.15.1.tgz
+tar -zxvf onnxruntime-linux-x64-1.15.1.tgz
+export ONNXRUNTIME_DIR=$(pwd)/onnxruntime-linux-x64-1.15.1
+export LD_LIBRARY_PATH=$ONNXRUNTIME_DIR/lib:$LD_LIBRARY_PATH
+```
+
+**2. Convert model to onnx file**
+
+- Install `mim` and `mmdeploy`.
+
+```shell
+pip install openmim
+mim install mmdeploy
+git clone https://github.com/open-mmlab/mmdeploy.git
+```
+
+- Download pp_mobileseg model.
+
+```shell
+wget https://download.openmmlab.com/mmsegmentation/v0.5/pp_mobileseg/pp_mobileseg_mobilenetv3_2xb16_3rdparty-tiny_512x512-ade20k-a351ebf5.pth
+```
+
+- Convert model to onnx files.
+
+```shell
+python mmdeploy/tools/deploy.py mmdeploy/configs/mmseg/segmentation_onnxruntime_dynamic.py \
+    configs/pp_mobileseg/pp_mobileseg_mobilenetv3_2x16_80k_ade20k_512x512_tiny.py \
+    pp_mobileseg_mobilenetv3_2xb16_3rdparty-tiny_512x512-ade20k-a351ebf5.pth \
+    ../../demo/demo.png \
+    --work-dir mmdeploy_model/mmseg/ort \
+    --show
+```
+
+**3. Run demo**
+
+```shell
+python inference_onnx.py ${ONNX_FILE_PATH} ${IMAGE_PATH} [${MODEL_INPUT_SIZE} ${DEVICE} ${OUTPUT_IMAGE_PATH}]
+```
+
+Example:
+
+```shell
+python inference_onnx.py mmdeploy_model/mmseg/ort/end2end.onnx ../../demo/demo.png
+```
+
 ## Citation
 
 If you find our project useful in your research, please consider citing:

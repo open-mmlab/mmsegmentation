@@ -103,7 +103,7 @@ class SegLocalVisualizer(Visualizer):
                       sem_seg: PixelData,
                       classes: Optional[List],
                       palette: Optional[List],
-                      withLabels: Optional[bool] = True) -> np.ndarray:
+                      with_labels: Optional[bool] = True) -> np.ndarray:
         """Draw semantic seg of GT or prediction.
 
         Args:
@@ -119,7 +119,7 @@ class SegLocalVisualizer(Visualizer):
             palette (list, optional): Input palette for result rendering, which
                 is a list of color palette responding to the classes.
                 Defaults to None.
-            withLabels(bool, optional): Add semantic labels in visualization
+            with_labels(bool, optional): Add semantic labels in visualization
                 result, Default to True.
 
         Returns:
@@ -139,7 +139,7 @@ class SegLocalVisualizer(Visualizer):
         for label, color in zip(labels, colors):
             mask[sem_seg[0] == label, :] = color
 
-        if withLabels:
+        if with_labels:
             font = cv2.FONT_HERSHEY_SIMPLEX
             # (0,1] to change the size of the text relative to the image
             scale = 0.05
@@ -180,6 +180,45 @@ class SegLocalVisualizer(Visualizer):
             np.uint8)
         self.set_image(color_seg)
         return color_seg
+
+    def _draw_depth_map(self, image: np.ndarray,
+                        depth_map: PixelData) -> np.ndarray:
+        """Draws a depth map on a given image.
+
+        This function takes an image and a depth map as input,
+        renders the depth map, and concatenates it with the original image.
+        Finally, it updates the internal image state of the visualizer with
+        the concatenated result.
+
+        Args:
+            image (np.ndarray): The original image where the depth map will
+                be drawn. The array should be in the format HxWx3 where H is
+                the height, W is the width.
+
+            depth_map (PixelData): Depth map to be drawn. The depth map
+                should be in the form of a PixelData object. It will be
+                converted to a torch tensor if it is a numpy array.
+
+        Returns:
+            np.ndarray: The concatenated image with the depth map drawn.
+
+        Example:
+            >>> depth_map_data = PixelData(data=torch.rand(1, 10, 10))
+            >>> image = np.random.randint(0, 256,
+            >>>                           size=(10, 10, 3)).astype('uint8')
+            >>> visualizer = SegLocalVisualizer()
+            >>> visualizer._draw_depth_map(image, depth_map_data)
+        """
+        depth_map = depth_map.cpu().data
+        if isinstance(depth_map, np.ndarray):
+            depth_map = torch.from_numpy(depth_map)
+        if depth_map.ndim == 2:
+            depth_map = depth_map[None]
+
+        depth_map = self.draw_featmap(depth_map, resize_shape=image.shape[:2])
+        out_image = np.concatenate((image, depth_map), axis=0)
+        self.set_image(out_image)
+        return out_image
 
     def set_dataset_meta(self,
                          classes: Optional[List] = None,
@@ -226,7 +265,7 @@ class SegLocalVisualizer(Visualizer):
             # TODO: Supported in mmengine's Viusalizer.
             out_file: Optional[str] = None,
             step: int = 0,
-            withLabels: Optional[bool] = True) -> None:
+            with_labels: Optional[bool] = True) -> None:
         """Draw datasample and save to all backends.
 
         - If GT and prediction are plotted at the same time, they are
@@ -252,7 +291,7 @@ class SegLocalVisualizer(Visualizer):
             wait_time (float): The interval of show (s). Defaults to 0.
             out_file (str): Path to output file. Defaults to None.
             step (int): Global step value to record. Defaults to 0.
-            withLabels(bool, optional): Add semantic labels in visualization
+            with_labels(bool, optional): Add semantic labels in visualization
                 result, Defaults to True.
         """
         classes = self.dataset_meta.get('classes', None)
@@ -261,26 +300,38 @@ class SegLocalVisualizer(Visualizer):
         gt_img_data = None
         pred_img_data = None
 
-        if draw_gt and data_sample is not None and 'gt_sem_seg' in data_sample:
-            gt_img_data = image
-            assert classes is not None, 'class information is ' \
-                                        'not provided when ' \
-                                        'visualizing semantic ' \
-                                        'segmentation results.'
-            gt_img_data = self._draw_sem_seg(gt_img_data,
-                                             data_sample.gt_sem_seg, classes,
-                                             palette, withLabels)
+        if draw_gt and data_sample is not None:
+            if 'gt_sem_seg' in data_sample:
+                assert classes is not None, 'class information is ' \
+                                            'not provided when ' \
+                                            'visualizing semantic ' \
+                                            'segmentation results.'
+                gt_img_data = self._draw_sem_seg(image, data_sample.gt_sem_seg,
+                                                 classes, palette, with_labels)
 
-        if (draw_pred and data_sample is not None
-                and 'pred_sem_seg' in data_sample):
-            pred_img_data = image
-            assert classes is not None, 'class information is ' \
-                                        'not provided when ' \
-                                        'visualizing semantic ' \
-                                        'segmentation results.'
-            pred_img_data = self._draw_sem_seg(pred_img_data,
-                                               data_sample.pred_sem_seg,
-                                               classes, palette, withLabels)
+            if 'gt_depth_map' in data_sample:
+                gt_img_data = gt_img_data if gt_img_data is not None else image
+                gt_img_data = self._draw_depth_map(gt_img_data,
+                                                   data_sample.gt_depth_map)
+
+        if draw_pred and data_sample is not None:
+
+            if 'pred_sem_seg' in data_sample:
+
+                assert classes is not None, 'class information is ' \
+                                            'not provided when ' \
+                                            'visualizing semantic ' \
+                                            'segmentation results.'
+                pred_img_data = self._draw_sem_seg(image,
+                                                   data_sample.pred_sem_seg,
+                                                   classes, palette,
+                                                   with_labels)
+
+            if 'pred_depth_map' in data_sample:
+                pred_img_data = pred_img_data if pred_img_data is not None \
+                    else image
+                pred_img_data = self._draw_depth_map(
+                    pred_img_data, data_sample.pred_depth_map)
 
         if gt_img_data is not None and pred_img_data is not None:
             drawn_img = np.concatenate((gt_img_data, pred_img_data), axis=1)

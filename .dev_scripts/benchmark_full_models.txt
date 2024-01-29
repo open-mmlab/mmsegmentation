@@ -54,3 +54,4 @@ twins/twins_pcpvt-s_uperhead_8xb4-160k_ade20k-512x512.py
 unet/unet-s5-d16_fcn_4xb4-160k_cityscapes-512x1024.py
 upernet/upernet_r50_4xb2-40k_cityscapes-769x769.py
 vit/vit_deit-s16_upernet_8xb2-80k_ade20k-512x512.py
+san/san-vit-b16_coco-stuff164k-640x640.py

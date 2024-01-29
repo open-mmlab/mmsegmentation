@@ -1,2 +1,22 @@
 cityscapesscripts
+-e git+https://github.com/openai/CLIP.git@main#egg=clip
+
+# for vpd model
+diffusers
+einops==0.3.0
+imageio==2.9.0
+imageio-ffmpeg==0.4.2
+invisible-watermark
+kornia==0.6
+-e git+https://github.com/CompVis/stable-diffusion@21f890f#egg=latent-diffusion
 nibabel
+omegaconf==2.1.1
+pudb==2019.2
+pytorch-lightning==1.4.2
+streamlit>=0.73.1
+-e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
+test-tube>=0.7.5
+timm
+torch-fidelity==0.3.0
+torchmetrics==0.6.0
+transformers==4.19.2
