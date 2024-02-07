@@ -26,7 +26,7 @@ dummy_input = torch.randn(1, 256, 256, 3)
 # Forward pass
 output = dcn(dummy_input)
 
-tmp = tmp = [param.clone() for param in dcn.parameters()]
+tmp = [param.clone() for param in dcn.parameters()]
 
 print("##################")
 # Assuming you have some target tensor

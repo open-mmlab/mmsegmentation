@@ -22,4 +22,4 @@ class BeachTypes(BaseSegDataset):
             **kwargs)
         assert fileio.exists(
             self.data_prefix['img_path'], backend_args=self.backend_args)
-        
+
