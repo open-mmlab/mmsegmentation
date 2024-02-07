@@ -40,10 +40,6 @@ steps:
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-      AWS_ACCESS_KEY_ID:
-        from_secret: DRONE_CI_AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: DRONE_CI_AWS_SECRET_ACCESS_KEY
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
@@ -55,9 +51,6 @@ steps:
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
-      build_args_from_env:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
       cache_from: quay.io/logivations/mmsegmentation:LS_mmdeploy_latest
       tags:
         - LS_mmdeploy_latest
@@ -71,10 +64,6 @@ steps:
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-      AWS_ACCESS_KEY_ID:
-        from_secret: DRONE_CI_AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: DRONE_CI_AWS_SECRET_ACCESS_KEY
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
@@ -86,9 +75,6 @@ steps:
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
-      build_args_from_env:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
       cache_from: quay.io/logivations/mmsegmentation:LS_mmseg_latest
       tags:
         - LS_mmseg_latest
@@ -169,9 +155,6 @@ steps:
     environment:
       DOCKER_BUILDKIT: 1
       AWS_ACCESS_KEY_ID:
-        from_secret: DRONE_CI_AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: DRONE_CI_AWS_SECRET_ACCESS_KEY
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
@@ -183,9 +166,6 @@ steps:
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
-      build_args_from_env:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
       cache_from: 
         - quay.io/logivations/mmsegmentation:LS_mmdeploy_latest
         - quay.io/logivations/mmsegmentation:LS_mmdeploy_pr${DRONE_PULL_REQUEST}
@@ -201,10 +181,6 @@ steps:
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-      AWS_ACCESS_KEY_ID:
-        from_secret: DRONE_CI_AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: DRONE_CI_AWS_SECRET_ACCESS_KEY
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
@@ -216,9 +192,6 @@ steps:
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
-      build_args_from_env:
-        - AWS_ACCESS_KEY_ID
-        - AWS_SECRET_ACCESS_KEY
       cache_from: 
         - quay.io/logivations/mmsegmentation:LS_mmseg_latest
         - quay.io/logivations/mmsegmentation:LS_mmseg_pr${DRONE_PULL_REQUEST}
