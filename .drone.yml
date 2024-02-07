@@ -3,13 +3,13 @@
 #######################################################################################################################
 #######################################################################################################################
 #######################         Jobs below are used to build only             #########################################
-#######################                  master  branches                     #########################################
-#######################                 for all containers                    #########################################
+#######################        master  branches for all containers            #########################################
+#######################                                                       #########################################
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
 
-# 1/2 This pipeline would be used after each merge request  to build ml_all:latest docker image
+# This pipeline would be used after each merge request  to build mmsegmentaion latest docker images
 kind: pipeline
 type: docker
 name: mmsegmentaion LS_mmdeploy_latest
@@ -24,25 +24,14 @@ trigger:
   event:
     - push
 
-node:
-  docker: build_only
-
-volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock
-
 clone:
   depth: 1
 
 steps:
-  - name: Build latest mmsegmentation LS_mmdeploy docker image
+  - name: Build latest LS_mmdeploy docker image
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
     settings: 
       dockerfile: deploy_docker/Dockerfile
       context: deploy_docker/
@@ -60,13 +49,10 @@ steps:
       password:
         from_secret: DOCKER_QUAY_PASSWORD
 
-  - name: Build latest mmsegmentation LS_mmseg docker image
+  - name: Build latest LS_mmseg docker image
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
     settings:
       dockerfile: docker/Dockerfile
       context: docker/
@@ -83,6 +69,7 @@ steps:
         from_secret: DOCKER_QUAY_USERNAME
       password:
         from_secret: DOCKER_QUAY_PASSWORD
+
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
@@ -138,11 +125,6 @@ trigger:
     include:
       - pull_request
 
-volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock
-
 # depends_on:
 #   - PR validation pre-commit check
 
@@ -150,14 +132,10 @@ clone:
   depth: 50
 
 steps:
-  - name: Build mmsegmentation LS_mmdeploy docker image for pull request
+  - name: Build LS_mmdeploy docker image for pull request
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-      AWS_ACCESS_KEY_ID:
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
     settings: 
       dockerfile: deploy_docker/Dockerfile
       context: deploy_docker/
@@ -177,13 +155,10 @@ steps:
       password:
         from_secret: DOCKER_QUAY_PASSWORD
 
-  - name: Build mmsegmentation LS_mmseg docker image for pull request
+  - name: Build LS_mmseg docker image for pull request
     image: plugins/docker:20.14
     environment:
       DOCKER_BUILDKIT: 1
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
     settings: 
       dockerfile: docker/Dockerfile
       context: docker/
