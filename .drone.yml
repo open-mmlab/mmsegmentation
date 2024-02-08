@@ -144,4 +144,3 @@ steps:
         from_secret: DOCKER_QUAY_USERNAME
       password:
         from_secret: DOCKER_QUAY_PASSWORD
----
