@@ -36,11 +36,11 @@ steps:
       dockerfile: deploy_docker/Dockerfile
       context: deploy_docker/
       registry: quay.io
-      repo: quay.io/logivations/mmsegmentation
+      repo: quay.io/logivations/ml_all
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
-      cache_from: quay.io/logivations/mmsegmentation:LS_mmdeploy_latest
+      cache_from: quay.io/logivations/ml_all:LS_mmdeploy_latest
       tags:
         - LS_mmdeploy_latest
         - LS_mmdeploy_latest_${DRONE_COMMIT_SHA}
@@ -57,11 +57,11 @@ steps:
       dockerfile: docker/Dockerfile
       context: docker/
       registry: quay.io
-      repo: quay.io/logivations/mmsegmentation
+      repo: quay.io/logivations/ml_all
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
-      cache_from: quay.io/logivations/mmsegmentation:LS_mmseg_latest
+      cache_from: quay.io/logivations/ml_all:LS_mmseg_latest
       tags:
         - LS_mmseg_latest
         - LS_mmseg_latest_${DRONE_COMMIT_SHA}
@@ -107,13 +107,13 @@ steps:
       dockerfile: deploy_docker/Dockerfile
       context: deploy_docker/
       registry: quay.io
-      repo: quay.io/logivations/mmsegmentation
+      repo: quay.io/logivations/ml_all
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
       cache_from: 
-        - quay.io/logivations/mmsegmentation:LS_mmdeploy_latest
-        - quay.io/logivations/mmsegmentation:LS_mmdeploy_pr${DRONE_PULL_REQUEST}
+        - quay.io/logivations/ml_all:LS_mmdeploy_latest
+        - quay.io/logivations/ml_all:LS_mmdeploy_pr${DRONE_PULL_REQUEST}
       tags:
         - LS_mmdeploy_pr${DRONE_PULL_REQUEST}
         - LS_mmdeploy_pr${DRONE_PULL_REQUEST}_${DRONE_COMMIT_SHA}
@@ -130,13 +130,13 @@ steps:
       dockerfile: docker/Dockerfile
       context: docker/
       registry: quay.io
-      repo: quay.io/logivations/mmsegmentation
+      repo: quay.io/logivations/ml_all
       privileged: true
       build_args:
         - BUILDKIT_INLINE_CACHE=1
       cache_from: 
-        - quay.io/logivations/mmsegmentation:LS_mmseg_latest
-        - quay.io/logivations/mmsegmentation:LS_mmseg_pr${DRONE_PULL_REQUEST}
+        - quay.io/logivations/ml_all:LS_mmseg_latest
+        - quay.io/logivations/ml_all:LS_mmseg_pr${DRONE_PULL_REQUEST}
       tags:
         - LS_mmseg_pr${DRONE_PULL_REQUEST}
         - LS_mmseg_pr${DRONE_PULL_REQUEST}_${DRONE_COMMIT_SHA}
