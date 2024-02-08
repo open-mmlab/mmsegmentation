@@ -80,36 +80,6 @@ steps:
 #######################################################################################################################
 #######################################################################################################################
 
----
-## 1. Pre-commit validation before start docker build
-# kind: pipeline
-# type: docker
-# name: PR validation pre-commit check
-
-# platform:
-#   arch: amd64
-#   os: linux
-
-# clone:
-#   disable: true
-
-# trigger:
-#   event:
-#     include:
-#       - pull_request
-
-# image_pull_secrets:
-#   - dockerconfig_prd
-
-# steps:
-#   - name: Pre-commit validation
-#     image: 
-#     pull: always
-#     commands:
-#       - git clone --depth 1 ${DRONE_GIT_HTTP_URL} -b ${DRONE_SOURCE_BRANCH}
-#       - cd mmsegmentation && git fetch --depth 1 origin ${DRONE_TARGET_BRANCH} && git diff --name-only FETCH_HEAD | xargs pre-commit run --files
-
-
 # 2. Build docker image for mmsegmentation
 ---
 kind: pipeline
@@ -124,9 +94,6 @@ trigger:
   event:
     include:
       - pull_request
-
-# depends_on:
-#   - PR validation pre-commit check
 
 clone: 
   depth: 50
