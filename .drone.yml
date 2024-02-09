@@ -87,7 +87,7 @@ type: docker
 name: PR validation build mmsegmentation images
 
 platform:
-  arch: arm64
+  arch: amd64
   os: linux
 
 trigger:
