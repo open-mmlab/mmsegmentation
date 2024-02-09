@@ -1,0 +1,146 @@
+---
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################         Jobs below are used to build only             #########################################
+#######################        master  branches for all containers            #########################################
+#######################                                                       #########################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+# This pipeline would be used after each merge request  to build mmsegmentaion latest docker images
+kind: pipeline
+type: docker
+name: mmsegmentaion LS_mmdeploy_latest
+
+platform:
+  arch: amd64
+  os: linux
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
+
+clone:
+  depth: 1
+
+steps:
+  - name: Build latest LS_mmdeploy docker image
+    image: plugins/docker:20.14
+    environment:
+      DOCKER_BUILDKIT: 1
+    settings: 
+      dockerfile: deploy_docker/Dockerfile
+      context: deploy_docker/
+      registry: quay.io
+      repo: quay.io/logivations/ml_all
+      privileged: true
+      build_args:
+        - BUILDKIT_INLINE_CACHE=1
+      cache_from: quay.io/logivations/ml_all:LS_mmdeploy_latest
+      tags:
+        - LS_mmdeploy_latest
+        - LS_mmdeploy_latest_${DRONE_COMMIT_SHA}
+      username:
+        from_secret: DOCKER_QUAY_USERNAME
+      password:
+        from_secret: DOCKER_QUAY_PASSWORD
+
+  - name: Build latest LS_mmseg docker image
+    image: plugins/docker:20.14
+    environment:
+      DOCKER_BUILDKIT: 1
+    settings:
+      dockerfile: docker/Dockerfile
+      context: docker/
+      registry: quay.io
+      repo: quay.io/logivations/ml_all
+      privileged: true
+      build_args:
+        - BUILDKIT_INLINE_CACHE=1
+      cache_from: quay.io/logivations/ml_all:LS_mmseg_latest
+      tags:
+        - LS_mmseg_latest
+        - LS_mmseg_latest_${DRONE_COMMIT_SHA}
+      username:
+        from_secret: DOCKER_QUAY_USERNAME
+      password:
+        from_secret: DOCKER_QUAY_PASSWORD
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################              Jobs below are used to run               #########################################
+#######################             pull request validation only              #########################################
+#######################                                                       #########################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+# 2. Build docker image for mmsegmentation
+---
+kind: pipeline
+type: docker
+name: PR validation build mmsegmentation images
+
+platform:
+  arch: amd64
+  os: linux
+
+trigger:
+  event:
+    include:
+      - pull_request
+
+clone: 
+  depth: 50
+
+steps:
+  - name: Build LS_mmdeploy docker image for pull request
+    image: plugins/docker:20.14
+    environment:
+      DOCKER_BUILDKIT: 1
+    settings: 
+      dockerfile: deploy_docker/Dockerfile
+      context: deploy_docker/
+      registry: quay.io
+      repo: quay.io/logivations/ml_all
+      privileged: true
+      build_args:
+        - BUILDKIT_INLINE_CACHE=1
+      cache_from: 
+        - quay.io/logivations/ml_all:LS_mmdeploy_latest
+        - quay.io/logivations/ml_all:LS_mmdeploy_pr${DRONE_PULL_REQUEST}
+      tags:
+        - LS_mmdeploy_pr${DRONE_PULL_REQUEST}
+        - LS_mmdeploy_pr${DRONE_PULL_REQUEST}_${DRONE_COMMIT_SHA}
+      username:
+        from_secret: DOCKER_QUAY_USERNAME
+      password:
+        from_secret: DOCKER_QUAY_PASSWORD
+
+  - name: Build LS_mmseg docker image for pull request
+    image: plugins/docker:20.14
+    environment:
+      DOCKER_BUILDKIT: 1
+    settings: 
+      dockerfile: docker/Dockerfile
+      context: docker/
+      registry: quay.io
+      repo: quay.io/logivations/ml_all
+      privileged: true
+      build_args:
+        - BUILDKIT_INLINE_CACHE=1
+      cache_from: 
+        - quay.io/logivations/ml_all:LS_mmseg_latest
+        - quay.io/logivations/ml_all:LS_mmseg_pr${DRONE_PULL_REQUEST}
+      tags:
+        - LS_mmseg_pr${DRONE_PULL_REQUEST}
+        - LS_mmseg_pr${DRONE_PULL_REQUEST}_${DRONE_COMMIT_SHA}
+      username:
+        from_secret: DOCKER_QUAY_USERNAME
+      password:
+        from_secret: DOCKER_QUAY_PASSWORD
