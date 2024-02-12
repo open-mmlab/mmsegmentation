@@ -12,13 +12,12 @@ sys.path.append("./ops_dcnv3")
 import modules as dcnv3
 from mmengine.model import BaseModule
 
-#TODO we might want to modify the dcnv3 to remove some layers(example the dw conv) to better fit the KA module
 # husk att de gjør kernel decomposition inne i dcvn3, dette burde vi endre på i strip wise siden det løser samme problemet
 class DCNv3KA(BaseModule):
     def __init__(self,
                  core_op,
                  channels,
-                 groups,
+                 group,
                  kernel_size,
                  stride,
                  pad,
@@ -33,28 +32,47 @@ class DCNv3KA(BaseModule):
                  center_feature_scale=False): 
         super().__init__()
         self.channels = channels
-        self.groups = groups
-        self.core_op = getattr(dcnv3, core_op)
-        self.dcn = self.core_op(
+        self.core_op = getattr(dcnv3, 'DCNv3_pytorch')
+        self.output_proj = nn.Linear(channels, channels)
+        self.dw_dcn = self.core_op(
             channels=channels,
-            kernel_size=kernel_size,
-            stride=stride,
-            pad=pad,
-            dilation=dilation,
-            group=16,
+            kernel_size=5,
+            stride=1,
+            pad=2,
+            dilation=1,
+            group=channels,
             offset_scale=offset_scale,
             act_layer=act_layer,
             norm_layer=norm_layer,
             dw_kernel_size=dw_kernel_size, # for InternImage-H/G
             center_feature_scale=center_feature_scale)
-        self.ca = nn.Conv2d(self.channels, self.channels, 1)
+        
+        self.dw_d_dcn = self.core_op(
+            channels=channels,
+            kernel_size=7,
+            stride=1,
+            pad=9,
+            dilation=3,
+            group=channels,
+            offset_scale=offset_scale,
+            act_layer=act_layer,
+            norm_layer=norm_layer,
+            dw_kernel_size=dw_kernel_size, # for InternImage-H/G
+            center_feature_scale=center_feature_scale)
 
     def forward(self, x):
         u = x.clone()
         u = u.permute(0,3,1,2)
-        x = self.dcn(x)
+        # TODO add a dw 1x1 that is paralell with the attn(similar to v3+)(will be used to mimic channel attention)
+        x = self.dw_dcn(x)
+        x = self.dw_d_dcn(x)
+        x = self.output_proj(x)
         x = x.permute(0,3,1,2)
-        attn = self.ca(x)
-        return u * attn
+        return x*u
+        
+    def _reset_parameters(self):
+        self.dw_dcn._reset_parameters()
+        self.dw_d_dcn._reset_parameters()
+        
 
 # TODO lag også en egen som likner mer på intern Image

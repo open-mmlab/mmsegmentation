@@ -134,42 +134,41 @@ class MSCASpatialAttention(BaseModule):
     def __init__(self,
                  core_op, # {
                  channels,
-                 groups,
+                 group,
                  act_layer='GELU',
                  norm_layer='LN',
                  offset_scale=1.0,
                  dw_kernel_size=None, # for InternImage-H/G
                  center_feature_scale=False, # } disse trengs for dcnv3
-                 # attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
-                 # attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]], # må se hvordan jeg skal oppdatere disse
                  act_cfg=dict(type='GELU')):
 
         super().__init__()
         self.proj_1 = nn.Conv2d(channels, channels, 1)
         self.activation = build_activation_layer(act_cfg)
-        self.dcn = core_op(
-            core_op='DCNv3_pytorch',
+        self.attn = core_op(
+            core_op='Simple_DCNv3_pytorch',
             channels=channels,
-            kernel_size=3,
+            kernel_size=5,
             stride=1,
-            pad=1,
+            pad=2,
             dilation=1,
-            groups=groups,
+            group=channels,
             offset_scale=offset_scale,
             act_layer=act_layer,
             norm_layer=norm_layer,
             dw_kernel_size=dw_kernel_size, # for InternImage-H/G
             center_feature_scale=center_feature_scale)
-        self.proj_2 = nn.Conv2d(channels, channels, 1)
+        
 
+        self.proj_2 = nn.Conv2d(channels, channels, 1)
+        
     def forward(self, x):
         """Forward function."""
         shorcut = x.clone()
         x = self.proj_1(x)
         x = self.activation(x)
         x = x.permute(0,2,3,1)
-        
-        x = self.dcn(x)
+        x = self.attn(x)
         x = self.proj_2(x)
         x = x + shorcut
         return x
@@ -207,14 +206,12 @@ class MSCABlock(BaseModule):
     def __init__(self,
                  core_op,# {
                  channels,
-                 groups,
+                 group,
                  act_layer='GELU',
                  norm_layer='LN',
                  offset_scale=1.0,
                  dw_kernel_size=None, # for InternImage-H/G
                  center_feature_scale=False, # } disse trengs for dcnv3
-                 # attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
-                 # attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
                  mlp_ratio=4.,
                  drop=0.,
                  drop_path=0.,
@@ -225,7 +222,7 @@ class MSCABlock(BaseModule):
         self.attn = MSCASpatialAttention(
                  core_op=core_op,
                  channels=channels,
-                 groups=groups,
+                 group=group,
                  act_layer=act_layer,
                  norm_layer=norm_layer,
                  offset_scale=offset_scale,
@@ -261,7 +258,7 @@ class MSCABlock(BaseModule):
         x = x.view(B, C, N).permute(0, 2, 1)
         return x
 
-#TODO remove unusable shit, or use van
+
 class OverlapPatchEmbed(BaseModule):
     """Image to Patch Embedding.
 
@@ -285,7 +282,6 @@ class OverlapPatchEmbed(BaseModule):
                  embed_dim=768,
                  norm_cfg=dict(type='SyncBN', requires_grad=True)):
         super().__init__()
-
         self.proj = nn.Conv2d(
             in_channels,
             embed_dim,
@@ -300,7 +296,6 @@ class OverlapPatchEmbed(BaseModule):
         x = self.proj(x)
         _, _, H, W = x.shape
         x = self.norm(x)
-
         x = x.flatten(2).transpose(1, 2)
     
         return x, H, W
@@ -354,12 +349,11 @@ class DVAN(BaseModule):
                  drop_path_rate=0.,
                  depths=[3, 4, 6, 3],
                  num_stages=4,
-                 # attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
-                 # attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
                  act_cfg=dict(type='GELU'),
                  norm_cfg=dict(type='SyncBN', requires_grad=True),
                  pretrained=None,
-                 init_cfg=None):
+                 init_cfg=None,
+                 channel_attention=False):
         super().__init__(init_cfg=init_cfg)
 
         assert not (init_cfg and pretrained), \
@@ -370,7 +364,7 @@ class DVAN(BaseModule):
             self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
         elif pretrained is not None:
             raise TypeError('pretrained must be a str or None')
-        self.core_op = getattr(dcnv3_ka, core_op)
+        self.core_op = core_op
         self.depths = depths
         self.num_stages = num_stages
 
@@ -391,11 +385,9 @@ class DVAN(BaseModule):
                     norm_cfg=norm_cfg)
             block = nn.ModuleList([
                 MSCABlock(
-                    core_op=self.core_op,
-                    groups=groups[i],
+                    core_op=getattr(dcnv3_ka, core_op),
+                    group=groups[i],
                     channels=embed_dims[i],
-                    # attention_kernel_sizes=attention_kernel_sizes,
-                    # attention_kernel_paddings=attention_kernel_paddings,
                     mlp_ratio=mlp_ratios[i],
                     drop=drop_rate,
                     drop_path=dpr[cur + j],
@@ -408,6 +400,7 @@ class DVAN(BaseModule):
             setattr(self, f'patch_embed{i + 1}', patch_embed)
             setattr(self, f'block{i + 1}', block)
             setattr(self, f'norm{i + 1}', norm)
+        self.apply(self._init_deform_weights)
 
     def init_weights(self):
         """Initialize modules of MSCAN."""
@@ -427,8 +420,8 @@ class DVAN(BaseModule):
         else:
             super().init_weights()
 
-    def _init_deform_weights(self, m): # trenger å sjekke denne 
-        if isinstance(m, getattr(dcnv3, self.core_op)):
+    def _init_deform_weights(self, m):
+        if isinstance(m, getattr(dcnv3_ka, self.core_op)):
             m._reset_parameters()
 
     def forward(self, x):
