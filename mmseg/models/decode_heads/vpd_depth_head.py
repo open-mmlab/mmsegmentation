@@ -10,7 +10,6 @@ from torch import Tensor
 
 from mmseg.registry import MODELS
 from mmseg.utils import SampleList
-from ..builder import build_loss
 from ..utils import resize
 from .decode_head import BaseDecodeHead
 
@@ -184,11 +183,11 @@ class VPDDepthHead(BaseDecodeHead):
 
         # build loss
         if isinstance(loss_decode, dict):
-            self.loss_decode = build_loss(loss_decode)
+            self.loss_decode = MODELS.build(loss_decode)
         elif isinstance(loss_decode, (list, tuple)):
             self.loss_decode = nn.ModuleList()
             for loss in loss_decode:
-                self.loss_decode.append(build_loss(loss))
+                self.loss_decode.append(MODELS.build(loss))
         else:
             raise TypeError(f'loss_decode must be a dict or sequence of dict,\
                 but got {type(loss_decode)}')
