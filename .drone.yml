@@ -28,27 +28,6 @@ clone:
   depth: 1
 
 steps:
-  - name: Build latest LS_mmdeploy docker image
-    image: plugins/docker:20.14
-    environment:
-      DOCKER_BUILDKIT: 1
-    settings: 
-      dockerfile: deploy_docker/Dockerfile
-      context: deploy_docker/
-      registry: quay.io
-      repo: quay.io/logivations/ml_all
-      privileged: true
-      build_args:
-        - BUILDKIT_INLINE_CACHE=1
-      cache_from: quay.io/logivations/ml_all:LS_mmdeploy_latest
-      tags:
-        - LS_mmdeploy_latest
-        - LS_mmdeploy_latest_${DRONE_COMMIT_SHA}
-      username:
-        from_secret: DOCKER_QUAY_USERNAME
-      password:
-        from_secret: DOCKER_QUAY_PASSWORD
-
   - name: Build latest LS_mmseg docker image
     image: plugins/docker:20.14
     environment:
@@ -99,29 +78,6 @@ clone:
   depth: 50
 
 steps:
-  - name: Build LS_mmdeploy docker image for pull request
-    image: plugins/docker:20.14
-    environment:
-      DOCKER_BUILDKIT: 1
-    settings: 
-      dockerfile: deploy_docker/Dockerfile
-      context: deploy_docker/
-      registry: quay.io
-      repo: quay.io/logivations/ml_all
-      privileged: true
-      build_args:
-        - BUILDKIT_INLINE_CACHE=1
-      cache_from: 
-        - quay.io/logivations/ml_all:LS_mmdeploy_latest
-        - quay.io/logivations/ml_all:LS_mmdeploy_pr${DRONE_PULL_REQUEST}
-      tags:
-        - LS_mmdeploy_pr${DRONE_PULL_REQUEST}
-        - LS_mmdeploy_pr${DRONE_PULL_REQUEST}_${DRONE_COMMIT_SHA}
-      username:
-        from_secret: DOCKER_QUAY_USERNAME
-      password:
-        from_secret: DOCKER_QUAY_PASSWORD
-
   - name: Build LS_mmseg docker image for pull request
     image: plugins/docker:20.14
     environment:
