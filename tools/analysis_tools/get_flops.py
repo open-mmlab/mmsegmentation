@@ -86,7 +86,7 @@ def inference(args: argparse.Namespace, logger: MMLogger) -> dict:
                                   'supported yet.')
     outputs = get_model_complexity_info(
         model,
-        input_shape,
+        input_shape=None,
         inputs=data['inputs'],
         show_table=False,
         show_arch=False)

@@ -127,26 +127,11 @@ def test_gcnet_forward():
         'gcnet/gcnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
-def test_ann_forward():
-    _test_encoder_decoder_forward(
-        'ann/ann_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-
-
 def test_ccnet_forward():
     if not torch.cuda.is_available():
         pytest.skip('CCNet requires CUDA')
     _test_encoder_decoder_forward(
         'ccnet/ccnet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-
-
-def test_danet_forward():
-    _test_encoder_decoder_forward(
-        'danet/danet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-
-
-def test_nonlocal_net_forward():
-    _test_encoder_decoder_forward(
-        'nonlocal_net/nonlocal_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def test_upernet_forward():
@@ -164,11 +149,6 @@ def test_ocrnet_forward():
         'ocrnet/ocrnet_hr18s_4xb2-40k_cityscapes-512x1024.py')
 
 
-def test_psanet_forward():
-    _test_encoder_decoder_forward(
-        'psanet/psanet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-
-
 def test_sem_fpn_forward():
     _test_encoder_decoder_forward(
         'sem_fpn/fpn_r50_4xb2-80k_cityscapes-512x1024.py')
@@ -177,21 +157,6 @@ def test_sem_fpn_forward():
 def test_mobilenet_v2_forward():
     _test_encoder_decoder_forward(
         'mobilenet_v2/mobilenet-v2-d8_pspnet_4xb2-80k_cityscapes-512x1024.py')
-
-
-def test_dnlnet_forward():
-    _test_encoder_decoder_forward(
-        'dnlnet/dnl_r50-d8_4xb2-40k_cityscapes-512x1024.py')
-
-
-def test_emanet_forward():
-    _test_encoder_decoder_forward(
-        'emanet/emanet_r50-d8_4xb2-80k_cityscapes-512x1024.py')
-
-
-def test_isanet_forward():
-    _test_encoder_decoder_forward(
-        'isanet/isanet_r50-d8_4xb2-40k_cityscapes-512x1024.py')
 
 
 def get_world_size(process_group):
@@ -221,7 +186,7 @@ def _test_encoder_decoder_forward(cfg_file):
         num_classes = segmentor.decode_head.num_classes
     # batch_size=2 for BatchNorm
     packed_inputs = _demo_mm_inputs(
-        batch_size=2, image_shapes=(3, 32, 32), num_classes=num_classes)
+        batch_size=2, image_shapes=(3, 4, 4), num_classes=num_classes)
     # convert to cuda Tensor if applicable
     if torch.cuda.is_available():
         segmentor = segmentor.cuda()

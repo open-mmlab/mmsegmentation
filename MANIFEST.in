@@ -1,4 +1,5 @@
 include requirements/*.txt
 include mmseg/.mim/model-index.yml
+include mmseg/utils/bpe_simple_vocab_16e6.txt.gz
 recursive-include mmseg/.mim/configs *.py *.yaml
 recursive-include mmseg/.mim/tools *.py *.sh

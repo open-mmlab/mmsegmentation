@@ -178,6 +178,61 @@ mmsegmentation
 |   │   │   │   ├── labels
 |   │   │   │   ├── panoptic
 |   │   │   │   └── polygons
+│   ├── bdd100k
+│   │   ├── images
+│   │   │   └── 10k
+|   │   │   │   ├── test
+|   │   │   │   ├── train
+|   │   │   │   └── val
+│   │   └── labels
+│   │   │   └── sem_seg
+|   │   │   │   ├── colormaps
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── masks
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── polygons
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+|   │   │   │   └── rles
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+│   ├── nyu
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── test
+│   ├── HSIDrive20
+│   │   ├── images
+│   │   │   ├── train
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── train
+│   │   │   ├── validation
+│   │   │   ├── test
+```
+
+## Download dataset via MIM
+
+By using [OpenXLab](https://openxlab.org.cn/datasets), you can obtain free formatted datasets in various fields. Through the search function of the platform, you may address the dataset they look for quickly and easily. Using the formatted datasets from the platform, you can efficiently conduct tasks across datasets.
+
+If you use MIM to download, make sure that the version is greater than v0.3.8. You can use the following command to update, install, login and download the dataset:
+
+```shell
+# upgrade your MIM
+pip install -U openmim
+
+# install OpenXLab CLI tools
+pip install -U openxlab
+# log in OpenXLab
+openxlab login
+
+# download ADE20K by MIM
+mim download mmsegmentation --dataset ade20k
 ```
 
 ## Cityscapes
@@ -653,3 +708,99 @@ python tools/dataset_converters/levircd.py --dataset-path /path/to/LEVIR-CD+ --o
 ```
 
 The size of cropped image is 256x256, which is consistent with the original paper.
+
+## BDD100K
+
+- You could download BDD100k datasets from  [here](https://bdd-data.berkeley.edu/) after  registration.
+
+- You can download images and masks by clicking  `10K Images` button and `Segmentation` button.
+
+- After download, unzip by the following instructions:
+
+  ```bash
+  unzip ~/bdd100k_images_10k.zip -d ~/mmsegmentation/data/
+  unzip ~/bdd100k_sem_seg_labels_trainval.zip -d ~/mmsegmentation/data/
+  ```
+
+- And get
+
+```none
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── bdd100k
+│   │   ├── images
+│   │   │   └── 10k
+|   │   │   │   ├── test
+|   │   │   │   ├── train
+|   │   │   │   └── val
+│   │   └── labels
+│   │   │   └── sem_seg
+|   │   │   │   ├── colormaps
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── masks
+|   │   │   │   │   ├──train
+|   │   │   │   │   └──val
+|   │   │   │   ├── polygons
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+|   │   │   │   └── rles
+|   │   │   │   │   ├──sem_seg_train.json
+|   │   │   │   │   └──sem_seg_val.json
+```
+
+## NYU
+
+- To access the NYU dataset, you can download it from [this link](https://drive.google.com/file/d/1wC-io-14RCIL4XTUrQLk6lBqU2AexLVp/view?usp=share_link)
+
+- Once the download is complete, you can utilize the [tools/dataset_converters/nyu.py](/tools/dataset_converters/nyu.py) script to extract and organize the data into the required format. Run the following command in your terminal:
+
+  ```bash
+  python tools/dataset_converters/nyu.py nyu.zip
+  ```
+
+## HSI Drive 2.0
+
+- You could download HSI Drive 2.0 dataset from [here](https://ipaccess.ehu.eus/HSI-Drive/#download) after just sending an email to gded@ehu.eus with the subject "download HSI-Drive". You will receive a password to uncompress the files.
+
+- After download, unzip by the following instructions:
+
+  ```bash
+  7z x -p"password" ./HSI_Drive_v2_0_Phyton.zip
+
+  mv ./HSIDrive20 path_to_mmsegmentation/data
+  mv ./HSI_Drive_v2_0_release_notes_Python_version.md path_to_mmsegmentation/data
+  mv ./image_numbering.pdf path_to_mmsegmentation/data
+  ```
+
+- After unzip, you get
+
+```none
+mmsegmentation
+├── mmseg
+├── tools
+├── configs
+├── data
+│   ├── HSIDrive20
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── images_MF
+│   │   │   ├── training
+│   │   │   ├── validation
+│   │   │   ├── test
+│   │   ├── RGB
+│   │   ├── training_filenames.txt
+│   │   ├── validation_filenames.txt
+│   │   ├── test_filenames.txt
+│   ├── HSI_Drive_v2_0_release_notes_Python_version.md
+│   ├── image_numbering.pdf
+```

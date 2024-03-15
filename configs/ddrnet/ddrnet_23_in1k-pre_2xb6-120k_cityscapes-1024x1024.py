@@ -10,7 +10,7 @@ class_weight = [
     1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955, 1.0865, 1.1529,
     1.0507
 ]
-
+checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/pretrain/ddrnet23-in1kpre_3rdparty-9ca29f62.pth'  # noqa
 crop_size = (1024, 1024)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
@@ -31,9 +31,7 @@ model = dict(
         ppm_channels=128,
         norm_cfg=norm_cfg,
         align_corners=False,
-        init_cfg=dict(
-            type='Pretrained',
-            checkpoint='pretrained/ddrnet23_in1k_mmseg.pth')),
+        init_cfg=dict(type='Pretrained', checkpoint=checkpoint)),
     decode_head=dict(
         type='DDRHead',
         in_channels=64 * 4,

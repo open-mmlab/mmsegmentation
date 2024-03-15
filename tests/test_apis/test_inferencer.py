@@ -3,76 +3,16 @@ import tempfile
 
 import numpy as np
 import torch
-import torch.nn as nn
 from mmengine import ConfigDict
-from torch.utils.data import DataLoader, Dataset
+from utils import *  # noqa: F401, F403
 
 from mmseg.apis import MMSegInferencer
-from mmseg.models import EncoderDecoder
-from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.registry import MODELS
 from mmseg.utils import register_all_modules
 
 
-@MODELS.register_module(name='InferExampleHead')
-class ExampleDecodeHead(BaseDecodeHead):
-
-    def __init__(self, num_classes=19, out_channels=None):
-        super().__init__(
-            3, 3, num_classes=num_classes, out_channels=out_channels)
-
-    def forward(self, inputs):
-        return self.cls_seg(inputs[0])
-
-
-@MODELS.register_module(name='InferExampleBackbone')
-class ExampleBackbone(nn.Module):
-
-    def __init__(self):
-        super().__init__()
-        self.conv = nn.Conv2d(3, 3, 3)
-
-    def init_weights(self, pretrained=None):
-        pass
-
-    def forward(self, x):
-        return [self.conv(x)]
-
-
-@MODELS.register_module(name='InferExampleModel')
-class ExampleModel(EncoderDecoder):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-
-class ExampleDataset(Dataset):
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.pipeline = [
-            dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations'),
-            dict(type='PackSegInputs')
-        ]
-
-    def __getitem__(self, idx):
-        return dict(img=torch.tensor([1]), img_metas=dict())
-
-    def __len__(self):
-        return 1
-
-
 def test_inferencer():
     register_all_modules()
-    test_dataset = ExampleDataset()
-    data_loader = DataLoader(
-        test_dataset,
-        batch_size=1,
-        sampler=None,
-        num_workers=0,
-        shuffle=False,
-    )
 
     visualizer = dict(
         type='SegLocalVisualizer',
@@ -87,7 +27,14 @@ def test_inferencer():
             decode_head=dict(type='InferExampleHead'),
             test_cfg=dict(mode='whole')),
         visualizer=visualizer,
-        test_dataloader=data_loader)
+        test_dataloader=dict(
+            dataset=dict(
+                type='ExampleDataset',
+                pipeline=[
+                    dict(type='LoadImageFromFile'),
+                    dict(type='LoadAnnotations'),
+                    dict(type='PackSegInputs')
+                ]), ))
     cfg = ConfigDict(cfg_dict)
     model = MODELS.build(cfg.model)
 

@@ -8,8 +8,14 @@ The compatible MMSegmentation, MMCV and MMEngine versions are as below. Please i
 
 | MMSegmentation version |          MMCV version          | MMEngine version  | MMClassification (optional) version | MMDetection (optional) version |
 | :--------------------: | :----------------------------: | :---------------: | :---------------------------------: | :----------------------------: |
-|     dev-1.x branch     |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
-|      main branch       |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
+|     dev-1.x branch     |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|      main branch       |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.2.2          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.2.1          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.2.0          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.1.2          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.1.1          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
+|         1.1.0          |         mmcv >= 2.0.0          | MMEngine >= 0.7.4 |        mmpretrain>=1.0.0rc7         |         mmdet >= 3.0.0         |
 |         1.0.0          |        mmcv >= 2.0.0rc4        | MMEngine >= 0.7.1 |           mmcls==1.0.0rc6           |         mmdet >= 3.0.0         |
 |        1.0.0rc6        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.5.0 |           mmcls>=1.0.0rc0           |       mmdet >= 3.0.0rc6        |
 |        1.0.0rc5        |        mmcv >= 2.0.0rc4        | MMEngine >= 0.2.0 |           mmcls>=1.0.0rc0           |        mmdet>=3.0.0rc6         |

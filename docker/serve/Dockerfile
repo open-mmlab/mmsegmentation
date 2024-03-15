@@ -3,8 +3,8 @@ ARG CUDA="11.3"
 ARG CUDNN="8"
 FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
 
-ARG MMCV="2.0.0"
-ARG MMSEG="1.0.0"
+ARG MMCV="2.0.1"
+ARG MMSEG="1.2.2"
 
 ENV PYTHONUNBUFFERED TRUE
 

@@ -7,10 +7,10 @@ import mmcv
 import mmengine.fileio as fileio
 from mmengine.hooks import Hook
 from mmengine.runner import Runner
+from mmengine.visualization import Visualizer
 
 from mmseg.registry import HOOKS
 from mmseg.structures import SegDataSample
-from mmseg.visualization import SegLocalVisualizer
 
 
 @HOOKS.register_module()
@@ -42,8 +42,7 @@ class SegVisualizationHook(Hook):
                  show: bool = False,
                  wait_time: float = 0.,
                  backend_args: Optional[dict] = None):
-        self._visualizer: SegLocalVisualizer = \
-            SegLocalVisualizer.get_current_instance()
+        self._visualizer: Visualizer = Visualizer.get_current_instance()
         self.interval = interval
         self.show = show
         if self.show:

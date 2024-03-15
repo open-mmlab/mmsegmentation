@@ -59,7 +59,10 @@ class MMSegInferencer(BaseInferencer):
 
     preprocess_kwargs: set = set()
     forward_kwargs: set = {'mode', 'out_dir'}
-    visualize_kwargs: set = {'show', 'wait_time', 'img_out_dir', 'opacity'}
+    visualize_kwargs: set = {
+        'show', 'wait_time', 'img_out_dir', 'opacity', 'return_vis',
+        'with_labels'
+    }
     postprocess_kwargs: set = {'pred_out_dir', 'return_datasample'}
 
     def __init__(self,
@@ -82,7 +85,7 @@ class MMSegInferencer(BaseInferencer):
             self.model = revert_sync_batchnorm(self.model)
 
         assert isinstance(self.visualizer, SegLocalVisualizer)
-        self.visualizer.set_dataset_meta(palette, classes, dataset_name)
+        self.visualizer.set_dataset_meta(classes, palette, dataset_name)
 
     def _load_weights_to_model(self, model: nn.Module,
                                checkpoint: Optional[dict],
@@ -137,6 +140,7 @@ class MMSegInferencer(BaseInferencer):
                  inputs: InputsType,
                  return_datasamples: bool = False,
                  batch_size: int = 1,
+                 return_vis: bool = False,
                  show: bool = False,
                  wait_time: int = 0,
                  out_dir: str = '',
@@ -188,15 +192,18 @@ class MMSegInferencer(BaseInferencer):
             wait_time=wait_time,
             img_out_dir=img_out_dir,
             pred_out_dir=pred_out_dir,
+            return_vis=return_vis,
             **kwargs)
 
     def visualize(self,
                   inputs: list,
                   preds: List[dict],
+                  return_vis: bool = False,
                   show: bool = False,
                   wait_time: int = 0,
                   img_out_dir: str = '',
-                  opacity: float = 0.8) -> List[np.ndarray]:
+                  opacity: float = 0.8,
+                  with_labels: Optional[bool] = True) -> List[np.ndarray]:
         """Visualize predictions.
 
         Args:
@@ -213,12 +220,12 @@ class MMSegInferencer(BaseInferencer):
         Returns:
             List[np.ndarray]: Visualization results.
         """
-        if self.visualizer is None or (not show and img_out_dir == ''):
+        if not show and img_out_dir == '' and not return_vis:
             return None
-
-        if getattr(self, 'visualizer') is None:
+        if self.visualizer is None:
             raise ValueError('Visualization needs the "visualizer" term'
-                             'defined in the config, but got None')
+                             'defined in the config, but got None.')
+
         self.visualizer.set_dataset_meta(**self.model.dataset_meta)
         self.visualizer.alpha = opacity
 
@@ -249,11 +256,13 @@ class MMSegInferencer(BaseInferencer):
                 wait_time=wait_time,
                 draw_gt=False,
                 draw_pred=True,
-                out_file=out_file)
-            results.append(self.visualizer.get_image())
+                out_file=out_file,
+                with_labels=with_labels)
+            if return_vis:
+                results.append(self.visualizer.get_image())
             self.num_visualized_imgs += 1
 
-        return results
+        return results if return_vis else None
 
     def postprocess(self,
                     preds: PredType,
@@ -300,17 +309,28 @@ class MMSegInferencer(BaseInferencer):
         results_dict['visualization'] = []
 
         for i, pred in enumerate(preds):
-            pred_data = pred.pred_sem_seg.numpy().data[0]
-            results_dict['predictions'].append(pred_data)
+            pred_data = dict()
+            if 'pred_sem_seg' in pred.keys():
+                pred_data['sem_seg'] = pred.pred_sem_seg.numpy().data[0]
+            elif 'pred_depth_map' in pred.keys():
+                pred_data['depth_map'] = pred.pred_depth_map.numpy().data[0]
+
             if visualization is not None:
                 vis = visualization[i]
                 results_dict['visualization'].append(vis)
             if pred_out_dir != '':
                 mmengine.mkdir_or_exist(pred_out_dir)
-                img_name = str(self.num_pred_imgs).zfill(8) + '_pred.png'
-                img_path = osp.join(pred_out_dir, img_name)
-                output = Image.fromarray(pred_data.astype(np.uint8))
-                output.save(img_path)
+                for key, data in pred_data.items():
+                    post_fix = '_pred.png' if key == 'sem_seg' else '_pred.npy'
+                    img_name = str(self.num_pred_imgs).zfill(8) + post_fix
+                    img_path = osp.join(pred_out_dir, img_name)
+                    if key == 'sem_seg':
+                        output = Image.fromarray(data.astype(np.uint8))
+                        output.save(img_path)
+                    else:
+                        np.save(img_path, data)
+            pred_data = next(iter(pred_data.values()))
+            results_dict['predictions'].append(pred_data)
             self.num_pred_imgs += 1
 
         if len(results_dict['predictions']) == 1:
@@ -338,12 +358,13 @@ class MMSegInferencer(BaseInferencer):
         """
         pipeline_cfg = cfg.test_dataloader.dataset.pipeline
         # Loading annotations is also not applicable
-        idx = self._get_transform_idx(pipeline_cfg, 'LoadAnnotations')
-        if idx != -1:
-            del pipeline_cfg[idx]
+        for transform in ('LoadAnnotations', 'LoadDepthAnnotation'):
+            idx = self._get_transform_idx(pipeline_cfg, transform)
+            if idx != -1:
+                del pipeline_cfg[idx]
+
         load_img_idx = self._get_transform_idx(pipeline_cfg,
                                                'LoadImageFromFile')
-
         if load_img_idx == -1:
             raise ValueError(
                 'LoadImageFromFile is not found in the test pipeline')

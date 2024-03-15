@@ -4,7 +4,7 @@
 
 本教程中，我们将会演示如何使用 PyTorch 准备环境。
 
-MMSegmentation 可以在 Linux, Windows 和 macOS 系统上运行，并且需要安装 Python 3.6+, CUDA 9.2+ 和 PyTorch 1.5+
+MMSegmentation 可以在 Linux, Windows 和 macOS 系统上运行，并且需要安装 Python 3.7+, CUDA 10.2+ 和 PyTorch 1.8+
 
 **注意:**
 如果您已经安装了 PyTorch, 可以跳过该部分，直接到[下一小节](##安装)。否则，您可以按照以下步骤操作。
@@ -110,8 +110,8 @@ show_result_pyplot(model, img, result, show=True, out_file='result.jpg', opacity
 # 在一段视频上测试并可视化分割结果
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
-   result = inference_segmentor(model, frame)
-   show_result_pyplot(model, result, wait_time=1)
+   result = inference_model(model, frame)
+   show_result_pyplot(model, frame, result, wait_time=1)
 ```
 
 您可以修改上面的代码来测试单个图像或视频，这两个选项都可以验证安装是否成功。

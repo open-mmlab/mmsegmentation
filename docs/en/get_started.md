@@ -4,7 +4,7 @@
 
 In this section we demonstrate how to prepare an environment with PyTorch.
 
-MMSegmentation works on Linux, Windows and macOS. It requires Python 3.6+, CUDA 9.2+ and PyTorch 1.5+.
+MMSegmentation works on Linux, Windows and macOS. It requires Python 3.7+, CUDA 10.2+ and PyTorch 1.8+.
 
 **Note:**
 If you are experienced with PyTorch and have already installed it, just skip this part and jump to the [next section](##installation). Otherwise, you can follow these steps for the preparation.
@@ -110,8 +110,8 @@ show_result_pyplot(model, img, result, show=True, out_file='result.jpg', opacity
 # test a video and show the results
 video = mmcv.VideoReader('video.mp4')
 for frame in video:
-   result = inference_segmentor(model, frame)
-   show_result_pyplot(model, result, wait_time=1)
+   result = inference_model(model, frame)
+   show_result_pyplot(model, frame, result, wait_time=1)
 ```
 
 You can modify the code above to test a single image or a video, both of these options can verify that the installation was successful.

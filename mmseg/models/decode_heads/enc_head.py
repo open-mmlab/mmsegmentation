@@ -9,7 +9,6 @@ from torch import Tensor
 
 from mmseg.registry import MODELS
 from mmseg.utils import ConfigType, SampleList
-from ..builder import build_loss
 from ..utils import Encoding, resize
 from .decode_head import BaseDecodeHead
 
@@ -128,7 +127,7 @@ class EncHead(BaseDecodeHead):
             norm_cfg=self.norm_cfg,
             act_cfg=self.act_cfg)
         if self.use_se_loss:
-            self.loss_se_decode = build_loss(loss_se_decode)
+            self.loss_se_decode = MODELS.build(loss_se_decode)
             self.se_layer = nn.Linear(self.channels, self.num_classes)
 
     def forward(self, inputs):
