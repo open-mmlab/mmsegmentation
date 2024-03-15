@@ -11,7 +11,16 @@ albu_train_transforms = [
 train_pipeline = [
     dict(type='LoadMultipleRSImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='Albu', transforms=albu_train_transforms),
+    dict(
+        type='Albu',
+        keymap={
+            'img': 'image',
+            'img2': 'image2',
+            'gt_seg_map': 'mask'
+        },
+        transforms=albu_train_transforms,
+        additional_targets={'image2': 'image'},
+        bgr_to_rgb=False),
     dict(type='ConcatCDInput'),
     dict(type='PackSegInputs')
 ]
