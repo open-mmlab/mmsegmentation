@@ -8,7 +8,8 @@ data_preprocessor = dict(
     size=crop_size,
     type='SegDataPreProcessor',
     mean=[123.675, 116.28, 103.53, 123.675, 116.28, 103.53],
-    std=[58.395, 57.12, 57.375, 58.395, 57.12, 57.375])
+    std=[58.395, 57.12, 57.375, 58.395, 57.12, 57.375],
+    bgr_to_rgb=False)
 
 model = dict(
     data_preprocessor=data_preprocessor,
