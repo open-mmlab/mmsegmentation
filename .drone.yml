@@ -34,7 +34,7 @@ steps:
       DOCKER_BUILDKIT: 1
     settings:
       dockerfile: docker/Dockerfile
-      context: docker/
+      context: .
       registry: quay.io
       repo: quay.io/logivations/ml_all
       privileged: true
@@ -84,7 +84,7 @@ steps:
       DOCKER_BUILDKIT: 1
     settings: 
       dockerfile: docker/Dockerfile
-      context: docker/
+      context: .
       registry: quay.io
       repo: quay.io/logivations/ml_all
       privileged: true
