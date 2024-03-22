@@ -58,6 +58,7 @@ class TestVisualizationHook(TestCase):
 
     def test_after_test_iter(self):
         runner = Mock()
-        runner.iter = 3
         hook = SegVisualizationHook(draw=True, interval=1)
+        assert hook._test_index == 0
         hook.after_test_iter(runner, 1, self.data_batch, self.outputs)
+        assert hook._test_index == len(self.outputs)
