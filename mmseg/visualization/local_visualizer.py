@@ -136,6 +136,7 @@ class SegLocalVisualizer(Visualizer):
         colors = [palette[label] for label in labels]
 
         mask = np.zeros_like(image, dtype=np.uint8)
+        mask = np.ascontiguousarray(mask)
         for label, color in zip(labels, colors):
             mask[sem_seg[0] == label, :] = color
 
