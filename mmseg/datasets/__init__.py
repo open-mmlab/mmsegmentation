@@ -39,6 +39,8 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
                          SegRescale)
 from .voc import PascalVOCDataset
+from .zero_mould_v1 import ZeroMouldV1Dataset
+from .zero_mould_v2 import ZeroMouldV2Dataset
 
 # yapf: enable
 __all__ = [

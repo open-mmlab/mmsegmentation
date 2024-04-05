@@ -491,7 +491,9 @@ dataset_aliases = {
     'lip': ['LIP', 'lip'],
     'mapillary_v1': ['mapillary_v1'],
     'mapillary_v2': ['mapillary_v2'],
-    'bdd100k': ['bdd100k']
+    'bdd100k': ['bdd100k'],
+    'zero_mould_v1': ['zero_mould_v1'],
+    'zero_mould_v2': ['zero_mould_v2']
 }
 
 
@@ -527,3 +529,27 @@ def get_palette(dataset):
     else:
         raise TypeError(f'dataset must a str, but got {type(dataset)}')
     return labels
+
+def zero_mould_v1_classes():
+    return [
+        'background', 'CorrectColoured', 'CorrectUncoloured', 'WrongUncoloured'
+    ]
+
+def zero_mould_v1_pallete():
+    return [
+        [0, 0, 0],
+        [255, 0, 0],
+        [0, 200, 100],
+        [255, 225, 0]
+    ]
+
+def zero_mould_v2_classes():
+    return [
+        'background', 'correct-coloured'
+    ]
+
+def zero_mould_v2_pallete():
+    return [
+        [0, 0, 0],
+        [128, 128, 128]
+    ]
