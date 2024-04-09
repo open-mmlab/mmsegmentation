@@ -135,3 +135,7 @@ INFO
 *.out
 compute_canada/submit/wandb/settings
 wandb/settings
+.mim/
+*.npy
+computecanada/cats.jpg
+computecanada/catto.jpg
