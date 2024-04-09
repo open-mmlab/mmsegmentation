@@ -15,7 +15,7 @@
 set -e
 
 module purge
-module load python/3.10.2
+module load  StdEnv/2020 python/3.10.2
 module load gcc/9.3.0 opencv/4.8.0 cuda/11.7
 echo "loading module done"
 

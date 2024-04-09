@@ -4,7 +4,7 @@ from mmcv.transforms import BaseTransform
 from mmcv.transforms.builder import TRANSFORMS
 from icecream import ic
 import os
-
+import cv2
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import multiprocessing
@@ -45,6 +45,7 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
     def __init__(self,
                  channels,
                  data_root,
+                 gt_root,
                  mean=[-14.508254953309349, -24.701211250236728],
                  std=[5.659745919326586, 4.746759336539111],
                  to_float32=True,
@@ -63,6 +64,7 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
         self.imdecode_backend = imdecode_backend
         self.ignore_empty = ignore_empty
         self.data_root = data_root
+        self.gt_root = gt_root
         self.downsample_factor = downsample_factor
         self.with_seg = with_seg
         self.GT_type = GT_type
@@ -75,18 +77,13 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
             xarr = xr.open_dataset(filename, engine='h5netcdf')
             if self.with_seg:
                 seg_maps = {}
-                xarr = convert_polygon_icechart(xarr)
-                # SIC, SOD FLOE
-                SIC = xarr['SIC'].values
-                SOD = xarr['SOD'].values
-                FLOE = xarr['FLOE'].values
-                # Convert nan to num
-                SIC = np.nan_to_num(SIC, nan=255).astype(np.uint8)
-                SOD = np.nan_to_num(SOD, nan=255).astype(np.uint8)
-                FLOE = np.nan_to_num(FLOE, nan=255).astype(np.uint8)
-                seg_maps['SIC'] = SIC
-                seg_maps['SOD'] = SOD
-                seg_maps['FLOE'] = FLOE
+                gt_filename = os.path.basename(filename)
+                gt_filename = gt_filename.replace(
+                    '.nc', f'_{self.GT_type}.png')
+                gt_filename = os.path.join(gt_root, gt_filename)
+                # Load the image in grayscale
+                gt_seg_map = cv2.imread(gt_filename, cv2.IMREAD_GRAYSCALE)
+                # Display the grayscale image
             img = xarr[self.channels].to_array().data
             # reorder from (2, H, W) to (H, W, 2)
             img = np.transpose(img, (1, 2, 0))
@@ -106,13 +103,13 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                 img = img.permute(0, 2, 3, 1).squeeze(0)
                 img = img.numpy()
                 if self.with_seg:
-                    gt_seg_map = seg_maps[self.GT_type]
-                    gt_seg_map = gt_seg_map.unsqueeze(0).permute(0, 3, 1, 2)
+                    gt_seg_map = torch.from_numpy(
+                        gt_seg_map).unsqueeze(0).unsqueeze(0)
                     gt_seg_map = torch.nn.functional.interpolate(gt_seg_map,
                                                                  size=(shape[0]//self.downsample_factor,
                                                                        shape[1]//self.downsample_factor),
                                                                  mode='nearest')
-                    gt_seg_map = gt_seg_map.permute(0, 2, 3, 1).squeeze(0)
+                    gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
                     gt_seg_map = gt_seg_map.numpy()
 
             if to_float32:
@@ -143,12 +140,81 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
         img = self.pre_loaded_image_dic[filename]
         if self.to_float32:
             img = img.astype(np.float32)
-
+        img = np.nan_to_num(img, nan=255)
         results['img'] = img
         results['img_shape'] = img.shape[:2]
         results['ori_shape'] = img.shape[:2]
         if self.with_seg:
             results['gt_seg_map'] = self.pre_loaded_seg_dic[filename]
+            results['seg_fields'].append('gt_seg_map')
+        return results
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f'channels={self.channels}, '
+                    f'to_float32={self.to_float32}, '
+                    f"color_type='{self.color_type}', "
+                    f"imdecode_backend='{self.imdecode_backend}', "
+                    f'ignore_empty={self.ignore_empty})')
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class LoadGTFromPNGFile(BaseTransform):
+    """Load an image from an xarray dataset.
+
+    Required Keys:
+        - img_path
+
+    Modified Keys:
+
+        - seg_fields List : Contains segmentation keys
+        - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
+        (H, W) by default.
+
+    Args:
+        gt_root (str): Location of the folder containing the GT files
+        imdecode_backend (str): The image decoding backend type. Defaults to 'cv2'.
+        ignore_empty (bool): Whether to allow loading empty image or file path not existent.
+            Defaults to False.
+        GT_type (str): One of 'SOD'/'FLOE'/'SIC'
+        downsample_factor (int): The downsampling factor the ground
+    """
+
+    def __init__(self,
+                 gt_root,
+                 downsample_factor=10,
+                 GT_type='SOD'):
+        self.gt_root = gt_root
+        self.downsample_factor = downsample_factor
+        self.GT_type = GT_type
+
+    def transform(self, results):
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :class:`mmengine.dataset.BaseDataset`.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+        filename = results['img_path']
+        gt_filename = os.path.basename(filename)
+        gt_filename = gt_filename.replace('.nc', f'_{self.GT_type}.png')
+        gt_filename = os.path.join(self.gt_root, gt_filename)
+        # Load the image in grayscale
+        gt_seg_map = cv2.imread(gt_filename, cv2.IMREAD_GRAYSCALE)
+        shape = gt_seg_map.shape
+        if self.downsample_factor != 1:
+            gt_seg_map = torch.from_numpy(gt_seg_map).unsqueeze(0).unsqueeze(0)
+            gt_seg_map = torch.nn.functional.interpolate(gt_seg_map,
+                                                         size=(shape[0]//self.downsample_factor,
+                                                               shape[1]//self.downsample_factor),
+                                                         mode='nearest')
+            gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
+            gt_seg_map = gt_seg_map.numpy()
+        results['gt_seg_map'] = gt_seg_map
+        results['seg_fields'].append('gt_seg_map')
         return results
 
     def __repr__(self):
