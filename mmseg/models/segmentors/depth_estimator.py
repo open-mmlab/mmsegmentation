@@ -323,7 +323,7 @@ class DepthEstimator(EncoderDecoder):
                 level=logging.WARN)
         if self.test_cfg.mode == 'slide':
             depth_map = self.slide_inference(inputs, batch_img_metas)
-        if self.test_cfg.mode == 'slide_flip':
+        elif self.test_cfg.mode == 'slide_flip':
             depth_map = self.slide_flip_inference(inputs, batch_img_metas)
         else:
             depth_map = self.whole_inference(inputs, batch_img_metas)
