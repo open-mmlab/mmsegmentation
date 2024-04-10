@@ -19,4 +19,4 @@ test-tube>=0.7.5
 timm
 torch-fidelity==0.3.0
 torchmetrics==0.6.0
-transformers==4.19.2
+transformers==4.38.0
