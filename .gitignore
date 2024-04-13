@@ -128,10 +128,11 @@ replace.sh
 benchmarks/detection/datasets
 benchmarks/detection/output
 INFO
-
+mmseg/.mim/
 # Pytorch
 *.pth
 # compute canada
 *.out
 compute_canada/submit/wandb/settings
 wandb/settings
+=0.8.3
