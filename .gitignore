@@ -139,3 +139,4 @@ wandb/settings
 *.npy
 computecanada/cats.jpg
 computecanada/catto.jpg
+computecanada/wandb

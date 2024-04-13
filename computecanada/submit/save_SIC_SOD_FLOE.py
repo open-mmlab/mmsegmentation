@@ -11,8 +11,8 @@ from tqdm import tqdm
 from AI4ArcticSeaIceChallenge.convert_raw_icechart import convert_polygon_icechart
 
 # Example usage
-folder_path = '/home/m32patel/projects/def-dclausi/AI4arctic/dataset/ai4arctic_raw_train_v3'
-output_folder = '/home/m32patel/projects/def-dclausi/AI4arctic/dataset/ai4arctic_raw_train_v3_segmaps'
+folder_path = '/home/m32patel/projects/def-dclausi/AI4arctic/dataset/ai4arctic_raw_test_v3'
+output_folder = '/home/m32patel/projects/def-dclausi/AI4arctic/dataset/ai4arctic_raw_test_v3_segmaps'
 os.makedirs(output_folder, exist_ok=True)
 
 def duplicate_channels(arr):

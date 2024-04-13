@@ -17,6 +17,9 @@ import xarray as xr
 import torch
 import matplotlib.pyplot as plt
 from AI4ArcticSeaIceChallenge.functions import chart_cbar
+from mmengine.dist.utils import master_only
+from torchmetrics.functional import r2_score, f1_score, mean_squared_error
+import wandb
 
 
 @HOOKS.register_module()
@@ -48,11 +51,20 @@ class SegAI4ArcticVisualizationHook(Hook):
                  interval: int = 50,
                  show: bool = False,
                  wait_time: float = 0.,
+                 device: str = 'cuda:0',
+                 metric: str = 'f1',
+                 num_classes: int = 6,
                  backend_args: Optional[dict] = None):
         self._visualizer: Visualizer = Visualizer.get_current_instance()
         self.downsample_factor = downsample_factor
         self.interval = interval
         self.show = show
+        self.device = device
+        self.GT_flat = torch.Tensor().to(device)
+        self.pred_flat = torch.Tensor().to(device)
+        self.metric = metric
+        self.num_classes = num_classes
+
         if self.show:
             # No need to think about vis backends.
             self._visualizer._vis_backends = {}
@@ -71,6 +83,16 @@ class SegAI4ArcticVisualizationHook(Hook):
                           'visualized or stored.')
         self._test_index = 0
 
+    def before_val(self, runner) -> None:
+        """All subclasses should override this method, if they need any
+        operations before validation.
+
+        Args:
+            runner (Runner): The runner of the validation process.
+        """
+        self.GT_flat = torch.Tensor().to(self.device)
+        self.pred_flat = torch.Tensor().to(self.device)
+
     def after_val_iter(self, runner: Runner, batch_idx: int, data_batch: dict,
                        outputs: Sequence[SegDataSample]) -> None:
         """Run after every ``self.interval`` validation iterations.
@@ -82,27 +104,110 @@ class SegAI4ArcticVisualizationHook(Hook):
             outputs (Sequence[:obj:`SegDataSample`]]): A batch of data samples
                 that contain annotations and predictions.
         """
-        if self.draw is False:
-            return
 
-        # There is no guarantee that the same batch of images
-        # is visualized for each evaluation.
-        total_curr_iter = runner.iter + batch_idx
+        for data_sample in outputs:
+            self._test_index += 1
 
-        # Visualize only the first data
-        img_path = outputs[0].img_path
-        img_bytes = get(img_path, backend_args=self.backend_args)
-        img = mmcv.imfrombytes(img_bytes, channel_order='rgb')
-        window_name = f'val_{osp.basename(img_path)}'
+            img_path = data_sample.img_path
+            window_name = f'test_{osp.basename(img_path)}'
+            xarr = xr.open_dataset(img_path, engine='h5netcdf')
+            img = xarr[['nersc_sar_primary',
+                        'nersc_sar_secondary']].to_array().data
+            img = np.transpose(img, (1, 2, 0))
+            shape = img.shape
+            scene_name = os.path.basename(img_path)
+            scene_name = scene_name[17:32] + '_' + \
+                scene_name[77:80] + '_prep.nc'
+            if self.downsample_factor != 1:
+                img = torch.from_numpy(img)
+                img = img.unsqueeze(0).permute(0, 3, 1, 2)
+                img = torch.nn.functional.interpolate(img,
+                                                      size=(shape[0]//self.downsample_factor,
+                                                            shape[1]//self.downsample_factor),
+                                                      mode='nearest')
+                img = img.permute(0, 2, 3, 1).squeeze(0)
+                img = img.numpy()
+            os.makedirs(osp.join(runner.cfg.work_dir, 'val'), exist_ok=True)
+            fig, axs2d = plt.subplots(nrows=2, ncols=3, figsize=(20, 20))
 
-        if total_curr_iter % self.interval == 0:
-            self._visualizer.add_datasample(
-                window_name,
-                img,
-                data_sample=outputs[0],
-                show=self.show,
-                wait_time=self.wait_time,
-                step=total_curr_iter)
+            axs = axs2d.flat
+
+            # HH HV
+            for j in range(0, 2):
+                ax = axs[j]
+                if j == 0:
+                    ax.set_title(f'Scene {scene_name}, HH')
+                else:
+                    ax.set_title(f'Scene {scene_name}, HV')
+                ax.set_xticks([])
+                ax.set_yticks([])
+                ax.imshow(img[:, :, j], cmap='gray')
+
+            gt_sem_seg = data_sample.gt_sem_seg.data.cpu().numpy()[
+                0, :, :].astype(np.float16)
+            gt_sem_seg[gt_sem_seg == 255] = np.nan
+
+            pred_sem_seg = data_sample.pred_sem_seg.data.cpu().numpy()[
+                0, :, :].astype(np.float16)
+            nan_mask = np.isnan(gt_sem_seg)
+            pred_sem_seg[nan_mask] = np.nan
+            # GT
+            ax = axs[2]
+            ax.imshow(gt_sem_seg, vmin=0, vmax=self.num_classes - 1,
+                      cmap='jet', interpolation='nearest')
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_title(f'Scene {scene_name}, SOD: Ground Truth')
+            chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
+            # HH without land
+            ax = axs[3]
+            HH = img[:, :, 0].copy()
+            HH[nan_mask] = np.nan
+            ax.imshow(HH, cmap='gray')
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_title(f'Scene {scene_name}, HH without land')
+            # chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
+            # HV without land
+            ax = axs[4]
+            HV = img[:, :, 1].copy()
+            HV[nan_mask] = np.nan
+            ax.imshow(HV, cmap='gray')
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_title(f'Scene {scene_name}, HV without land')
+            # chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
+
+            ax = axs[5]
+            ax.imshow(pred_sem_seg, vmin=0, vmax=self.num_classes - 1,
+                      cmap='jet', interpolation='nearest')
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.set_title(f'Scene {scene_name}, SOD: Pred')
+            chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
+
+            plt.subplots_adjust(left=0, bottom=0, right=1,
+                                top=0.75, wspace=0.5, hspace=-0)
+            fig.savefig(f"{osp.join(runner.cfg.work_dir,'val', scene_name)}.png",
+                        format='png', dpi=128, bbox_inches="tight")
+            plt.close('all')
+
+            self.GT_flat = torch.cat((self.GT_flat, torch.tensor(
+                gt_sem_seg[~nan_mask], device=self.device)))
+
+            self.pred_flat = torch.cat((self.pred_flat,  torch.tensor(
+                pred_sem_seg[~nan_mask], device=self.device)))
+
+    def before_test(self, runner) -> None:
+        """All subclasses should override this method, if they need any
+        operations before testing.
+
+        Args:
+            runner (Runner): The runner of the testing process.
+        """
+
+        self.GT_flat = torch.Tensor().to(self.device)
+        self.pred_flat = torch.Tensor().to(self.device)
 
     def after_test_iter(self, runner: Runner, batch_idx: int, data_batch: dict,
                         outputs: Sequence[SegDataSample]) -> None:
@@ -166,7 +271,7 @@ class SegAI4ArcticVisualizationHook(Hook):
             pred_sem_seg[nan_mask] = np.nan
             # GT
             ax = axs[2]
-            ax.imshow(gt_sem_seg, vmin=0, vmax=5,
+            ax.imshow(gt_sem_seg, vmin=0, vmax=self.num_classes - 1,
                       cmap='jet', interpolation='nearest')
             ax.set_xticks([])
             ax.set_yticks([])
@@ -174,7 +279,7 @@ class SegAI4ArcticVisualizationHook(Hook):
             chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
             # HH without land
             ax = axs[3]
-            HH = img[:,:,0].copy()
+            HH = img[:, :, 0].copy()
             HH[nan_mask] = np.nan
             ax.imshow(HH, cmap='gray')
             ax.set_xticks([])
@@ -183,7 +288,7 @@ class SegAI4ArcticVisualizationHook(Hook):
             # chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
             # HV without land
             ax = axs[4]
-            HV = img[:,:,0].copy()
+            HV = img[:, :, 0].copy()
             HV[nan_mask] = np.nan
             ax.imshow(HV, cmap='gray')
             ax.set_xticks([])
@@ -192,16 +297,79 @@ class SegAI4ArcticVisualizationHook(Hook):
             # chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
 
             ax = axs[5]
-            ax.imshow(pred_sem_seg, vmin=0, vmax=5,
+            ax.imshow(pred_sem_seg, vmin=0, vmax=self.num_classes - 1,
                       cmap='jet', interpolation='nearest')
             ax.set_xticks([])
             ax.set_yticks([])
             ax.set_title(f'Scene {scene_name}, SOD: Pred')
             chart_cbar(ax=ax, n_classes=7, chart='SOD', cmap='jet')
 
-
             plt.subplots_adjust(left=0, bottom=0, right=1,
                                 top=0.75, wspace=0.5, hspace=-0)
             fig.savefig(f"{osp.join(runner.cfg.work_dir,'test', scene_name)}.png",
                         format='png', dpi=128, bbox_inches="tight")
             plt.close('all')
+
+            self.GT_flat = torch.cat((self.GT_flat, torch.tensor(
+                gt_sem_seg[~nan_mask], device=self.device)))
+
+            self.pred_flat = torch.cat((self.pred_flat,  torch.tensor(
+                pred_sem_seg[~nan_mask], device=self.device)))
+
+    @master_only
+    def after_test(self, runner) -> None:
+        """Calculate R2 score between flattened GT and flattend pred
+
+        Args:
+            runner (Runner): The runner of the testing process.
+        """
+        if self.metric == 'r2':
+            r2 = r2_score(preds=self.pred_flat, target=self.GT_flat)
+            print('R2 score: ', r2)
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = False
+            runner.visualizer._vis_backends['WandbVisBackend']._wandb.log(
+                {'test/R2 score': r2.item()})
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = True
+            # wandb.summary["R2 score"] = r2
+            # wandb.save()
+        elif self.metric == 'f1':
+            f1 = f1_score(target=self.GT_flat, preds=self.pred_flat,
+                          average='weighted', task='multiclass', num_classes=self.num_classes)
+            print('F1 score: ', f1.item())
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = False
+            runner.visualizer._vis_backends['WandbVisBackend']._wandb.log(
+                {'test/F1 score': f1.item()})
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = True
+            # wandb.summary["F1 score"] = f1.item()
+            # wandb.save(runner.cfg.filename)
+        else:
+            raise "Unrecognized metric"
+
+    @master_only
+    def after_val(self, runner) -> None:
+        """Calculate R2 score between flattened GT and flattend pred
+
+        Args:
+            runner (Runner): The runner of the testing process.
+        """
+        if self.metric == 'r2':
+            r2 = r2_score(preds=self.pred_flat, target=self.GT_flat)
+            print('R2 score: ', r2)
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = False
+            runner.visualizer._vis_backends['WandbVisBackend']._wandb.log(
+                {'val/R2 score': r2.item()})
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = True
+            # wandb.summary["R2 score"] = r2
+            # wandb.save()
+        elif self.metric == 'f1':
+            f1 = f1_score(target=self.GT_flat, preds=self.pred_flat,
+                          average='weighted', task='multiclass', num_classes=self.num_classes)
+            print('F1 score: ', f1.item())
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = False
+            runner.visualizer._vis_backends['WandbVisBackend']._wandb.log(
+                {'val/F1 score': f1.item()})
+            runner.visualizer._vis_backends['WandbVisBackend']._commit = True
+            # wandb.summary["F1 score"] = f1.item()
+            # wandb.save(runner.cfg.filename)
+        else:
+            raise "Unrecognized metric"

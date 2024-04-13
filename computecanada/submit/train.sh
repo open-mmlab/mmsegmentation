@@ -23,7 +23,7 @@ source ~/env_mmselfsup/bin/activate
 
 echo "Activating virtual environment done"
 
-cd $HOME/projects/def-dclausi/AI4arctic/$USER/mmselfsup
+cd $HOME/projects/def-dclausi/AI4arctic/$USER/mmselfsup`
 
 echo "starting training..."
 

@@ -32,7 +32,6 @@ class AI4Arctic(BaseSegDataset):
                  **kwargs) -> None:
         super().__init__(
             img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
-
     def load_data_list(self) -> List[dict]:
         """Load annotation from directory or annotation file.
 
@@ -42,6 +41,8 @@ class AI4Arctic(BaseSegDataset):
         data_list = []
         img_dir = self.data_prefix.get('img_path', None)
         ann_dir = self.data_prefix.get('seg_map_path', None)
+        from icecream import ic
+        ic(self.ann_file)
         if not osp.isdir(self.ann_file) and self.ann_file:
             assert osp.isfile(self.ann_file), \
                 f'Failed to load `ann_file` {self.ann_file}'
@@ -50,7 +51,7 @@ class AI4Arctic(BaseSegDataset):
             for line in lines:
                 img_name = line.strip()
                 data_info = dict(
-                    img_path=osp.join(img_dir, img_name + self.img_suffix))
+                    img_path=osp.join(img_dir, img_name))
                 if ann_dir is not None:
                     seg_map = img_name + self.seg_map_suffix
                     data_info['seg_map_path'] = osp.join(ann_dir, seg_map)

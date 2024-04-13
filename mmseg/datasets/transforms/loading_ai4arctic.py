@@ -46,6 +46,7 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                  channels,
                  data_root,
                  gt_root,
+                 ann_file = None,
                  mean=[-14.508254953309349, -24.701211250236728],
                  std=[5.659745919326586, 4.746759336539111],
                  to_float32=True,
@@ -68,7 +69,7 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
         self.downsample_factor = downsample_factor
         self.with_seg = with_seg
         self.GT_type = GT_type
-        self.nc_files = self.list_nc_files(data_root)
+        self.nc_files = self.list_nc_files(data_root, ann_file)
         # key represents full path of the image and value represents the np image loaded
         self.pre_loaded_image_dic = {}
         self.pre_loaded_seg_dic = {}
@@ -119,12 +120,18 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                 self.pre_loaded_seg_dic[filename] = gt_seg_map
         ic('Finished loading all the images into memory...')
 
-    def list_nc_files(self, folder_path):
+    def list_nc_files(self, folder_path, ann_file):
         nc_files = []
-        for root, dirs, files in os.walk(folder_path):
-            for file in files:
-                if file.endswith(".nc"):
-                    nc_files.append(os.path.join(root, file))
+        if ann_file != None:
+            with open(ann_file, "r") as file:
+                # Read the lines of the file into a list
+                filenames = file.readlines()
+            nc_files = [os.path.join(folder_path, filename.strip()) for filename in filenames]
+        else:
+            for root, dirs, files in os.walk(folder_path):
+                for file in files:
+                    if file.endswith(".nc"):
+                        nc_files.append(os.path.join(root, file))
         return nc_files
 
     def transform(self, results):
