@@ -44,7 +44,8 @@ def main():
         with_labels=args.with_labels,
         draw_gt=False,
         show=False if args.out_file is not None else True,
-        out_file=args.out_file)
+        out_file=args.out_file,
+        save_dir='./')
 
 
 if __name__ == '__main__':
