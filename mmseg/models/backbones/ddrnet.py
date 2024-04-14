@@ -7,6 +7,7 @@ from mmseg.models.utils import DAPPM, BasicBlock, Bottleneck, resize
 from mmseg.registry import MODELS
 from mmseg.utils import OptConfigType
 
+import math
 
 @MODELS.register_module()
 class DDRNet(BaseModule):
@@ -180,7 +181,7 @@ class DDRNet(BaseModule):
 
     def forward(self, x):
         """Forward function."""
-        out_size = (x.shape[-2] // 8, x.shape[-1] // 8)
+        out_size = (math.ceil(x.shape[-2] // 8), math.ceil(x.shape[-1] // 8))
 
         # stage 0-2
         x = self.stem(x)
