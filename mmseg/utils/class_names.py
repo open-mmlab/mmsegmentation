@@ -1,6 +1,14 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmengine.utils import is_str
 
+def cag_classes():
+    return [
+        'background', 'contrast'
+    ]
+    
+def cag_palette():
+    return [[0, 0, 0], [255, 0, 0]]
+
 
 def cityscapes_classes():
     """Cityscapes class names for external use."""
@@ -440,6 +448,7 @@ def bdd100k_palette():
 
 
 dataset_aliases = {
+    'cag' : ['cag'],
     'cityscapes': ['cityscapes'],
     'ade': ['ade', 'ade20k'],
     'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],

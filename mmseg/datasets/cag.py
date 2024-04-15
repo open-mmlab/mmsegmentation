@@ -8,8 +8,8 @@ class CoronaryAngiographyDataset(BaseSegDataset):
     """Angiography dataset.
     """
     METAINFO = dict(
-        classes=('contrast',),
-        palette=[[0, 0, 0]])
+        classes=('background','contrast'),
+        palette=[[0, 0, 0], [255, 0, 0]])
 
     def __init__(self,
                  img_suffix='.png',
