@@ -3,11 +3,11 @@ from mmengine.utils import is_str
 
 def cag_classes():
     return [
-        'contrast', 'background'
+         'background', 'contrast'
     ]
     
 def cag_palette():
-    return [[255, 0, 0], [0, 0, 0]]
+    return [[0, 0, 0], [255, 0, 0]]
 
 
 def cityscapes_classes():
