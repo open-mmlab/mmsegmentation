@@ -1,29 +1,29 @@
 # dataset settings
 dataset_type = 'CoronaryAngiographyDataset'
-data_root = './cag/'
+data_root = 'data/cag'
 # augmentation setting from YoungIn's jupyter notebook
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=False),
-    dict(
-        type='AlbuShiftScaleRotateTransform',
-        scale_limit=(-0.2,0),
-        rotate_limit=20,
-        shift_limit=0.1,
-        border_mode=0, value=[0.3,0.4,0.5],
-        p=1
-    ),
-    dict(
-        type='AlbuRandomContrastTransform',
-        brightness_limit=(-0.2, 0.2),
-        contrast_limit=(-0.2, 0.2),
-        p=0.5
-    ),
-    dict(
-        type='AlbuGaussNoiseTransform',
-        var_limit=(0, 0.01), 
-        p=0.5
-    ),
+    # dict(
+    #     type='AlbuShiftScaleRotateTransform',
+    #     scale_limit=(-0.2,0),
+    #     rotate_limit=20,
+    #     shift_limit=0.1,
+    #     border_mode=0, value=[0.3,0.4,0.5],
+    #     p=1
+    # ),
+    # dict(
+    #     type='AlbuRandomContrastTransform',
+    #     brightness_limit=(-0.2, 0.2),
+    #     contrast_limit=(-0.2, 0.2),
+    #     p=0.5
+    # ),
+    # dict(
+    #     type='AlbuGaussNoiseTransform',
+    #     var_limit=(0, 0.01), 
+    #     p=0.5
+    # ),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
     dict(type='PackSegInputs')
@@ -60,6 +60,7 @@ train_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
+        reduce_zero_label=False,
         data_prefix=dict(
             img_path='images/training', seg_map_path='annotations/training'),
         pipeline=train_pipeline))
@@ -71,6 +72,7 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
+        reduce_zero_label=False,
         data_prefix=dict(
             img_path='images/validation',
             seg_map_path='annotations/validation'),
@@ -83,6 +85,7 @@ test_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
+        reduce_zero_label=False,
         data_prefix=dict(
             img_path='images/test',
             seg_map_path='annotations/test'),
