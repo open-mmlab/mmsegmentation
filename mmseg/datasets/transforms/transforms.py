@@ -2616,7 +2616,7 @@ class AlbuRandomContrastTransform(BaseAlbuTransform):
     """
     def __init__(self, **kwargs):
         self.params = kwargs
-        self.albu_transform = album.RandomContrast(**kwargs)
+        self.albu_transform = album.RandomBrightnessContrast(**kwargs)
 
     def transform(self, results: dict) -> dict:
         """Transform function to perform `album.ShiftScaleRotate`.

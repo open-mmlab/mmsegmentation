@@ -59,7 +59,7 @@ __all__ = [
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
     'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
-    'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
+    'LoadMultipleRSImageFromFile', 'CoronaryAngiographyDataset', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
-    'NYUDataset', 'CoronaryAngiographyDataset'
+    'NYUDataset'
 ]

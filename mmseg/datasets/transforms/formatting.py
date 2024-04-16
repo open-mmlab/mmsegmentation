@@ -64,14 +64,15 @@ class PackSegInputs(BaseTransform):
         if 'img' in results:
             img = results['img']
             if len(img.shape) < 3:
-                img = np.expand_dims(img, -1)
+                img = np.stack([img] * 3, axis=-1)
             if not img.flags.c_contiguous:
+                img = (img - np.min(img))/np.max(img)
                 img = to_tensor(np.ascontiguousarray(img.transpose(2, 0, 1)))
             else:
                 img = img.transpose(2, 0, 1)
+                img = (img - np.min(img))/np.max(img)
                 img = to_tensor(img).contiguous()
             packed_results['inputs'] = img
-
         data_sample = SegDataSample()
         if 'gt_seg_map' in results:
             if len(results['gt_seg_map'].shape) == 2:
