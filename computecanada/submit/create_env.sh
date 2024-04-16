@@ -27,6 +27,9 @@ pip install torchvision
 pip install xarray
 pip install h5netcdf
 # pip install mim
+pip install torchmetrics
+pip install ftfy
+pip install regex
 pip install mmengine>=0.8.3
 pip install mmcv
 

@@ -6,19 +6,27 @@ _base_ = [
 # copied from vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
 
 crop_size = (512, 512)
+scale = (1024, 1024)
+downsample_factor = 10
+GT_type='SOD'
 # dataset settings
 dataset_type = 'AI4Arctic'
-data_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/test1file'
+data_root_train = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3'
+data_root_test = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3'
+
 gt_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3_segmaps'
-finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/test1file/finetune_2.txt'
+test_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3_segmaps'
+
+finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_20.txt'
+test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test.txt'
 train_pipeline = [
-    dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root, gt_root=gt_root, ann_file=finetune_ann_file, channels=[
+    dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_train, gt_root=gt_root, ann_file=finetune_ann_file, channels=[
         'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=2, with_seg=True, GT_type='SOD'),
+        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=True, GT_type=GT_type),
     # dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(
         type='RandomResize',
-        scale=(2048, 2048),
+        scale=scale,
         ratio_range=(0.5, 2.0),
         keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.9),
@@ -27,22 +35,22 @@ train_pipeline = [
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
-    dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root, gt_root=gt_root, ann_file=finetune_ann_file, channels=[
+    dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_test, gt_root=test_root, ann_file=test_ann_file, channels=[
         'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=5, with_seg=False, GT_type='SOD'),
-    dict(type='Resize', scale=(2048, 2048), keep_ratio=True),
+        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=False, GT_type=GT_type),
+    # dict(type='Resize', scale=scale, keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
-    dict(type='LoadGTFromPNGFile', gt_root=gt_root,
-         downsample_factor=5, GT_type='SOD'),
+    dict(type='LoadGTFromPNGFile', gt_root=test_root,
+         downsample_factor=downsample_factor, GT_type=GT_type),
     dict(type='PackSegInputs')
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
-    dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root, gt_root=gt_root, ann_file=finetune_ann_file, channels=[
+    dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_test, gt_root=test_root, ann_file=test_ann_file, channels=[
          'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-         std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=5, with_seg=False, GT_type='SOD'),
-    dict(type='Resize', scale=(2048, 2048), keep_ratio=True),
+         std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=False, GT_type=GT_type),
+    # dict(type='Resize', scale=scale, keep_ratio=True),
     dict(
         type='TestTimeAug',
         transforms=[
@@ -55,31 +63,31 @@ tta_pipeline = [
                 dict(type='RandomFlip', prob=1., direction='horizontal')
             ],
             [dict(type='LoadGTFromPNGFile', gt_root=gt_root,
-                  downsample_factor=5, GT_type='SOD')],
+                  downsample_factor=downsample_factor, GT_type=GT_type)],
             [dict(type='PackSegInputs')]
         ])
 ]
 train_dataloader = dict(
-    batch_size=2,
-    num_workers=0,
-    persistent_workers=False,
+    batch_size=8,
+    num_workers=4,
+    persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
         type=dataset_type,
-        data_root=data_root,
+        data_root=data_root_train,
         ann_file=finetune_ann_file,
         data_prefix=dict(
             img_path='', seg_map_path=''),
         pipeline=train_pipeline))
 val_dataloader = dict(
     batch_size=1,
-    num_workers=0,
-    persistent_workers=False,
+    num_workers=4,
+    persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type=dataset_type,
-        data_root=data_root,
-        ann_file=finetune_ann_file,
+        data_root=data_root_test,
+        ann_file=test_ann_file,
         data_prefix=dict(
             img_path='',
             seg_map_path=''),
@@ -106,7 +114,7 @@ model = dict(
         type='MAE',
         # pretrained='/home/m32patel/projects/def-dclausi/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16_cs512-amp-coslr-400e_ai4arctic_norm_pix/epoch_400.pth',
         # pretrained='/project/6075102/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16/epoch_200.pth',
-        init_cfg=dict(type='Pretrained', checkpoint='/home/m32patel/projects/def-y2863che/ai4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16/epoch_200.pth', prefix = 'backbone.'),
+        # init_cfg=dict(type='Pretrained', checkpoint=None, prefix = 'backbone.'),
         img_size=crop_size,
         patch_size=16,
         in_channels=2,
@@ -172,31 +180,31 @@ optim_wrapper = dict(
 
 param_scheduler = [
     dict(
-        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+        type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=2000),
     dict(
         type='PolyLR',
         eta_min=0.0,
         power=1.0,
-        begin=1500,
-        end=160000,
+        begin=2000,
+        end=20000,
         by_epoch=False,
     )
 ]
 # training schedule for 160k
 train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=100, val_interval=50)
+    type='IterBasedTrainLoop', max_iters=20000, val_interval=1000)
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=1, log_metric_by_epoch=False),
+    logger=dict(type='LoggerHook', interval=100, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
-    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=100),
+    checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=1000, max_keep_ckpts=3),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegAI4ArcticVisualizationHook', downsample_factor=5, metric='f1', num_classes=6))
+    visualization=dict(type='SegAI4ArcticVisualizationHook', downsample_factor=downsample_factor, metric='f1', num_classes=6))
 
 vis_backends = [dict(type='WandbVisBackend',
                      init_kwargs=dict(
                          entity='mmwhale',
-                         project='mmsegmentation2',
+                         project='MAE-finetune',
                          name='{{fileBasenameNoExtension}}',),
                      #  name='filename',),
                      define_metric_cfg=None,
