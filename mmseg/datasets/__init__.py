@@ -38,7 +38,7 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, RandomRotFlip, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         SegRescale, AlbuShiftScaleRotateTransform, AlbuRandomContrastTransform, AlbuGaussNoiseTransform)
 from .voc import PascalVOCDataset
 
 # yapf: enable
