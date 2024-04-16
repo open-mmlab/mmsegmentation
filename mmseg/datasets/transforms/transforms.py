@@ -671,40 +671,40 @@ class PhotoMetricDistortion(BaseTransform):
                 alpha=random.uniform(self.contrast_lower, self.contrast_upper))
         return img
 
-    def saturation(self, img: np.ndarray) -> np.ndarray:
-        """Saturation distortion.
+    # def saturation(self, img: np.ndarray) -> np.ndarray:
+    #     """Saturation distortion.
 
-        Args:
-            img (np.ndarray): The input image.
-        Returns:
-            np.ndarray: Image after saturation change.
-        """
+    #     Args:
+    #         img (np.ndarray): The input image.
+    #     Returns:
+    #         np.ndarray: Image after saturation change.
+    #     """
 
-        if random.randint(2):
-            img = mmcv.bgr2hsv(img)
-            img[:, :, 1] = self.convert(
-                img[:, :, 1],
-                alpha=random.uniform(self.saturation_lower,
-                                     self.saturation_upper))
-            img = mmcv.hsv2bgr(img)
-        return img
+    #     if random.randint(2):
+    #         img = mmcv.bgr2hsv(img)
+    #         img[:, :, 1] = self.convert(
+    #             img[:, :, 1],
+    #             alpha=random.uniform(self.saturation_lower,
+    #                                  self.saturation_upper))
+    #         img = mmcv.hsv2bgr(img)
+    #     return img
 
-    def hue(self, img: np.ndarray) -> np.ndarray:
-        """Hue distortion.
+    # def hue(self, img: np.ndarray) -> np.ndarray:
+    #     """Hue distortion.
 
-        Args:
-            img (np.ndarray): The input image.
-        Returns:
-            np.ndarray: Image after hue change.
-        """
+    #     Args:
+    #         img (np.ndarray): The input image.
+    #     Returns:
+    #         np.ndarray: Image after hue change.
+    #     """
 
-        if random.randint(2):
-            img = mmcv.bgr2hsv(img)
-            img[:, :,
-                0] = (img[:, :, 0].astype(int) +
-                      random.randint(-self.hue_delta, self.hue_delta)) % 180
-            img = mmcv.hsv2bgr(img)
-        return img
+    #     if random.randint(2):
+    #         img = mmcv.bgr2hsv(img)
+    #         img[:, :,
+    #             0] = (img[:, :, 0].astype(int) +
+    #                   random.randint(-self.hue_delta, self.hue_delta)) % 180
+    #         img = mmcv.hsv2bgr(img)
+    #     return img
 
     def transform(self, results: dict) -> dict:
         """Transform function to perform photometric distortion on images.

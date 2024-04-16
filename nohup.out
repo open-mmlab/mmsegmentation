@@ -1,0 +1,1981 @@
+/opt/conda/lib/python3.8/site-packages/torch/distributed/launch.py:178: FutureWarning: The module torch.distributed.launch is deprecated
+and will be removed in future. Use torchrun.
+Note that --use_env is set by default in torchrun.
+If your script expects `--local_rank` argument to be set, please
+change it to read from `os.environ['LOCAL_RANK']` instead. See 
+https://pytorch.org/docs/stable/distributed.html#launch-utility for 
+further instructions
+
+  warnings.warn(
+WARNING:torch.distributed.run:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+/opt/conda/lib/python3.8/site-packages/mmengine/utils/dl_utils/setup_env.py:56: UserWarning: Setting MKL_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
+  warnings.warn(
+/opt/conda/lib/python3.8/site-packages/mmengine/utils/dl_utils/setup_env.py:56: UserWarning: Setting MKL_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
+  warnings.warn(
+/opt/conda/lib/python3.8/site-packages/mmengine/utils/dl_utils/setup_env.py:56: UserWarning: Setting MKL_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
+  warnings.warn(
+/opt/conda/lib/python3.8/site-packages/mmengine/utils/dl_utils/setup_env.py:56: UserWarning: Setting MKL_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed.
+  warnings.warn(
+04/16 08:10:01 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.8.12 (default, Oct 12 2021, 13:49:34) [GCC 7.5.0]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 1275060518
+    GPU 0,1,2,3: NVIDIA GeForce RTX 2080 Ti
+    CUDA_HOME: /usr/local/cuda
+    NVCC: Cuda compilation tools, release 11.3, V11.3.109
+    GCC: gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+    PyTorch: 1.11.0
+    PyTorch compiling details: PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) oneAPI Math Kernel Library Version 2021.4-Product Build 20210904 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.5.2 (Git Hash a9302535553c73243c632ad3c4c80beec3d19a1e)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.3
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 8.2
+  - Magma 2.5.2
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.3, CUDNN_VERSION=8.2.0, CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/c++, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=1.11.0, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+    TorchVision: 0.12.0
+    OpenCV: 4.9.0
+    MMEngine: 0.10.3
+
+Runtime environment:
+    cudnn_benchmark: True
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 1275060518
+    Distributed launcher: pytorch
+    Distributed training: True
+    GPU number: 4
+------------------------------------------------------------
+
+04/16 08:10:02 - mmengine - INFO - Config:
+crop_size = (
+    512,
+    512,
+)
+data_preprocessor = dict(
+    bgr_to_rgb=True,
+    mean=[
+        123.675,
+        116.28,
+        103.53,
+    ],
+    pad_val=0,
+    seg_pad_val=255,
+    size=(
+        512,
+        512,
+    ),
+    std=[
+        58.395,
+        57.12,
+        57.375,
+    ],
+    type='SegDataPreProcessor')
+data_root = 'data/cag'
+dataset_type = 'CoronaryAngiographyDataset'
+default_hooks = dict(
+    checkpoint=dict(by_epoch=False, interval=10000, type='CheckpointHook'),
+    logger=dict(interval=50, log_metric_by_epoch=False, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(type='SegVisualizationHook'))
+default_scope = 'mmseg'
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+fp16 = dict(loss_scale='dynamic')
+img_ratios = [
+    1.0,
+]
+launcher = 'pytorch'
+load_from = None
+log_level = 'INFO'
+log_processor = dict(by_epoch=False)
+model = dict(
+    auxiliary_head=dict(
+        align_corners=False,
+        channels=256,
+        concat_input=False,
+        dropout_ratio=0.1,
+        in_channels=768,
+        in_index=2,
+        loss_decode=dict(
+            loss_weight=0.4, type='CrossEntropyLoss', use_sigmoid=False),
+        norm_cfg=dict(requires_grad=True, type='SyncBN'),
+        num_classes=150,
+        num_convs=1,
+        type='FCNHead'),
+    backbone=dict(
+        act_cfg=dict(type='GELU'),
+        attn_drop_rate=0.0,
+        drop_path_rate=0.1,
+        embed_dims=768,
+        img_size=(
+            512,
+            512,
+        ),
+        in_channels=3,
+        init_values=1.0,
+        mlp_ratio=4,
+        norm_cfg=dict(eps=1e-06, type='LN'),
+        norm_eval=False,
+        num_heads=12,
+        num_layers=12,
+        out_indices=[
+            3,
+            5,
+            7,
+            11,
+        ],
+        patch_size=16,
+        type='MAE'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            123.675,
+            116.28,
+            103.53,
+        ],
+        pad_val=0,
+        seg_pad_val=255,
+        size=(
+            512,
+            512,
+        ),
+        std=[
+            58.395,
+            57.12,
+            57.375,
+        ],
+        type='SegDataPreProcessor'),
+    decode_head=dict(
+        align_corners=False,
+        channels=768,
+        dropout_ratio=0.1,
+        in_channels=[
+            768,
+            768,
+            768,
+            768,
+        ],
+        in_index=[
+            0,
+            1,
+            2,
+            3,
+        ],
+        loss_decode=dict(
+            loss_weight=1.0, type='CrossEntropyLoss', use_sigmoid=False),
+        norm_cfg=dict(requires_grad=True, type='SyncBN'),
+        num_classes=150,
+        pool_scales=(
+            1,
+            2,
+            3,
+            6,
+        ),
+        type='UPerHead'),
+    neck=dict(
+        embed_dim=768, rescales=[
+            4,
+            2,
+            1,
+            0.5,
+        ], type='Feature2Pyramid'),
+    pretrained='/workspaces/mmsegmentation-1/converted_model.pth',
+    test_cfg=dict(crop_size=(
+        512,
+        512,
+    ), mode='slide', stride=(
+        341,
+        341,
+    )),
+    train_cfg=dict(),
+    type='EncoderDecoder')
+norm_cfg = dict(requires_grad=True, type='SyncBN')
+optim_wrapper = dict(
+    constructor='LayerDecayOptimizerConstructor',
+    optimizer=dict(
+        betas=(
+            0.9,
+            0.999,
+        ), lr=0.0001, type='AdamW', weight_decay=0.05),
+    paramwise_cfg=dict(layer_decay_rate=0.65, num_layers=12),
+    type='OptimWrapper')
+optimizer = dict(lr=0.01, momentum=0.9, type='SGD', weight_decay=0.0005)
+param_scheduler = [
+    dict(
+        begin=0, by_epoch=False, end=1500, start_factor=1e-06,
+        type='LinearLR'),
+    dict(
+        begin=1500,
+        by_epoch=False,
+        end=160000,
+        eta_min=0.0,
+        power=1.0,
+        type='PolyLR'),
+]
+resume = False
+test_cfg = dict(type='TestLoop')
+test_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        data_prefix=dict(
+            img_path='images/test', seg_map_path='annotations/test'),
+        data_root='data/cag',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                512,
+                512,
+            ), type='Resize'),
+            dict(reduce_zero_label=False, type='LoadAnnotations'),
+            dict(type='PackSegInputs'),
+        ],
+        reduce_zero_label=False,
+        type='CoronaryAngiographyDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(
+    iou_metrics=[
+        'mIoU',
+    ], type='IoUMetric')
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(keep_ratio=True, scale=(
+        512,
+        512,
+    ), type='Resize'),
+    dict(reduce_zero_label=False, type='LoadAnnotations'),
+    dict(type='PackSegInputs'),
+]
+train_cfg = dict(
+    max_iters=160000, type='IterBasedTrainLoop', val_interval=10000)
+train_dataloader = dict(
+    batch_size=2,
+    dataset=dict(
+        data_prefix=dict(
+            img_path='images/training', seg_map_path='annotations/training'),
+        data_root='data/cag',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(reduce_zero_label=False, type='LoadAnnotations'),
+            dict(
+                border_mode=0,
+                p=1,
+                rotate_limit=20,
+                scale_limit=(
+                    -0.2,
+                    0,
+                ),
+                shift_limit=0.1,
+                type='AlbuShiftScaleRotateTransform',
+                value=[
+                    0.3,
+                    0.4,
+                    0.5,
+                ]),
+            dict(
+                brightness_limit=(
+                    -0.2,
+                    0.2,
+                ),
+                contrast_limit=(
+                    -0.2,
+                    0.2,
+                ),
+                p=0.5,
+                type='AlbuRandomContrastTransform'),
+            dict(p=0.5, type='AlbuGaussNoiseTransform', var_limit=(
+                0,
+                0.01,
+            )),
+            dict(prob=0.5, type='RandomFlip'),
+            dict(type='PackSegInputs'),
+        ],
+        reduce_zero_label=False,
+        type='CoronaryAngiographyDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=True, type='InfiniteSampler'))
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(reduce_zero_label=False, type='LoadAnnotations'),
+    dict(
+        border_mode=0,
+        p=1,
+        rotate_limit=20,
+        scale_limit=(
+            -0.2,
+            0,
+        ),
+        shift_limit=0.1,
+        type='AlbuShiftScaleRotateTransform',
+        value=[
+            0.3,
+            0.4,
+            0.5,
+        ]),
+    dict(
+        brightness_limit=(
+            -0.2,
+            0.2,
+        ),
+        contrast_limit=(
+            -0.2,
+            0.2,
+        ),
+        p=0.5,
+        type='AlbuRandomContrastTransform'),
+    dict(p=0.5, type='AlbuGaussNoiseTransform', var_limit=(
+        0,
+        0.01,
+    )),
+    dict(prob=0.5, type='RandomFlip'),
+    dict(type='PackSegInputs'),
+]
+tta_model = dict(type='SegTTAModel')
+tta_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(
+        transforms=[
+            [
+                dict(keep_ratio=True, scale_factor=1.0, type='Resize'),
+            ],
+            [
+                dict(direction='horizontal', prob=0.0, type='RandomFlip'),
+                dict(direction='horizontal', prob=1.0, type='RandomFlip'),
+            ],
+            [
+                dict(type='LoadAnnotations'),
+            ],
+            [
+                dict(type='PackSegInputs'),
+            ],
+        ],
+        type='TestTimeAug'),
+]
+val_cfg = dict(type='ValLoop')
+val_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        data_prefix=dict(
+            img_path='images/validation',
+            seg_map_path='annotations/validation'),
+        data_root='data/cag',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(keep_ratio=True, scale=(
+                512,
+                512,
+            ), type='Resize'),
+            dict(reduce_zero_label=False, type='LoadAnnotations'),
+            dict(type='PackSegInputs'),
+        ],
+        reduce_zero_label=False,
+        type='CoronaryAngiographyDataset'),
+    num_workers=4,
+    persistent_workers=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+val_evaluator = dict(
+    iou_metrics=[
+        'mIoU',
+    ], type='IoUMetric')
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='SegLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+work_dir = './work_dirs/mae-base_upernet_8xb2-amp-160k_cag-512x512'
+
+/workspaces/mmsegmentation-1/mmseg/models/backbones/beit.py:299: UserWarning: DeprecationWarning: pretrained is deprecated, please use "init_cfg" instead
+  warnings.warn('DeprecationWarning: pretrained is deprecated, '
+/workspaces/mmsegmentation-1/mmseg/models/backbones/beit.py:299: UserWarning: DeprecationWarning: pretrained is deprecated, please use "init_cfg" instead
+  warnings.warn('DeprecationWarning: pretrained is deprecated, '
+/opt/conda/lib/python3.8/site-packages/torch/functional.py:568: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/TensorShape.cpp:2228.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+/opt/conda/lib/python3.8/site-packages/torch/functional.py:568: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/TensorShape.cpp:2228.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+/workspaces/mmsegmentation-1/mmseg/models/backbones/beit.py:299: UserWarning: DeprecationWarning: pretrained is deprecated, please use "init_cfg" instead
+  warnings.warn('DeprecationWarning: pretrained is deprecated, '
+/opt/conda/lib/python3.8/site-packages/torch/functional.py:568: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/TensorShape.cpp:2228.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+/workspaces/mmsegmentation-1/mmseg/models/backbones/beit.py:299: UserWarning: DeprecationWarning: pretrained is deprecated, please use "init_cfg" instead
+  warnings.warn('DeprecationWarning: pretrained is deprecated, '
+/opt/conda/lib/python3.8/site-packages/torch/functional.py:568: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/TensorShape.cpp:2228.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+/workspaces/mmsegmentation-1/mmseg/models/builder.py:36: UserWarning: ``build_loss`` would be deprecated soon, please use ``mmseg.registry.MODELS.build()`` 
+  warnings.warn('``build_loss`` would be deprecated soon, please use '
+/workspaces/mmsegmentation-1/mmseg/models/losses/cross_entropy_loss.py:235: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+/workspaces/mmsegmentation-1/mmseg/models/builder.py:36: UserWarning: ``build_loss`` would be deprecated soon, please use ``mmseg.registry.MODELS.build()`` 
+  warnings.warn('``build_loss`` would be deprecated soon, please use '
+/workspaces/mmsegmentation-1/mmseg/models/losses/cross_entropy_loss.py:235: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+/workspaces/mmsegmentation-1/mmseg/models/builder.py:36: UserWarning: ``build_loss`` would be deprecated soon, please use ``mmseg.registry.MODELS.build()`` 
+  warnings.warn('``build_loss`` would be deprecated soon, please use '
+/workspaces/mmsegmentation-1/mmseg/models/losses/cross_entropy_loss.py:235: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+/workspaces/mmsegmentation-1/mmseg/models/builder.py:36: UserWarning: ``build_loss`` would be deprecated soon, please use ``mmseg.registry.MODELS.build()`` 
+  warnings.warn('``build_loss`` would be deprecated soon, please use '
+/workspaces/mmsegmentation-1/mmseg/models/losses/cross_entropy_loss.py:235: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
+  warnings.warn(
+/workspaces/mmsegmentation-1/mmseg/engine/hooks/visualization_hook.py:61: UserWarning: The draw is False, it means that the hook for visualization will not take effect. The results will NOT be visualized or stored.
+  warnings.warn('The draw is False, it means that the '
+04/16 08:10:04 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) IterTimerHook                      
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) SegVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+/workspaces/mmsegmentation-1/mmseg/engine/hooks/visualization_hook.py:61: UserWarning: The draw is False, it means that the hook for visualization will not take effect. The results will NOT be visualized or stored.
+  warnings.warn('The draw is False, it means that the '
+/workspaces/mmsegmentation-1/mmseg/engine/hooks/visualization_hook.py:61: UserWarning: The draw is False, it means that the hook for visualization will not take effect. The results will NOT be visualized or stored.
+  warnings.warn('The draw is False, it means that the '
+/workspaces/mmsegmentation-1/mmseg/engine/hooks/visualization_hook.py:61: UserWarning: The draw is False, it means that the hook for visualization will not take effect. The results will NOT be visualized or stored.
+  warnings.warn('The draw is False, it means that the '
+/workspaces/mmsegmentation-1/mmseg/datasets/transforms/loading.py:83: UserWarning: `reduce_zero_label` will be deprecated, if you would like to ignore the zero label, please set `reduce_zero_label=True` when dataset initialized
+  warnings.warn('`reduce_zero_label` will be deprecated, '
+/workspaces/mmsegmentation-1/mmseg/datasets/transforms/loading.py:83: UserWarning: `reduce_zero_label` will be deprecated, if you would like to ignore the zero label, please set `reduce_zero_label=True` when dataset initialized
+  warnings.warn('`reduce_zero_label` will be deprecated, '
+/workspaces/mmsegmentation-1/mmseg/datasets/transforms/loading.py:83: UserWarning: `reduce_zero_label` will be deprecated, if you would like to ignore the zero label, please set `reduce_zero_label=True` when dataset initialized
+  warnings.warn('`reduce_zero_label` will be deprecated, '
+/workspaces/mmsegmentation-1/mmseg/datasets/transforms/loading.py:83: UserWarning: `reduce_zero_label` will be deprecated, if you would like to ignore the zero label, please set `reduce_zero_label=True` when dataset initialized
+  warnings.warn('`reduce_zero_label` will be deprecated, '
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:198: UserWarning: DeprecationWarning: Original LayerDecayOptimizerConstructor of BEiT will be deprecated. Please use LearningRateDecayOptimizerConstructor instead, and set decay_type = layer_wise_vit in paramwise_cfg.
+  warnings.warn('DeprecationWarning: Original '
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:204: UserWarning: DeprecationWarning: Layer_decay_rate will be deleted, please use decay_rate instead.
+  warnings.warn('DeprecationWarning: Layer_decay_rate will '
+self.paramwise_cfg is {'num_layers': 12, 'decay_type': 'layer_wise_vit', 'decay_rate': 0.65}
+Build LearningRateDecayOptimizerConstructor  layer_wise_vit 0.65 - 14
+set param backbone.cls_token as id 0
+set param backbone.pos_embed as id 0
+set param backbone.patch_embed.projection.weight as id 0
+set param backbone.patch_embed.projection.bias as id 0
+set param backbone.layers.0.gamma_1 as id 1
+set param backbone.layers.0.gamma_2 as id 1
+set param backbone.layers.0.ln1.weight as id 1
+set param backbone.layers.0.ln1.bias as id 1
+set param backbone.layers.0.attn.relative_position_bias_table as id 1
+set param backbone.layers.0.attn.qkv.weight as id 1
+set param backbone.layers.0.attn.qkv.bias as id 1
+set param backbone.layers.0.attn.proj.weight as id 1
+set param backbone.layers.0.attn.proj.bias as id 1
+set param backbone.layers.0.ln2.weight as id 1
+set param backbone.layers.0.ln2.bias as id 1
+set param backbone.layers.0.ffn.layers.0.0.weight as id 1
+set param backbone.layers.0.ffn.layers.0.0.bias as id 1
+set param backbone.layers.0.ffn.layers.1.weight as id 1
+set param backbone.layers.0.ffn.layers.1.bias as id 1
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:198: UserWarning: DeprecationWarning: Original LayerDecayOptimizerConstructor of BEiT will be deprecated. Please use LearningRateDecayOptimizerConstructor instead, and set decay_type = layer_wise_vit in paramwise_cfg.
+  warnings.warn('DeprecationWarning: Original '
+set param backbone.layers.1.gamma_1 as id 2
+set param backbone.layers.1.gamma_2 as id 2
+set param backbone.layers.1.ln1.weight as id 2
+set param backbone.layers.1.ln1.bias as id 2
+set param backbone.layers.1.attn.relative_position_bias_table as id 2/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:204: UserWarning: DeprecationWarning: Layer_decay_rate will be deleted, please use decay_rate instead.
+  warnings.warn('DeprecationWarning: Layer_decay_rate will '
+
+set param backbone.layers.1.attn.qkv.weight as id 2
+set param backbone.layers.1.attn.qkv.bias as id 2
+set param backbone.layers.1.attn.proj.weight as id 2
+set param backbone.layers.1.attn.proj.bias as id 2
+set param backbone.layers.1.ln2.weight as id 2
+set param backbone.layers.1.ln2.bias as id 2
+set param backbone.layers.1.ffn.layers.0.0.weight as id 2
+set param backbone.layers.1.ffn.layers.0.0.bias as id 2
+set param backbone.layers.1.ffn.layers.1.weight as id 2
+set param backbone.layers.1.ffn.layers.1.bias as id 2
+set param backbone.layers.2.gamma_1 as id 3
+set param backbone.layers.2.gamma_2 as id 3
+set param backbone.layers.2.ln1.weight as id 3
+set param backbone.layers.2.ln1.bias as id 3
+set param backbone.layers.2.attn.relative_position_bias_table as id 3
+set param backbone.layers.2.attn.qkv.weight as id 3
+set param backbone.layers.2.attn.qkv.bias as id 3
+set param backbone.layers.2.attn.proj.weight as id 3
+set param backbone.layers.2.attn.proj.bias as id 3
+set param backbone.layers.2.ln2.weight as id 3
+set param backbone.layers.2.ln2.bias as id 3
+set param backbone.layers.2.ffn.layers.0.0.weight as id 3
+set param backbone.layers.2.ffn.layers.0.0.bias as id 3
+set param backbone.layers.2.ffn.layers.1.weight as id 3
+set param backbone.layers.2.ffn.layers.1.bias as id 3
+set param backbone.layers.3.gamma_1 as id 4
+set param backbone.layers.3.gamma_2 as id 4
+set param backbone.layers.3.ln1.weight as id 4
+set param backbone.layers.3.ln1.bias as id 4
+set param backbone.layers.3.attn.relative_position_bias_table as id 4
+set param backbone.layers.3.attn.qkv.weight as id 4
+set param backbone.layers.3.attn.qkv.bias as id 4
+set param backbone.layers.3.attn.proj.weight as id 4
+set param backbone.layers.3.attn.proj.bias as id 4
+set param backbone.layers.3.ln2.weight as id 4
+set param backbone.layers.3.ln2.bias as id 4
+set param backbone.layers.3.ffn.layers.0.0.weight as id 4
+set param backbone.layers.3.ffn.layers.0.0.bias as id 4
+set param backbone.layers.3.ffn.layers.1.weight as id 4
+self.paramwise_cfg is {'num_layers': 12, 'decay_type': 'layer_wise_vit', 'decay_rate': 0.65}set param backbone.layers.3.ffn.layers.1.bias as id 4
+
+Build LearningRateDecayOptimizerConstructor  layer_wise_vit 0.65 - 14set param backbone.layers.4.gamma_1 as id 5
+
+set param backbone.layers.4.gamma_2 as id 5
+set param backbone.layers.4.ln1.weight as id 5
+set param backbone.layers.4.ln1.bias as id 5
+set param backbone.layers.4.attn.relative_position_bias_table as id 5
+set param backbone.layers.4.attn.qkv.weight as id 5
+set param backbone.layers.4.attn.qkv.bias as id 5
+set param backbone.layers.4.attn.proj.weight as id 5
+set param backbone.layers.4.attn.proj.bias as id 5
+set param backbone.layers.4.ln2.weight as id 5
+set param backbone.layers.4.ln2.bias as id 5
+set param backbone.cls_token as id 0
+set param backbone.layers.4.ffn.layers.0.0.weight as id 5
+set param backbone.pos_embed as id 0set param backbone.layers.4.ffn.layers.0.0.bias as id 5
+
+set param backbone.layers.4.ffn.layers.1.weight as id 5
+set param backbone.layers.4.ffn.layers.1.bias as id 5
+set param backbone.layers.5.gamma_1 as id 6
+set param backbone.patch_embed.projection.weight as id 0
+set param backbone.layers.5.gamma_2 as id 6
+set param backbone.patch_embed.projection.bias as id 0
+set param backbone.layers.5.ln1.weight as id 6
+set param backbone.layers.5.ln1.bias as id 6
+set param backbone.layers.5.attn.relative_position_bias_table as id 6
+set param backbone.layers.0.gamma_1 as id 1set param backbone.layers.5.attn.qkv.weight as id 6
+
+set param backbone.layers.5.attn.qkv.bias as id 6
+set param backbone.layers.0.gamma_2 as id 1
+set param backbone.layers.5.attn.proj.weight as id 6
+set param backbone.layers.5.attn.proj.bias as id 6
+set param backbone.layers.0.ln1.weight as id 1
+set param backbone.layers.5.ln2.weight as id 6
+set param backbone.layers.5.ln2.bias as id 6set param backbone.layers.0.ln1.bias as id 1
+
+set param backbone.layers.5.ffn.layers.0.0.weight as id 6
+set param backbone.layers.5.ffn.layers.0.0.bias as id 6set param backbone.layers.0.attn.relative_position_bias_table as id 1
+
+set param backbone.layers.5.ffn.layers.1.weight as id 6
+set param backbone.layers.5.ffn.layers.1.bias as id 6
+set param backbone.layers.0.attn.qkv.weight as id 1
+set param backbone.layers.6.gamma_1 as id 7set param backbone.layers.0.attn.qkv.bias as id 1
+
+set param backbone.layers.6.gamma_2 as id 7
+set param backbone.layers.6.ln1.weight as id 7
+set param backbone.layers.0.attn.proj.weight as id 1
+set param backbone.layers.6.ln1.bias as id 7
+set param backbone.layers.0.attn.proj.bias as id 1
+set param backbone.layers.6.attn.relative_position_bias_table as id 7
+set param backbone.layers.6.attn.qkv.weight as id 7set param backbone.layers.0.ln2.weight as id 1
+
+set param backbone.layers.6.attn.qkv.bias as id 7
+set param backbone.layers.0.ln2.bias as id 1
+set param backbone.layers.6.attn.proj.weight as id 7
+set param backbone.layers.6.attn.proj.bias as id 7
+set param backbone.layers.6.ln2.weight as id 7
+set param backbone.layers.6.ln2.bias as id 7set param backbone.layers.0.ffn.layers.0.0.weight as id 1
+
+set param backbone.layers.0.ffn.layers.0.0.bias as id 1
+set param backbone.layers.0.ffn.layers.1.weight as id 1
+set param backbone.layers.0.ffn.layers.1.bias as id 1
+set param backbone.layers.1.gamma_1 as id 2
+set param backbone.layers.1.gamma_2 as id 2
+set param backbone.layers.1.ln1.weight as id 2
+set param backbone.layers.1.ln1.bias as id 2
+set param backbone.layers.6.ffn.layers.0.0.weight as id 7
+set param backbone.layers.1.attn.relative_position_bias_table as id 2set param backbone.layers.6.ffn.layers.0.0.bias as id 7
+
+set param backbone.layers.1.attn.qkv.weight as id 2set param backbone.layers.6.ffn.layers.1.weight as id 7
+
+set param backbone.layers.6.ffn.layers.1.bias as id 7set param backbone.layers.1.attn.qkv.bias as id 2
+
+set param backbone.layers.7.gamma_1 as id 8set param backbone.layers.1.attn.proj.weight as id 2
+
+set param backbone.layers.7.gamma_2 as id 8set param backbone.layers.1.attn.proj.bias as id 2
+
+set param backbone.layers.7.ln1.weight as id 8
+set param backbone.layers.1.ln2.weight as id 2set param backbone.layers.7.ln1.bias as id 8
+
+set param backbone.layers.1.ln2.bias as id 2
+set param backbone.layers.7.attn.relative_position_bias_table as id 8
+set param backbone.layers.7.attn.qkv.weight as id 8
+set param backbone.layers.1.ffn.layers.0.0.weight as id 2set param backbone.layers.7.attn.qkv.bias as id 8
+
+set param backbone.layers.1.ffn.layers.0.0.bias as id 2set param backbone.layers.7.attn.proj.weight as id 8
+
+set param backbone.layers.7.attn.proj.bias as id 8
+set param backbone.layers.1.ffn.layers.1.weight as id 2
+set param backbone.layers.7.ln2.weight as id 8
+set param backbone.layers.1.ffn.layers.1.bias as id 2
+set param backbone.layers.7.ln2.bias as id 8
+set param backbone.layers.7.ffn.layers.0.0.weight as id 8set param backbone.layers.2.gamma_1 as id 3
+
+set param backbone.layers.7.ffn.layers.0.0.bias as id 8
+set param backbone.layers.2.gamma_2 as id 3
+set param backbone.layers.7.ffn.layers.1.weight as id 8
+set param backbone.layers.2.ln1.weight as id 3set param backbone.layers.7.ffn.layers.1.bias as id 8
+
+set param backbone.layers.2.ln1.bias as id 3
+set param backbone.layers.8.gamma_1 as id 9
+set param backbone.layers.2.attn.relative_position_bias_table as id 3set param backbone.layers.8.gamma_2 as id 9
+
+set param backbone.layers.8.ln1.weight as id 9
+set param backbone.layers.2.attn.qkv.weight as id 3
+set param backbone.layers.8.ln1.bias as id 9
+set param backbone.layers.2.attn.qkv.bias as id 3
+set param backbone.layers.8.attn.relative_position_bias_table as id 9
+set param backbone.layers.8.attn.qkv.weight as id 9set param backbone.layers.2.attn.proj.weight as id 3
+
+set param backbone.layers.8.attn.qkv.bias as id 9
+set param backbone.layers.2.attn.proj.bias as id 3
+set param backbone.layers.8.attn.proj.weight as id 9
+set param backbone.layers.2.ln2.weight as id 3set param backbone.layers.8.attn.proj.bias as id 9
+
+set param backbone.layers.2.ln2.bias as id 3
+set param backbone.layers.8.ln2.weight as id 9
+set param backbone.layers.8.ln2.bias as id 9
+set param backbone.layers.2.ffn.layers.0.0.weight as id 3
+set param backbone.layers.8.ffn.layers.0.0.weight as id 9
+set param backbone.layers.2.ffn.layers.0.0.bias as id 3
+set param backbone.layers.8.ffn.layers.0.0.bias as id 9
+set param backbone.layers.2.ffn.layers.1.weight as id 3set param backbone.layers.8.ffn.layers.1.weight as id 9
+
+set param backbone.layers.8.ffn.layers.1.bias as id 9set param backbone.layers.2.ffn.layers.1.bias as id 3
+
+set param backbone.layers.9.gamma_1 as id 10
+set param backbone.layers.3.gamma_1 as id 4
+set param backbone.layers.9.gamma_2 as id 10
+set param backbone.layers.3.gamma_2 as id 4set param backbone.layers.9.ln1.weight as id 10
+
+set param backbone.layers.9.ln1.bias as id 10
+set param backbone.layers.3.ln1.weight as id 4
+set param backbone.layers.9.attn.relative_position_bias_table as id 10
+set param backbone.layers.3.ln1.bias as id 4
+set param backbone.layers.9.attn.qkv.weight as id 10
+set param backbone.layers.3.attn.relative_position_bias_table as id 4
+set param backbone.layers.9.attn.qkv.bias as id 10
+set param backbone.layers.3.attn.qkv.weight as id 4set param backbone.layers.9.attn.proj.weight as id 10
+
+set param backbone.layers.9.attn.proj.bias as id 10set param backbone.layers.3.attn.qkv.bias as id 4
+
+set param backbone.layers.9.ln2.weight as id 10
+set param backbone.layers.3.attn.proj.weight as id 4
+set param backbone.layers.9.ln2.bias as id 10
+set param backbone.layers.3.attn.proj.bias as id 4
+set param backbone.layers.9.ffn.layers.0.0.weight as id 10
+set param backbone.layers.3.ln2.weight as id 4
+set param backbone.layers.9.ffn.layers.0.0.bias as id 10
+set param backbone.layers.3.ln2.bias as id 4
+set param backbone.layers.9.ffn.layers.1.weight as id 10
+set param backbone.layers.9.ffn.layers.1.bias as id 10
+set param backbone.layers.3.ffn.layers.0.0.weight as id 4
+set param backbone.layers.10.gamma_1 as id 11
+set param backbone.layers.3.ffn.layers.0.0.bias as id 4
+set param backbone.layers.10.gamma_2 as id 11
+set param backbone.layers.10.ln1.weight as id 11
+set param backbone.layers.3.ffn.layers.1.weight as id 4
+set param backbone.layers.10.ln1.bias as id 11
+set param backbone.layers.3.ffn.layers.1.bias as id 4
+set param backbone.layers.10.attn.relative_position_bias_table as id 11
+set param backbone.layers.10.attn.qkv.weight as id 11set param backbone.layers.4.gamma_1 as id 5
+
+set param backbone.layers.10.attn.qkv.bias as id 11
+set param backbone.layers.4.gamma_2 as id 5
+set param backbone.layers.10.attn.proj.weight as id 11
+set param backbone.layers.10.attn.proj.bias as id 11set param backbone.layers.4.ln1.weight as id 5
+
+set param backbone.layers.4.ln1.bias as id 5set param backbone.layers.10.ln2.weight as id 11
+
+set param backbone.layers.10.ln2.bias as id 11
+set param backbone.layers.4.attn.relative_position_bias_table as id 5
+set param backbone.layers.10.ffn.layers.0.0.weight as id 11set param backbone.layers.4.attn.qkv.weight as id 5
+
+set param backbone.layers.10.ffn.layers.0.0.bias as id 11
+set param backbone.layers.4.attn.qkv.bias as id 5
+set param backbone.layers.10.ffn.layers.1.weight as id 11
+set param backbone.layers.10.ffn.layers.1.bias as id 11set param backbone.layers.4.attn.proj.weight as id 5
+
+set param backbone.layers.4.attn.proj.bias as id 5
+set param backbone.layers.11.gamma_1 as id 12
+set param backbone.layers.11.gamma_2 as id 12set param backbone.layers.4.ln2.weight as id 5
+
+set param backbone.layers.11.ln1.weight as id 12set param backbone.layers.4.ln2.bias as id 5
+
+set param backbone.layers.11.ln1.bias as id 12
+set param backbone.layers.11.attn.relative_position_bias_table as id 12
+set param backbone.layers.4.ffn.layers.0.0.weight as id 5
+set param backbone.layers.11.attn.qkv.weight as id 12
+set param backbone.layers.11.attn.qkv.bias as id 12set param backbone.layers.4.ffn.layers.0.0.bias as id 5
+
+set param backbone.layers.11.attn.proj.weight as id 12
+set param backbone.layers.4.ffn.layers.1.weight as id 5set param backbone.layers.11.attn.proj.bias as id 12
+
+set param backbone.layers.4.ffn.layers.1.bias as id 5set param backbone.layers.11.ln2.weight as id 12
+
+set param backbone.layers.11.ln2.bias as id 12
+set param backbone.layers.5.gamma_1 as id 6
+set param backbone.layers.11.ffn.layers.0.0.weight as id 12
+set param backbone.layers.5.gamma_2 as id 6set param backbone.layers.11.ffn.layers.0.0.bias as id 12
+
+set param backbone.layers.11.ffn.layers.1.weight as id 12set param backbone.layers.5.ln1.weight as id 6
+
+set param backbone.layers.11.ffn.layers.1.bias as id 12
+set param backbone.layers.5.ln1.bias as id 6
+set param backbone.layers.5.attn.relative_position_bias_table as id 6
+set param backbone.layers.5.attn.qkv.weight as id 6set param neck.upsample_4x.0.weight as id 13
+
+set param backbone.layers.5.attn.qkv.bias as id 6set param neck.upsample_4x.0.bias as id 13
+
+set param backbone.layers.5.attn.proj.weight as id 6set param neck.upsample_4x.1.weight as id 13
+
+set param neck.upsample_4x.1.bias as id 13set param backbone.layers.5.attn.proj.bias as id 6
+
+set param neck.upsample_4x.3.weight as id 13
+set param backbone.layers.5.ln2.weight as id 6
+set param neck.upsample_4x.3.bias as id 13
+set param backbone.layers.5.ln2.bias as id 6
+set param neck.upsample_2x.0.weight as id 13
+set param neck.upsample_2x.0.bias as id 13
+set param backbone.layers.5.ffn.layers.0.0.weight as id 6
+set param backbone.layers.5.ffn.layers.0.0.bias as id 6
+set param backbone.layers.5.ffn.layers.1.weight as id 6set param decode_head.conv_seg.weight as id 13
+
+set param decode_head.conv_seg.bias as id 13set param backbone.layers.5.ffn.layers.1.bias as id 6
+
+set param backbone.layers.6.gamma_1 as id 7
+set param backbone.layers.6.gamma_2 as id 7set param decode_head.psp_modules.0.1.conv.weight as id 13
+
+set param backbone.layers.6.ln1.weight as id 7set param decode_head.psp_modules.0.1.bn.weight as id 13
+
+set param decode_head.psp_modules.0.1.bn.bias as id 13set param backbone.layers.6.ln1.bias as id 7
+
+set param backbone.layers.6.attn.relative_position_bias_table as id 7
+set param decode_head.psp_modules.1.1.conv.weight as id 13
+set param decode_head.psp_modules.1.1.bn.weight as id 13
+set param decode_head.psp_modules.1.1.bn.bias as id 13
+set param decode_head.psp_modules.2.1.conv.weight as id 13
+set param decode_head.psp_modules.2.1.bn.weight as id 13
+set param decode_head.psp_modules.2.1.bn.bias as id 13
+set param decode_head.psp_modules.3.1.conv.weight as id 13
+set param decode_head.psp_modules.3.1.bn.weight as id 13
+set param decode_head.psp_modules.3.1.bn.bias as id 13
+set param decode_head.bottleneck.conv.weight as id 13
+set param decode_head.bottleneck.bn.weight as id 13
+set param decode_head.bottleneck.bn.bias as id 13
+set param decode_head.lateral_convs.0.conv.weight as id 13
+set param decode_head.lateral_convs.0.bn.weight as id 13
+set param backbone.layers.6.attn.qkv.weight as id 7set param decode_head.lateral_convs.0.bn.bias as id 13
+
+set param backbone.layers.6.attn.qkv.bias as id 7
+set param decode_head.lateral_convs.1.conv.weight as id 13
+set param decode_head.lateral_convs.1.bn.weight as id 13
+set param backbone.layers.6.attn.proj.weight as id 7set param decode_head.lateral_convs.1.bn.bias as id 13
+
+set param backbone.layers.6.attn.proj.bias as id 7
+set param decode_head.lateral_convs.2.conv.weight as id 13
+set param decode_head.lateral_convs.2.bn.weight as id 13set param backbone.layers.6.ln2.weight as id 7
+
+set param decode_head.lateral_convs.2.bn.bias as id 13
+set param backbone.layers.6.ln2.bias as id 7
+set param decode_head.fpn_convs.0.conv.weight as id 13
+set param decode_head.fpn_convs.0.bn.weight as id 13
+set param backbone.layers.6.ffn.layers.0.0.weight as id 7
+set param decode_head.fpn_convs.0.bn.bias as id 13
+set param backbone.layers.6.ffn.layers.0.0.bias as id 7
+set param decode_head.fpn_convs.1.conv.weight as id 13
+set param decode_head.fpn_convs.1.bn.weight as id 13
+set param backbone.layers.6.ffn.layers.1.weight as id 7
+set param decode_head.fpn_convs.1.bn.bias as id 13
+set param backbone.layers.6.ffn.layers.1.bias as id 7
+set param decode_head.fpn_convs.2.conv.weight as id 13
+set param decode_head.fpn_convs.2.bn.weight as id 13
+set param backbone.layers.7.gamma_1 as id 8set param decode_head.fpn_convs.2.bn.bias as id 13
+
+set param backbone.layers.7.gamma_2 as id 8set param decode_head.fpn_bottleneck.conv.weight as id 13
+
+set param decode_head.fpn_bottleneck.bn.weight as id 13set param backbone.layers.7.ln1.weight as id 8
+
+set param decode_head.fpn_bottleneck.bn.bias as id 13
+set param backbone.layers.7.ln1.bias as id 8
+set param backbone.layers.7.attn.relative_position_bias_table as id 8
+set param backbone.layers.7.attn.qkv.weight as id 8set param auxiliary_head.conv_seg.weight as id 13
+
+set param auxiliary_head.conv_seg.bias as id 13set param backbone.layers.7.attn.qkv.bias as id 8
+
+set param auxiliary_head.convs.0.conv.weight as id 13set param backbone.layers.7.attn.proj.weight as id 8
+
+set param auxiliary_head.convs.0.bn.weight as id 13
+set param backbone.layers.7.attn.proj.bias as id 8
+set param auxiliary_head.convs.0.bn.bias as id 13
+set param backbone.layers.7.ln2.weight as id 8
+set param backbone.layers.7.ln2.bias as id 8
+set param backbone.layers.7.ffn.layers.0.0.weight as id 8
+set param backbone.layers.7.ffn.layers.0.0.bias as id 8
+set param backbone.layers.7.ffn.layers.1.weight as id 8
+set param backbone.layers.7.ffn.layers.1.bias as id 8
+set param backbone.layers.8.gamma_1 as id 9
+set param backbone.layers.8.gamma_2 as id 9
+set param backbone.layers.8.ln1.weight as id 9
+set param backbone.layers.8.ln1.bias as id 9
+set param backbone.layers.8.attn.relative_position_bias_table as id 9
+set param backbone.layers.8.attn.qkv.weight as id 9
+set param backbone.layers.8.attn.qkv.bias as id 9
+set param backbone.layers.8.attn.proj.weight as id 9
+set param backbone.layers.8.attn.proj.bias as id 9
+set param backbone.layers.8.ln2.weight as id 9
+set param backbone.layers.8.ln2.bias as id 9
+set param backbone.layers.8.ffn.layers.0.0.weight as id 9
+set param backbone.layers.8.ffn.layers.0.0.bias as id 9
+set param backbone.layers.8.ffn.layers.1.weight as id 9
+set param backbone.layers.8.ffn.layers.1.bias as id 9
+set param backbone.layers.9.gamma_1 as id 10
+set param backbone.layers.9.gamma_2 as id 10
+set param backbone.layers.9.ln1.weight as id 10
+set param backbone.layers.9.ln1.bias as id 10
+set param backbone.layers.9.attn.relative_position_bias_table as id 10
+set param backbone.layers.9.attn.qkv.weight as id 10
+set param backbone.layers.9.attn.qkv.bias as id 10
+set param backbone.layers.9.attn.proj.weight as id 10
+set param backbone.layers.9.attn.proj.bias as id 10
+set param backbone.layers.9.ln2.weight as id 10
+set param backbone.layers.9.ln2.bias as id 10
+set param backbone.layers.9.ffn.layers.0.0.weight as id 10
+set param backbone.layers.9.ffn.layers.0.0.bias as id 10
+set param backbone.layers.9.ffn.layers.1.weight as id 10
+set param backbone.layers.9.ffn.layers.1.bias as id 10
+set param backbone.layers.10.gamma_1 as id 11
+set param backbone.layers.10.gamma_2 as id 11
+set param backbone.layers.10.ln1.weight as id 11
+set param backbone.layers.10.ln1.bias as id 11
+set param backbone.layers.10.attn.relative_position_bias_table as id 11
+set param backbone.layers.10.attn.qkv.weight as id 11
+set param backbone.layers.10.attn.qkv.bias as id 11
+set param backbone.layers.10.attn.proj.weight as id 11
+set param backbone.layers.10.attn.proj.bias as id 11
+set param backbone.layers.10.ln2.weight as id 11
+set param backbone.layers.10.ln2.bias as id 11
+set param backbone.layers.10.ffn.layers.0.0.weight as id 11
+set param backbone.layers.10.ffn.layers.0.0.bias as id 11
+set param backbone.layers.10.ffn.layers.1.weight as id 11
+set param backbone.layers.10.ffn.layers.1.bias as id 11
+set param backbone.layers.11.gamma_1 as id 12
+set param backbone.layers.11.gamma_2 as id 12
+set param backbone.layers.11.ln1.weight as id 12
+set param backbone.layers.11.ln1.bias as id 12
+set param backbone.layers.11.attn.relative_position_bias_table as id 12
+set param backbone.layers.11.attn.qkv.weight as id 12
+set param backbone.layers.11.attn.qkv.bias as id 12
+set param backbone.layers.11.attn.proj.weight as id 12
+set param backbone.layers.11.attn.proj.bias as id 12
+set param backbone.layers.11.ln2.weight as id 12
+set param backbone.layers.11.ln2.bias as id 12
+set param backbone.layers.11.ffn.layers.0.0.weight as id 12
+set param backbone.layers.11.ffn.layers.0.0.bias as id 12
+set param backbone.layers.11.ffn.layers.1.weight as id 12
+set param backbone.layers.11.ffn.layers.1.bias as id 12
+set param neck.upsample_4x.0.weight as id 13
+set param neck.upsample_4x.0.bias as id 13
+set param neck.upsample_4x.1.weight as id 13
+set param neck.upsample_4x.1.bias as id 13
+set param neck.upsample_4x.3.weight as id 13
+set param neck.upsample_4x.3.bias as id 13
+set param neck.upsample_2x.0.weight as id 13
+set param neck.upsample_2x.0.bias as id 13
+set param decode_head.conv_seg.weight as id 13
+set param decode_head.conv_seg.bias as id 13
+set param decode_head.psp_modules.0.1.conv.weight as id 13
+set param decode_head.psp_modules.0.1.bn.weight as id 13
+set param decode_head.psp_modules.0.1.bn.bias as id 13
+set param decode_head.psp_modules.1.1.conv.weight as id 13
+set param decode_head.psp_modules.1.1.bn.weight as id 13
+set param decode_head.psp_modules.1.1.bn.bias as id 13
+set param decode_head.psp_modules.2.1.conv.weight as id 13
+set param decode_head.psp_modules.2.1.bn.weight as id 13
+set param decode_head.psp_modules.2.1.bn.bias as id 13
+set param decode_head.psp_modules.3.1.conv.weight as id 13
+set param decode_head.psp_modules.3.1.bn.weight as id 13
+set param decode_head.psp_modules.3.1.bn.bias as id 13
+set param decode_head.bottleneck.conv.weight as id 13
+set param decode_head.bottleneck.bn.weight as id 13
+set param decode_head.bottleneck.bn.bias as id 13
+set param decode_head.lateral_convs.0.conv.weight as id 13
+set param decode_head.lateral_convs.0.bn.weight as id 13
+set param decode_head.lateral_convs.0.bn.bias as id 13
+set param decode_head.lateral_convs.1.conv.weight as id 13
+set param decode_head.lateral_convs.1.bn.weight as id 13
+set param decode_head.lateral_convs.1.bn.bias as id 13
+set param decode_head.lateral_convs.2.conv.weight as id 13
+set param decode_head.lateral_convs.2.bn.weight as id 13
+set param decode_head.lateral_convs.2.bn.bias as id 13
+set param decode_head.fpn_convs.0.conv.weight as id 13
+set param decode_head.fpn_convs.0.bn.weight as id 13
+set param decode_head.fpn_convs.0.bn.bias as id 13
+set param decode_head.fpn_convs.1.conv.weight as id 13
+set param decode_head.fpn_convs.1.bn.weight as id 13
+set param decode_head.fpn_convs.1.bn.bias as id 13
+set param decode_head.fpn_convs.2.conv.weight as id 13
+set param decode_head.fpn_convs.2.bn.weight as id 13
+set param decode_head.fpn_convs.2.bn.bias as id 13
+set param decode_head.fpn_bottleneck.conv.weight as id 13
+set param decode_head.fpn_bottleneck.bn.weight as id 13
+set param decode_head.fpn_bottleneck.bn.bias as id 13
+set param auxiliary_head.conv_seg.weight as id 13
+set param auxiliary_head.conv_seg.bias as id 13
+set param auxiliary_head.convs.0.conv.weight as id 13
+set param auxiliary_head.convs.0.bn.weight as id 13
+set param auxiliary_head.convs.0.bn.bias as id 13
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:198: UserWarning: DeprecationWarning: Original LayerDecayOptimizerConstructor of BEiT will be deprecated. Please use LearningRateDecayOptimizerConstructor instead, and set decay_type = layer_wise_vit in paramwise_cfg.
+  warnings.warn('DeprecationWarning: Original '
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:204: UserWarning: DeprecationWarning: Layer_decay_rate will be deleted, please use decay_rate instead.
+  warnings.warn('DeprecationWarning: Layer_decay_rate will '
+self.paramwise_cfg is {'num_layers': 12, 'decay_type': 'layer_wise_vit', 'decay_rate': 0.65}
+Build LearningRateDecayOptimizerConstructor  layer_wise_vit 0.65 - 14
+set param backbone.cls_token as id 0
+set param backbone.pos_embed as id 0
+set param backbone.patch_embed.projection.weight as id 0
+set param backbone.patch_embed.projection.bias as id 0
+set param backbone.layers.0.gamma_1 as id 1
+set param backbone.layers.0.gamma_2 as id 1
+set param backbone.layers.0.ln1.weight as id 1
+set param backbone.layers.0.ln1.bias as id 1
+set param backbone.layers.0.attn.relative_position_bias_table as id 1
+set param backbone.layers.0.attn.qkv.weight as id 1
+set param backbone.layers.0.attn.qkv.bias as id 1
+set param backbone.layers.0.attn.proj.weight as id 1
+set param backbone.layers.0.attn.proj.bias as id 1
+set param backbone.layers.0.ln2.weight as id 1
+set param backbone.layers.0.ln2.bias as id 1
+set param backbone.layers.0.ffn.layers.0.0.weight as id 1
+set param backbone.layers.0.ffn.layers.0.0.bias as id 1
+set param backbone.layers.0.ffn.layers.1.weight as id 1
+set param backbone.layers.0.ffn.layers.1.bias as id 1
+set param backbone.layers.1.gamma_1 as id 2
+set param backbone.layers.1.gamma_2 as id 2
+set param backbone.layers.1.ln1.weight as id 2
+set param backbone.layers.1.ln1.bias as id 2
+set param backbone.layers.1.attn.relative_position_bias_table as id 2
+set param backbone.layers.1.attn.qkv.weight as id 2
+set param backbone.layers.1.attn.qkv.bias as id 2
+set param backbone.layers.1.attn.proj.weight as id 2
+set param backbone.layers.1.attn.proj.bias as id 2
+set param backbone.layers.1.ln2.weight as id 2
+set param backbone.layers.1.ln2.bias as id 2
+set param backbone.layers.1.ffn.layers.0.0.weight as id 2
+set param backbone.layers.1.ffn.layers.0.0.bias as id 2
+set param backbone.layers.1.ffn.layers.1.weight as id 2
+set param backbone.layers.1.ffn.layers.1.bias as id 2
+set param backbone.layers.2.gamma_1 as id 3
+set param backbone.layers.2.gamma_2 as id 3
+set param backbone.layers.2.ln1.weight as id 3
+set param backbone.layers.2.ln1.bias as id 3
+set param backbone.layers.2.attn.relative_position_bias_table as id 3
+set param backbone.layers.2.attn.qkv.weight as id 3
+set param backbone.layers.2.attn.qkv.bias as id 3
+set param backbone.layers.2.attn.proj.weight as id 3
+set param backbone.layers.2.attn.proj.bias as id 3
+set param backbone.layers.2.ln2.weight as id 3
+set param backbone.layers.2.ln2.bias as id 3
+set param backbone.layers.2.ffn.layers.0.0.weight as id 3
+set param backbone.layers.2.ffn.layers.0.0.bias as id 3
+set param backbone.layers.2.ffn.layers.1.weight as id 3
+set param backbone.layers.2.ffn.layers.1.bias as id 3
+set param backbone.layers.3.gamma_1 as id 4
+set param backbone.layers.3.gamma_2 as id 4
+set param backbone.layers.3.ln1.weight as id 4
+set param backbone.layers.3.ln1.bias as id 4
+set param backbone.layers.3.attn.relative_position_bias_table as id 4
+set param backbone.layers.3.attn.qkv.weight as id 4
+set param backbone.layers.3.attn.qkv.bias as id 4
+set param backbone.layers.3.attn.proj.weight as id 4
+set param backbone.layers.3.attn.proj.bias as id 4
+set param backbone.layers.3.ln2.weight as id 4
+set param backbone.layers.3.ln2.bias as id 4
+set param backbone.layers.3.ffn.layers.0.0.weight as id 4
+set param backbone.layers.3.ffn.layers.0.0.bias as id 4
+set param backbone.layers.3.ffn.layers.1.weight as id 4
+set param backbone.layers.3.ffn.layers.1.bias as id 4
+set param backbone.layers.4.gamma_1 as id 5
+set param backbone.layers.4.gamma_2 as id 5
+set param backbone.layers.4.ln1.weight as id 5
+set param backbone.layers.4.ln1.bias as id 5
+set param backbone.layers.4.attn.relative_position_bias_table as id 5
+set param backbone.layers.4.attn.qkv.weight as id 5
+set param backbone.layers.4.attn.qkv.bias as id 5
+set param backbone.layers.4.attn.proj.weight as id 5
+set param backbone.layers.4.attn.proj.bias as id 5
+set param backbone.layers.4.ln2.weight as id 5
+set param backbone.layers.4.ln2.bias as id 5
+set param backbone.layers.4.ffn.layers.0.0.weight as id 5
+set param backbone.layers.4.ffn.layers.0.0.bias as id 5
+set param backbone.layers.4.ffn.layers.1.weight as id 5
+set param backbone.layers.4.ffn.layers.1.bias as id 5
+set param backbone.layers.5.gamma_1 as id 6
+set param backbone.layers.5.gamma_2 as id 6
+set param backbone.layers.5.ln1.weight as id 6
+set param backbone.layers.5.ln1.bias as id 6
+set param backbone.layers.5.attn.relative_position_bias_table as id 6
+set param backbone.layers.5.attn.qkv.weight as id 6
+set param backbone.layers.5.attn.qkv.bias as id 6
+set param backbone.layers.5.attn.proj.weight as id 6
+set param backbone.layers.5.attn.proj.bias as id 6
+set param backbone.layers.5.ln2.weight as id 6
+set param backbone.layers.5.ln2.bias as id 6
+set param backbone.layers.5.ffn.layers.0.0.weight as id 6
+set param backbone.layers.5.ffn.layers.0.0.bias as id 6
+set param backbone.layers.5.ffn.layers.1.weight as id 6
+set param backbone.layers.5.ffn.layers.1.bias as id 6
+set param backbone.layers.6.gamma_1 as id 7
+set param backbone.layers.6.gamma_2 as id 7
+set param backbone.layers.6.ln1.weight as id 7
+set param backbone.layers.6.ln1.bias as id 7
+set param backbone.layers.6.attn.relative_position_bias_table as id 7
+set param backbone.layers.6.attn.qkv.weight as id 7
+set param backbone.layers.6.attn.qkv.bias as id 7
+set param backbone.layers.6.attn.proj.weight as id 7
+set param backbone.layers.6.attn.proj.bias as id 7
+set param backbone.layers.6.ln2.weight as id 7
+set param backbone.layers.6.ln2.bias as id 7
+set param backbone.layers.6.ffn.layers.0.0.weight as id 7
+set param backbone.layers.6.ffn.layers.0.0.bias as id 7
+set param backbone.layers.6.ffn.layers.1.weight as id 7
+set param backbone.layers.6.ffn.layers.1.bias as id 7
+set param backbone.layers.7.gamma_1 as id 8
+set param backbone.layers.7.gamma_2 as id 8
+set param backbone.layers.7.ln1.weight as id 8
+set param backbone.layers.7.ln1.bias as id 8
+set param backbone.layers.7.attn.relative_position_bias_table as id 8
+set param backbone.layers.7.attn.qkv.weight as id 8
+set param backbone.layers.7.attn.qkv.bias as id 8
+set param backbone.layers.7.attn.proj.weight as id 8
+set param backbone.layers.7.attn.proj.bias as id 8
+set param backbone.layers.7.ln2.weight as id 8
+set param backbone.layers.7.ln2.bias as id 8
+set param backbone.layers.7.ffn.layers.0.0.weight as id 8
+set param backbone.layers.7.ffn.layers.0.0.bias as id 8
+set param backbone.layers.7.ffn.layers.1.weight as id 8
+set param backbone.layers.7.ffn.layers.1.bias as id 8
+set param backbone.layers.8.gamma_1 as id 9
+set param backbone.layers.8.gamma_2 as id 9
+set param backbone.layers.8.ln1.weight as id 9
+set param backbone.layers.8.ln1.bias as id 9
+set param backbone.layers.8.attn.relative_position_bias_table as id 9
+set param backbone.layers.8.attn.qkv.weight as id 9
+set param backbone.layers.8.attn.qkv.bias as id 9
+set param backbone.layers.8.attn.proj.weight as id 9
+set param backbone.layers.8.attn.proj.bias as id 9
+set param backbone.layers.8.ln2.weight as id 9
+set param backbone.layers.8.ln2.bias as id 9
+set param backbone.layers.8.ffn.layers.0.0.weight as id 9
+set param backbone.layers.8.ffn.layers.0.0.bias as id 9
+set param backbone.layers.8.ffn.layers.1.weight as id 9
+set param backbone.layers.8.ffn.layers.1.bias as id 9
+set param backbone.layers.9.gamma_1 as id 10
+set param backbone.layers.9.gamma_2 as id 10
+set param backbone.layers.9.ln1.weight as id 10
+set param backbone.layers.9.ln1.bias as id 10
+set param backbone.layers.9.attn.relative_position_bias_table as id 10
+set param backbone.layers.9.attn.qkv.weight as id 10
+set param backbone.layers.9.attn.qkv.bias as id 10
+set param backbone.layers.9.attn.proj.weight as id 10
+set param backbone.layers.9.attn.proj.bias as id 10
+set param backbone.layers.9.ln2.weight as id 10
+set param backbone.layers.9.ln2.bias as id 10
+set param backbone.layers.9.ffn.layers.0.0.weight as id 10
+set param backbone.layers.9.ffn.layers.0.0.bias as id 10
+set param backbone.layers.9.ffn.layers.1.weight as id 10
+set param backbone.layers.9.ffn.layers.1.bias as id 10
+set param backbone.layers.10.gamma_1 as id 11
+set param backbone.layers.10.gamma_2 as id 11
+set param backbone.layers.10.ln1.weight as id 11
+set param backbone.layers.10.ln1.bias as id 11
+set param backbone.layers.10.attn.relative_position_bias_table as id 11
+set param backbone.layers.10.attn.qkv.weight as id 11
+set param backbone.layers.10.attn.qkv.bias as id 11
+set param backbone.layers.10.attn.proj.weight as id 11
+set param backbone.layers.10.attn.proj.bias as id 11
+set param backbone.layers.10.ln2.weight as id 11
+set param backbone.layers.10.ln2.bias as id 11
+set param backbone.layers.10.ffn.layers.0.0.weight as id 11
+set param backbone.layers.10.ffn.layers.0.0.bias as id 11
+set param backbone.layers.10.ffn.layers.1.weight as id 11
+set param backbone.layers.10.ffn.layers.1.bias as id 11
+set param backbone.layers.11.gamma_1 as id 12
+set param backbone.layers.11.gamma_2 as id 12
+set param backbone.layers.11.ln1.weight as id 12
+set param backbone.layers.11.ln1.bias as id 12
+set param backbone.layers.11.attn.relative_position_bias_table as id 12
+set param backbone.layers.11.attn.qkv.weight as id 12
+set param backbone.layers.11.attn.qkv.bias as id 12
+set param backbone.layers.11.attn.proj.weight as id 12
+set param backbone.layers.11.attn.proj.bias as id 12
+set param backbone.layers.11.ln2.weight as id 12
+set param backbone.layers.11.ln2.bias as id 12
+set param backbone.layers.11.ffn.layers.0.0.weight as id 12
+set param backbone.layers.11.ffn.layers.0.0.bias as id 12
+set param backbone.layers.11.ffn.layers.1.weight as id 12
+set param backbone.layers.11.ffn.layers.1.bias as id 12
+set param neck.upsample_4x.0.weight as id 13
+set param neck.upsample_4x.0.bias as id 13
+set param neck.upsample_4x.1.weight as id 13
+set param neck.upsample_4x.1.bias as id 13
+set param neck.upsample_4x.3.weight as id 13
+set param neck.upsample_4x.3.bias as id 13
+set param neck.upsample_2x.0.weight as id 13
+set param neck.upsample_2x.0.bias as id 13
+set param decode_head.conv_seg.weight as id 13
+set param decode_head.conv_seg.bias as id 13
+set param decode_head.psp_modules.0.1.conv.weight as id 13
+set param decode_head.psp_modules.0.1.bn.weight as id 13
+set param decode_head.psp_modules.0.1.bn.bias as id 13
+set param decode_head.psp_modules.1.1.conv.weight as id 13
+set param decode_head.psp_modules.1.1.bn.weight as id 13
+set param decode_head.psp_modules.1.1.bn.bias as id 13
+set param decode_head.psp_modules.2.1.conv.weight as id 13
+set param decode_head.psp_modules.2.1.bn.weight as id 13
+set param decode_head.psp_modules.2.1.bn.bias as id 13
+set param decode_head.psp_modules.3.1.conv.weight as id 13
+set param decode_head.psp_modules.3.1.bn.weight as id 13
+set param decode_head.psp_modules.3.1.bn.bias as id 13
+set param decode_head.bottleneck.conv.weight as id 13
+set param decode_head.bottleneck.bn.weight as id 13
+set param decode_head.bottleneck.bn.bias as id 13
+set param decode_head.lateral_convs.0.conv.weight as id 13
+set param decode_head.lateral_convs.0.bn.weight as id 13
+set param decode_head.lateral_convs.0.bn.bias as id 13
+set param decode_head.lateral_convs.1.conv.weight as id 13
+set param decode_head.lateral_convs.1.bn.weight as id 13
+set param decode_head.lateral_convs.1.bn.bias as id 13
+set param decode_head.lateral_convs.2.conv.weight as id 13
+set param decode_head.lateral_convs.2.bn.weight as id 13
+set param decode_head.lateral_convs.2.bn.bias as id 13
+set param decode_head.fpn_convs.0.conv.weight as id 13
+set param decode_head.fpn_convs.0.bn.weight as id 13
+set param decode_head.fpn_convs.0.bn.bias as id 13
+set param decode_head.fpn_convs.1.conv.weight as id 13
+set param decode_head.fpn_convs.1.bn.weight as id 13
+set param decode_head.fpn_convs.1.bn.bias as id 13
+set param decode_head.fpn_convs.2.conv.weight as id 13
+set param decode_head.fpn_convs.2.bn.weight as id 13
+set param decode_head.fpn_convs.2.bn.bias as id 13
+set param decode_head.fpn_bottleneck.conv.weight as id 13
+set param decode_head.fpn_bottleneck.bn.weight as id 13
+set param decode_head.fpn_bottleneck.bn.bias as id 13
+set param auxiliary_head.conv_seg.weight as id 13
+set param auxiliary_head.conv_seg.bias as id 13
+set param auxiliary_head.convs.0.conv.weight as id 13
+set param auxiliary_head.convs.0.bn.weight as id 13
+set param auxiliary_head.convs.0.bn.bias as id 13
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:198: UserWarning: DeprecationWarning: Original LayerDecayOptimizerConstructor of BEiT will be deprecated. Please use LearningRateDecayOptimizerConstructor instead, and set decay_type = layer_wise_vit in paramwise_cfg.
+  warnings.warn('DeprecationWarning: Original '
+/workspaces/mmsegmentation-1/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py:204: UserWarning: DeprecationWarning: Layer_decay_rate will be deleted, please use decay_rate instead.
+  warnings.warn('DeprecationWarning: Layer_decay_rate will '
+self.paramwise_cfg is {'num_layers': 12, 'decay_type': 'layer_wise_vit', 'decay_rate': 0.65}
+Build LearningRateDecayOptimizerConstructor  layer_wise_vit 0.65 - 14
+set param backbone.cls_token as id 0
+set param backbone.pos_embed as id 0
+set param backbone.patch_embed.projection.weight as id 0
+set param backbone.patch_embed.projection.bias as id 0
+set param backbone.layers.0.gamma_1 as id 1
+set param backbone.layers.0.gamma_2 as id 1
+set param backbone.layers.0.ln1.weight as id 1
+set param backbone.layers.0.ln1.bias as id 1
+set param backbone.layers.0.attn.relative_position_bias_table as id 1
+set param backbone.layers.0.attn.qkv.weight as id 1
+set param backbone.layers.0.attn.qkv.bias as id 1
+set param backbone.layers.0.attn.proj.weight as id 1
+set param backbone.layers.0.attn.proj.bias as id 1
+set param backbone.layers.0.ln2.weight as id 1
+set param backbone.layers.0.ln2.bias as id 1
+set param backbone.layers.0.ffn.layers.0.0.weight as id 1
+set param backbone.layers.0.ffn.layers.0.0.bias as id 1
+set param backbone.layers.0.ffn.layers.1.weight as id 1
+set param backbone.layers.0.ffn.layers.1.bias as id 1
+set param backbone.layers.1.gamma_1 as id 2
+set param backbone.layers.1.gamma_2 as id 2
+set param backbone.layers.1.ln1.weight as id 2
+set param backbone.layers.1.ln1.bias as id 2
+set param backbone.layers.1.attn.relative_position_bias_table as id 2
+set param backbone.layers.1.attn.qkv.weight as id 2
+set param backbone.layers.1.attn.qkv.bias as id 2
+set param backbone.layers.1.attn.proj.weight as id 2
+set param backbone.layers.1.attn.proj.bias as id 2
+set param backbone.layers.1.ln2.weight as id 2
+set param backbone.layers.1.ln2.bias as id 2
+set param backbone.layers.1.ffn.layers.0.0.weight as id 2
+set param backbone.layers.1.ffn.layers.0.0.bias as id 2
+set param backbone.layers.1.ffn.layers.1.weight as id 2
+set param backbone.layers.1.ffn.layers.1.bias as id 2
+set param backbone.layers.2.gamma_1 as id 3
+set param backbone.layers.2.gamma_2 as id 3
+set param backbone.layers.2.ln1.weight as id 3
+set param backbone.layers.2.ln1.bias as id 3
+set param backbone.layers.2.attn.relative_position_bias_table as id 3
+set param backbone.layers.2.attn.qkv.weight as id 3
+set param backbone.layers.2.attn.qkv.bias as id 3
+set param backbone.layers.2.attn.proj.weight as id 3
+set param backbone.layers.2.attn.proj.bias as id 3
+set param backbone.layers.2.ln2.weight as id 3
+set param backbone.layers.2.ln2.bias as id 3
+set param backbone.layers.2.ffn.layers.0.0.weight as id 3
+set param backbone.layers.2.ffn.layers.0.0.bias as id 3
+set param backbone.layers.2.ffn.layers.1.weight as id 3
+set param backbone.layers.2.ffn.layers.1.bias as id 3
+set param backbone.layers.3.gamma_1 as id 4
+set param backbone.layers.3.gamma_2 as id 4
+set param backbone.layers.3.ln1.weight as id 4
+set param backbone.layers.3.ln1.bias as id 4
+set param backbone.layers.3.attn.relative_position_bias_table as id 4
+set param backbone.layers.3.attn.qkv.weight as id 4
+set param backbone.layers.3.attn.qkv.bias as id 4
+set param backbone.layers.3.attn.proj.weight as id 4
+set param backbone.layers.3.attn.proj.bias as id 4
+set param backbone.layers.3.ln2.weight as id 4
+set param backbone.layers.3.ln2.bias as id 4
+set param backbone.layers.3.ffn.layers.0.0.weight as id 4
+set param backbone.layers.3.ffn.layers.0.0.bias as id 4
+set param backbone.layers.3.ffn.layers.1.weight as id 4
+set param backbone.layers.3.ffn.layers.1.bias as id 4
+set param backbone.layers.4.gamma_1 as id 5
+set param backbone.layers.4.gamma_2 as id 5
+set param backbone.layers.4.ln1.weight as id 5
+set param backbone.layers.4.ln1.bias as id 5
+set param backbone.layers.4.attn.relative_position_bias_table as id 5
+set param backbone.layers.4.attn.qkv.weight as id 5
+set param backbone.layers.4.attn.qkv.bias as id 5
+set param backbone.layers.4.attn.proj.weight as id 5
+set param backbone.layers.4.attn.proj.bias as id 5
+set param backbone.layers.4.ln2.weight as id 5
+set param backbone.layers.4.ln2.bias as id 5
+set param backbone.layers.4.ffn.layers.0.0.weight as id 5
+set param backbone.layers.4.ffn.layers.0.0.bias as id 5
+set param backbone.layers.4.ffn.layers.1.weight as id 5
+set param backbone.layers.4.ffn.layers.1.bias as id 5
+set param backbone.layers.5.gamma_1 as id 6
+set param backbone.layers.5.gamma_2 as id 6
+set param backbone.layers.5.ln1.weight as id 6
+set param backbone.layers.5.ln1.bias as id 6
+set param backbone.layers.5.attn.relative_position_bias_table as id 6
+set param backbone.layers.5.attn.qkv.weight as id 6
+set param backbone.layers.5.attn.qkv.bias as id 6
+set param backbone.layers.5.attn.proj.weight as id 6
+set param backbone.layers.5.attn.proj.bias as id 6
+set param backbone.layers.5.ln2.weight as id 6
+set param backbone.layers.5.ln2.bias as id 6
+set param backbone.layers.5.ffn.layers.0.0.weight as id 6
+set param backbone.layers.5.ffn.layers.0.0.bias as id 6
+set param backbone.layers.5.ffn.layers.1.weight as id 6
+set param backbone.layers.5.ffn.layers.1.bias as id 6
+set param backbone.layers.6.gamma_1 as id 7
+set param backbone.layers.6.gamma_2 as id 7
+set param backbone.layers.6.ln1.weight as id 7
+set param backbone.layers.6.ln1.bias as id 7
+set param backbone.layers.6.attn.relative_position_bias_table as id 7
+set param backbone.layers.6.attn.qkv.weight as id 7
+set param backbone.layers.6.attn.qkv.bias as id 7
+set param backbone.layers.6.attn.proj.weight as id 7
+set param backbone.layers.6.attn.proj.bias as id 7
+set param backbone.layers.6.ln2.weight as id 7
+set param backbone.layers.6.ln2.bias as id 7
+set param backbone.layers.6.ffn.layers.0.0.weight as id 7
+set param backbone.layers.6.ffn.layers.0.0.bias as id 7
+set param backbone.layers.6.ffn.layers.1.weight as id 7
+set param backbone.layers.6.ffn.layers.1.bias as id 7
+set param backbone.layers.7.gamma_1 as id 8
+set param backbone.layers.7.gamma_2 as id 8
+set param backbone.layers.7.ln1.weight as id 8
+set param backbone.layers.7.ln1.bias as id 8
+set param backbone.layers.7.attn.relative_position_bias_table as id 8
+set param backbone.layers.7.attn.qkv.weight as id 8
+set param backbone.layers.7.attn.qkv.bias as id 8
+set param backbone.layers.7.attn.proj.weight as id 8
+set param backbone.layers.7.attn.proj.bias as id 8
+set param backbone.layers.7.ln2.weight as id 8
+set param backbone.layers.7.ln2.bias as id 8
+set param backbone.layers.7.ffn.layers.0.0.weight as id 8
+set param backbone.layers.7.ffn.layers.0.0.bias as id 8
+set param backbone.layers.7.ffn.layers.1.weight as id 8
+set param backbone.layers.7.ffn.layers.1.bias as id 8
+set param backbone.layers.8.gamma_1 as id 9
+set param backbone.layers.8.gamma_2 as id 9
+set param backbone.layers.8.ln1.weight as id 9
+set param backbone.layers.8.ln1.bias as id 9
+set param backbone.layers.8.attn.relative_position_bias_table as id 9
+set param backbone.layers.8.attn.qkv.weight as id 9
+set param backbone.layers.8.attn.qkv.bias as id 9
+set param backbone.layers.8.attn.proj.weight as id 9
+set param backbone.layers.8.attn.proj.bias as id 9
+set param backbone.layers.8.ln2.weight as id 9
+set param backbone.layers.8.ln2.bias as id 9
+set param backbone.layers.8.ffn.layers.0.0.weight as id 9
+set param backbone.layers.8.ffn.layers.0.0.bias as id 9
+set param backbone.layers.8.ffn.layers.1.weight as id 9
+set param backbone.layers.8.ffn.layers.1.bias as id 9
+set param backbone.layers.9.gamma_1 as id 10
+set param backbone.layers.9.gamma_2 as id 10
+set param backbone.layers.9.ln1.weight as id 10
+set param backbone.layers.9.ln1.bias as id 10
+set param backbone.layers.9.attn.relative_position_bias_table as id 10
+set param backbone.layers.9.attn.qkv.weight as id 10
+set param backbone.layers.9.attn.qkv.bias as id 10
+set param backbone.layers.9.attn.proj.weight as id 10
+set param backbone.layers.9.attn.proj.bias as id 10
+set param backbone.layers.9.ln2.weight as id 10
+set param backbone.layers.9.ln2.bias as id 10
+set param backbone.layers.9.ffn.layers.0.0.weight as id 10
+set param backbone.layers.9.ffn.layers.0.0.bias as id 10
+set param backbone.layers.9.ffn.layers.1.weight as id 10
+set param backbone.layers.9.ffn.layers.1.bias as id 10
+set param backbone.layers.10.gamma_1 as id 11
+set param backbone.layers.10.gamma_2 as id 11
+set param backbone.layers.10.ln1.weight as id 11
+set param backbone.layers.10.ln1.bias as id 11
+set param backbone.layers.10.attn.relative_position_bias_table as id 11
+set param backbone.layers.10.attn.qkv.weight as id 11
+set param backbone.layers.10.attn.qkv.bias as id 11
+set param backbone.layers.10.attn.proj.weight as id 11
+set param backbone.layers.10.attn.proj.bias as id 11
+set param backbone.layers.10.ln2.weight as id 11
+set param backbone.layers.10.ln2.bias as id 11
+set param backbone.layers.10.ffn.layers.0.0.weight as id 11
+set param backbone.layers.10.ffn.layers.0.0.bias as id 11
+set param backbone.layers.10.ffn.layers.1.weight as id 11
+set param backbone.layers.10.ffn.layers.1.bias as id 11
+set param backbone.layers.11.gamma_1 as id 12
+set param backbone.layers.11.gamma_2 as id 12
+set param backbone.layers.11.ln1.weight as id 12
+set param backbone.layers.11.ln1.bias as id 12
+set param backbone.layers.11.attn.relative_position_bias_table as id 12
+set param backbone.layers.11.attn.qkv.weight as id 12
+set param backbone.layers.11.attn.qkv.bias as id 12
+set param backbone.layers.11.attn.proj.weight as id 12
+set param backbone.layers.11.attn.proj.bias as id 12
+set param backbone.layers.11.ln2.weight as id 12
+set param backbone.layers.11.ln2.bias as id 12
+set param backbone.layers.11.ffn.layers.0.0.weight as id 12
+set param backbone.layers.11.ffn.layers.0.0.bias as id 12
+set param backbone.layers.11.ffn.layers.1.weight as id 12
+set param backbone.layers.11.ffn.layers.1.bias as id 12
+set param neck.upsample_4x.0.weight as id 13
+set param neck.upsample_4x.0.bias as id 13
+set param neck.upsample_4x.1.weight as id 13
+set param neck.upsample_4x.1.bias as id 13
+set param neck.upsample_4x.3.weight as id 13
+set param neck.upsample_4x.3.bias as id 13
+set param neck.upsample_2x.0.weight as id 13
+set param neck.upsample_2x.0.bias as id 13
+set param decode_head.conv_seg.weight as id 13
+set param decode_head.conv_seg.bias as id 13
+set param decode_head.psp_modules.0.1.conv.weight as id 13
+set param decode_head.psp_modules.0.1.bn.weight as id 13
+set param decode_head.psp_modules.0.1.bn.bias as id 13
+set param decode_head.psp_modules.1.1.conv.weight as id 13
+set param decode_head.psp_modules.1.1.bn.weight as id 13
+set param decode_head.psp_modules.1.1.bn.bias as id 13
+set param decode_head.psp_modules.2.1.conv.weight as id 13
+set param decode_head.psp_modules.2.1.bn.weight as id 13
+set param decode_head.psp_modules.2.1.bn.bias as id 13
+set param decode_head.psp_modules.3.1.conv.weight as id 13
+set param decode_head.psp_modules.3.1.bn.weight as id 13
+set param decode_head.psp_modules.3.1.bn.bias as id 13
+set param decode_head.bottleneck.conv.weight as id 13
+set param decode_head.bottleneck.bn.weight as id 13
+set param decode_head.bottleneck.bn.bias as id 13
+set param decode_head.lateral_convs.0.conv.weight as id 13
+set param decode_head.lateral_convs.0.bn.weight as id 13
+set param decode_head.lateral_convs.0.bn.bias as id 13
+set param decode_head.lateral_convs.1.conv.weight as id 13
+set param decode_head.lateral_convs.1.bn.weight as id 13
+set param decode_head.lateral_convs.1.bn.bias as id 13
+set param decode_head.lateral_convs.2.conv.weight as id 13
+set param decode_head.lateral_convs.2.bn.weight as id 13
+set param decode_head.lateral_convs.2.bn.bias as id 13
+set param decode_head.fpn_convs.0.conv.weight as id 13
+set param decode_head.fpn_convs.0.bn.weight as id 13
+set param decode_head.fpn_convs.0.bn.bias as id 13
+set param decode_head.fpn_convs.1.conv.weight as id 13
+set param decode_head.fpn_convs.1.bn.weight as id 13
+set param decode_head.fpn_convs.1.bn.bias as id 13
+set param decode_head.fpn_convs.2.conv.weight as id 13
+set param decode_head.fpn_convs.2.bn.weight as id 13
+set param decode_head.fpn_convs.2.bn.bias as id 13
+set param decode_head.fpn_bottleneck.conv.weight as id 13
+set param decode_head.fpn_bottleneck.bn.weight as id 13
+set param decode_head.fpn_bottleneck.bn.bias as id 13
+set param auxiliary_head.conv_seg.weight as id 13
+set param auxiliary_head.conv_seg.bias as id 13
+set param auxiliary_head.convs.0.conv.weight as id 13
+set param auxiliary_head.convs.0.bn.weight as id 13
+set param auxiliary_head.convs.0.bn.bias as id 13
+Param groups = {
+  "layer_0_decay": {
+    "param_names": [
+      "backbone.cls_token",
+      "backbone.pos_embed",
+      "backbone.patch_embed.projection.weight"
+    ],
+    "lr_scale": 0.003697205891018715,
+    "lr": 3.697205891018715e-07,
+    "weight_decay": 0.05
+  },
+  "layer_0_no_decay": {
+    "param_names": [
+      "backbone.patch_embed.projection.bias"
+    ],
+    "lr_scale": 0.003697205891018715,
+    "lr": 3.697205891018715e-07,
+    "weight_decay": 0.0
+  },
+  "layer_1_no_decay": {
+    "param_names": [
+      "backbone.layers.0.gamma_1",
+      "backbone.layers.0.gamma_2",
+      "backbone.layers.0.ln1.weight",
+      "backbone.layers.0.ln1.bias",
+      "backbone.layers.0.attn.qkv.bias",
+      "backbone.layers.0.attn.proj.bias",
+      "backbone.layers.0.ln2.weight",
+      "backbone.layers.0.ln2.bias",
+      "backbone.layers.0.ffn.layers.0.0.bias",
+      "backbone.layers.0.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.005688009063105715,
+    "lr": 5.688009063105716e-07,
+    "weight_decay": 0.0
+  },
+  "layer_1_decay": {
+    "param_names": [
+      "backbone.layers.0.attn.relative_position_bias_table",
+      "backbone.layers.0.attn.qkv.weight",
+      "backbone.layers.0.attn.proj.weight",
+      "backbone.layers.0.ffn.layers.0.0.weight",
+      "backbone.layers.0.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.005688009063105715,
+    "lr": 5.688009063105716e-07,
+    "weight_decay": 0.05
+  },
+  "layer_2_no_decay": {
+    "param_names": [
+      "backbone.layers.1.gamma_1",
+      "backbone.layers.1.gamma_2",
+      "backbone.layers.1.ln1.weight",
+      "backbone.layers.1.ln1.bias",
+      "backbone.layers.1.attn.qkv.bias",
+      "backbone.layers.1.attn.proj.bias",
+      "backbone.layers.1.ln2.weight",
+      "backbone.layers.1.ln2.bias",
+      "backbone.layers.1.ffn.layers.0.0.bias",
+      "backbone.layers.1.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.008750783174008792,
+    "lr": 8.750783174008792e-07,
+    "weight_decay": 0.0
+  },
+  "layer_2_decay": {
+    "param_names": [
+      "backbone.layers.1.attn.relative_position_bias_table",
+      "backbone.layers.1.attn.qkv.weight",
+      "backbone.layers.1.attn.proj.weight",
+      "backbone.layers.1.ffn.layers.0.0.weight",
+      "backbone.layers.1.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.008750783174008792,
+    "lr": 8.750783174008792e-07,
+    "weight_decay": 0.05
+  },
+  "layer_3_no_decay": {
+    "param_names": [
+      "backbone.layers.2.gamma_1",
+      "backbone.layers.2.gamma_2",
+      "backbone.layers.2.ln1.weight",
+      "backbone.layers.2.ln1.bias",
+      "backbone.layers.2.attn.qkv.bias",
+      "backbone.layers.2.attn.proj.bias",
+      "backbone.layers.2.ln2.weight",
+      "backbone.layers.2.ln2.bias",
+      "backbone.layers.2.ffn.layers.0.0.bias",
+      "backbone.layers.2.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.013462743344628911,
+    "lr": 1.3462743344628912e-06,
+    "weight_decay": 0.0
+  },
+  "layer_3_decay": {
+    "param_names": [
+      "backbone.layers.2.attn.relative_position_bias_table",
+      "backbone.layers.2.attn.qkv.weight",
+      "backbone.layers.2.attn.proj.weight",
+      "backbone.layers.2.ffn.layers.0.0.weight",
+      "backbone.layers.2.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.013462743344628911,
+    "lr": 1.3462743344628912e-06,
+    "weight_decay": 0.05
+  },
+  "layer_4_no_decay": {
+    "param_names": [
+      "backbone.layers.3.gamma_1",
+      "backbone.layers.3.gamma_2",
+      "backbone.layers.3.ln1.weight",
+      "backbone.layers.3.ln1.bias",
+      "backbone.layers.3.attn.qkv.bias",
+      "backbone.layers.3.attn.proj.bias",
+      "backbone.layers.3.ln2.weight",
+      "backbone.layers.3.ln2.bias",
+      "backbone.layers.3.ffn.layers.0.0.bias",
+      "backbone.layers.3.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.02071191283789063,
+    "lr": 2.0711912837890633e-06,
+    "weight_decay": 0.0
+  },
+  "layer_4_decay": {
+    "param_names": [
+      "backbone.layers.3.attn.relative_position_bias_table",
+      "backbone.layers.3.attn.qkv.weight",
+      "backbone.layers.3.attn.proj.weight",
+      "backbone.layers.3.ffn.layers.0.0.weight",
+      "backbone.layers.3.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.02071191283789063,
+    "lr": 2.0711912837890633e-06,
+    "weight_decay": 0.05
+  },
+  "layer_5_no_decay": {
+    "param_names": [
+      "backbone.layers.4.gamma_1",
+      "backbone.layers.4.gamma_2",
+      "backbone.layers.4.ln1.weight",
+      "backbone.layers.4.ln1.bias",
+      "backbone.layers.4.attn.qkv.bias",
+      "backbone.layers.4.attn.proj.bias",
+      "backbone.layers.4.ln2.weight",
+      "backbone.layers.4.ln2.bias",
+      "backbone.layers.4.ffn.layers.0.0.bias",
+      "backbone.layers.4.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.03186448128906251,
+    "lr": 3.1864481289062513e-06,
+    "weight_decay": 0.0
+  },
+  "layer_5_decay": {
+    "param_names": [
+      "backbone.layers.4.attn.relative_position_bias_table",
+      "backbone.layers.4.attn.qkv.weight",
+      "backbone.layers.4.attn.proj.weight",
+      "backbone.layers.4.ffn.layers.0.0.weight",
+      "backbone.layers.4.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.03186448128906251,
+    "lr": 3.1864481289062513e-06,
+    "weight_decay": 0.05
+  },
+  "layer_6_no_decay": {
+    "param_names": [
+      "backbone.layers.5.gamma_1",
+      "backbone.layers.5.gamma_2",
+      "backbone.layers.5.ln1.weight",
+      "backbone.layers.5.ln1.bias",
+      "backbone.layers.5.attn.qkv.bias",
+      "backbone.layers.5.attn.proj.bias",
+      "backbone.layers.5.ln2.weight",
+      "backbone.layers.5.ln2.bias",
+      "backbone.layers.5.ffn.layers.0.0.bias",
+      "backbone.layers.5.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.049022278906250015,
+    "lr": 4.9022278906250015e-06,
+    "weight_decay": 0.0
+  },
+  "layer_6_decay": {
+    "param_names": [
+      "backbone.layers.5.attn.relative_position_bias_table",
+      "backbone.layers.5.attn.qkv.weight",
+      "backbone.layers.5.attn.proj.weight",
+      "backbone.layers.5.ffn.layers.0.0.weight",
+      "backbone.layers.5.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.049022278906250015,
+    "lr": 4.9022278906250015e-06,
+    "weight_decay": 0.05
+  },
+  "layer_7_no_decay": {
+    "param_names": [
+      "backbone.layers.6.gamma_1",
+      "backbone.layers.6.gamma_2",
+      "backbone.layers.6.ln1.weight",
+      "backbone.layers.6.ln1.bias",
+      "backbone.layers.6.attn.qkv.bias",
+      "backbone.layers.6.attn.proj.bias",
+      "backbone.layers.6.ln2.weight",
+      "backbone.layers.6.ln2.bias",
+      "backbone.layers.6.ffn.layers.0.0.bias",
+      "backbone.layers.6.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.07541889062500001,
+    "lr": 7.541889062500002e-06,
+    "weight_decay": 0.0
+  },
+  "layer_7_decay": {
+    "param_names": [
+      "backbone.layers.6.attn.relative_position_bias_table",
+      "backbone.layers.6.attn.qkv.weight",
+      "backbone.layers.6.attn.proj.weight",
+      "backbone.layers.6.ffn.layers.0.0.weight",
+      "backbone.layers.6.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.07541889062500001,
+    "lr": 7.541889062500002e-06,
+    "weight_decay": 0.05
+  },
+  "layer_8_no_decay": {
+    "param_names": [
+      "backbone.layers.7.gamma_1",
+      "backbone.layers.7.gamma_2",
+      "backbone.layers.7.ln1.weight",
+      "backbone.layers.7.ln1.bias",
+      "backbone.layers.7.attn.qkv.bias",
+      "backbone.layers.7.attn.proj.bias",
+      "backbone.layers.7.ln2.weight",
+      "backbone.layers.7.ln2.bias",
+      "backbone.layers.7.ffn.layers.0.0.bias",
+      "backbone.layers.7.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.11602906250000002,
+    "lr": 1.1602906250000002e-05,
+    "weight_decay": 0.0
+  },
+  "layer_8_decay": {
+    "param_names": [
+      "backbone.layers.7.attn.relative_position_bias_table",
+      "backbone.layers.7.attn.qkv.weight",
+      "backbone.layers.7.attn.proj.weight",
+      "backbone.layers.7.ffn.layers.0.0.weight",
+      "backbone.layers.7.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.11602906250000002,
+    "lr": 1.1602906250000002e-05,
+    "weight_decay": 0.05
+  },
+  "layer_9_no_decay": {
+    "param_names": [
+      "backbone.layers.8.gamma_1",
+      "backbone.layers.8.gamma_2",
+      "backbone.layers.8.ln1.weight",
+      "backbone.layers.8.ln1.bias",
+      "backbone.layers.8.attn.qkv.bias",
+      "backbone.layers.8.attn.proj.bias",
+      "backbone.layers.8.ln2.weight",
+      "backbone.layers.8.ln2.bias",
+      "backbone.layers.8.ffn.layers.0.0.bias",
+      "backbone.layers.8.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.17850625000000003,
+    "lr": 1.7850625000000003e-05,
+    "weight_decay": 0.0
+  },
+  "layer_9_decay": {
+    "param_names": [
+      "backbone.layers.8.attn.relative_position_bias_table",
+      "backbone.layers.8.attn.qkv.weight",
+      "backbone.layers.8.attn.proj.weight",
+      "backbone.layers.8.ffn.layers.0.0.weight",
+      "backbone.layers.8.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.17850625000000003,
+    "lr": 1.7850625000000003e-05,
+    "weight_decay": 0.05
+  },
+  "layer_10_no_decay": {
+    "param_names": [
+      "backbone.layers.9.gamma_1",
+      "backbone.layers.9.gamma_2",
+      "backbone.layers.9.ln1.weight",
+      "backbone.layers.9.ln1.bias",
+      "backbone.layers.9.attn.qkv.bias",
+      "backbone.layers.9.attn.proj.bias",
+      "backbone.layers.9.ln2.weight",
+      "backbone.layers.9.ln2.bias",
+      "backbone.layers.9.ffn.layers.0.0.bias",
+      "backbone.layers.9.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.274625,
+    "lr": 2.7462500000000003e-05,
+    "weight_decay": 0.0
+  },
+  "layer_10_decay": {
+    "param_names": [
+      "backbone.layers.9.attn.relative_position_bias_table",
+      "backbone.layers.9.attn.qkv.weight",
+      "backbone.layers.9.attn.proj.weight",
+      "backbone.layers.9.ffn.layers.0.0.weight",
+      "backbone.layers.9.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.274625,
+    "lr": 2.7462500000000003e-05,
+    "weight_decay": 0.05
+  },
+  "layer_11_no_decay": {
+    "param_names": [
+      "backbone.layers.10.gamma_1",
+      "backbone.layers.10.gamma_2",
+      "backbone.layers.10.ln1.weight",
+      "backbone.layers.10.ln1.bias",
+      "backbone.layers.10.attn.qkv.bias",
+      "backbone.layers.10.attn.proj.bias",
+      "backbone.layers.10.ln2.weight",
+      "backbone.layers.10.ln2.bias",
+      "backbone.layers.10.ffn.layers.0.0.bias",
+      "backbone.layers.10.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.42250000000000004,
+    "lr": 4.2250000000000004e-05,
+    "weight_decay": 0.0
+  },
+  "layer_11_decay": {
+    "param_names": [
+      "backbone.layers.10.attn.relative_position_bias_table",
+      "backbone.layers.10.attn.qkv.weight",
+      "backbone.layers.10.attn.proj.weight",
+      "backbone.layers.10.ffn.layers.0.0.weight",
+      "backbone.layers.10.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.42250000000000004,
+    "lr": 4.2250000000000004e-05,
+    "weight_decay": 0.05
+  },
+  "layer_12_no_decay": {
+    "param_names": [
+      "backbone.layers.11.gamma_1",
+      "backbone.layers.11.gamma_2",
+      "backbone.layers.11.ln1.weight",
+      "backbone.layers.11.ln1.bias",
+      "backbone.layers.11.attn.qkv.bias",
+      "backbone.layers.11.attn.proj.bias",
+      "backbone.layers.11.ln2.weight",
+      "backbone.layers.11.ln2.bias",
+      "backbone.layers.11.ffn.layers.0.0.bias",
+      "backbone.layers.11.ffn.layers.1.bias"
+    ],
+    "lr_scale": 0.65,
+    "lr": 6.500000000000001e-05,
+    "weight_decay": 0.0
+  },
+  "layer_12_decay": {
+    "param_names": [
+      "backbone.layers.11.attn.relative_position_bias_table",
+      "backbone.layers.11.attn.qkv.weight",
+      "backbone.layers.11.attn.proj.weight",
+      "backbone.layers.11.ffn.layers.0.0.weight",
+      "backbone.layers.11.ffn.layers.1.weight"
+    ],
+    "lr_scale": 0.65,
+    "lr": 6.500000000000001e-05,
+    "weight_decay": 0.05
+  },
+  "layer_13_decay": {
+    "param_names": [
+      "neck.upsample_4x.0.weight",
+      "neck.upsample_4x.3.weight",
+      "neck.upsample_2x.0.weight",
+      "decode_head.conv_seg.weight",
+      "decode_head.psp_modules.0.1.conv.weight",
+      "decode_head.psp_modules.1.1.conv.weight",
+      "decode_head.psp_modules.2.1.conv.weight",
+      "decode_head.psp_modules.3.1.conv.weight",
+      "decode_head.bottleneck.conv.weight",
+      "decode_head.lateral_convs.0.conv.weight",
+      "decode_head.lateral_convs.1.conv.weight",
+      "decode_head.lateral_convs.2.conv.weight",
+      "decode_head.fpn_convs.0.conv.weight",
+      "decode_head.fpn_convs.1.conv.weight",
+      "decode_head.fpn_convs.2.conv.weight",
+      "decode_head.fpn_bottleneck.conv.weight",
+      "auxiliary_head.conv_seg.weight",
+      "auxiliary_head.convs.0.conv.weight"
+    ],
+    "lr_scale": 1.0,
+    "lr": 0.0001,
+    "weight_decay": 0.05
+  },
+  "layer_13_no_decay": {
+    "param_names": [
+      "neck.upsample_4x.0.bias",
+      "neck.upsample_4x.1.weight",
+      "neck.upsample_4x.1.bias",
+      "neck.upsample_4x.3.bias",
+      "neck.upsample_2x.0.bias",
+      "decode_head.conv_seg.bias",
+      "decode_head.psp_modules.0.1.bn.weight",
+      "decode_head.psp_modules.0.1.bn.bias",
+      "decode_head.psp_modules.1.1.bn.weight",
+      "decode_head.psp_modules.1.1.bn.bias",
+      "decode_head.psp_modules.2.1.bn.weight",
+      "decode_head.psp_modules.2.1.bn.bias",
+      "decode_head.psp_modules.3.1.bn.weight",
+      "decode_head.psp_modules.3.1.bn.bias",
+      "decode_head.bottleneck.bn.weight",
+      "decode_head.bottleneck.bn.bias",
+      "decode_head.lateral_convs.0.bn.weight",
+      "decode_head.lateral_convs.0.bn.bias",
+      "decode_head.lateral_convs.1.bn.weight",
+      "decode_head.lateral_convs.1.bn.bias",
+      "decode_head.lateral_convs.2.bn.weight",
+      "decode_head.lateral_convs.2.bn.bias",
+      "decode_head.fpn_convs.0.bn.weight",
+      "decode_head.fpn_convs.0.bn.bias",
+      "decode_head.fpn_convs.1.bn.weight",
+      "decode_head.fpn_convs.1.bn.bias",
+      "decode_head.fpn_convs.2.bn.weight",
+      "decode_head.fpn_convs.2.bn.bias",
+      "decode_head.fpn_bottleneck.bn.weight",
+      "decode_head.fpn_bottleneck.bn.bias",
+      "auxiliary_head.conv_seg.bias",
+      "auxiliary_head.convs.0.bn.weight",
+      "auxiliary_head.convs.0.bn.bias"
+    ],
+    "lr_scale": 1.0,
+    "lr": 0.0001,
+    "weight_decay": 0.0
+  }
+}
+04/16 08:10:05 - mmengine - WARNING - The prefix is not set in metric class IoUMetric.
+/opt/conda/lib/python3.8/site-packages/mmengine/model/weight_init.py:649: UserWarning: Specified kernel cache directory could not be created! This disables kernel caching. Specified directory is /root/.cache/torch/kernels. This warning will appear only once per process. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/cuda/jit_utils.cpp:860.)
+  tensor.erfinv_()
+/opt/conda/lib/python3.8/site-packages/mmengine/model/weight_init.py:649: UserWarning: Specified kernel cache directory could not be created! This disables kernel caching. Specified directory is /root/.cache/torch/kernels. This warning will appear only once per process. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/cuda/jit_utils.cpp:860.)
+  tensor.erfinv_()
+Loads checkpoint by local backend from path: /workspaces/mmsegmentation-1/converted_model.pth
+Loads checkpoint by local backend from path: /workspaces/mmsegmentation-1/converted_model.pth
+/opt/conda/lib/python3.8/site-packages/mmengine/model/weight_init.py:649: UserWarning: Specified kernel cache directory could not be created! This disables kernel caching. Specified directory is /root/.cache/torch/kernels. This warning will appear only once per process. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/cuda/jit_utils.cpp:860.)
+  tensor.erfinv_()
+Loads checkpoint by local backend from path: /workspaces/mmsegmentation-1/converted_model.pth
+/opt/conda/lib/python3.8/site-packages/mmengine/model/weight_init.py:649: UserWarning: Specified kernel cache directory could not be created! This disables kernel caching. Specified directory is /root/.cache/torch/kernels. This warning will appear only once per process. (Triggered internally at  /opt/conda/conda-bld/pytorch_1646755903507/work/aten/src/ATen/native/cuda/jit_utils.cpp:860.)
+  tensor.erfinv_()
+Loads checkpoint by local backend from path: /workspaces/mmsegmentation-1/converted_model.pth
+04/16 08:10:06 - mmengine - WARNING - "FileClient" will be deprecated in future. Please use io functions in https://mmengine.readthedocs.io/en/latest/api/fileio.html#file-io
+04/16 08:10:06 - mmengine - WARNING - "HardDiskBackend" is the alias of "LocalBackend" and the former will be deprecated in future.
+04/16 08:10:06 - mmengine - INFO - Checkpoints will be saved to /workspaces/mmsegmentation-1/work_dirs/mae-base_upernet_8xb2-amp-160k_cag-512x512.
+04/16 08:11:03 - mmengine - INFO - Iter(train) [    50/160000]  base_lr: 3.2689e-06 lr: 1.2086e-08  eta: 2 days, 2:27:28  time: 1.0323  data_time: 0.0047  memory: 8935  loss: 7.1374  decode.loss_ce: 5.1061  decode.acc_seg: 2.7090  aux.loss_ce: 2.0313  aux.acc_seg: 0.0000
+04/16 08:11:54 - mmengine - INFO - Iter(train) [   100/160000]  base_lr: 6.6045e-06 lr: 2.4418e-08  eta: 2 days, 0:06:13  time: 1.0280  data_time: 0.0044  memory: 8462  loss: 6.8298  decode.loss_ce: 4.8244  decode.acc_seg: 26.8021  aux.loss_ce: 2.0054  aux.acc_seg: 0.1680
+04/16 08:12:46 - mmengine - INFO - Iter(train) [   150/160000]  base_lr: 9.9401e-06 lr: 3.6750e-08  eta: 1 day, 23:16:43  time: 1.0264  data_time: 0.0042  memory: 8462  loss: 6.3951  decode.loss_ce: 4.4258  decode.acc_seg: 57.5527  aux.loss_ce: 1.9693  aux.acc_seg: 27.9995
+04/16 08:13:37 - mmengine - INFO - Iter(train) [   200/160000]  base_lr: 1.3276e-05 lr: 4.9083e-08  eta: 1 day, 22:48:42  time: 1.0202  data_time: 0.0040  memory: 8462  loss: 5.8755  decode.loss_ce: 3.9571  decode.acc_seg: 70.3098  aux.loss_ce: 1.9185  aux.acc_seg: 25.9087
+04/16 08:14:28 - mmengine - INFO - Iter(train) [   250/160000]  base_lr: 1.6611e-05 lr: 6.1415e-08  eta: 1 day, 22:27:43  time: 1.0164  data_time: 0.0046  memory: 8462  loss: 5.1345  decode.loss_ce: 3.2971  decode.acc_seg: 80.0583  aux.loss_ce: 1.8375  aux.acc_seg: 45.8790
+04/16 08:15:19 - mmengine - INFO - Iter(train) [   300/160000]  base_lr: 1.9947e-05 lr: 7.3747e-08  eta: 1 day, 22:12:04  time: 1.0117  data_time: 0.0040  memory: 8462  loss: 4.6058  decode.loss_ce: 2.8301  decode.acc_seg: 84.3102  aux.loss_ce: 1.7756  aux.acc_seg: 37.2120
+04/16 08:16:09 - mmengine - INFO - Iter(train) [   350/160000]  base_lr: 2.3282e-05 lr: 8.6079e-08  eta: 1 day, 21:58:41  time: 1.0075  data_time: 0.0046  memory: 8462  loss: 3.9343  decode.loss_ce: 2.2677  decode.acc_seg: 90.3549  aux.loss_ce: 1.6666  aux.acc_seg: 51.3355
+04/16 08:16:59 - mmengine - INFO - Iter(train) [   400/160000]  base_lr: 2.6618e-05 lr: 9.8412e-08  eta: 1 day, 21:47:59  time: 1.0072  data_time: 0.0041  memory: 8462  loss: 3.2720  decode.loss_ce: 1.7116  decode.acc_seg: 92.8013  aux.loss_ce: 1.5604  aux.acc_seg: 62.0686
+04/16 08:17:50 - mmengine - INFO - Iter(train) [   450/160000]  base_lr: 2.9953e-05 lr: 1.1074e-07  eta: 1 day, 21:39:08  time: 1.0060  data_time: 0.0041  memory: 8462  loss: 2.5921  decode.loss_ce: 1.1644  decode.acc_seg: 97.5016  aux.loss_ce: 1.4277  aux.acc_seg: 68.5354
+04/16 08:18:40 - mmengine - INFO - Iter(train) [   500/160000]  base_lr: 3.3289e-05 lr: 1.2308e-07  eta: 1 day, 21:31:50  time: 1.0055  data_time: 0.0042  memory: 8462  loss: 2.0673  decode.loss_ce: 0.7804  decode.acc_seg: 97.7400  aux.loss_ce: 1.2869  aux.acc_seg: 67.5140
+04/16 08:19:30 - mmengine - INFO - Iter(train) [   550/160000]  base_lr: 3.6624e-05 lr: 1.3541e-07  eta: 1 day, 21:25:21  time: 1.0046  data_time: 0.0044  memory: 8462  loss: 1.6140  decode.loss_ce: 0.5170  decode.acc_seg: 96.9492  aux.loss_ce: 1.0970  aux.acc_seg: 83.8314
+04/16 08:20:20 - mmengine - INFO - Iter(train) [   600/160000]  base_lr: 3.9960e-05 lr: 1.4774e-07  eta: 1 day, 21:19:55  time: 1.0043  data_time: 0.0044  memory: 8462  loss: 1.3474  decode.loss_ce: 0.3544  decode.acc_seg: 97.2013  aux.loss_ce: 0.9931  aux.acc_seg: 82.7944
+04/16 08:21:11 - mmengine - INFO - Iter(train) [   650/160000]  base_lr: 4.3296e-05 lr: 1.6007e-07  eta: 1 day, 21:14:59  time: 1.0030  data_time: 0.0046  memory: 8462  loss: 1.0697  decode.loss_ce: 0.2786  decode.acc_seg: 98.2925  aux.loss_ce: 0.7911  aux.acc_seg: 94.7325
+04/16 08:22:01 - mmengine - INFO - Iter(train) [   700/160000]  base_lr: 4.6631e-05 lr: 1.7240e-07  eta: 1 day, 21:10:12  time: 0.9999  data_time: 0.0045  memory: 8462  loss: 0.8254  decode.loss_ce: 0.2025  decode.acc_seg: 98.8443  aux.loss_ce: 0.6229  aux.acc_seg: 97.8575
+04/16 08:22:51 - mmengine - INFO - Iter(train) [   750/160000]  base_lr: 4.9967e-05 lr: 1.8474e-07  eta: 1 day, 21:05:44  time: 0.9987  data_time: 0.0043  memory: 8462  loss: 0.6389  decode.loss_ce: 0.1660  decode.acc_seg: 96.1958  aux.loss_ce: 0.4728  aux.acc_seg: 94.6260
+04/16 08:23:41 - mmengine - INFO - Iter(train) [   800/160000]  base_lr: 5.3302e-05 lr: 1.9707e-07  eta: 1 day, 21:01:16  time: 0.9981  data_time: 0.0045  memory: 8462  loss: 0.5138  decode.loss_ce: 0.1463  decode.acc_seg: 97.7625  aux.loss_ce: 0.3675  aux.acc_seg: 96.5370
+04/16 08:24:30 - mmengine - INFO - Iter(train) [   850/160000]  base_lr: 5.6638e-05 lr: 2.0940e-07  eta: 1 day, 20:57:08  time: 0.9965  data_time: 0.0042  memory: 8462  loss: 0.4012  decode.loss_ce: 0.1269  decode.acc_seg: 98.1451  aux.loss_ce: 0.2743  aux.acc_seg: 96.9545
+04/16 08:25:20 - mmengine - INFO - Iter(train) [   900/160000]  base_lr: 5.9973e-05 lr: 2.2173e-07  eta: 1 day, 20:53:32  time: 0.9979  data_time: 0.0043  memory: 8462  loss: 0.3109  decode.loss_ce: 0.0988  decode.acc_seg: 98.7818  aux.loss_ce: 0.2121  aux.acc_seg: 97.1060
+04/16 08:26:10 - mmengine - INFO - Iter(train) [   950/160000]  base_lr: 6.3309e-05 lr: 2.3407e-07  eta: 1 day, 20:50:07  time: 0.9976  data_time: 0.0040  memory: 8462  loss: 0.2525  decode.loss_ce: 0.0933  decode.acc_seg: 97.1182  aux.loss_ce: 0.1593  aux.acc_seg: 94.3285
+04/16 08:27:00 - mmengine - INFO - Exp name: mae-base_upernet_8xb2-amp-160k_cag-512x512_20240416_080959
+04/16 08:27:00 - mmengine - INFO - Iter(train) [  1000/160000]  base_lr: 6.6644e-05 lr: 2.4640e-07  eta: 1 day, 20:46:57  time: 0.9972  data_time: 0.0042  memory: 8462  loss: 0.2075  decode.loss_ce: 0.0836  decode.acc_seg: 98.2325  aux.loss_ce: 0.1239  aux.acc_seg: 97.9246
+04/16 08:27:50 - mmengine - INFO - Iter(train) [  1050/160000]  base_lr: 6.9980e-05 lr: 2.5873e-07  eta: 1 day, 20:44:03  time: 0.9977  data_time: 0.0040  memory: 8462  loss: 0.1839  decode.loss_ce: 0.0781  decode.acc_seg: 98.1035  aux.loss_ce: 0.1059  aux.acc_seg: 97.7102
+04/16 08:28:40 - mmengine - INFO - Iter(train) [  1100/160000]  base_lr: 7.3316e-05 lr: 2.7106e-07  eta: 1 day, 20:41:20  time: 0.9965  data_time: 0.0041  memory: 8462  loss: 0.1804  decode.loss_ce: 0.0764  decode.acc_seg: 96.8763  aux.loss_ce: 0.1039  aux.acc_seg: 96.4491
+04/16 08:29:30 - mmengine - INFO - Iter(train) [  1150/160000]  base_lr: 7.6651e-05 lr: 2.8339e-07  eta: 1 day, 20:38:45  time: 0.9978  data_time: 0.0045  memory: 8462  loss: 0.1393  decode.loss_ce: 0.0634  decode.acc_seg: 97.7964  aux.loss_ce: 0.0759  aux.acc_seg: 96.7056
