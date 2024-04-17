@@ -6,7 +6,7 @@ _base_ = [
 # copied from vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
 
 crop_size = (512, 512)
-scale = (3000, 3000)
+scale = (5000, 5000)
 downsample_factor = 2
 GT_type='SOD'
 # dataset settings
@@ -158,7 +158,7 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     # test_cfg=dict(mode='whole'))  # yapf: disable
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(256, 256)))
 
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mFscore'])

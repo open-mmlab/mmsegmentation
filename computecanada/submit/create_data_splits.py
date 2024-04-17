@@ -10,7 +10,7 @@ nc_files = [file for file in os.listdir(folder_path) if file.endswith(".nc")]
 
 # Define different splits
 # splits = [(0.9,0.1),(0.8, 0.2), (0.7, 0.3), (0.5, 0.5)]
-splits = [(0.9,0.1)]
+splits = [(0.95,0.05)]
 
 # Iterate over splits
 for split_index, (train_ratio, test_ratio) in enumerate(splits, start=1):

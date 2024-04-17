@@ -158,7 +158,7 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     # test_cfg=dict(mode='whole'))  # yapf: disable
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(256, 256)))
 
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mFscore'])

@@ -22,7 +22,7 @@ model = dict(
     decode_head=dict(
         in_channels=[768, 768, 768, 768], num_classes=150, channels=768),
     auxiliary_head=dict(in_channels=768, num_classes=150),
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(256, 256)))
 
 optim_wrapper = dict(
     _delete_=True,
