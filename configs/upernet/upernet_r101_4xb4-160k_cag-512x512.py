@@ -6,6 +6,6 @@ crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 model = dict(
     data_preprocessor=data_preprocessor,
-    decode_head=dict(num_classes=150),
-    auxiliary_head=dict(num_classes=150),
+    decode_head=dict(num_classes=2),
+    auxiliary_head=dict(num_classes=2),
     pretrained='open-mmlab://resnet101_v1c', backbone=dict(depth=101))
