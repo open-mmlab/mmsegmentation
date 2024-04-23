@@ -6,7 +6,7 @@ crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 model = dict(
     data_preprocessor=data_preprocessor,
-    pretrained='/workspaces/mmsegmentation-1/converted_model.pth',
+    pretrained='/workspaces/mmsegmentation/converted_model.pth',
     backbone=dict(
         type='MAE',
         img_size=(512, 512),

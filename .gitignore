@@ -30,7 +30,7 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
+nohup.out
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -62,7 +62,8 @@ instance/
 
 # Scrapy stuff:
 .scrapy
-
+wandb
+test_commands.sh
 # Sphinx documentation
 docs/en/_build/
 docs/zh_cn/_build/
