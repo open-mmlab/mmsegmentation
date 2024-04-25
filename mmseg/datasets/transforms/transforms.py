@@ -15,6 +15,7 @@ from mmcv.transforms.utils import cache_randomness
 from mmengine.utils import is_tuple_of
 from numpy import random
 from scipy.ndimage import gaussian_filter
+import albumentations as album
 
 from mmseg.datasets.dataset_wrappers import MultiImageMixDataset
 from mmseg.registry import TRANSFORMS
@@ -670,40 +671,40 @@ class PhotoMetricDistortion(BaseTransform):
                 alpha=random.uniform(self.contrast_lower, self.contrast_upper))
         return img
 
-    def saturation(self, img: np.ndarray) -> np.ndarray:
-        """Saturation distortion.
+    # def saturation(self, img: np.ndarray) -> np.ndarray:
+    #     """Saturation distortion.
 
-        Args:
-            img (np.ndarray): The input image.
-        Returns:
-            np.ndarray: Image after saturation change.
-        """
+    #     Args:
+    #         img (np.ndarray): The input image.
+    #     Returns:
+    #         np.ndarray: Image after saturation change.
+    #     """
 
-        if random.randint(2):
-            img = mmcv.bgr2hsv(img)
-            img[:, :, 1] = self.convert(
-                img[:, :, 1],
-                alpha=random.uniform(self.saturation_lower,
-                                     self.saturation_upper))
-            img = mmcv.hsv2bgr(img)
-        return img
+    #     if random.randint(2):
+    #         img = mmcv.bgr2hsv(img)
+    #         img[:, :, 1] = self.convert(
+    #             img[:, :, 1],
+    #             alpha=random.uniform(self.saturation_lower,
+    #                                  self.saturation_upper))
+    #         img = mmcv.hsv2bgr(img)
+    #     return img
 
-    def hue(self, img: np.ndarray) -> np.ndarray:
-        """Hue distortion.
+    # def hue(self, img: np.ndarray) -> np.ndarray:
+    #     """Hue distortion.
 
-        Args:
-            img (np.ndarray): The input image.
-        Returns:
-            np.ndarray: Image after hue change.
-        """
+    #     Args:
+    #         img (np.ndarray): The input image.
+    #     Returns:
+    #         np.ndarray: Image after hue change.
+    #     """
 
-        if random.randint(2):
-            img = mmcv.bgr2hsv(img)
-            img[:, :,
-                0] = (img[:, :, 0].astype(int) +
-                      random.randint(-self.hue_delta, self.hue_delta)) % 180
-            img = mmcv.hsv2bgr(img)
-        return img
+    #     if random.randint(2):
+    #         img = mmcv.bgr2hsv(img)
+    #         img[:, :,
+    #             0] = (img[:, :, 0].astype(int) +
+    #                   random.randint(-self.hue_delta, self.hue_delta)) % 180
+    #         img = mmcv.hsv2bgr(img)
+    #     return img
 
     def transform(self, results: dict) -> dict:
         """Transform function to perform photometric distortion on images.
@@ -2534,4 +2535,160 @@ class RandomDepthMix(BaseTransform):
             raise ValueError(f'Invalid image shape ({img.shape})')
 
         results['img'] = img
+        return results
+
+
+class BaseAlbuTransform(BaseTransform):
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        num_params = len(self.params)
+        for i, (k, v) in enumerate(self.params.items()):
+            if i == 0:
+                repr_str += f'({k}={v}, '
+            elif 0 < i < num_params - 1:
+                repr_str += f'{k}={v}, '
+            elif i == num_params - 1:
+                repr_str += f'{k}={v})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
+class AlbuShiftScaleRotateTransform(BaseAlbuTransform):
+    """
+    Wrapper for album.ShiftScaleRotate
+
+    Required Keys:
+
+    - img
+    - gt_seg_map
+
+    Modified Keys:
+
+    - img
+    - gt_seg_map
+
+    Args:
+        shift_limit ((float, float) or float): shift factor range for both height and width. If shift_limit
+            is a single float value, the range will be (-shift_limit, shift_limit). Absolute values for lower and
+            upper bounds should lie in range [0, 1]. Default: (-0.0625, 0.0625).
+        scale_limit ((float, float) or float): scaling factor range. If scale_limit is a single float value, the
+            range will be (-scale_limit, scale_limit). Note that the scale_limit will be biased by 1.
+            If scale_limit is a tuple, like (low, high), sampling will be done from the range (1 + low, 1 + high).
+            Default: (-0.1, 0.1).
+        rotate_limit ((int, int) or int): rotation range. If rotate_limit is a single int value, the
+            range will be (-rotate_limit, rotate_limit). Default: (-45, 45).
+        interpolation (OpenCV flag): flag that is used to specify the interpolation algorithm. Should be one of:
+            cv2.INTER_NEAREST, cv2.INTER_LINEAR, cv2.INTER_CUBIC, cv2.INTER_AREA, cv2.INTER_LANCZOS4.
+            Default: cv2.INTER_LINEAR.
+        border_mode (OpenCV flag): flag that is used to specify the pixel extrapolation method. Should be one of:
+            cv2.BORDER_CONSTANT, cv2.BORDER_REPLICATE, cv2.BORDER_REFLECT, cv2.BORDER_WRAP, cv2.BORDER_REFLECT_101.
+            Default: cv2.BORDER_REFLECT_101
+        value (int, float, list of int, list of float): padding value if border_mode is cv2.BORDER_CONSTANT.
+        mask_value (int, float,
+                    list of int,
+                    list of float): padding value if border_mode is cv2.BORDER_CONSTANT applied for masks.
+        shift_limit_x ((float, float) or float): shift factor range for width. If it is set then this value
+            instead of shift_limit will be used for shifting width.  If shift_limit_x is a single float value,
+            the range will be (-shift_limit_x, shift_limit_x). Absolute values for lower and upper bounds should lie in
+            the range [0, 1]. Default: None.
+        shift_limit_y ((float, float) or float): shift factor range for height. If it is set then this value
+            instead of shift_limit will be used for shifting height.  If shift_limit_y is a single float value,
+            the range will be (-shift_limit_y, shift_limit_y). Absolute values for lower and upper bounds should lie
+            in the range [0, 1]. Default: None.
+        rotate_method (str): rotation method used for the bounding boxes. Should be one of "largest_box" or "ellipse".
+            Default: "largest_box"
+        p (float): probability of applying the transform. Default: 0.5.
+    """
+    def __init__(self, **kwargs):
+        self.params = kwargs
+        self.albu_transform = album.ShiftScaleRotate(**kwargs)
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to perform `album.ShiftScaleRotate`.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with images distorted.
+        """
+        aug = self.albu_transform(image=results['img'], mask=results['gt_seg_map'])
+        results['img'] = aug['image']
+        results['gt_seg_map'] = aug['mask']
+        return results
+
+
+@TRANSFORMS.register_module()
+class AlbuRandomContrastTransform(BaseAlbuTransform):
+    """
+    Wrapper for album.RandomContrast
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        limit ((float, float) or float): factor range for changing contrast.
+            If limit is a single float, the range will be (-limit, limit). Default: (-0.2, 0.2).
+        p (float): probability of applying the transform. Default: 0.5.
+    """
+    def __init__(self, **kwargs):
+        self.params = kwargs
+        self.albu_transform = album.RandomBrightnessContrast(**kwargs)
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to perform `album.ShiftScaleRotate`.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with images distorted.
+        """
+        aug = self.albu_transform(image=results['img'])
+        results['img'] = aug['image']
+        return results
+
+
+@TRANSFORMS.register_module()
+class AlbuGaussNoiseTransform(BaseAlbuTransform):
+    """
+    Wrapper for album.GaussNoise
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        var_limit ((float, float) or float): variance range for noise. If var_limit is a single float, the range
+            will be (0, var_limit). Default: (10.0, 50.0).
+        mean (float): mean of the noise. Default: 0
+        per_channel (bool): if set to True, noise will be sampled for each channel independently.
+            Otherwise, the noise will be sampled once for all channels. Default: True
+        p (float): probability of applying the transform. Default: 0.5.
+    """
+    def __init__(self, **kwargs):
+        self.params = kwargs
+        self.albu_transform = album.GaussNoise(**kwargs)
+
+    def transform(self, results: dict) -> dict:
+        """Transform function to perform `album.ShiftScaleRotate`.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Result dict with images distorted.
+        """
+        aug = self.albu_transform(image=results['img'])
+        results['img'] = aug['image']
         return results

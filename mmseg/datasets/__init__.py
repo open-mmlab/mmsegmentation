@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # yapf: disable
 from .ade import ADE20KDataset
+from .cag import CoronaryAngiographyDataset
 from .basesegdataset import BaseCDDataset, BaseSegDataset
 from .bdd100k import BDD100KDataset
 from .chase_db1 import ChaseDB1Dataset
@@ -38,7 +39,7 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
                          PhotoMetricDistortion, RandomCrop, RandomCutOut,
                          RandomMosaic, RandomRotate, RandomRotFlip, Rerange,
                          ResizeShortestEdge, ResizeToMultiple, RGB2Gray,
-                         SegRescale)
+                         SegRescale, AlbuShiftScaleRotateTransform, AlbuRandomContrastTransform, AlbuGaussNoiseTransform)
 from .voc import PascalVOCDataset
 
 # yapf: enable
@@ -59,7 +60,7 @@ __all__ = [
     'BioMedicalRandomGamma', 'BioMedical3DPad', 'RandomRotFlip',
     'SynapseDataset', 'REFUGEDataset', 'MapillaryDataset_v1',
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
-    'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
+    'LoadMultipleRSImageFromFile', 'CoronaryAngiographyDataset', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
     'NYUDataset', 'HSIDrive20Dataset'
 ]

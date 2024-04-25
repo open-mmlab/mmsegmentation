@@ -1,0 +1,18 @@
+{
+    "build": { "dockerfile": "../docker/Dockerfile" },
+    "runArgs": [
+        "--gpus",
+        "all",
+        "--shm-size",
+        "8g"
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    },
+    "shutdownAction": "none"
+}
