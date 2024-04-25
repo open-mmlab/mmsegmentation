@@ -122,4 +122,4 @@ mmseg/.mim
 
 logs/
 *.png
-nohup.out
+*.out

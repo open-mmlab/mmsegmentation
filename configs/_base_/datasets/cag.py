@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'CoronaryAngiographyDataset'
-data_root = 'data/cag'
+data_root = 'data/cag_2100'
 # augmentation setting from YoungIn's jupyter notebook
 train_pipeline = [
     dict(type='LoadImageFromFile'),
