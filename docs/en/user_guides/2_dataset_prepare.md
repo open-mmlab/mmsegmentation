@@ -250,7 +250,7 @@ python tools/dataset_converters/cityscapes.py data/cityscapes --nproc 8
 ## Pascal VOC
 
 Pascal VOC 2012 could be downloaded from [here](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar).
-Beside, most recent works on Pascal VOC dataset usually exploit extra augmentation data, which could be found [here](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz).
+Beside, most recent works on Pascal VOC dataset usually exploit extra augmentation data, which could be found [here](https://opendatalab.com/OpenDataLab/SBD/tree/main/raw).
 
 If you would like to use augmented VOC dataset, please run following command to convert augmentation annotations into proper format.
 
