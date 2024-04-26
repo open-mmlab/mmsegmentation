@@ -250,7 +250,7 @@ python tools/dataset_converters/cityscapes.py data/cityscapes --nproc 8
 ## Pascal VOC
 
 Pascal VOC 2012 可从[此处](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar)下载。
-此外，Pascal VOC 数据集的最新工作通常利用额外的增强数据，可以在[这里](http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz)找到。
+此外，Pascal VOC 数据集的最新工作通常利用额外的增强数据，可以在[这里](https://opendatalab.com/OpenDataLab/SBD/tree/main/raw)找到。
 
 如果您想使用增强的 VOC 数据集，请运行以下命令将增强数据的标注转换为正确的格式。
 
