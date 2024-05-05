@@ -6,8 +6,8 @@ _base_ = [
 # copied from vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
 
 crop_size = (512, 512)
-scale = (1024, 1024)
-downsample_factor = 10
+scale = (3000, 3000)
+downsample_factor = 5
 GT_type='SOD'
 # dataset settings
 dataset_type = 'AI4Arctic'
@@ -17,8 +17,8 @@ data_root_test = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arcti
 gt_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3_segmaps'
 test_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3_segmaps'
 
-finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_20.txt'
-# finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/test1file.txt'
+# finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_20.txt'
+finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/test1file.txt'
 
 test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test.txt'
 # test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test1file.txt'
@@ -117,7 +117,7 @@ model = dict(
         type='MAE',
         # pretrained='/home/m32patel/projects/def-dclausi/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16_cs512-amp-coslr-400e_ai4arctic_norm_pix/epoch_400.pth',
         # pretrained='/project/6075102/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16/epoch_200.pth',
-        # init_cfg=dict(type='Pretrained', checkpoint=None, prefix = 'backbone.'),
+        init_cfg=dict(type='Pretrained', checkpoint='/home/m32patel/projects/def-y2863che/ai4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_ai4arctic_ds10_pt_80_ft_20/iter_40000.pth', prefix = 'backbone.'),
         img_size=crop_size,
         patch_size=16,
         in_channels=2,
@@ -195,7 +195,7 @@ param_scheduler = [
 ]
 # training schedule for 160k
 train_cfg = dict(
-    type='IterBasedTrainLoop', max_iters=20000, val_interval=1000)
+    type='IterBasedTrainLoop', max_iters=20000, val_interval=3)
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
     logger=dict(type='LoggerHook', interval=100, log_metric_by_epoch=False),

@@ -6,8 +6,8 @@ _base_ = [
 # copied from vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
 
 crop_size = (512, 512)
-scale = (1024, 1024)
-downsample_factor = 10
+scale = (3000, 3000)
+downsample_factor = 5
 GT_type='SOD'
 # dataset settings
 dataset_type = 'AI4Arctic'
@@ -17,15 +17,14 @@ data_root_test = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arcti
 gt_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3_segmaps'
 test_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3_segmaps'
 
-finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_20.txt'
-# finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/test1file.txt'
+# finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_20.txt'
+finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/test1file.txt'
 
 test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test.txt'
-# test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test1file.txt'
 train_pipeline = [
     dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_train, gt_root=gt_root, ann_file=finetune_ann_file, channels=[
         'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, pad_size = scale, with_seg=True, GT_type=GT_type),
+        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=True, GT_type=GT_type),
     # dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(
         type='RandomResize',
@@ -40,19 +39,19 @@ train_pipeline = [
 test_pipeline = [
     dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_test, gt_root=test_root, ann_file=test_ann_file, channels=[
         'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, pad_size = scale, with_seg=False, GT_type=GT_type),
+        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=False, GT_type=GT_type),
     # dict(type='Resize', scale=scale, keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
     dict(type='LoadGTFromPNGFile', gt_root=test_root,
-         downsample_factor=downsample_factor, pad_size = scale, GT_type=GT_type),
+         downsample_factor=downsample_factor, GT_type=GT_type),
     dict(type='PackSegInputs')
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
     dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_test, gt_root=test_root, ann_file=test_ann_file, channels=[
          'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-         std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, pad_size = scale, with_seg=False, GT_type=GT_type),
+         std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=False, GT_type=GT_type),
     # dict(type='Resize', scale=scale, keep_ratio=True),
     dict(
         type='TestTimeAug',
@@ -66,7 +65,7 @@ tta_pipeline = [
                 dict(type='RandomFlip', prob=1., direction='horizontal')
             ],
             [dict(type='LoadGTFromPNGFile', gt_root=gt_root,
-                  downsample_factor=downsample_factor, pad_size = scale, GT_type=GT_type)],
+                  downsample_factor=downsample_factor, GT_type=GT_type)],
             [dict(type='PackSegInputs')]
         ])
 ]
@@ -108,37 +107,79 @@ data_preprocessor = dict(
     bgr_to_rgb=False,
     pad_val=255,
     seg_pad_val=255)
+# model = dict(
+#     type='EncoderDecoder',
+#     data_preprocessor=data_preprocessor,
+#     # pretrained='/project/6075102/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16/epoch_200.pth',
+#     # pretrained=None,
+#     backbone=dict(
+#         type='Samba',
+#         in_chans=2,
+#         num_classes=6,
+#         stem_hidden_dim=32,
+#         embed_dims=[64, 128, 320, 448],
+#         mlp_ratios=[8, 8, 4, 4],
+#         drop_path_rate=0.,
+#         # norm_layer=nn.LayerNorm,
+#         depths=[3, 4, 6, 3],
+#         sr_ratios=[4, 2, 1, 1],
+#         num_stages=4,
+#         token_label=True),
+#     neck=dict(type='Feature2Pyramid', embed_dim=768, rescales=[4, 2, 1, 0.5]),
+#     decode_head=dict(
+#         type='UPerHead',
+#         in_channels=[768, 768, 768, 768],
+#         in_index=[0, 1, 2, 3],
+#         pool_scales=(1, 2, 3, 6),
+#         channels=768,
+#         dropout_ratio=0.1,
+#         num_classes=6,
+#         norm_cfg=norm_cfg,
+#         align_corners=False,
+#         loss_decode=dict(
+#             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
+#     auxiliary_head=dict(
+#         type='FCNHead',
+#         in_channels=768,
+#         in_index=2,
+#         channels=256,
+#         num_convs=1,
+#         concat_input=False,
+#         dropout_ratio=0.1,
+#         num_classes=6,
+#         norm_cfg=norm_cfg,
+#         align_corners=False,
+#         loss_decode=dict(
+#             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
+#     # model training and testing settings
+#     train_cfg=dict(),
+#     # test_cfg=dict(mode='whole'))  # yapf: disable
+#     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(256, 256)))
+
+
+
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
-    # pretrained='/project/6075102/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16/epoch_200.pth',
-    # pretrained=None,
     backbone=dict(
-        type='MAE',
-        # pretrained='/home/m32patel/projects/def-dclausi/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16_cs512-amp-coslr-400e_ai4arctic_norm_pix/epoch_400.pth',
-        # pretrained='/project/6075102/AI4arctic/m32patel/mmselfsup/work_dirs/selfsup/mae_vit-base-p16/epoch_200.pth',
-        # init_cfg=dict(type='Pretrained', checkpoint=None, prefix = 'backbone.'),
-        img_size=crop_size,
-        patch_size=16,
-        in_channels=2,
-        embed_dims=768,
-        num_layers=12,
-        num_heads=12,
-        mlp_ratio=4,
-        out_indices=(3, 5, 7, 11),
-        attn_drop_rate=0.0,
-        drop_path_rate=0.1,
-        norm_cfg=dict(type='LN', eps=1e-6),
-        act_cfg=dict(type='GELU'),
-        norm_eval=False,
-        init_values=0.1),
-    neck=dict(type='Feature2Pyramid', embed_dim=768, rescales=[4, 2, 1, 0.5]),
+        type='Samba',
+        in_chans=2,
+        num_classes=6,
+        stem_hidden_dim=32,
+        embed_dims=[64, 128, 320, 448],
+        mlp_ratios=[8, 8, 4, 4],
+        drop_path_rate=0.,
+        # norm_layer=nn.LayerNorm,
+        depths=[3, 4, 6, 3],
+        sr_ratios=[4, 2, 1, 1],
+        num_stages=4,
+        token_label=True),
     decode_head=dict(
         type='UPerHead',
-        in_channels=[768, 768, 768, 768],
+        in_channels=[64, 128, 320, 448],
         in_index=[0, 1, 2, 3],
         pool_scales=(1, 2, 3, 6),
-        channels=768,
+        channels=512,
         dropout_ratio=0.1,
         num_classes=6,
         norm_cfg=norm_cfg,
@@ -147,7 +188,7 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     auxiliary_head=dict(
         type='FCNHead',
-        in_channels=768,
+        in_channels=320,
         in_index=2,
         channels=256,
         num_convs=1,
@@ -158,11 +199,8 @@ model = dict(
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4)),
-    # model training and testing settings
     train_cfg=dict(),
-    # test_cfg=dict(mode='whole'))  # yapf: disable
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(512, 512)))
-
+    test_cfg=dict(mode='whole'))
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mFscore'])
 test_evaluator = val_evaluator
@@ -202,7 +240,7 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=1000, max_keep_ckpts=3),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegAI4ArcticVisualizationHook', downsample_factor=downsample_factor, metric='f1', num_classes=6, pad_size = scale, nan = 255))
+    visualization=dict(type='SegAI4ArcticVisualizationHook', downsample_factor=downsample_factor, metric='f1', num_classes=6))
 
 vis_backends = [dict(type='WandbVisBackend',
                      init_kwargs=dict(
@@ -222,6 +260,7 @@ visualizer = dict(
 
 custom_imports = dict(
     imports=['mmseg.datasets.ai4arctic',
+             'mmseg.models.backbones.samba',
              'mmseg.datasets.transforms.loading_ai4arctic',
              'mmseg.engine.hooks.ai4arctic_visualization_hook'],
     allow_failed_imports=False)

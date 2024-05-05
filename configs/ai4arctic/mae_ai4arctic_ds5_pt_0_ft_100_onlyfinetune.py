@@ -6,8 +6,8 @@ _base_ = [
 # copied from vit_vit-b16_mln_upernet_8xb2-160k_ade20k-512x512.py
 
 crop_size = (512, 512)
-scale = (1024, 1024)
-downsample_factor = 10
+scale = (3000, 3000)
+downsample_factor = 5
 GT_type='SOD'
 # dataset settings
 dataset_type = 'AI4Arctic'
@@ -17,15 +17,12 @@ data_root_test = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arcti
 gt_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3_segmaps'
 test_root = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3_segmaps'
 
-finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_20.txt'
-# finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/test1file.txt'
-
+finetune_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_train_v3/finetune_100.txt'
 test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test.txt'
-# test_ann_file = '/home/m32patel/projects/rrg-dclausi/ai4arctic/dataset/ai4arctic_raw_test_v3/test1file.txt'
 train_pipeline = [
     dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_train, gt_root=gt_root, ann_file=finetune_ann_file, channels=[
         'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, pad_size = scale, with_seg=True, GT_type=GT_type),
+        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=True, GT_type=GT_type),
     # dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(
         type='RandomResize',
@@ -40,19 +37,19 @@ train_pipeline = [
 test_pipeline = [
     dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_test, gt_root=test_root, ann_file=test_ann_file, channels=[
         'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, pad_size = scale, with_seg=False, GT_type=GT_type),
+        std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=False, GT_type=GT_type),
     # dict(type='Resize', scale=scale, keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
     dict(type='LoadGTFromPNGFile', gt_root=test_root,
-         downsample_factor=downsample_factor, pad_size = scale, GT_type=GT_type),
+         downsample_factor=downsample_factor, GT_type=GT_type),
     dict(type='PackSegInputs')
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
     dict(type='PreLoadImageandSegFromNetCDFFile', data_root=data_root_test, gt_root=test_root, ann_file=test_ann_file, channels=[
          'nersc_sar_primary', 'nersc_sar_secondary'], mean=[-14.508254953309349, -24.701211250236728],
-         std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, pad_size = scale, with_seg=False, GT_type=GT_type),
+         std=[5.659745919326586, 4.746759336539111], to_float32=True, nan=255, downsample_factor=downsample_factor, with_seg=False, GT_type=GT_type),
     # dict(type='Resize', scale=scale, keep_ratio=True),
     dict(
         type='TestTimeAug',
@@ -66,7 +63,7 @@ tta_pipeline = [
                 dict(type='RandomFlip', prob=1., direction='horizontal')
             ],
             [dict(type='LoadGTFromPNGFile', gt_root=gt_root,
-                  downsample_factor=downsample_factor, pad_size = scale, GT_type=GT_type)],
+                  downsample_factor=downsample_factor, GT_type=GT_type)],
             [dict(type='PackSegInputs')]
         ])
 ]
@@ -161,7 +158,7 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     # test_cfg=dict(mode='whole'))  # yapf: disable
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(512, 512)))
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(256, 256)))
 
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mFscore'])
@@ -202,7 +199,7 @@ default_hooks = dict(
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(type='CheckpointHook', by_epoch=False, interval=1000, max_keep_ckpts=3),
     sampler_seed=dict(type='DistSamplerSeedHook'),
-    visualization=dict(type='SegAI4ArcticVisualizationHook', downsample_factor=downsample_factor, metric='f1', num_classes=6, pad_size = scale, nan = 255))
+    visualization=dict(type='SegAI4ArcticVisualizationHook', downsample_factor=downsample_factor, metric='f1', num_classes=6))
 
 vis_backends = [dict(type='WandbVisBackend',
                      init_kwargs=dict(

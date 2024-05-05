@@ -54,6 +54,8 @@ class SegAI4ArcticVisualizationHook(Hook):
                  device: str = 'cuda:0',
                  metric: str = 'f1',
                  num_classes: int = 6,
+                 pad_size = None,
+                 nan = 255,
                  backend_args: Optional[dict] = None):
         self._visualizer: Visualizer = Visualizer.get_current_instance()
         self.downsample_factor = downsample_factor
@@ -64,7 +66,8 @@ class SegAI4ArcticVisualizationHook(Hook):
         self.pred_flat = torch.Tensor().to(device)
         self.metric = metric
         self.num_classes = num_classes
-
+        self.pad_size = pad_size
+        self.nan = nan
         if self.show:
             # No need to think about vis backends.
             self._visualizer._vis_backends = {}
@@ -126,6 +129,12 @@ class SegAI4ArcticVisualizationHook(Hook):
                                                             shape[1]//self.downsample_factor),
                                                       mode='nearest')
                 img = img.permute(0, 2, 3, 1).squeeze(0)
+                if self.pad_size is not None:
+                    # Calculate the pad amounts
+                    pad_height = max(0, self.pad_size[0] - img.shape[0])
+                    pad_width = max(0, self.pad_size[1] - img.shape[1])
+                    # Pad the image
+                    img = torch.nn.functional.pad(img, (0,0,0, pad_width, 0, pad_height), mode='constant', value=self.nan)    
                 img = img.numpy()
             os.makedirs(osp.join(runner.cfg.work_dir, 'val'), exist_ok=True)
             fig, axs2d = plt.subplots(nrows=2, ncols=3, figsize=(20, 20))
@@ -244,6 +253,12 @@ class SegAI4ArcticVisualizationHook(Hook):
                                                             shape[1]//self.downsample_factor),
                                                       mode='nearest')
                 img = img.permute(0, 2, 3, 1).squeeze(0)
+                if self.pad_size is not None:
+                    # Calculate the pad amounts
+                    pad_height = max(0, self.pad_size[0] - img.shape[0])
+                    pad_width = max(0, self.pad_size[1] - img.shape[1])
+                    # Pad the image
+                    img = torch.nn.functional.pad(img, (0,0,0, pad_width, 0, pad_height), mode='constant', value=self.nan)
                 img = img.numpy()
             os.makedirs(osp.join(runner.cfg.work_dir, 'test'), exist_ok=True)
             fig, axs2d = plt.subplots(nrows=2, ncols=3, figsize=(20, 20))

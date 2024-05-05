@@ -54,6 +54,7 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                  imdecode_backend='cv2',
                  nan=255,
                  downsample_factor=10,
+                 pad_size = None,
                  with_seg=False,
                  GT_type='SOD',
                  ignore_empty=False):
@@ -67,8 +68,10 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
         self.data_root = data_root
         self.gt_root = gt_root
         self.downsample_factor = downsample_factor
+        self.nan = nan
         self.with_seg = with_seg
         self.GT_type = GT_type
+        self.pad_size = pad_size
         self.nc_files = self.list_nc_files(data_root, ann_file)
         # key represents full path of the image and value represents the np image loaded
         self.pre_loaded_image_dic = {}
@@ -102,6 +105,12 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                                                             shape[1]//self.downsample_factor),
                                                       mode='nearest')
                 img = img.permute(0, 2, 3, 1).squeeze(0)
+                if self.pad_size is not None:
+                    # Calculate the pad amounts
+                    pad_height = max(0, self.pad_size[0] - img.shape[0])
+                    pad_width = max(0, self.pad_size[1] - img.shape[1])
+                    # Pad the image
+                    img = torch.nn.functional.pad(img, (0,0,0, pad_width, 0, pad_height), mode='constant', value=self.nan)    
                 img = img.numpy()
                 if self.with_seg:
                     gt_seg_map = torch.from_numpy(
@@ -111,8 +120,14 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                                                                        shape[1]//self.downsample_factor),
                                                                  mode='nearest')
                     gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
-                    gt_seg_map = gt_seg_map.numpy()
+                    if self.pad_size is not None:
+                        # Calculate the pad amounts
+                        pad_height = max(0, self.pad_size[0] - gt_seg_map.shape[0])
+                        pad_width = max(0, self.pad_size[1] - gt_seg_map.shape[1])
 
+                        # Pad the image
+                        gt_seg_map = torch.nn.functional.pad(gt_seg_map, (0, pad_width, 0, pad_height), mode='constant', value=self.nan)
+                    gt_seg_map = gt_seg_map.numpy()
             if to_float32:
                 img = img.astype(np.float32)
             self.pre_loaded_image_dic[filename] = img
@@ -147,7 +162,7 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
         img = self.pre_loaded_image_dic[filename]
         if self.to_float32:
             img = img.astype(np.float32)
-        img = np.nan_to_num(img, nan=255)
+        img = np.nan_to_num(img, nan=self.nan)
         results['img'] = img
         results['img_shape'] = img.shape[:2]
         results['ori_shape'] = img.shape[:2]
@@ -191,10 +206,14 @@ class LoadGTFromPNGFile(BaseTransform):
     def __init__(self,
                  gt_root,
                  downsample_factor=10,
-                 GT_type='SOD'):
+                 GT_type='SOD',
+                 pad_size = None,
+                 pad_val = 255):
         self.gt_root = gt_root
         self.downsample_factor = downsample_factor
         self.GT_type = GT_type
+        self.pad_size = pad_size
+        self.pad_val = pad_val
 
     def transform(self, results):
         """Functions to load image.
@@ -219,6 +238,13 @@ class LoadGTFromPNGFile(BaseTransform):
                                                                shape[1]//self.downsample_factor),
                                                          mode='nearest')
             gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
+            if self.pad_size is not None:
+                    # Calculate the pad amounts
+                    pad_height = max(0, self.pad_size[0] - gt_seg_map.shape[0])
+                    pad_width = max(0, self.pad_size[1] - gt_seg_map.shape[1])
+
+                    # Pad the image
+                    gt_seg_map = torch.nn.functional.pad(gt_seg_map, (0, pad_width, 0, pad_height), mode='constant', value=self.pad_val)
             gt_seg_map = gt_seg_map.numpy()
         results['gt_seg_map'] = gt_seg_map
         results['seg_fields'].append('gt_seg_map')
