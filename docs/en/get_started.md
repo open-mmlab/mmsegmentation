@@ -23,13 +23,16 @@ conda activate openmmlab
 On GPU platforms:
 
 ```shell
-conda install pytorch torchvision -c pytorch
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
 ```
+Note Make sure to check you are installing the correct cuda an pytorch version
+
+You can check your own cuda version using nvida-smi command on linux
 
 On CPU platforms:
 
 ```shell
-conda install pytorch torchvision cpuonly -c pytorch
+pip install pytorch torchvision cpuonly -c pytorch
 ```
 
 ## Installation
@@ -43,8 +46,9 @@ We recommend that users follow our best practices to install MMSegmentation. How
 ```shell
 pip install -U openmim
 mim install mmengine
-mim install "mmcv>=2.0.0"
+mim install mmcv==2.1.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
 ```
+Make sure you are installing the correct cuda version of MMCV.
 
 **Step 1.** Install MMSegmentation.
 
@@ -139,7 +143,7 @@ To install MMCV with pip instead of MIM, please follow [MMCV installation guides
 For example, the following command install mmcv==2.0.0 built for PyTorch 1.10.x and CUDA 11.3.
 
 ```shell
-pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10/index.html
+pip  install mmcv==2.1.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
 ```
 
 #### Install on CPU-only platforms
@@ -156,7 +160,7 @@ thus we only need to install MMCV and MMSegmentation with the following commands
 ```shell
 !pip3 install openmim
 !mim install mmengine
-!mim install "mmcv>=2.0.0"
+!mim install mmcv==2.1.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch2.1/index.html
 ```
 
 **Step 2.** Install MMSegmentation from the source.
