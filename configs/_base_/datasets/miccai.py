@@ -67,5 +67,5 @@ val_dataloader = dict(
 )
 test_dataloader = val_dataloader
 
-val_evaluator = dict(type="IoUMetric", iou_metrics=["mDice"])
+val_evaluator = dict(type="IoUMetric", iou_metrics=["mIoU", "mDice"])
 test_evaluator = val_evaluator
