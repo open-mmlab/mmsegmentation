@@ -488,29 +488,56 @@ def hsidrive_palette():
             [255, 166, 0], [0, 204, 204]]
 
 
-dataset_aliases = {
-    'cityscapes': ['cityscapes'],
-    'ade': ['ade', 'ade20k'],
-    'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
-    'pcontext': ['pcontext', 'pascal_context', 'voc2010'],
-    'loveda': ['loveda'],
-    'potsdam': ['potsdam'],
-    'vaihingen': ['vaihingen'],
-    'cocostuff': [
-        'cocostuff', 'cocostuff10k', 'cocostuff164k', 'coco-stuff',
-        'coco-stuff10k', 'coco-stuff164k', 'coco_stuff', 'coco_stuff10k',
-        'coco_stuff164k'
-    ],
-    'isaid': ['isaid', 'iSAID'],
-    'stare': ['stare', 'STARE'],
-    'lip': ['LIP', 'lip'],
-    'mapillary_v1': ['mapillary_v1'],
-    'mapillary_v2': ['mapillary_v2'],
-    'bdd100k': ['bdd100k'],
-    'hsidrive': [
-        'hsidrive', 'HSIDrive', 'HSI-Drive', 'hsidrive20', 'HSIDrive20',
-        'HSI-Drive20'
+def maccai_classes():
+    """maccai2023 class names for external use."""
+    return [
+        "unlabelled",
+        "tooth",
     ]
+
+
+def maccai_palette():
+    """maccai2023 palette for external use."""
+    return [
+        [0, 0, 0],
+        [255, 255, 255],
+    ]
+
+
+dataset_aliases = {
+    "cityscapes": ["cityscapes"],
+    "ade": ["ade", "ade20k"],
+    "voc": ["voc", "pascal_voc", "voc12", "voc12aug"],
+    "pcontext": ["pcontext", "pascal_context", "voc2010"],
+    "loveda": ["loveda"],
+    "potsdam": ["potsdam"],
+    "vaihingen": ["vaihingen"],
+    "cocostuff": [
+        "cocostuff",
+        "cocostuff10k",
+        "cocostuff164k",
+        "coco-stuff",
+        "coco-stuff10k",
+        "coco-stuff164k",
+        "coco_stuff",
+        "coco_stuff10k",
+        "coco_stuff164k",
+    ],
+    "isaid": ["isaid", "iSAID"],
+    "stare": ["stare", "STARE"],
+    "lip": ["LIP", "lip"],
+    "mapillary_v1": ["mapillary_v1"],
+    "mapillary_v2": ["mapillary_v2"],
+    "bdd100k": ["bdd100k"],
+    "hsidrive": [
+        "hsidrive",
+        "HSIDrive",
+        "HSI-Drive",
+        "hsidrive20",
+        "HSIDrive20",
+        "HSI-Drive20",
+    ],
+    "maccai": ["miccai", "maccai2023"],
 }
 
 
