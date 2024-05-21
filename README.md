@@ -74,8 +74,7 @@ decode_head=[
 ```
 
 - Modifed class `BaseDecodeHead` to pass the task number, this is required to disitinguish which Ground truth is used to calculate loss.
-- #TODO add difference link from github
-
+- [Difference] (https://git.uwaterloo.ca/vip_ai4arctic/mmsegmentation/-/commit/9b4ea6cd9a8a8e93edece0825f71f47f13f0f9d9#669e3eb0aa8bdb6592e42e25e11896ff7c8a2123)
 ### Metric
 - Added a new metric class `MultitaskIoUMetric`
 - files added/modified:
