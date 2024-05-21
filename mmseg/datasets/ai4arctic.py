@@ -22,9 +22,33 @@ class AI4Arctic(BaseSegDataset):
     and ``seg_map_suffix`` is fixed to '.png'.
     """
     METAINFO = dict(
-        classes=(
-            '0', '1', '2', '3', '4', '5'),
-        palette=[[255, 104, 1], [1, 77, 255], [206, 255, 41], [0, 0, 128], [41, 255, 206], [128, 0, 0]])
+        {'SIC_classes': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+         'SOD_classes': ['0', '1', '2', '3', '4', '5'],
+         'FLOE_classes': ['0', '1', '2', '3', '4', '5', '6'],
+         'SIC_palette': [[0, 0, 127],
+                         [0, 0, 175],
+                         [0, 0, 224],
+                         [0, 0, 255],
+                         [0, 42, 255],
+                         [0, 85, 255],
+                         [0, 127, 255],
+                         [0, 169, 255],
+                         [0, 212, 255],
+                         [20, 255, 226],
+                         [54, 255, 191]],
+            'SOD_palette': [[123, 255, 123],
+                            [157, 255, 89],
+                            [191, 255, 54],
+                            [226, 255, 20],
+                            [255, 229, 0],
+                            [255, 190, 0]],
+            'FLOE_palette': [[255, 151, 0],
+                             [255, 111, 0],
+                             [255, 72, 0],
+                             [255, 33, 0],
+                             [224, 0, 0],
+                             [175, 0, 0],
+                             [127, 0, 0]]})
 
     def __init__(self,
                  img_suffix='.nc',
@@ -32,6 +56,7 @@ class AI4Arctic(BaseSegDataset):
                  **kwargs) -> None:
         super().__init__(
             img_suffix=img_suffix, seg_map_suffix=seg_map_suffix, **kwargs)
+
     def load_data_list(self) -> List[dict]:
         """Load annotation from directory or annotation file.
 

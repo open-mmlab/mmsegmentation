@@ -245,7 +245,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return output
 
     def loss(self, inputs: Tuple[Tensor], batch_data_samples: SampleList,
-             train_cfg: ConfigType) -> dict:
+             train_cfg: ConfigType, task_index=0) -> dict:
         """Forward function for training.
 
         Args:
@@ -259,7 +259,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             dict[str, Tensor]: a dictionary of loss components
         """
         seg_logits = self.forward(inputs)
-        losses = self.loss_by_feat(seg_logits, batch_data_samples)
+        losses = self.loss_by_feat(seg_logits, batch_data_samples, task_index)
         return losses
 
     def predict(self, inputs: Tuple[Tensor], batch_img_metas: List[dict],
@@ -289,7 +289,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         return torch.stack(gt_semantic_segs, dim=0)
 
     def loss_by_feat(self, seg_logits: Tensor,
-                     batch_data_samples: SampleList) -> dict:
+                     batch_data_samples: SampleList, task_index=0) -> dict:
         """Compute segmentation loss.
 
         Args:
@@ -303,6 +303,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         """
 
         seg_label = self._stack_batch_gt(batch_data_samples)
+        seg_label = seg_label.permute(0, 3, 1, 2)
         loss = dict()
         seg_logits = resize(
             input=seg_logits,
@@ -313,6 +314,7 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
             seg_weight = self.sampler.sample(seg_logits, seg_label)
         else:
             seg_weight = None
+        seg_label = seg_label[:, task_index, :, :]
         seg_label = seg_label.squeeze(1)
 
         if not isinstance(self.loss_decode, nn.ModuleList):

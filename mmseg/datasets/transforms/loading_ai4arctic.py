@@ -20,33 +20,43 @@ except ImportError:
 
 @TRANSFORMS.register_module()
 class PreLoadImageandSegFromNetCDFFile(BaseTransform):
-    """Load an image from an xarray dataset.
+    """Pre-load images and segmentation maps from NetCDF files into memory.
 
-    Required Keys:
-        - img_path
+       This transform pre-loads images and optionally segmentation maps from NetCDF files
+       into memory to speed up the data loading process during training and inference.
 
-    Modified Keys:
-        - img
-        - img_shape
-        - ori_shape
-        - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
-        (H, W) by default.
+       Required Keys:
+           - img_path: Path to the NetCDF file containing the image data.
 
-    Args:
-        channels (list[str]): List of variable names to load as channels of the image.
-        to_float32 (bool): Whether to convert the loaded image to a float32 numpy array.
-            If set to False, the loaded image is a uint8 array. Defaults to False.
-        color_type (str): The flag argument for :func:`mmcv.imfrombytes`. Defaults to 'color'.
-        imdecode_backend (str): The image decoding backend type. Defaults to 'cv2'.
-        ignore_empty (bool): Whether to allow loading empty image or file path not existent.
-            Defaults to False.
-    """
+       Modified Keys:
+           - img: The loaded image data as a numpy array.
+           - img_shape: The shape of the loaded image.
+           - ori_shape: The original shape of the loaded image.
+           - gt_seg_map (optional): The loaded segmentation map as a numpy array.
+
+       Args:
+           channels (list[str]): List of variable names to load as channels of the image.
+           data_root (str): Root directory of the NetCDF files.
+           gt_root (str): Root directory of the ground truth segmentation maps.
+           ann_file (str, optional): Path to the annotation file listing NetCDF files to load.
+           mean (list[float]): Mean values for normalization of each channel. Defaults to values provided.
+           std (list[float]): Standard deviation values for normalization of each channel. Defaults to values provided.
+           to_float32 (bool): Whether to convert the loaded image to a float32 numpy array. Defaults to True.
+           color_type (str): The color type for image loading. Defaults to 'color'.
+           imdecode_backend (str): The image decoding backend type. Defaults to 'cv2'.
+           nan (float): Value to replace NaNs in the image. Defaults to 255.
+           downsample_factor (int): Factor by which to downsample the images. Defaults to 10.
+           pad_size (tuple[int], optional): Desired size to pad the images to. Defaults to None.
+           with_seg (bool): Whether to also load segmentation maps. Defaults to False.
+           GT_type (list[str]): List of ground truth types to load (e.g., ['SOD', 'SIC', 'FLOE']). Defaults to ['SOD'].
+           ignore_empty (bool): Whether to ignore empty images or non-existent file paths. Defaults to False.
+       """
 
     def __init__(self,
                  channels,
                  data_root,
                  gt_root,
-                 ann_file = None,
+                 ann_file=None,
                  mean=[-14.508254953309349, -24.701211250236728],
                  std=[5.659745919326586, 4.746759336539111],
                  to_float32=True,
@@ -54,9 +64,9 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
                  imdecode_backend='cv2',
                  nan=255,
                  downsample_factor=10,
-                 pad_size = None,
+                 pad_size=None,
                  with_seg=False,
-                 GT_type='SOD',
+                 GT_type=['SOD'],
                  ignore_empty=False):
         self.channels = channels
         self.mean = mean
@@ -73,73 +83,60 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
         self.GT_type = GT_type
         self.pad_size = pad_size
         self.nc_files = self.list_nc_files(data_root, ann_file)
-        # key represents full path of the image and value represents the np image loaded
         self.pre_loaded_image_dic = {}
         self.pre_loaded_seg_dic = {}
         ic('Starting to load all the images into memory...')
         for filename in tqdm(self.nc_files):
             xarr = xr.open_dataset(filename, engine='h5netcdf')
-            if self.with_seg:
-                seg_maps = {}
-                gt_filename = os.path.basename(filename)
-                gt_filename = gt_filename.replace(
-                    '.nc', f'_{self.GT_type}.png')
-                gt_filename = os.path.join(gt_root, gt_filename)
-                # Load the image in grayscale
-                gt_seg_map = cv2.imread(gt_filename, cv2.IMREAD_GRAYSCALE)
-                # Display the grayscale image
             img = xarr[self.channels].to_array().data
-            # reorder from (2, H, W) to (H, W, 2)
             img = np.transpose(img, (1, 2, 0))
             mean = np.array(self.mean)
             std = np.array(self.std)
-            img = (img-mean)/std
+            img = (img - mean) / std
             shape = img.shape
             if self.downsample_factor != 1:
-                # downsample by taking max over a 10x10 block
-                # img = torch.from_numpy(np.expand_dims(img, 0))
-                img = torch.from_numpy(img)
-                img = img.unsqueeze(0).permute(0, 3, 1, 2)
+                img = torch.from_numpy(img).unsqueeze(0).permute(0, 3, 1, 2)
                 img = torch.nn.functional.interpolate(img,
-                                                      size=(shape[0]//self.downsample_factor,
-                                                            shape[1]//self.downsample_factor),
+                                                      size=(shape[0] // self.downsample_factor,
+                                                            shape[1] // self.downsample_factor),
                                                       mode='nearest')
                 img = img.permute(0, 2, 3, 1).squeeze(0)
                 if self.pad_size is not None:
-                    # Calculate the pad amounts
                     pad_height = max(0, self.pad_size[0] - img.shape[0])
                     pad_width = max(0, self.pad_size[1] - img.shape[1])
-                    # Pad the image
-                    img = torch.nn.functional.pad(img, (0,0,0, pad_width, 0, pad_height), mode='constant', value=self.nan)    
+                    img = torch.nn.functional.pad(
+                        img, (0, 0, 0, pad_width, 0, pad_height), mode='constant', value=self.nan)
                 img = img.numpy()
-                if self.with_seg:
-                    gt_seg_map = torch.from_numpy(
-                        gt_seg_map).unsqueeze(0).unsqueeze(0)
-                    gt_seg_map = torch.nn.functional.interpolate(gt_seg_map,
-                                                                 size=(shape[0]//self.downsample_factor,
-                                                                       shape[1]//self.downsample_factor),
-                                                                 mode='nearest')
-                    gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
-                    if self.pad_size is not None:
-                        # Calculate the pad amounts
-                        pad_height = max(0, self.pad_size[0] - gt_seg_map.shape[0])
-                        pad_width = max(0, self.pad_size[1] - gt_seg_map.shape[1])
-
-                        # Pad the image
-                        gt_seg_map = torch.nn.functional.pad(gt_seg_map, (0, pad_width, 0, pad_height), mode='constant', value=self.nan)
-                    gt_seg_map = gt_seg_map.numpy()
-            if to_float32:
+            if self.to_float32:
                 img = img.astype(np.float32)
             self.pre_loaded_image_dic[filename] = img
             if self.with_seg:
-                self.pre_loaded_seg_dic[filename] = gt_seg_map
+                seg_maps = []
+                for gt_type in self.GT_type:
+                    gt_filename = os.path.basename(filename).replace('.nc', f'_{gt_type}.png')
+                    gt_filename = os.path.join(self.gt_root, gt_filename)
+                    gt_seg_map = cv2.imread(gt_filename, cv2.IMREAD_GRAYSCALE)
+                    if self.downsample_factor != 1:
+                        gt_seg_map = torch.from_numpy(gt_seg_map).unsqueeze(0).unsqueeze(0)
+                        gt_seg_map = torch.nn.functional.interpolate(gt_seg_map,
+                                                                     size=(shape[0] // self.downsample_factor,
+                                                                           shape[1] // self.downsample_factor),
+                                                                     mode='nearest')
+                        gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
+                        if self.pad_size is not None:
+                            pad_height = max(0, self.pad_size[0] - gt_seg_map.shape[0])
+                            pad_width = max(0, self.pad_size[1] - gt_seg_map.shape[1])
+                            gt_seg_map = torch.nn.functional.pad(
+                                gt_seg_map, (0, pad_width, 0, pad_height), mode='constant', value=self.nan)
+                        gt_seg_map = gt_seg_map.numpy()
+                    seg_maps.append(gt_seg_map)
+                self.pre_loaded_seg_dic[filename] = np.stack(seg_maps, axis=-1)
         ic('Finished loading all the images into memory...')
 
     def list_nc_files(self, folder_path, ann_file):
         nc_files = []
-        if ann_file != None:
+        if ann_file is not None:
             with open(ann_file, "r") as file:
-                # Read the lines of the file into a list
                 filenames = file.readlines()
             nc_files = [os.path.join(folder_path, filename.strip()) for filename in filenames]
         else:
@@ -183,78 +180,82 @@ class PreLoadImageandSegFromNetCDFFile(BaseTransform):
 
 @TRANSFORMS.register_module()
 class LoadGTFromPNGFile(BaseTransform):
-    """Load an image from an xarray dataset.
+    """Load multiple types of ground truth segmentation maps from PNG files.
+
+    This transform loads multiple types of ground truth segmentation maps from
+    PNG files, concatenating them into a single segmentation map with multiple channels.
 
     Required Keys:
-        - img_path
+        - img_path: Path to the NetCDF file containing the image data.
 
     Modified Keys:
-
-        - seg_fields List : Contains segmentation keys
-        - gt_seg_map (np.ndarray, optional): Biomedical seg map with shape
-        (H, W) by default.
+        - gt_seg_map: The loaded segmentation map as a numpy array with multiple channels.
+        - seg_fields: List of segmentation fields, updated to include 'gt_seg_map'.
 
     Args:
-        gt_root (str): Location of the folder containing the GT files
-        imdecode_backend (str): The image decoding backend type. Defaults to 'cv2'.
-        ignore_empty (bool): Whether to allow loading empty image or file path not existent.
-            Defaults to False.
-        GT_type (str): One of 'SOD'/'FLOE'/'SIC'
-        downsample_factor (int): The downsampling factor the ground
+        gt_root (str): Root directory of the ground truth segmentation maps.
+        GT_types (list[str]): List of types of ground truth to load (e.g., ['SOD', 'SIC', 'FLOE']).
+        downsample_factor (int): Factor by which to downsample the segmentation maps. Defaults to 10.
+        pad_size (tuple[int], optional): Desired size to pad the segmentation maps to. Defaults to None.
+        pad_val (float): Value to pad the segmentation maps with. Defaults to 255.
     """
 
     def __init__(self,
                  gt_root,
+                 GT_type=['SOD'],
                  downsample_factor=10,
-                 GT_type='SOD',
-                 pad_size = None,
-                 pad_val = 255):
+                 pad_size=None,
+                 pad_val=255):
         self.gt_root = gt_root
+        self.GT_types = GT_type
         self.downsample_factor = downsample_factor
-        self.GT_type = GT_type
         self.pad_size = pad_size
         self.pad_val = pad_val
 
     def transform(self, results):
-        """Functions to load image.
+        """Load multiple types of ground truth segmentation maps.
 
         Args:
             results (dict): Result dict from :class:`mmengine.dataset.BaseDataset`.
 
         Returns:
-            dict: The dict contains loaded image and meta information.
+            dict: The dict contains loaded segmentation map and meta information.
         """
         filename = results['img_path']
-        gt_filename = os.path.basename(filename)
-        gt_filename = gt_filename.replace('.nc', f'_{self.GT_type}.png')
-        gt_filename = os.path.join(self.gt_root, gt_filename)
-        # Load the image in grayscale
-        gt_seg_map = cv2.imread(gt_filename, cv2.IMREAD_GRAYSCALE)
-        shape = gt_seg_map.shape
-        if self.downsample_factor != 1:
-            gt_seg_map = torch.from_numpy(gt_seg_map).unsqueeze(0).unsqueeze(0)
-            gt_seg_map = torch.nn.functional.interpolate(gt_seg_map,
-                                                         size=(shape[0]//self.downsample_factor,
-                                                               shape[1]//self.downsample_factor),
-                                                         mode='nearest')
-            gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
-            if self.pad_size is not None:
-                    # Calculate the pad amounts
+        gt_maps = []
+        for GT_type in self.GT_types:
+            gt_filename = os.path.basename(filename).replace('.nc', f'_{GT_type}.png')
+            gt_filename = os.path.join(self.gt_root, gt_filename)
+            gt_seg_map = cv2.imread(gt_filename, cv2.IMREAD_GRAYSCALE)
+            shape = gt_seg_map.shape
+
+            if self.downsample_factor != 1:
+                gt_seg_map = torch.from_numpy(gt_seg_map).unsqueeze(0).unsqueeze(0)
+                gt_seg_map = torch.nn.functional.interpolate(
+                    gt_seg_map, size=(shape[0] // self.downsample_factor, shape[1] // self.downsample_factor), mode='nearest')
+                gt_seg_map = gt_seg_map.squeeze(0).squeeze(0)
+
+                if self.pad_size is not None:
                     pad_height = max(0, self.pad_size[0] - gt_seg_map.shape[0])
                     pad_width = max(0, self.pad_size[1] - gt_seg_map.shape[1])
+                    gt_seg_map = torch.nn.functional.pad(
+                        gt_seg_map, (0, pad_width, 0, pad_height), mode='constant', value=self.pad_val)
+                gt_seg_map = gt_seg_map.numpy()
 
-                    # Pad the image
-                    gt_seg_map = torch.nn.functional.pad(gt_seg_map, (0, pad_width, 0, pad_height), mode='constant', value=self.pad_val)
-            gt_seg_map = gt_seg_map.numpy()
+            gt_maps.append(gt_seg_map)
+
+        # Concatenate the segmentation maps along the channel dimension
+        gt_seg_map = np.stack(gt_maps, axis=0)
+
         results['gt_seg_map'] = gt_seg_map
         results['seg_fields'].append('gt_seg_map')
         return results
 
     def __repr__(self):
         repr_str = (f'{self.__class__.__name__}('
-                    f'channels={self.channels}, '
-                    f'to_float32={self.to_float32}, '
-                    f"color_type='{self.color_type}', "
-                    f"imdecode_backend='{self.imdecode_backend}', "
-                    f'ignore_empty={self.ignore_empty})')
+                    f'gt_root={self.gt_root}, '
+                    f'GT_types={self.GT_types}, '
+                    f'downsample_factor={self.downsample_factor}, '
+                    f'pad_size={self.pad_size}, '
+                    f'pad_val={self.pad_val})')
         return repr_str

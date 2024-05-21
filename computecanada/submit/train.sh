@@ -19,12 +19,11 @@ module load  StdEnv/2020 python/3.10.2
 module load gcc/9.3.0 opencv/4.8.0 cuda/11.7
 echo "loading module done"
 
-source ~/env_mmselfsup/bin/activate
+source ~/env_mmsegmentation/bin/activate
 
 echo "Activating virtual environment done"
 
-cd $HOME/projects/def-dclausi/AI4arctic/$USER/mmselfsup`
-
+cd $HOME/projects/def-dclausi/AI4arctic/$USER/mmselfsup
 echo "starting training..."
 
 export WANDB_MODE=offline
@@ -40,3 +39,4 @@ CHECKPOINT=$(cat work_dirs/selfsup/$base_name/last_checkpoint)
 echo "$CHECKPOINT"
 
 python tools/analysis_tools/visualize_reconstruction.py $1  --use-vis-pipeline --checkpoint $CHECKPOINT --img-path "/home/m32patel/projects/def-dclausi/AI4arctic/dataset/ai4arctic_raw_train_v3/S1B_EW_GRDM_1SDH_20211119T080313_20211119T080413_029654_0389FB_9317_icechart_dmi_202111190805_CentralEast_RIC.nc"  --out-file "work_dirs/selfsup/$base_name/20211117T212054"
+`
