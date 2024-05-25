@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+**/*.pyc
 
 # C extensions
 *.so
@@ -63,9 +64,14 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
+# Sphinx documentation (readthedocs)
+src/
 docs/en/_build/
+docs/en/model_zoo_statistics.md
+docs/en/papers/
 docs/zh_cn/_build/
+docs/zh_cn/model_zoo_statistics.md
+docs/zh_cn/papers/
 
 # PyBuilder
 target/
@@ -90,7 +96,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-.DS_Store
 
 # Spyder project settings
 .spyderproject
@@ -105,16 +110,29 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-data
+# custom
+/data
 .vscode
 .idea
-
-# custom
 *.pkl
 *.pkl.json
 *.log.json
 work_dirs/
-mmseg/.mim
-
+/mmselfsup/.mim
+pretrains
+*.swp
+source.sh
+tensorboard.sh
+.DS_Store
+replace.sh
+benchmarks/detection/datasets
+benchmarks/detection/output
+INFO
+mmseg/.mim/
 # Pytorch
 *.pth
+# compute canada
+*.out
+compute_canada/submit/wandb/settings
+wandb/settings
+=0.8.3
