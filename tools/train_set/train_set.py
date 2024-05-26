@@ -29,6 +29,11 @@ def parse_args():
                             help="iterations in #k format"
                         )
     parser.add_argument(
+                            "--epochs",
+                            type=int,
+                            default=None
+                        )
+    parser.add_argument(
                             "--verbose",
                             action='store_true',
                             default=False
@@ -44,7 +49,6 @@ def parse_args():
                             help="from scratch",
                             action='store_true',
                             default=False
-        
                         )
 
     parser.add_argument(
@@ -96,6 +100,9 @@ def parse_args():
         args.crop_sizes = [(int(crop_size.lower().split('x')[0]), int(crop_size.lower().split('x')[1])) for crop_size in args.crop_sizes]
     if args.iterations:
         args.iterations = [int(iter.replace('k', '000')) if type(iter) is str and 'k' in iter else int(iter) for iter in args.iterations]
+    if args.epochs:
+        args.iterations = None
+        
     return args
 
 def run_cfg(cfg):
@@ -115,7 +122,10 @@ def run_cfg(cfg):
         # build customized runner from the registry
         # if 'runner_type' is set in the cfg
         runner = RUNNERS.build(cfg)
-
+    print(runner.train_loop)
+    print("-" * 40)
+    print(runner.train_dataloader)
+    exit()
     # start training
     runner.train()
     

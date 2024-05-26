@@ -99,6 +99,11 @@ class ConfigDictGenerator:
             train_setting_["batch_size"] = args.batch_size
         if args.iterations:
             train_setting_["iterations"] = args.iterations
+            train_setting_["epochs"] = None
+        elif args.epochs:
+            train_setting_["iterations"] = None
+            train_setting_["epochs"] = args.epochs
+            
         train_setting_["method_data"] = method_data
         return train_setting_
     
