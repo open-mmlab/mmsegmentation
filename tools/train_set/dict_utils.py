@@ -1,5 +1,3 @@
-N_ITER_DEFAULT = 20000
-DEFAULT_BATCH_SIZE = 2
 config_bases =  {
                     "convnext"  :
                         {
@@ -10,23 +8,7 @@ config_bases =  {
                             "backbones"         :
                                 [
                                     "upernet"
-                                ],
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]  
+                                ]
                         }
                         ,
                     "ddrnet"    :
@@ -38,22 +20,6 @@ config_bases =  {
                             "backbones"         :
                                 [
                                     "23-slim"
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
                                 ]
                         }
                         ,
@@ -67,25 +33,7 @@ config_bases =  {
                                 [
                                     "r18-d8",
                                     "r18b-d8"
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]
-                            
-                            
+                                ]  
                         }
                         ,
                     "deeplabv3plus" :
@@ -98,25 +46,7 @@ config_bases =  {
                                 [
                                     "r18-d8",
                                     "r18b-d8"
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]
-                            
-                            
+                                ]     
                         }
                         ,
                     "fastscnn"  : 
@@ -128,23 +58,7 @@ config_bases =  {
                             "backbones"         :
                                 [
                                     "fastscnn"
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]    
+                                ]
                         }
                         ,
                     "fcn"  : 
@@ -161,25 +75,8 @@ config_bases =  {
                                     "r50-d16",
                                     "r50b-d16",
                                     "r101-d16",
-                                    "r101b-d16"
-                                    
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]  
+                                    "r101b-d16"     
+                                ]
                         }
                         ,
                     "hrnet"  : 
@@ -193,22 +90,6 @@ config_bases =  {
                                     "hr18",
                                     "hr18s"
                                     
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
                                 ]                                    
                         }
                         ,
@@ -227,23 +108,7 @@ config_bases =  {
                                     "r101-d8",
                                     "r101-d8-in1k-pre"
                                     
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]        
+                                ]       
                         }
                         ,
                     "mask2former"  : 
@@ -259,22 +124,6 @@ config_bases =  {
                                     "swin-t",
                                     "swin-s"
                                     
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (512, 512)
                                 ]
                         }
                         ,
@@ -291,22 +140,6 @@ config_bases =  {
                                     "swin-t",
                                     "swin-s"
                                     
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (512, 512)
                                 ]
                         },
                     "segformer"  : 
@@ -322,22 +155,6 @@ config_bases =  {
                                     "mit-b2",
                                     "mit-b3"
                                     
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
                                 ]
                         }
                         ,
@@ -354,23 +171,7 @@ config_bases =  {
                                     "vit-s",
                                     "vit-b",
                                     
-                                ],      
-                            "train_settings"    :
-                                [
-                                    {
-                                        "n_gpus"        :       1,
-                                        "batch_size"    :       DEFAULT_BATCH_SIZE,
-                                        "iterations"    :       [N_ITER_DEFAULT]
-                                    }
-                                ],      
-                            "datasets"          :
-                                [
-                                    "HOTS_v1"
-                                ],
-                            "crops"             :
-                                [
-                                    (640, 480)
-                                ]   
+                                ]  
                         }
                         
 }
