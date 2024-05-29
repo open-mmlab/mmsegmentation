@@ -55,14 +55,7 @@ class ConfigDictGenerator:
         train_dict["pretrained"] = checkpoint is not None
         return train_dict
     
-    def get_checkpoints(self, args, method_data: dict):
-        checkpoints = []
-        if args.scratch:
-            checkpoints.append(None)
-        if args.pretrained:
-            for checkpoint in method_data["checkpoints"]:    
-                checkpoints.append(checkpoint)
-        return checkpoints
+
 
     def generate_config_name(self, train_dict: dict, method_name: str) -> str:
         train_settings_str = self.generate_train_settings_str(

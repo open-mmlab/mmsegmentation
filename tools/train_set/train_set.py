@@ -11,14 +11,15 @@ from mmengine.runner import Runner
 from mmseg.registry import RUNNERS
 import torch
 import copy
-import dict_utils
+from dict_utils import (
+    DEFAULT_CONFIG_ROOT_PATH, BATCH_SIZE_DEFAULT, N_GPU_DEFAULT,
+    VAL_INTERVAL_EPOCH_DEFAULT, VAL_INTERVAL_ITERATIONS_DEFAULT,
+    N_ITERATIONS_DEFAULT, dataset_info
+)
 from cfg_dict_generator import ConfigDictGenerator
+from config_data_helper import ConfigDataHelper as CDHelper
+from argument_handler import ArgumentHandler
 
-BATCH_SIZE_DEFAULT = 2
-N_GPU_DEFAULT = 1 
-VAL_INTERVAL_EPOCH_DEFAULT = 1
-VAL_INTERVAL_ITERATIONS_DEFAULT = 1000   
-N_ITERATIONS_DEFAULT = 20000 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
@@ -28,16 +29,7 @@ def parse_args():
         default=BATCH_SIZE_DEFAULT,
         help="train batch size"
     )
-    parser.add_argument(
-        "--checkpoint",
-        nargs='+',
-        default=[]  
-    )
-    parser.add_argument(
-        "--config",
-        nargs='+',
-        default=[]  
-    )
+    
     parser.add_argument(
         "--crop_size",
         type=str,
@@ -47,13 +39,18 @@ def parse_args():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="HOTS_v1",
-        choices=list(dict_utils.dataset_info.keys())
+        default="hots-v1",
+        choices=list(dataset_info.keys())
     )
     parser.add_argument(
         "--epochs",
         type=int,
         default=None
+    )
+    parser.add_argument(
+        "--trim_method_list",
+        action='store_true',
+        default=False
     )
     parser.add_argument(
         "--iterations",
@@ -62,9 +59,9 @@ def parse_args():
         help="iterations in #k format"
     )
     parser.add_argument(
-        "--models",
+        "--projects",
         nargs='+',
-        default=list(dict_utils.config_bases.keys())
+        default=list(CDHelper._generate_available_project_list())
     )
     parser.add_argument(
         "--n_gpus",
@@ -125,7 +122,7 @@ def parse_args():
             args.val_interval = VAL_INTERVAL_EPOCH_DEFAULT
 
     if not args.epochs and not args.iterations:
-        args.iterations = N_GPU_DEFAULT
+        args.iterations = N_ITERATIONS_DEFAULT
     return args
 
 def run_cfg(cfg):
@@ -147,29 +144,7 @@ def run_cfg(cfg):
         runner = RUNNERS.build(cfg)
     # start training
     runner.train()
-    
-# TODO pretrained=True should run both pre trained and un trained
-def from_cfg_list_arg(args):
-    pass
-    # save_best = args.save_best
-    # save_interval = args.save_interval
-    # val_interval = args.val_interval
-    # batch_size = args.batch_size
-    
-    # if len(args.checkpoint) == len(args.config):
-    #     for idx in range(len(args.config)):
-    #         cfg_name = args.config[idx].split('/')[-1].split('.')[0]
-    #         base_cfg_path = args.config[idx]
-    #         pretrained = args.pretrained
-    #         checkpoint = args.checkpoint[idx]
-            
-            # cfg_build_data = ConfigDictGenerator._get_cfg_build_data()
-            # cfg = ConfigDictGenerator._generate_config_from_build_data(
-            #     cfg_build_data=cfg_build_data
-            # )
-            # cfg.work_dir = osp.join('./work_dirs', cfg_build_data["cfg_name"])
-            # run_cfg(cfg=cfg)
-            
+      
         
 
 def main():
@@ -177,18 +152,13 @@ def main():
     if args.verbose:
         print(f"args: {args}")
         
-    if args.config:
-        from_cfg_list_arg(args=args)
-            
-    cfg_gen = ConfigDictGenerator()
-    if args.verbose:
-        cfg_name_list = cfg_gen.generate_config_names_list(args=args)
-        print("cfg name list")
-        for cfg_name in cfg_name_list:
-            print(cfg_name)
         
-    cfg_build_data_list = cfg_gen.generate_config_build_data_list(args=args)
-    del cfg_gen
+   
+
+        
+    cfg_build_data_list = ArgumentHandler._generate_config_build_data_list(
+        args=args
+    ) 
     for cfg_build_data in cfg_build_data_list:
         if args.verbose:
             print(f'running config: {cfg_build_data["cfg_name"]}')
