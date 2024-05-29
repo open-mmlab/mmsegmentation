@@ -6,13 +6,17 @@ _base_ = [
 crop_size = (640, 480)
 data_preprocessor = dict(size=crop_size)
 
-
+num_classes = 46
 model = dict(
     data_preprocessor=data_preprocessor,
-    pretrained='torchvision://resnet18',
-    backbone=dict(type='ResNet', depth=18),
-    decode_head=dict(
-        in_channels=512,
-        channels=128,
+    backbone=dict(
+        dilations=(1, 1, 2, 4), 
+        strides=(1, 2, 2, 2)
     ),
-    auxiliary_head=dict(in_channels=256, channels=64))
+    decode_head=dict(
+        num_classes=num_classes
+    ),
+    auxiliary_head=dict(
+        num_classes=num_classes
+    )
+)

@@ -1,5 +1,5 @@
 import copy
-from mmengine.config import Config
+from mmengine.config import Config, ConfigDict
 import dict_utils 
 from copy import deepcopy
 import os
@@ -9,6 +9,7 @@ class ConfigDictGenerator:
     def __init__(self) -> None:
         self.config_bases = dict_utils.config_bases
         self.files_lookup_dict = dict_utils.method_files
+        self.dataset_info = dict_utils.dataset_info
         self.irrelevant_arg_names = [
             "models", "checkpoint", 
             "config", "verbose"
@@ -119,7 +120,13 @@ class ConfigDictGenerator:
         base_cfg = Config.fromfile(filename=cfg_build_data["base_cfg_path"])
         new_cfg_dict = base_cfg.to_dict()
         new_cfg = Config(cfg_dict=new_cfg_dict) 
+       
         additional_configs = []
+        
+        ConfigDictGenerator.apply_dataset(
+            cfg_build_data=cfg_build_data,
+            new_cfg=new_cfg
+        )
         
         if cfg_build_data["iterations"]:
             param_scheduler = new_cfg["param_scheduler"]
@@ -251,49 +258,10 @@ class ConfigDictGenerator:
                 )
             )
         if cfg_build_data["crop_size"]:
-            crop_size = cfg_build_data["crop_size"] 
-            data_preprocessor = dict(size=crop_size)
-            # Load existing trainpipeline and change
-            train_pipeline = new_cfg["train_pipeline"]
-            for step_dict in train_pipeline:
-                if step_dict["type"] == "RandomCrop":
-                    step_dict["crop_size"] = crop_size
-            
-            additional_configs.append(
-                dict(
-                    crop_size=crop_size
-                )
-                    
-                
-            )
-            additional_configs.append(
-                dict(
-                    data_preprocessor=data_preprocessor
-                )
-                    
-                
-            )
-            additional_configs.append(
-                dict(
-                    model=dict(
-                        data_preprocessor=data_preprocessor
-                    )
-                    
-                )
-            )
-            additional_configs.append(
-                dict(
-                    train_pipeline=train_pipeline
-                )
-            )
-            additional_configs.append(
-                dict(
-                    train_dataloader = dict(
-                        dataset = dict(
-                            pipeline=train_pipeline
-                        )
-                    )
-                )
+            ConfigDictGenerator._apply_crop_size(
+                additional_configs=additional_configs,
+                cfg_build_data=cfg_build_data,
+                new_cfg=new_cfg
             )
                 
         for additional_cfg in additional_configs:
@@ -309,7 +277,7 @@ class ConfigDictGenerator:
         cfg_name: str, base_cfg_path: str, pretrained: bool, 
         checkpoint: dict, save_best: bool, save_interval: int,
         val_interval: int, batch_size: int, crop_size: int,
-        iterations: int, epochs: int
+        iterations: int, epochs: int, dataset_name: str
     )-> dict:
         return  {
                     "cfg_name"          :       cfg_name,
@@ -322,10 +290,160 @@ class ConfigDictGenerator:
                     "batch_size"        :       batch_size,
                     "crop_size"         :       crop_size,
                     "iterations"        :       iterations, 
-                    "epochs"            :       epochs    
+                    "epochs"            :       epochs,
+                    "dataset"           :       dataset_name    
                 }                
     
-    
+    @staticmethod
+    def _apply_crop_size(
+        additional_configs: list, 
+        cfg_build_data: dict, new_cfg: Config
+    ):
+        crop_size = cfg_build_data["crop_size"] 
+        data_preprocessor = dict(size=crop_size)
+        # Load existing trainpipeline and change
+        train_pipeline = new_cfg["train_pipeline"]
+        previous_crop_size = None
+        for step_dict in train_pipeline:
+            if step_dict["type"] == "RandomCrop":
+                previous_crop_size = step_dict["crop_size"]
+                step_dict["crop_size"] = crop_size
+            if step_dict["type"] == "RandomResize":
+                step_dict["scale"] = (2048, min(crop_size))
+            if step_dict["type"] == "RandomChoiceResize":
+                step_dict["scales"] = [int(min(crop_size) * x * 0.1) for x in range(5, 21)]
+                step_dict["max_size"] = 2048
+        additional_configs.append(
+            dict(
+                train_pipeline=train_pipeline
+            )
+        )
+        additional_configs.append(
+            dict(
+                train_dataloader = dict(
+                    dataset = dict(
+                        pipeline=train_pipeline
+                    )
+                )
+            )
+        )
+        
+        test_pipeline = new_cfg["test_pipeline"]
+        for step_dict in test_pipeline:
+            if step_dict["type"] == "Resize":
+                step_dict["scale"] = (2048, min(crop_size))
+            if step_dict["type"] == "RandomCrop":
+                step_dict["crop_size"] = crop_size
+            if step_dict["type"] == "RandomResize":
+                step_dict["scale"] = (2048, min(crop_size))
+            if step_dict["type"] == "RandomChoiceResize":
+                step_dict["scales"] = [int(min(crop_size) * x * 0.1) for x in range(5, 21)]
+                step_dict["max_size"] = 2048
+        additional_configs.append(
+            dict(
+                test_pipeline=test_pipeline
+            )
+        )
+        additional_configs.append(
+            dict(
+                test_dataloader = dict(
+                    dataset = dict(
+                        pipeline=test_pipeline
+                    )
+                )
+            )
+        )
+        
+        additional_configs.append(
+            dict(
+                val_pipeline=test_pipeline
+            )
+        )
+        additional_configs.append(
+            dict(
+                val_dataloader = dict(
+                    dataset = dict(
+                        pipeline=test_pipeline
+                    )
+                )
+            )
+        )
+        
+        additional_configs.append(
+            dict(
+                crop_size=crop_size
+            )
+                
+            
+        )
+        additional_configs.append(
+            dict(
+                data_preprocessor=data_preprocessor
+            )
+                
+            
+        )
+        additional_configs.append(
+            dict(
+                model=dict(
+                    data_preprocessor=data_preprocessor
+                )
+                
+            )
+        )
+        
+        # Only few models e.g. convnext have need for this
+        
+        if "test_cfg" in new_cfg["model"].keys():
+            if "crop_size" in new_cfg["model"]["test_cfg"]:
+                new_cfg["model"]["test_cfg"]["crop_size"] = crop_size
+
+        
+        # TODO hardcoded now but with recurve search can be generalized
+        if "backbone" in new_cfg["model"].keys():
+            if "img_size" in new_cfg["model"]["backbone"].keys():
+                new_cfg["model"]["backbone"]["img_size"] = crop_size
+        if "image_encoder" in new_cfg["model"].keys():
+            if "img_size" in new_cfg["model"]["image_encoder"].keys():
+                new_cfg["model"]["image_encoder"]["img_size"] = crop_size 
+        
+        if cfg_build_data["pretrained"] and previous_crop_size:
+            if "backbone" in new_cfg["model"].keys():
+                if "pretrain_img_size" in new_cfg["model"]["backbone"].keys():
+                    new_cfg["model"]["backbone"]["pretrain_img_size"] = previous_crop_size
+            if "image_encoder" in new_cfg["model"].keys():
+                if "img_size" in new_cfg["model"]["image_encoder"].keys():
+                    new_cfg["model"]["image_encoder"]["pretrain_img_size"] = previous_crop_size 
+  
+    # TODO maybe preserve specific train_pipelines 
+    @staticmethod
+    def apply_dataset(cfg_build_data: dict, new_cfg: Config):
+        dataset_info = dict_utils.dataset_info[cfg_build_data["dataset"]]
+        num_classes = dataset_info["num_classes"]
+        dataset_cfg = Config.fromfile(
+            dataset_info["cfg_path"]
+        )
+        for key, value in dataset_cfg.items():
+            new_cfg[key] = value
+        
+        for component_name, component in new_cfg["model"].items():
+            if component_name == "num_classes":
+                component = num_classes
+            if type(component) is ConfigDict:
+                if "num_classes" in component.keys():
+                    component["num_classes"] = num_classes
+            if type(component) is list:
+                for element in component:
+                     if type(element) is ConfigDict:
+                        if "num_classes" in element.keys():
+                            element["num_classes"] = num_classes
+               
+        
+        
+    # TODO
+    @staticmethod
+    def recursively_change_key(cfg, target_key, new_value):
+        pass
     
     def generate_config_names_list(self, args) -> list:
         

@@ -1,3 +1,13 @@
+dataset_info = {
+    "HOTS_v1"   :     
+        {
+            "cfg_path"      :   "configs/_base_/datasets/hots_v1_640x480.py",
+            "num_classes"   :   46
+        }
+}
+
+
+
 config_bases =  {
                     "convnext"  :
                         {
@@ -142,6 +152,34 @@ config_bases =  {
                                     
                                 ]
                         },
+                    "mobilenet_v2"  :
+                        {
+                            "algorithm_names"   : 
+                                [
+                                    "fcn",
+                                    "pspnet"
+                                ],
+                            "backbones"         :
+                                [
+                                    "mobilenet-v2-d8"
+                                    
+                                ]
+                        },
+                    "pspnet"        :
+                        {
+                             "algorithm_names"   : 
+                                [
+                                    "pspnet"
+                                ],
+                            "backbones"         :
+                                [
+                                    "r18-d8",
+                                    "r18b-d8",
+                                    "r50-d32",
+                                    "r50b-d32",
+                                    "r50-d32-rsb",
+                                ]
+                        },
                     "segformer"  : 
                         {
                             "algorithm_names"   : 
@@ -269,6 +307,19 @@ method_files = {
                         ]
                 }
                 ,
+        "fcn_mobilenet-v2-d8"
+        :
+            {
+               "base_file_path"        :       "configs/mobilenet_v2/mobilenet-v2-d8_fcn_4xb4-20k_HOTS_v1-640x480.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "ade20k",
+                                "path"              :       "checkpoints/fcn_m-v2-d8_512x512_160k_ade20k_20200825_214953-c40e1095.pth"  
+                            }
+                        ] 
+            }
+            ,
         "fcn_r18-d8" 
             :
                 {
@@ -565,7 +616,78 @@ method_files = {
                         ]
                 }
                 ,
-        
+        "pspnet_mobilenet-v2-d8"
+            :
+                {
+                    "base_file_path"        :       "configs/mobilenet_v2/mobilenet-v2-d8_pspnet_4xb4-160k_ade20k-512x512.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "ade20k",
+                                "path"              :       "checkpoints/pspnet_m-v2-d8_512x512_160k_ade20k_20200825_214953-f5942f7a.pth"  
+                            }
+                        ]
+                },
+        "pspnet_r18-d8"
+            :
+                {
+                    "base_file_path"        :       "configs/pspnet/pspnet_r18-d8_4xb2-20k_HOTS_v1-640x480.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "cityscapes",
+                                "path"              :       "checkpoints/pspnet_r18-d8_512x1024_80k_cityscapes_20201225_021458-09ffa746.pth"  
+                            }
+                        ]
+                },
+        "pspnet_r18b-d8"
+            :
+                {
+                    "base_file_path"        :       "configs/pspnet/pspnet_r18b-d8_4xb2-20k_HOTS_v1-640x480.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "cityscapes",
+                                "path"              :       "checkpoints/pspnet_r18b-d8_512x1024_80k_cityscapes_20201226_063116-26928a60.pth"  
+                            }
+                        ]
+                },
+        "pspnet_r50-d32"
+            :
+                {
+                    "base_file_path"        :       "configs/pspnet/pspnet_r50-d32_4xb2-20k_HOTS_v1-640x480.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "cityscapes",
+                                "path"              :       "checkpoints/pspnet_r50-d32_512x1024_80k_cityscapes_20220316_224840-9092b254.pth"  
+                            }
+                        ]
+                },
+        "pspnet_r50b-d32"
+            :
+                {
+                    "base_file_path"        :       "configs/pspnet/pspnet_r50b-d32_4xb2-20k_HOTS_v1-640x480.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "cityscapes",
+                                "path"              :       "checkpoints/pspnet_r50b-d32_512x1024_80k_cityscapes_20220311_152152-23bcaf8c.pth"  
+                            }
+                        ]
+                },
+                "pspnet_r50-d32-rsb"
+            :
+                {
+                    "base_file_path"        :       "configs/pspnet/pspnet_r50-d32_rsb_4xb2-adamw-20k_HOTS_v1-640x480.py ",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "cityscapes",
+                                "path"              :       "checkpoints/pspnet_r50-d32_rsb-pretrain_512x1024_adamw_80k_cityscapes_20220316_141229-dd9c9610.pth"  
+                            }
+                        ]
+                },
         "segformer_mit-b0"     
             : 
                 {

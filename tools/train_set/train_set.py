@@ -17,7 +17,8 @@ from cfg_dict_generator import ConfigDictGenerator
 BATCH_SIZE_DEFAULT = 2
 N_GPU_DEFAULT = 1 
 VAL_INTERVAL_EPOCH_DEFAULT = 1
-VAL_INTERVAL_ITERATIONS_DEFAULT = 1000    
+VAL_INTERVAL_ITERATIONS_DEFAULT = 1000   
+N_ITERATIONS_DEFAULT = 20000 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
@@ -46,7 +47,8 @@ def parse_args():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="HOTS_v1"
+        default="HOTS_v1",
+        choices=list(dict_utils.dataset_info.keys())
     )
     parser.add_argument(
         "--epochs",
@@ -116,12 +118,14 @@ def parse_args():
         args.iterations = int(args.iterations.replace('k', '000')) if type(args.iterations) is str and 'k' in args.iterations else int(args.iterations)
         if not args.epochs and not args.val_interval:
             args.val_interval = VAL_INTERVAL_ITERATIONS_DEFAULT
+            
     if args.epochs:
         args.iterations = None
         if not args.val_interval or args.val_interval > args.epochs:
             args.val_interval = VAL_INTERVAL_EPOCH_DEFAULT
 
-      
+    if not args.epochs and not args.iterations:
+        args.iterations = N_GPU_DEFAULT
     return args
 
 def run_cfg(cfg):
@@ -146,28 +150,25 @@ def run_cfg(cfg):
     
 # TODO pretrained=True should run both pre trained and un trained
 def from_cfg_list_arg(args):
-    save_best = args.save_best
-    save_interval = args.save_interval
-    val_interval = args.val_interval
-    batch_size = args.batch_size
+    pass
+    # save_best = args.save_best
+    # save_interval = args.save_interval
+    # val_interval = args.val_interval
+    # batch_size = args.batch_size
     
-    if len(args.checkpoint) == len(args.config):
-        for idx in range(len(args.config)):
-            cfg_name = args.config[idx].split('/')[-1].split('.')[0]
-            base_cfg_path = args.config[idx]
-            pretrained = args.pretrained
-            checkpoint = args.checkpoint[idx]
-            for iter in args.iterations:
-                for crop_size in args.crop_sizes:
-                    cfg_build_data = ConfigDictGenerator._get_cfg_build_data(
-                        cfg_name=cfg_name, base_cfg_path=base_cfg_path, pretrained=pretrained,
-                        checkpoint=checkpoint, save_best=save_best, save_interval=save_interval,
-                        val_interval=val_interval, batch_size=batch_size, crop_size=crop_size,
-                        iterations=iter
-                    )
-                    cfg = ConfigDictGenerator._generate_config_from_build_data(cfg_build_data=cfg_build_data)
-                    cfg.work_dir = osp.join('./work_dirs', cfg_build_data["cfg_name"])
-                    run_cfg(cfg=cfg)
+    # if len(args.checkpoint) == len(args.config):
+    #     for idx in range(len(args.config)):
+    #         cfg_name = args.config[idx].split('/')[-1].split('.')[0]
+    #         base_cfg_path = args.config[idx]
+    #         pretrained = args.pretrained
+    #         checkpoint = args.checkpoint[idx]
+            
+            # cfg_build_data = ConfigDictGenerator._get_cfg_build_data()
+            # cfg = ConfigDictGenerator._generate_config_from_build_data(
+            #     cfg_build_data=cfg_build_data
+            # )
+            # cfg.work_dir = osp.join('./work_dirs', cfg_build_data["cfg_name"])
+            # run_cfg(cfg=cfg)
             
         
 
@@ -192,6 +193,7 @@ def main():
         if args.verbose:
             print(f'running config: {cfg_build_data["cfg_name"]}')
         cfg = ConfigDictGenerator._generate_config_from_build_data(cfg_build_data=cfg_build_data)
+        
         cfg.work_dir = osp.join('./work_dirs', cfg_build_data["cfg_name"])
         run_cfg(cfg=cfg)
     
