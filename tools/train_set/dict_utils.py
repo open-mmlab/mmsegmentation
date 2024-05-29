@@ -157,7 +157,9 @@ config_bases =  {
                             "algorithm_names"   : 
                                 [
                                     "fcn",
-                                    "pspnet"
+                                    "pspnet",
+                                    "deeplabv3",
+                                    "deeplabv3plus"
                                 ],
                             "backbones"         :
                                 [
@@ -242,6 +244,19 @@ method_files = {
                         ]
                 }
                 ,
+        "deeplabv3_mobilenet-v2-d8"
+            :
+                {
+                    "base_file_path"        :       "configs/mobilenet_v2/mobilenet-v2-d8_deeplabv3_4xb4-160k_ade20k-512x512.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "ade20k",
+                                "path"              :       "checkpoints/deeplabv3_m-v2-d8_512x512_160k_ade20k_20200825_223255-63986343.pth"  
+                            }
+                        ]
+                }
+                ,
         "deeplabv3_r18-d8"     
             :
                 {
@@ -264,6 +279,19 @@ method_files = {
                             {
                                 "dataset_name"      :       "cityscapes",
                                 "path"              :       "checkpoints/deeplabv3_r18b-d8_512x1024_80k_cityscapes_20201225_094144-46040cef.pth"  
+                            }
+                        ]
+                }
+                ,
+        "deeplabv3plus_mobilenet-v2-d8"
+            :
+                {
+                    "base_file_path"        :       "configs/mobilenet_v2/mobilenet-v2-d8_deeplabv3plus_4xb4-160k_ade20k-512x512.py",
+                    "checkpoints"           :       
+                        [
+                            {
+                                "dataset_name"      :       "ade20k",
+                                "path"              :       "checkpoints/deeplabv3plus_m-v2-d8_512x512_160k_ade20k_20200825_223255-465a01d4.pth"  
                             }
                         ]
                 }
