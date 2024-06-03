@@ -2,8 +2,8 @@
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
-    mean=[123.675, 116.28, 103.53],
-    std=[58.395, 57.12, 57.375],
+    mean=[0.4082, 0.3791, 0.2815],
+    std=[0.1351, 0.1022, 0.0931],
     bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=255)
@@ -35,14 +35,14 @@ model = dict(
         channels=16,
         pool_scales=(1, 2, 3, 6),
         dropout_ratio=0.1,
-        num_classes=2,
+        num_classes=7,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)),
     auxiliary_head=dict(
         type='FCNHead',
-        in_channels=1024,
+        in_channels=128,
         in_index=3,
         channels=256,
         num_convs=1,
