@@ -9,6 +9,7 @@ class ArgumentHandler:
     @staticmethod
     def _generate_config_build_data_list(args) -> list:
         config_build_data_list = []
+        config_names = []
         method_list = ArgumentHandler._get_method_list_from_args(args=args)
         for method_dict in method_list:
             method_name = method_dict["method"]
@@ -26,6 +27,8 @@ class ArgumentHandler:
                         pretrained=bool(checkpoint_path),
                         pretrain_data=model_dict["train_data"]
                     )
+                    if cfg_name in config_names:
+                        continue
                     if args.unique and cfg_name in os.listdir("work_dirs"):
                         continue
                     config_build_data = ConfigBuildData._get_cfg_build_data(
@@ -46,6 +49,7 @@ class ArgumentHandler:
                         dataset_name=args.dataset
                     )
                     config_build_data_list.append(config_build_data)
+                    config_names.append(config_build_data["cfg_name"])
         
             
         return config_build_data_list

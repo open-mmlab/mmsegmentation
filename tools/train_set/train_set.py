@@ -173,10 +173,8 @@ def main():
     if args.verbose:
         for cfg_build_data in cfg_build_data_list:
             print(cfg_build_data["cfg_name"])
-        
+            
     for cfg_build_data in cfg_build_data_list:
-        if cfg_build_data["cfg_name"] in os.listdir("work_dirs"):
-            continue
         if args.verbose:
             print(f'running config: {cfg_build_data["cfg_name"]}')
         cfg = ConfigDictGenerator._generate_config_from_build_data(cfg_build_data=cfg_build_data)

@@ -29,9 +29,9 @@ alias_dict = {
 
 class TrimData:
     excluded_model_names = [
-        "beit-base_upernet_1xb2-5epochs_hots-v1-480x480",
-        "beit-base_upernet_1xb2-5epochs_hots-v1-480x480",
-        "apcnet_r101-d8_1xb2-pre-cityscapes-5epochs_hots-v1-480x480"
+        # "beit-base_upernet_1xb2-5epochs_hots-v1-480x480",
+        # "beit-base_upernet_1xb2-5epochs_hots-v1-480x480",
+        # "apcnet_r101-d8_1xb2-pre-cityscapes-5epochs_hots-v1-480x480"
     ]
 
     accepted_dataset_list = [
@@ -56,12 +56,12 @@ class TrimData:
         "convnext-large_upernet",
         "convnext-xlarge_upernet",
         "danet_r101-d8",
-        "ddrnet_23-slim_in1k-pre", # TODO temp
-        "ddrnet_23_in1k-pre", # TODO temp
+        # "ddrnet_23-slim_in1k-pre", # TODO temp
+        # "ddrnet_23_in1k-pre", # TODO temp
         "deeplabv3_r101b-d8",
         "deeplabv3_r101-d8",
-        "deeplabv3plus_r50-d8",
-        "deeplabv3plus_r50b-d8",
+        # "deeplabv3plus_r50-d8",
+        # "deeplabv3plus_r50b-d8",
         "deeplabv3plus_r101-d8",
         "deeplabv3plus_r101b-d8",
         "ddeeplabv3plus_r101-d16-mg124",
