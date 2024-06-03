@@ -13,9 +13,9 @@ class ArgumentHandler:
         for method_dict in method_list:
             method_name = method_dict["method"]
             for model_dict in method_dict["models"]:
-                if [invalid_entry for key, invalid_entry 
-                    in model_dict.items() if invalid_entry is None]:
-                    continue
+                # if [invalid_entry for key, invalid_entry 
+                #     in model_dict.items() if invalid_entry is None]:
+                #     continue
                 checkpoint_paths = ArgumentHandler._get_checkpoint_paths(
                     args=args, model_dict=model_dict
                 )
@@ -40,12 +40,14 @@ class ArgumentHandler:
                         save_interval=args.save_interval,
                         val_interval=args.val_interval, 
                         batch_size=args.batch_size,
-                        crop_size=model_dict["crop_size"],
+                        crop_size=args.crop_size,
                         iterations=args.iterations,
                         epochs=args.epochs,
                         dataset_name=args.dataset
                     )
                     config_build_data_list.append(config_build_data)
+        
+            
         return config_build_data_list
     
     
@@ -94,10 +96,10 @@ class ArgumentHandler:
     ) -> str:
         
         
-        crop_size = model_dict["crop_size"]
+        crop_size = args.crop_size
         crop_str = f'{crop_size[0]}x{crop_size[1]}'
         
-        dataset_str = f'{args.dataset}-{crop_str}'
+        dataset_str = f'{args.dataset.lower().replace(" ", "")}-{crop_str}'
         train_settings_str = ArgumentHandler._generate_train_settings_str(
             args=args, pretrained=pretrained, pretrain_data=pretrain_data
         )
@@ -117,7 +119,7 @@ class ArgumentHandler:
             iter_str = f'{int(args.epochs)}epochs'
         train_str = f'{args.n_gpus}xb{args.batch_size}'
         if pretrained:
-            train_str += f'-pre-{pretrain_data}'
+            train_str += f'-pre-{pretrain_data.lower().replace(" ", "")}'
         return f'{train_str}-{iter_str}'
     
     @staticmethod

@@ -144,8 +144,15 @@ def run_cfg(cfg):
         runner = RUNNERS.build(cfg)
     # start training
     runner.train()
-      
-        
+
+# TODO  
+def unique(cfg_build_data_list):
+    cfg_build_data_list_ = []
+    for cfg_bd in cfg_build_data_list:
+        for cfg_bd_ in cfg_build_data_list_:
+            if cfg_bd["cfg_name"] == cfg_bd_["cfg_name"]:
+                continue
+                   
 
 def main():
     args = parse_args()
@@ -158,8 +165,18 @@ def main():
         
     cfg_build_data_list = ArgumentHandler._generate_config_build_data_list(
         args=args
-    ) 
+    )
+    
+    print(len(cfg_build_data_list))
+    
+   
+    if args.verbose:
+        for cfg_build_data in cfg_build_data_list:
+            print(cfg_build_data["cfg_name"])
+        
     for cfg_build_data in cfg_build_data_list:
+        if cfg_build_data["cfg_name"] in os.listdir("work_dirs"):
+            continue
         if args.verbose:
             print(f'running config: {cfg_build_data["cfg_name"]}')
         cfg = ConfigDictGenerator._generate_config_from_build_data(cfg_build_data=cfg_build_data)

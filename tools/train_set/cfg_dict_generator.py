@@ -206,10 +206,10 @@ class ConfigDictGenerator:
             
             
             
-        if cfg_build_data["pretrained"] and cfg_build_data["checkpoint"]["path"]:
+        if cfg_build_data["pretrained"] and cfg_build_data["checkpoint_path"]:
             additional_configs.append(
                 dict(
-                    load_from = cfg_build_data["checkpoint"]["path"]
+                    load_from = cfg_build_data["checkpoint_path"]
                 )
             )
         if cfg_build_data["save_best"]:
@@ -433,10 +433,7 @@ class ConfigDictGenerator:
                
         
         
-    # TODO
-    @staticmethod
-    def recursively_change_key(cfg, target_key, new_value):
-        pass
+           
     
     def generate_config_names_list(self, args) -> list:
         

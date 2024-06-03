@@ -3,6 +3,8 @@ import yaml
 import os
 from pathlib import Path
 from typing import Union
+from mmengine import ConfigDict, Config
+import queue as queue_
 
 DEFAULT_CONFIG_ROOT_PATH = "/media/ids/Ubuntu files/mmsegmentation/configs"
 BATCH_SIZE_DEFAULT = 2
@@ -26,7 +28,9 @@ alias_dict = {
 
 class TrimData:
     excluded_model_names = [
-        
+        "beit-base_upernet_1xb2-5epochs_hots-v1-480x480",
+        "beit-base_upernet_1xb2-5epochs_hots-v1-480x480",
+        "apcnet_r101-d8_1xb2-pre-cityscapes-5epochs_hots-v1-480x480"
     ]
 
     accepted_dataset_list = [
@@ -41,12 +45,89 @@ class TrimData:
     
 
     excluded_method_names = [
+        "ann_r101-d8",
+        "apcnet_r101-d8",
+        "beit-base_upernet",
+        "beit-large_upernet",
+        "bisenetv1_r18-d32",
+        "bisenetv1_r50-d32",
+        "ccnet_r101-d8",
+        "convnext-large_upernet",
+        "convnext-xlarge_upernet",
+        "danet_r101-d8",
+        "ddrnet_23-slim_in1k-pre", # TODO temp
+        "ddrnet_23_in1k-pre", # TODO temp
+        "deeplabv3_r101b-d8",
+        "deeplabv3_r101-d8",
+        "deeplabv3plus_r50-d8",
+        "deeplabv3plus_r50b-d8",
+        "deeplabv3plus_r101-d8",
+        "deeplabv3plus_r101b-d8",
+        "ddeeplabv3plus_r101-d16-mg124",
+        "dmnet_r101-d8",
+        "dnl_r50-d8",
+        "dnl_r101-d8"
+        
         
     ]
 
 
+class Vertex:
+    def __init__(self, item, parent, key = None):
+        self.item = item
+        self.parent = parent
+        self.key = key
+    
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, self.__class__):
+            return value.item == self.item and value.parent == self.parent
+        return False
 
+# BFS
 
+def BFS_change_key(cfg, target_key, new_value):
+    queue = list()
+    vertex = Vertex(cfg, None)
+    queue.append(vertex)
+    while queue:
+        vertex = queue.pop(0)
+        children = expand_vertex(vertex)
+        if vertex.key == target_key:
+            vertex.parent.item[vertex.key] = new_value
+        for child in children:
+            queue.append(child)
+            
+        
+def expand_vertex(vertex: Vertex) -> list:
+    children = []
+    if type(vertex.item) is Config or type(vertex.item) is ConfigDict or type(vertex.item) is dict:
+        for key, val in vertex.item.items():
+            item_ = vertex.item[key]
+            children.append(
+                Vertex(
+                    item=item_,
+                    parent=vertex,
+                    key=key
+                )
+            )
+    elif type(vertex.item) is list:
+        for entry in vertex.item:
+            children.append(
+                Vertex(
+                    item=entry,
+                    parent=vertex,
+                    key=None
+                )
+            )
+    else:
+        return []
+    
+    return children
+
+def is_leaf(vertex: Vertex) -> bool:
+    return bool(expand_vertex(vertex=vertex))
+
+         
 
 # config_bases =  {
 #                     "convnext"  :
