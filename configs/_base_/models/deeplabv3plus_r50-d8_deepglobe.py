@@ -1,4 +1,3 @@
-#configs/_base_/models/deeplabv3_r50-d8.py
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 data_preprocessor = dict(
@@ -24,11 +23,13 @@ model = dict(
         style='pytorch',
         contract_dilation=True),
     decode_head=dict(
-        type='ASPPHead',
+        type='DepthwiseSeparableASPPHead',
         in_channels=2048,
         in_index=3,
         channels=512,
         dilations=(1, 12, 24, 36),
+        c1_in_channels=256,
+        c1_channels=48,
         dropout_ratio=0.1,
         num_classes=7,
         norm_cfg=norm_cfg,
