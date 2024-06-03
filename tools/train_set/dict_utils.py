@@ -17,7 +17,8 @@ dataset_info = {
     "hots-v1"   :     
         {
             "cfg_path"      :   "configs/_base_/datasets/hots_v1_640x480.py",
-            "num_classes"   :   46
+            "num_classes"   :   46,
+            "class_weight"  :   [1.0] * 46 + [0.1] 
         }
 }
 

@@ -392,7 +392,7 @@ class ConfigDictGenerator:
                 new_cfg["model"]["test_cfg"]["crop_size"] = crop_size
 
         
-        # TODO hardcoded now but with recurve search can be generalized
+        # TODO hardcoded now but with  search can be generalized
         if "backbone" in new_cfg["model"].keys():
             if "img_size" in new_cfg["model"]["backbone"].keys():
                 new_cfg["model"]["backbone"]["img_size"] = crop_size
@@ -418,18 +418,28 @@ class ConfigDictGenerator:
         )
         for key, value in dataset_cfg.items():
             new_cfg[key] = value
+        dict_utils.BFS_change_key(
+            cfg=new_cfg, 
+            target_key="num_classes", 
+            new_value=num_classes
+        )
+        dict_utils.BFS_change_key(
+            cfg=new_cfg,
+            target_key="class_weight",
+            new_value=dataset_info["class_weight"]
+        )
         
-        for component_name, component in new_cfg["model"].items():
-            if component_name == "num_classes":
-                component = num_classes
-            if type(component) is ConfigDict:
-                if "num_classes" in component.keys():
-                    component["num_classes"] = num_classes
-            if type(component) is list:
-                for element in component:
-                     if type(element) is ConfigDict:
-                        if "num_classes" in element.keys():
-                            element["num_classes"] = num_classes
+        # for component_name, component in new_cfg["model"].items():
+        #     if component_name == "num_classes":
+        #         component = num_classes
+        #     if type(component) is ConfigDict:
+        #         if "num_classes" in component.keys():
+        #             component["num_classes"] = num_classes
+        #     if type(component) is list:
+        #         for element in component:
+        #              if type(element) is ConfigDict:
+        #                 if "num_classes" in element.keys():
+        #                     element["num_classes"] = num_classes
                
         
         
