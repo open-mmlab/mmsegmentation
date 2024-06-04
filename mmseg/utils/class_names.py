@@ -463,6 +463,12 @@ def bdd100k_classes():
         'bicycle'
     ]
 
+def deepGlobe_classes():
+    return[
+        'Urban', 'Agriculture', 'Range', 'Forest', 'Water', 'Barren',
+        'Unknown'
+    ]
+
 
 def bdd100k_palette():
     """bdd100k palette for external use(same with cityscapes)"""
@@ -487,9 +493,15 @@ def hsidrive_palette():
             [0, 0, 255], [102, 51, 0], [255, 255, 0], [0, 207, 250],
             [255, 166, 0], [0, 204, 204]]
 
+def deepGlobe_palette():
+    """DeepGlobe palette for external use."""
+    return [[0,255,255], [255,255,0], [255,0,255], [0,255,0],
+            [0,0,255], [255,255,255], [1,1,1]]
+
 
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
+    'deepGlobe': ['deepGlobe'],
     'ade': ['ade', 'ade20k'],
     'voc': ['voc', 'pascal_voc', 'voc12', 'voc12aug'],
     'pcontext': ['pcontext', 'pascal_context', 'voc2010'],
