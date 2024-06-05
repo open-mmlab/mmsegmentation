@@ -1,3 +1,5 @@
+
+
 import os
 import mmcv
 import numpy as np
@@ -5,20 +7,26 @@ import cv2
 from mmseg.apis import init_model, inference_model
 
 # Configuration and checkpoint paths
-CONFIG_FILE = '/Users/anyego/Desktop/mmsegmentationEQ2/configs/fcn/fcn_r18-d8_4xb2-80k_deepglobe-512x1024.py'
-CHECKPOINT_FILE = '/Users/anyego/Desktop/mmsegmentationEQ2/workdir/fcn/iter_10000.pth'
+CONFIG_FILE = '/Users/octaviofenollosa/GithubWeb/AIDeep/mmsegmentationEQ2/configs/hrnet/fcn_hr18_4xb2-40k_deepglobe-512x1024.py'
+CHECKPOINT_FILE = '/Users/octaviofenollosa/GithubWeb/AIDeep/mmsegmentationEQ2/work-dir/HRNet/iter_10000.pth'
 DEVICE = 'cpu'
+
+
 
 # Custom color palette
 PALETTE = np.array([
-    [0, 255, 255], [255, 255, 0], [255, 0, 255], 
-    [0, 255, 0], [0, 0, 255], [255, 255, 255], 
+    [0, 255, 255], 
+    [255, 255, 0], 
+    [255, 0, 255], 
+    [0, 255, 0], 
+    [0, 0, 255], 
+    [255, 255, 255], 
     [0, 0, 0]
 ], dtype=np.uint8)
 
 # Directories
-IMAGE_DIR = '/Users/anyego/Desktop/mmsegmentationEQ2/Test_model'
-OUTPUT_DIR = '/Users/anyego/Desktop/mmsegmentationEQ2/PrediccionesFCN'
+IMAGE_DIR = '/Users/octaviofenollosa/GithubWeb/AIDeep/mmsegmentationEQ2/Test_model'
+OUTPUT_DIR = '/Users/octaviofenollosa/GithubWeb/AIDeep/mmsegmentationEQ2/PrediccionesHRNet'
 
 def initialize_model(config_path, checkpoint_path, device):
     """Initialize the segmentation model."""
