@@ -42,8 +42,8 @@ tta_pipeline = [
         ])
 ]
 train_dataloader = dict(
-    batch_size=4,
-    num_workers=2,
+    batch_size=32,
+    num_workers=4,
     persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
@@ -53,7 +53,7 @@ train_dataloader = dict(
             img_path='img_dir/train_sat', seg_map_path='ann_dir/train_mask_grayscale'),
         pipeline=train_pipeline))
 val_dataloader = dict(
-    batch_size=6,
+    batch_size=16,
     num_workers=4,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=False),
