@@ -144,7 +144,7 @@ param_scheduler = [
         power=0.9,
         type='PolyLR'),
 ]
-resume = True
+resume = False
 test_cfg = dict(type='TestLoop')
 test_dataloader = dict(
     batch_size=8,
@@ -179,9 +179,9 @@ test_pipeline = [
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs'),
 ]
-train_cfg = dict(max_iters=13000, type='IterBasedTrainLoop', val_interval=500)
+train_cfg = dict(max_iters=10000, type='IterBasedTrainLoop', val_interval=500)
 train_dataloader = dict(
-    batch_size=16,
+    batch_size=32,
     dataset=dict(
         data_prefix=dict(
             img_path='img_dir/train_sat',
@@ -298,4 +298,4 @@ visualizer = dict(
         dict(type='LocalVisBackend'),
         dict(type='TensorboardVisBackend'),
     ])
-work_dir = '/content/drive/MyDrive/Equipo2AI/DeepLabPlus'
+work_dir = '/content/drive/MyDrive/Equipo2AI/DeepLabPlus_2'
