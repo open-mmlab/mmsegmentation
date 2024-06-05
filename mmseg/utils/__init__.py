@@ -2,7 +2,7 @@
 # yapf: disable
 from .class_names import (ade_classes, ade_palette, bdd100k_classes,
                           bdd100k_palette, cityscapes_classes,
-                          cityscapes_palette, cocostuff_classes,
+                          cityscapes_palette, deepGlobe_classes, deepGlobe_palette, cocostuff_classes,
                           cocostuff_palette, dataset_aliases, get_classes,
                           get_palette, isaid_classes, isaid_palette,
                           loveda_classes, loveda_palette, potsdam_classes,
