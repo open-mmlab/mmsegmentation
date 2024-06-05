@@ -1,9 +1,10 @@
+#configs/_base_/models/deeplabv3_r50-d8.py
 # model settings
 norm_cfg = dict(type='SyncBN', requires_grad=True)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
-    mean=[123.675, 116.28, 103.53],
-    std=[58.395, 57.12, 57.375],
+    mean=[0.4082, 0.3791, 0.2815],
+    std=[ 0.1451, 0.1116, 0.1013],
     bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=255)
@@ -29,7 +30,7 @@ model = dict(
         channels=512,
         dilations=(1, 12, 24, 36),
         dropout_ratio=0.1,
-        num_classes=19,
+        num_classes=7,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
@@ -42,7 +43,7 @@ model = dict(
         num_convs=1,
         concat_input=False,
         dropout_ratio=0.1,
-        num_classes=19,
+        num_classes=7,
         norm_cfg=norm_cfg,
         align_corners=False,
         loss_decode=dict(
