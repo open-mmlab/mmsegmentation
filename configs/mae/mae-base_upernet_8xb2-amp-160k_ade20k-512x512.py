@@ -6,7 +6,7 @@ crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 model = dict(
     data_preprocessor=data_preprocessor,
-    pretrained='./pretrain/mae_pretrain_vit_base_mmcls.pth',
+    # pretrained='./pretrain/mae_pretrain_vit_base_mmcls.pth',
     backbone=dict(
         type='MAE',
         img_size=(512, 512),

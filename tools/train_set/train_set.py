@@ -158,9 +158,10 @@ def main():
     args = parse_args()
     if args.verbose:
         print(f"args: {args}")
-        
-        
-   
+        # method_list = ArgumentHandler._get_method_list_from_args(args=args)
+        # for method in method_list:
+        #     print(method)
+    
 
         
     cfg_build_data_list = ArgumentHandler._generate_config_build_data_list(
@@ -173,10 +174,19 @@ def main():
     if args.verbose:
         for cfg_build_data in cfg_build_data_list:
             print(cfg_build_data["cfg_name"])
-            
+    #         print(cfg_build_data)
+    # exit()
+    # method_list = ArgumentHandler._get_method_list_from_args(args=args)  
+    # for method in method_list:
+    #     print('#' * 80)
+    #     for key, val in method.items():
+    #         print(f"{key} : {val}")  
+    # exit()   
     for cfg_build_data in cfg_build_data_list:
         if args.verbose:
+            print('#' * 80)
             print(f'running config: {cfg_build_data["cfg_name"]}')
+            print('#' * 80)
         cfg = ConfigDictGenerator._generate_config_from_build_data(cfg_build_data=cfg_build_data)
         
         cfg.work_dir = osp.join('./work_dirs', cfg_build_data["cfg_name"])

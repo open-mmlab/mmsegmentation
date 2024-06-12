@@ -10,6 +10,7 @@ _base_ = [
 #     1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955, 1.0865, 1.1529,
 #     1.0507
 # ]
+class_weight = [1.0] * (46 - 1) + [0.1]
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/pretrain/ddrnet23s-in1kpre_3rdparty-1ccac5b1.pth'  # noqa
 crop_size = (640, 480)
 data_preprocessor = dict(
@@ -45,13 +46,13 @@ model = dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
-                # class_weight=class_weight,
+                class_weight=class_weight,
                 loss_weight=1.0),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
-                # class_weight=class_weight,
+                class_weight=class_weight,
                 loss_weight=0.4),
         ]),
 

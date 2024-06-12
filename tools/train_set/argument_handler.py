@@ -72,24 +72,25 @@ class ArgumentHandler:
                 model_list=model_list
             )
             if args.trim_method_list:
+                (accepted_dataset_list, excluded_method_names) = TrimData._get_exclusion_lists_from_args(args=args)
                 train_data_list = CDHelper._get_train_data_in_method_list(method_list=method_list_)
                 train_data_list_exclude = [train_data for train_data in train_data_list 
-                        if train_data not in TrimData.accepted_dataset_list]
+                        if train_data not in accepted_dataset_list]
 
                 method_list_ = CDHelper._method_list_trimmed_by_train_data(
                     method_list=method_list_,
                     excluded_datasets=train_data_list_exclude
                 )
+                method_list_ = CDHelper._method_list_trimmed_by_best_train_data(
+                    method_list=method_list_ 
+                )
                 
                 method_list_ = CDHelper._method_list_trimmed_by_method_names(
                     method_list=method_list_,
-                    excluded_method_names=TrimData.excluded_method_names
+                    excluded_method_names=excluded_method_names
                 )
                 
-                method_list_ = CDHelper._method_list_trimmed_by_model_names(
-                    method_list=method_list_,
-                    excluded_names=TrimData.excluded_model_names
-                )
+                
             method_list += method_list_
         return method_list
     

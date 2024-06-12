@@ -3,6 +3,7 @@ _base_ = [
     '../_base_/datasets/cityscapes_768x768.py', '../_base_/default_runtime.py',
     '../_base_/schedules/schedule_80k.py'
 ]
+
 crop_size = (768, 768)
 data_preprocessor = dict(size=crop_size)
 model = dict(
@@ -11,7 +12,7 @@ model = dict(
     backbone=dict(
         drop_rate=0.,
         init_cfg=dict(
-            type='Pretrained', checkpoint='pretrain/vit_large_p16.pth')),
+            type='Pretrained', checkpoint="checkpoints/vit-large-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-b20ba619.pth")),
     test_cfg=dict(mode='slide', crop_size=(768, 768), stride=(512, 512)))
 
 optimizer = dict(weight_decay=0.0)

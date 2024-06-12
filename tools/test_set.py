@@ -5,71 +5,21 @@ import os.path as osp
 
 from mmengine.config import Config, DictAction
 from mmengine.runner import Runner
+import torch
 
 
-# TODO: support fuse_conv_bn, visualization, and format_only
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description='MMSeg test (and eval) a model')
-    parser.add_argument('config', help='train config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
-    parser.add_argument(
-        '--work-dir',
-        help=('if specified, the evaluation metric results will be dumped'
-              'into the directory as json'))
-    parser.add_argument(
-        '--out',
-        type=str,
-        help='The directory to save output prediction for offline evaluation')
-    parser.add_argument(
-        '--show', action='store_true', help='show prediction results')
-    parser.add_argument(
-        '--show-dir',
-        help='directory where painted images will be saved. '
-        'If specified, it will be automatically saved '
-        'to the work_dir/timestamp/show_dir')
-    parser.add_argument(
-        '--wait-time', type=float, default=2, help='the interval of show (s)')
-    parser.add_argument(
-        '--cfg-options',
-        nargs='+',
-        action=DictAction,
-        help='override some settings in the used config, the key-value pair '
-        'in xxx=yyy format will be merged into config file. If the value to '
-        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
-        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
-        'Note that the quotation marks are necessary and that no white space '
-        'is allowed.')
-    parser.add_argument(
-        '--launcher',
-        choices=['none', 'pytorch', 'slurm', 'mpi'],
-        default='none',
-        help='job launcher')
-    parser.add_argument(
-        '--tta', action='store_true', help='Test time augmentation')
-    # When using PyTorch version >= 2.0.0, the `torch.distributed.launch`
-    # will pass the `--local-rank` parameter to `tools/train.py` instead
-    # of `--local_rank`.
-    parser.add_argument('--local_rank', '--local-rank', type=int, default=0)
-    args = parser.parse_args()
-    if 'LOCAL_RANK' not in os.environ:
-        os.environ['LOCAL_RANK'] = str(args.local_rank)
-
-    return args
 
 
-def trigger_visualization_hook(cfg, args):
+
+def trigger_visualization_hook(cfg, show_dir):
     default_hooks = cfg.default_hooks
     if 'visualization' in default_hooks:
         visualization_hook = default_hooks['visualization']
         # Turn on visualization
         visualization_hook['draw'] = True
-        if args.show:
-            visualization_hook['show'] = True
-            visualization_hook['wait_time'] = args.wait_time
-        if args.show_dir:
-            visualizer = cfg.visualizer
-            visualizer['save_dir'] = args.show_dir
+        
+        visualizer = cfg.visualizer
+        visualizer['save_dir'] = show_dir
     else:
         raise RuntimeError(
             'VisualizationHook must be included in default_hooks.'
@@ -77,47 +27,75 @@ def trigger_visualization_hook(cfg, args):
             '"visualization=dict(type=\'VisualizationHook\')"')
 
     return cfg
+# TODO doesnt work
+def fix_log_paths(
+    test_results_path = "test_results"
+    ):
+    for project_name in os.listdir(test_results_path):
+        project_path = os.path.join(test_results_path, project_name)
+        for experiment_name in os.listdir(project_path): # iter
+            experiment_path = os.path.join(project_path, experiment_name)
+            for sub_experiment_name in os.listdir(experiment_path): # timestamp dir
+                sub_experiment_path = os.path.join(experiment_path, sub_experiment_name)
+                log_file = [file for file in os.listdir(sub_experiment_path) if ".log" in file][0]
+                log_file_path = os.path.join(sub_experiment_path, log_file)
+                if os.path.exists(log_file_path):
+                    os.rename(log_file_path, os.path.join(experiment_path, log_file))
 
+def trimmed_projects(
+    exclude = [], 
+    unique = True, work_dir_path = "work_dirs",
+    test_results_path = "test_results",
+    training_iters = 300
+    ):
+    def get_iters(project_name):
+        train_set = project_name.split("_")[-2]
+        iters = train_set.split("-")[-1]
+        if 'k' in iters:
+            iters = iters.replace('k', '000')
+        return int(iters)
+    
+    project_names = os.listdir(work_dir_path)
+    tested_project_names = os.listdir(test_results_path)
+    project_names = [project_name for project_name in project_names if project_names not in exclude]
+    if training_iters is not None:
+        project_names = [project_name for project_name in project_names if training_iters == get_iters(project_name)]
+    if unique:
+        project_names = [project_name for project_name in project_names if project_name not in tested_project_names]
+    # TODO temp:
+    project_names = ["convnext-tiny_upernet_1xb2-300_hots-v1-512x512"]
+    return project_names
 
 def main():
-    args = parse_args()
-
-    # load config
-    cfg = Config.fromfile(args.config)
-    cfg.launcher = args.launcher
-    if args.cfg_options is not None:
-        cfg.merge_from_dict(args.cfg_options)
-
-    # work_dir is determined in this priority: CLI > segment in file > filename
-    if args.work_dir is not None:
-        # update configs according to CLI args if args.work_dir is not None
-        cfg.work_dir = args.work_dir
-    elif cfg.get('work_dir', None) is None:
-        # use config filename as default work_dir if cfg.work_dir is None
-        cfg.work_dir = osp.join('./work_dirs',
-                                osp.splitext(osp.basename(args.config))[0])
-
-    cfg.load_from = args.checkpoint
-
-    if args.show or args.show_dir:
-        cfg = trigger_visualization_hook(cfg, args)
-
-    if args.tta:
-        cfg.test_dataloader.dataset.pipeline = cfg.tta_pipeline
-        cfg.tta_model.module = cfg.model
-        cfg.model = cfg.tta_model
-
-    # add output_dir in metric
-    if args.out is not None:
-        cfg.test_evaluator['output_dir'] = args.out
-        cfg.test_evaluator['keep_results'] = True
-
-    # build the runner from config
-    runner = Runner.from_cfg(cfg)
-
-    # start testing
-    runner.test()
-
-
+    test_results_path = "test_results"
+    work_dir_path = "work_dirs"
+    project_names = trimmed_projects(work_dir_path=work_dir_path, training_iters=300)
+    print(project_names)
+    
+    for project_name in project_names:
+        project_path = os.path.join(work_dir_path, project_name)
+        config_name = [file_name for file_name in os.listdir(project_path) if ".py" in file_name][0]
+        checkpoint_names = [file_name for file_name in os.listdir(project_path) if ".pth" in file_name]
+        config_path = os.path.join(project_path, config_name)
+        
+        cfg = Config.fromfile(config_path)
+        test_work_dir_path = os.path.join(test_results_path, project_name)
+        cfg.work_dir = test_work_dir_path
+        for checkpoint_name in checkpoint_names:
+            torch.cuda.empty_cache()
+            cfg.work_dir = os.path.join(test_work_dir_path, checkpoint_name)
+            checkpoint_path = os.path.join(project_path, checkpoint_name)
+            cfg.load_from = checkpoint_path
+            cfg.test_evaluator = dict(type="CustomIoUMetric")
+            # output_dir = os.path.join(test_work_dir_path, checkpoint_name, "out")
+            # show_dir = os.path.join(test_work_dir_path, checkpoint_name, "show")
+            # cfg.test_evaluator["output_dir"] = output_dir
+            # cfg.test_evaluator["keep_results"] = True
+            # cfg = trigger_visualization_hook(cfg, show_dir=show_dir)
+            runner = Runner.from_cfg(cfg=cfg)
+            
+            runner.test()
+            
+            
 if __name__ == '__main__':
     main()

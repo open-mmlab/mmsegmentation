@@ -413,6 +413,9 @@ class ConfigDictGenerator:
     def apply_dataset(cfg_build_data: dict, new_cfg: Config):
         dataset_info = dict_utils.dataset_info[cfg_build_data["dataset"]]
         num_classes = dataset_info["num_classes"]
+        class_weight = dataset_info["class_weight"]
+        if "mask" in cfg_build_data["cfg_name"] and "former" in cfg_build_data["cfg_name"]:
+            class_weight = [1.0] * num_classes + [0.1]
         dataset_cfg = Config.fromfile(
             dataset_info["cfg_path"]
         )
@@ -426,8 +429,13 @@ class ConfigDictGenerator:
         dict_utils.BFS_change_key(
             cfg=new_cfg,
             target_key="class_weight",
-            new_value=dataset_info["class_weight"]
+            new_value=class_weight
         )
+        # dict_utils.BFS_change_key(
+        #     cfg=new_cfg,
+        #     target_key="size_divisor",
+        #     new_value=None
+        # )
         
         # for component_name, component in new_cfg["model"].items():
         #     if component_name == "num_classes":

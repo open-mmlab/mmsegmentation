@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Union
 from dict_utils import DEFAULT_CONFIG_ROOT_PATH
 import re
+import dict_utils
 
 class ConfigDataHelper:
     """_summary_
@@ -179,7 +180,27 @@ class ConfigDataHelper:
                             method_dict=method_dict
                         )
         return method_list        
-                    
+    @staticmethod
+    def _method_list_trimmed_by_best_train_data(
+        method_list: list
+    ):
+        def get_best_option(model_dict1, model_dict2):
+            ranking = dict_utils.TrimData.accepted_dataset_list
+            dataset1 = model_dict1["train_data"]
+            dataset2 = model_dict2["train_data"]
+            if ranking.index(dataset1) <= ranking.index(dataset2):
+                return model_dict1
+            return model_dict2
+            
+        for method_dict in method_list:
+            if not method_dict["models"]:
+                continue
+            best_model_dict = method_dict["models"][0]
+            for model_dict in method_dict["models"][1:]:
+                best_model_dict = get_best_option(best_model_dict, model_dict)
+            
+            method_dict["models"] = [best_model_dict]
+        return method_list                 
     @staticmethod
     def _method_list_trimmed_by_model_names(
         method_list: list, excluded_names: list
