@@ -214,6 +214,13 @@ mmsegmentation
 │   │   │   ├── train
 │   │   │   ├── validation
 │   │   │   ├── test
+│   ├── TSP6K
+│   │   ├── image
+│   │   |   ├── train
+│   │   │   ├── val
+│   │   ├── label
+│   │   |   ├── train
+│   │   │   ├── val
 ```
 
 ## Download dataset via MIM
@@ -804,3 +811,23 @@ mmsegmentation
 │   ├── HSI_Drive_v2_0_release_notes_Python_version.md
 │   ├── image_numbering.pdf
 ```
+
+## TSP6K
+
+- The TSP6K dataset can be downloaded from [here](https://drive.google.com/file/d/1yDCL8vLOYcRuInCPUij3_pmq9yPk7KQj/view?usp=sharing).
+
+- Then, unzip `TSP6K_release.zip` and the contents of original datasets include:
+
+```none
+├── TSP6K_release
+│   ├── release
+│   │   ├── image
+│   │   ├── label_trainval
+│   │   ├── split
+```
+
+- To organize the data into the required format, run the following command in your terminal:
+
+  ```bash
+  python tools/dataset_converters/tsp6k.py /path/to/TSP6K_release/release
+  ```

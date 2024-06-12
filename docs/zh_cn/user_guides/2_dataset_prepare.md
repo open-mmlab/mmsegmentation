@@ -214,6 +214,14 @@ mmsegmentation
 │   │   │   ├── train
 │   │   │   ├── validation
 │   │   │   ├── test
+│   │   │   ├── test
+│   ├── TSP6K
+│   │   ├── image
+│   │   |   ├── train
+│   │   │   ├── val
+│   │   ├── label
+│   │   |   ├── train
+│   │   │   ├── val
 ```
 
 ## 用 MIM 下载数据集
@@ -800,3 +808,23 @@ mmsegmentation
 │   ├── HSI_Drive_v2_0_release_notes_Python_version.md
 │   ├── image_numbering.pdf
 ```
+
+## TSP6K
+
+- 您可以从以下位置下载TSP6K数据集 [here](https://drive.google.com/file/d/1yDCL8vLOYcRuInCPUij3_pmq9yPk7KQj/view?usp=sharing)。
+
+- 下载后，解压文件 `TSP6K_release.zip` 然后会得到如下内容：
+
+```none
+├── TSP6K_release
+│   ├── release
+│   │   ├── image
+│   │   ├── label_trainval
+│   │   ├── split
+```
+
+- 请在命令行中运行以下指令来把数据结构组织成需要的格式：
+
+  ```bash
+  python tools/dataset_converters/tsp6k.py /path/to/TSP6K_release/release
+  ```
