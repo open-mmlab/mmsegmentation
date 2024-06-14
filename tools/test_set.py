@@ -62,8 +62,8 @@ def trimmed_projects(
         project_names = [project_name for project_name in project_names if training_iters == get_iters(project_name)]
     if unique:
         project_names = [project_name for project_name in project_names if project_name not in tested_project_names]
-    # TODO temp:
-    project_names = ["convnext-tiny_upernet_1xb2-300_hots-v1-512x512"]
+    # # TODO temp:
+    # project_names = ["convnext-tiny_upernet_1xb2-300_hots-v1-512x512"]
     return project_names
 
 def main():
@@ -86,15 +86,20 @@ def main():
             cfg.work_dir = os.path.join(test_work_dir_path, checkpoint_name)
             checkpoint_path = os.path.join(project_path, checkpoint_name)
             cfg.load_from = checkpoint_path
-            cfg.test_evaluator = dict(type="CustomIoUMetric")
+            cfg.test_evaluator = dict(type="IoUMetricFixed")
+            # TODO temp####################################################
             # output_dir = os.path.join(test_work_dir_path, checkpoint_name, "out")
             # show_dir = os.path.join(test_work_dir_path, checkpoint_name, "show")
             # cfg.test_evaluator["output_dir"] = output_dir
             # cfg.test_evaluator["keep_results"] = True
             # cfg = trigger_visualization_hook(cfg, show_dir=show_dir)
-            runner = Runner.from_cfg(cfg=cfg)
-            
-            runner.test()
+            ##################################################################
+            try:
+                runner = Runner.from_cfg(cfg=cfg)
+                
+                runner.test()
+            except:
+                print(f"cfg: {cfg.work_dir} did not work")
             
             
 if __name__ == '__main__':
