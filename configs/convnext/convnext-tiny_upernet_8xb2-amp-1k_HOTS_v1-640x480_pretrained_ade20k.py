@@ -20,7 +20,7 @@ model = dict(
             prefix='backbone.')),
     decode_head=dict(
         in_channels=[96, 192, 384, 768],
-        num_classes=46,
+        num_classes=47,
     ),
     auxiliary_head=dict(in_channels=384, num_classes=46),
     test_cfg=dict(mode='slide', crop_size=crop_size, stride=(341, 341)),

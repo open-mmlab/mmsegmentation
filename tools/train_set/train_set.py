@@ -190,7 +190,10 @@ def main():
         cfg = ConfigDictGenerator._generate_config_from_build_data(cfg_build_data=cfg_build_data)
         
         cfg.work_dir = osp.join('./work_dirs', cfg_build_data["cfg_name"])
-        run_cfg(cfg=cfg)
+        try:
+            run_cfg(cfg=cfg)
+        except:
+            print(f"couldn't run config: {cfg_build_data['cfg_name']}")
     
     
 if __name__ == '__main__':

@@ -46,7 +46,7 @@ def trimmed_projects(
     exclude = [], 
     unique = True, work_dir_path = "work_dirs",
     test_results_path = "test_results",
-    training_iters = 300
+    training_iters = None
     ):
     def get_iters(project_name):
         train_set = project_name.split("_")[-2]
@@ -69,10 +69,11 @@ def trimmed_projects(
 def main():
     test_results_path = "test_results"
     work_dir_path = "work_dirs"
-    project_names = trimmed_projects(work_dir_path=work_dir_path, training_iters=300)
+    project_names = trimmed_projects(work_dir_path=work_dir_path)
     print(project_names)
     
     for project_name in project_names:
+        print(f"evaluating project: {project_name}")
         project_path = os.path.join(work_dir_path, project_name)
         config_name = [file_name for file_name in os.listdir(project_path) if ".py" in file_name][0]
         checkpoint_names = [file_name for file_name in os.listdir(project_path) if ".pth" in file_name]
@@ -88,11 +89,11 @@ def main():
             cfg.load_from = checkpoint_path
             cfg.test_evaluator = dict(type="IoUMetricFixed")
             # TODO temp####################################################
-            # output_dir = os.path.join(test_work_dir_path, checkpoint_name, "out")
-            # show_dir = os.path.join(test_work_dir_path, checkpoint_name, "show")
-            # cfg.test_evaluator["output_dir"] = output_dir
-            # cfg.test_evaluator["keep_results"] = True
-            # cfg = trigger_visualization_hook(cfg, show_dir=show_dir)
+            output_dir = os.path.join(test_work_dir_path, checkpoint_name, "out")
+            show_dir = os.path.join(test_work_dir_path, checkpoint_name, "show")
+            cfg.test_evaluator["output_dir"] = output_dir
+            cfg.test_evaluator["keep_results"] = True
+            trigger_visualization_hook(cfg, show_dir=show_dir)
             ##################################################################
             try:
                 runner = Runner.from_cfg(cfg=cfg)
