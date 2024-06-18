@@ -45,7 +45,7 @@ class IoUMetricFixed(BaseMetric):
 
     def __init__(self,
                  ignore_index: int = 255,
-                 iou_metrics: List[str] = ['mIoU'],
+                 iou_metrics: List[str] = ['mIoU', 'mDice', 'mFscore', 'mAP'],
                  nan_to_num: Optional[int] = None,
                  beta: int = 1,
                  collect_device: str = 'cpu',

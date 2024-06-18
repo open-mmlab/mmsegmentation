@@ -415,7 +415,7 @@ class ConfigDictGenerator:
         num_classes = dataset_info["num_classes"]
         class_weight = dataset_info["class_weight"]
         if "mask" in cfg_build_data["cfg_name"] and "former" in cfg_build_data["cfg_name"]:
-            class_weight = [1.0] * num_classes + [0.1]
+            class_weight = [0.1] + ([1.0] * num_classes)
         dataset_cfg = Config.fromfile(
             dataset_info["cfg_path"]
         )
