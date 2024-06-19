@@ -35,6 +35,9 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+# train logs
+mmseg_logs/*
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
