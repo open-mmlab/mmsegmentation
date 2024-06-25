@@ -1,6 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmengine.config import read_base
-from mmengine.model.weight_init import PretrainedInit
 
 with read_base():
     from .mobilenet_v3_d8_lraspp_4xb4_320k_cityscapes_512x1024 import *
