@@ -62,6 +62,7 @@ def stack_batch(inputs: List[torch.Tensor],
         f'but got {[tensor.shape[0] for tensor in inputs]}'
 
     # only one of size and size_divisor should be valid
+    # print(f"size: {size}\n size_div: {size_divisor}")
     assert (size is not None) ^ (size_divisor is not None), \
         'only one of size and size_divisor should be valid'
 
