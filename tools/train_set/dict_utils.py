@@ -20,6 +20,12 @@ dataset_info = {
             "cfg_path"      :   "configs/_base_/datasets/hots_v1_640x480.py",
             "num_classes"   :   47,
             "class_weight"  :   None 
+        },
+    "irl_vision_sim"    :
+        {
+            "cfg_path"      :   "configs/_base_/datasets/irl_vision_sim_640x480.py",
+            "num_classes"   :   72,
+            "class_weight"  :   None 
         }
 }
 

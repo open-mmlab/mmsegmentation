@@ -51,7 +51,7 @@ class IoUMetricFixed(BaseMetric):
                  collect_device: str = 'cpu',
                  output_dir: Optional[str] = None,
                  format_only: bool = False,
-                 prefix: Optional[str] = None,
+                 prefix: Optional[str] = "_",
                  **kwargs) -> None:
         super().__init__(collect_device=collect_device, prefix=prefix)
 
