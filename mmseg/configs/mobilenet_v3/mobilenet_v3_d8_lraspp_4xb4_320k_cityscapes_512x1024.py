@@ -10,11 +10,13 @@ with read_base():
 
 checkpoint = 'open-mmlab://contrib/mobilenet_v3_large'
 crop_size = (512, 1024)
-data_preprocessor.update(size=crop_size)
+data_preprocessor.update(dict(size=crop_size))
 model.update(
-    data_preprocessor=data_preprocessor,
-    backbone=dict(init_cfg=dict(type=PretrainedInit, checkpoint=checkpoint)))
+    dict(
+        data_preprocessor=data_preprocessor,
+        backbone=dict(
+            init_cfg=dict(type=PretrainedInit, checkpoint=checkpoint))))
 # Re-config the data sampler.
-train_dataloader.update(batch_size=4, num_workers=4)
-val_dataloader.update(batch_size=1, num_workers=4)
+train_dataloader.update(dict(batch_size=4, num_workers=4))
+val_dataloader.update(dict(batch_size=1, num_workers=4))
 test_dataloader = val_dataloader
