@@ -154,4 +154,3 @@ param_scheduler = [
 train_dataloader.update(dict(batch_size=2, num_workers=2))
 val_dataloader.update(dict(batch_size=1, num_workers=4))
 test_dataloader = val_dataloader
-
