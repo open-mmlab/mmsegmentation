@@ -7,10 +7,11 @@ from torch.nn.modules.batchnorm import SyncBatchNorm as SyncBN
 from torch.nn.modules.normalization import GroupNorm as GN
 from torch.optim.adamw import AdamW
 
-from mmdet.models.layers import PixelDecoder
+
 from mmdet.models.losses import CrossEntropyLoss
 from mmdet.models.losses.dice_loss import DiceLoss
 from mmdet.models.losses.focal_loss import FocalLoss
+from mmdet.models.layers import PixelDecoder
 from mmdet.models.task_modules.assigners import (ClassificationCost,
                                                  HungarianAssigner)
 from mmdet.models.task_modules.assigners.match_cost import (DiceCost,
