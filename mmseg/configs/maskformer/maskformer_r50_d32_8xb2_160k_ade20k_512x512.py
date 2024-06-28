@@ -2,26 +2,25 @@
 from mmengine.config import read_base
 from mmengine.model.weight_init import PretrainedInit
 from mmengine.optim.scheduler.lr_scheduler import PolyLR
-
 from torch.nn.modules.activation import ReLU
 from torch.nn.modules.batchnorm import SyncBatchNorm as SyncBN
 from torch.nn.modules.normalization import GroupNorm as GN
 from torch.optim.adamw import AdamW
 
+from mmdet.models.layers import PixelDecoder
+from mmdet.models.losses import CrossEntropyLoss
+from mmdet.models.losses.dice_loss import DiceLoss
+from mmdet.models.losses.focal_loss import FocalLoss
+from mmdet.models.task_modules.assigners import (ClassificationCost,
+                                                 HungarianAssigner)
+from mmdet.models.task_modules.assigners.match_cost import (DiceCost,
+                                                            FocalLossCost)
+from mmdet.models.task_modules.samplers.mask_pseudo_sampler import \
+    MaskPseudoSampler
 from mmseg.models.backbones import ResNet
 from mmseg.models.data_preprocessor import SegDataPreProcessor
 from mmseg.models.decode_heads import MaskFormerHead
-from mmdet.models.losses import CrossEntropyLoss
 from mmseg.models.segmentors import EncoderDecoder
-
-from mmdet.models.layers import PixelDecoder
-from mmdet.models.losses.focal_loss import FocalLoss
-from mmdet.models.losses.dice_loss import DiceLoss
-from mmdet.models.task_modules.assigners import (HungarianAssigner,
-                                                 ClassificationCost)
-from mmdet.models.task_modules.assigners.match_cost import (FocalLossCost,
-                                                            DiceCost)
-from mmdet.models.task_modules.samplers.mask_pseudo_sampler import MaskPseudoSampler
 
 with read_base():
     from .._base_.datasets.ade20k import *
@@ -54,7 +53,8 @@ model = dict(
         norm_eval=True,
         style='pytorch',
         contract_dilation=True,
-        init_cfg=dict(type=PretrainedInit, checkpoint='torchvision://resnet50')),
+        init_cfg=dict(
+            type=PretrainedInit, checkpoint='torchvision://resnet50')),
     decode_head=dict(
         type=MaskFormerHead,
         in_channels=[256, 512, 1024,
@@ -124,15 +124,8 @@ model = dict(
                 type=HungarianAssigner,
                 match_costs=[
                     dict(type=ClassificationCost, weight=1.0),
-                    dict(
-                        type=FocalLossCost,
-                        weight=20.0,
-                        binary_input=True),
-                    dict(
-                        type=DiceCost,
-                        weight=1.0,
-                        pred_act=True,
-                        eps=1.0)
+                    dict(type=FocalLossCost, weight=20.0, binary_input=True),
+                    dict(type=DiceCost, weight=1.0, pred_act=True, eps=1.0)
                 ]),
             sampler=dict(type=MaskPseudoSampler))),
     # training and testing settings
@@ -141,8 +134,7 @@ model = dict(
 )
 # optimizer
 optimizer.update(
-    dict(
-        type=AdamW, lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001))
+    dict(type=AdamW, lr=0.0001, betas=(0.9, 0.999), weight_decay=0.0001))
 optim_wrapper.merge(
     dict(
         _delete_=True,
@@ -155,17 +147,10 @@ optim_wrapper.merge(
 # learning policy
 param_scheduler = [
     dict(
-        type=PolyLR,
-        eta_min=0,
-        power=0.9,
-        begin=0,
-        end=160000,
-        by_epoch=False)
+        type=PolyLR, eta_min=0, power=0.9, begin=0, end=160000, by_epoch=False)
 ]
 
 # In MaskFormer implementation we use batch size 2 per GPU as default
 train_dataloader.update(dict(batch_size=2, num_workers=2))
 val_dataloader.update(dict(batch_size=1, num_workers=4))
 test_dataloader = val_dataloader
-
-train_cfg.update(dict(val_interval=100))

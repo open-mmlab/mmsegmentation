@@ -8,5 +8,5 @@ model.update(
     dict(
         backbone=dict(
             depth=101,
-            init_cfg=dict(type=PretrainedInit,
-                        checkpoint='torchvision://resnet101'))))
+            init_cfg=dict(
+                type=PretrainedInit, checkpoint='torchvision://resnet101'))))

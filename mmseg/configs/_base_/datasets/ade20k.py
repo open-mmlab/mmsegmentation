@@ -41,16 +41,15 @@ tta_pipeline = [
     dict(type=LoadImageFromFile, backend_args=None),
     dict(
         type=TestTimeAug,
-        transforms=[
-            [
-                dict(type=Resize, scale_factor=r, keep_ratio=True)
-                for r in img_ratios
-            ],
-            [
-                dict(type=RandomFlip, prob=0., direction='horizontal'),
-                dict(type=RandomFlip, prob=1., direction='horizontal')
-            ], [dict(type=LoadAnnotations)], [dict(type=PackSegInputs)]
-        ])
+        transforms=[[
+            dict(type=Resize, scale_factor=r, keep_ratio=True)
+            for r in img_ratios
+        ],
+                    [
+                        dict(type=RandomFlip, prob=0., direction='horizontal'),
+                        dict(type=RandomFlip, prob=1., direction='horizontal')
+                    ], [dict(type=LoadAnnotations)],
+                    [dict(type=PackSegInputs)]])
 ]
 train_dataloader = dict(
     batch_size=4,

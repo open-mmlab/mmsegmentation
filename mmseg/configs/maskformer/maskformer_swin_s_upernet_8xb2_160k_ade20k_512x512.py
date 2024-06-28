@@ -1,7 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from mmengine.config import read_base
 from mmengine.optim.scheduler.lr_scheduler import LinearLR
-
 from torch.nn.modules.activation import GELU
 from torch.nn.modules.normalization import LayerNorm as LN
 
@@ -41,13 +40,12 @@ model.merge(
         decode_head=dict(
             type=MaskFormerHead,
             in_channels=[96, 192, 384,
-                        768],  # input channels of pixel_decoder modules
+                         768],  # input channels of pixel_decoder modules
         )))
 
 # optimizer
 optimizer.update(
-    dict(
-        type=AdamW, lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01))
+    dict(type=AdamW, lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01))
 # set all layers in backbone to lr_mult=1.0
 # set all norm layers, position_embeding,
 # query_embeding to decay_multi=0.0
@@ -81,8 +79,7 @@ optim_wrapper.merge(
 
 # learning policy
 param_scheduler = [
-    dict(
-        type=LinearLR, start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+    dict(type=LinearLR, start_factor=1e-6, by_epoch=False, begin=0, end=1500),
     dict(
         type=PolyLR,
         eta_min=0.0,
