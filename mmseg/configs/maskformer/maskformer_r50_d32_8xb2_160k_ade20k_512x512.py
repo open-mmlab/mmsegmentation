@@ -1,4 +1,14 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+from mmdet.models.layers import PixelDecoder
+from mmdet.models.losses import CrossEntropyLoss
+from mmdet.models.losses.dice_loss import DiceLoss
+from mmdet.models.losses.focal_loss import FocalLoss
+from mmdet.models.task_modules.assigners import (ClassificationCost,
+                                                 HungarianAssigner)
+from mmdet.models.task_modules.assigners.match_cost import (DiceCost,
+                                                            FocalLossCost)
+from mmdet.models.task_modules.samplers.mask_pseudo_sampler import \
+    MaskPseudoSampler
 from mmengine.config import read_base
 from mmengine.model.weight_init import PretrainedInit
 from mmengine.optim.scheduler.lr_scheduler import PolyLR
@@ -7,16 +17,6 @@ from torch.nn.modules.batchnorm import SyncBatchNorm as SyncBN
 from torch.nn.modules.normalization import GroupNorm as GN
 from torch.optim.adamw import AdamW
 
-from mmdet.models.losses import CrossEntropyLoss
-from mmdet.models.losses.dice_loss import DiceLoss
-from mmdet.models.losses.focal_loss import FocalLoss
-from mmdet.models.layers import PixelDecoder
-from mmdet.models.task_modules.assigners import (ClassificationCost,
-                                                 HungarianAssigner)
-from mmdet.models.task_modules.assigners.match_cost import (DiceCost,
-                                                            FocalLossCost)
-from mmdet.models.task_modules.samplers.mask_pseudo_sampler import \
-    MaskPseudoSampler
 from mmseg.models.backbones import ResNet
 from mmseg.models.data_preprocessor import SegDataPreProcessor
 from mmseg.models.decode_heads import MaskFormerHead
