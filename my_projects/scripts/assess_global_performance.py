@@ -43,6 +43,7 @@ def parse_args():
         '--save_app',
         '-sa',
         type=str,
+        help='save file appendix',
         default=""
     )
     parser.add_argument(
@@ -348,7 +349,7 @@ def make_handles():
                     color=color,
                     label=model_name,
                     linestyle='-',
-                    linewidth=10
+                    linewidth=6
                 )
             )
     return legend_handles
@@ -383,9 +384,14 @@ def plot_trade_off_global(
         c=color_data
     )
     if color_data:
-        plt.legend(handles=make_handles())
+        plt.legend(handles=make_handles(),
+            bbox_to_anchor=(-0.02, 0.98, 1.05, 0.25),
+            ncol=3,
+            mode="expand"
+        )
     plt.xlabel(xlabel=x_key)
     plt.ylabel(ylabel=y_key)
+    plt.xlim(70, 94)
     if save_path:
         print(f"saved fig in : {save_path}")
         plt.savefig(
@@ -463,8 +469,8 @@ def random_analysis(
         "mIoU"      :       1
     }
     eff_weights = {
-        "FPS"       :       0.5,
-        "Mem (MB)"  :       0.5
+        "FPS"       :       1,
+        "Mem (MB)"  :       1
     }
     fps_weights = {
         "FPS"       :       1
@@ -510,11 +516,12 @@ def random_analysis(
     )
     
 def av_results(
-    total_model_score_dict: dict
+    total_model_score_dict: dict,
+    n_measurements: int
 ):
     for model_name, metric_score_dict in total_model_score_dict.items():
         for metric_name, metric_score in metric_score_dict.items():
-            metric_score_dict[metric_name] /= 5
+            metric_score_dict[metric_name] /= n_measurements
             
     
 def threshold_analyses(
@@ -535,8 +542,8 @@ def threshold_analyses(
         "mIoU"      :       1
     }
     eff_weights = {
-        "FPS"       :       0.5,
-        "Mem (MB)"  :       0.5
+        "FPS"       :       1,
+        "Mem (MB)"  :       1
     }
     
     sorted_pr_keys = sorted(pr_keys, reverse=True)
@@ -559,11 +566,12 @@ def threshold_analyses(
     for key, val in acc_weights.items():
         default_weights[key] = 1 
     
+    th_result_dict = {}
     for metric_key in KEYS_OF_INTEREST:
         if "mPr" in metric_key:
             continue
         factors = [
-            fac for fac in np.arange(0, 100, 0.1)
+            fac for fac in np.arange(0, 10, 0.1)
         ]
         labeled_weights = {}
         for fac in factors:
@@ -575,6 +583,7 @@ def threshold_analyses(
             labeled_custom_weights=labeled_weights,
             verbose=False
         )
+        th_result_dict[metric_key] = labeled_scores
         if verbose:
             print_labeled_scores(
                 metric_key=metric_key,
@@ -590,7 +599,7 @@ def threshold_analyses(
             )
     # Pr analysis
     factors = [
-        fac for fac in np.arange(0, 100, 0.1)
+        fac for fac in np.arange(0, 10, 0.1)
     ]
     labeled_weights = {}
     for fac in factors:
@@ -603,6 +612,7 @@ def threshold_analyses(
         labeled_custom_weights=labeled_weights,
         verbose=False
     )
+    th_result_dict["mPr"] = labeled_scores
     if verbose:
         print_labeled_scores(
             metric_key="mPr",
@@ -616,15 +626,96 @@ def threshold_analyses(
             scoring_mode=scoring_mode,
             save_path_dir=save_path_dir
         )
+    return th_result_dict
 
-        
+def plot_threshold_analysis_compact(
+    th_results_dict,
+    save_path_dir = "my_projects/images_plots/acc_eff_trade_off"
+):
+    p_utils.set_params(param_dict=p_utils.PRED_VISUALIZATION_FIGURE_PARAMS_3ROWS)
+    figure = plt.figure()
+    subplots = figure.subplots(
+        nrows=3, 
+        ncols=4, 
+        gridspec_kw = {
+            'wspace':0.01, 
+            'hspace':0.001
+        }
+    )
+    y_lims_row = {
+        0   :   (0, 50),
+        1   :   (-10, 10),
+        2   :   (0, 3)
+    }
+    score_type_row = {
+        0   :   "rank",
+        1   :   "proportional",
+        2   :   "normalized"
+    }
+    for row_idx, (mode, th_results) in enumerate(th_results_dict.items()):
+        for col_idx, (metric_key, labeled_scores) in enumerate(th_results.items()):
+            axes = subplots[row_idx][col_idx]
+            x_axis = [
+                float(factor) for factor in list(labeled_scores.keys())
+            ]
+            model_score_lists_dict = {
+                model_name : [] 
+                    for model_name in p_utils.MODEL_COLORS.keys()
+            }
+            for factor, model_score_dict in labeled_scores.items():
+                for model_name, total_score in model_score_dict.items():
+                    model_score_lists_dict[model_name].append(total_score)
+                    
+            for model_name, model_score_list in model_score_lists_dict.items():
+                axes.plot(
+                    x_axis, 
+                    model_score_list, 
+                    color=p_utils.MODEL_COLORS[model_name]
+                )
+                axes.set_ylim(*y_lims_row[row_idx])
+                axes.set_xlabel(
+                    f"{metric_key} weight",
+                    fontsize=16
+                )
+                axes.set_ylabel(
+                    f"score\n{score_type_row[row_idx]}",
+                    fontsize=16
+                )
+                axes.get_yaxis().set_visible(
+                    col_idx == 0
+                )
+                axes.get_xaxis().set_visible(
+                    row_idx == 2
+                )
+    figure.legend(
+        handles=make_handles(),
+        bbox_to_anchor=(0, 0.94, 1, 0.25),
+        ncol=3,
+        mode="expand"
+    )
+    figure.subplots_adjust(hspace=0.01)
+    # figure.tight_layout()
+    save_path = os.path.join(
+        save_path_dir,
+        f"all_scores"
+    )
+    
+    print(f"saved fig in : {save_path}")
+    plt.savefig(
+        save_path,
+        dpi=100,
+        bbox_inches='tight'
+    )
+    plt.cla()
+    p_utils.reset_params()
+    
 def plot_threshold_analysis(
     metric_key,
     labeled_scores,
     scoring_mode,
     save_path_dir = "my_projects/images_plots/acc_eff_trade_off"
 ):
-    plt.clf()
+    
     p_utils.set_params(param_dict=p_utils.TRADEOFF_PLOT_PARAMS)
     x_axis = [
         float(factor) for factor in list(labeled_scores.keys())
@@ -643,7 +734,11 @@ def plot_threshold_analysis(
             model_score_list, 
             color=p_utils.MODEL_COLORS[model_name]
         ) 
-    plt.legend(handles=make_handles())
+    plt.legend(
+        handles=make_handles(),
+        bbox_to_anchor=(0, 0.90, 1, 0.02),
+        ncol=3,
+        mode="expand")
     save_path = os.path.join(
         save_path_dir,
         f"{scoring_mode}_{metric_key}"
@@ -656,15 +751,10 @@ def plot_threshold_analysis(
         dpi=100,
         bbox_inches='tight'
     )
-    
+    plt.cla()
     p_utils.reset_params()
     
-def get_intersections(
-    metric_key,
-    default_weights,
-    labeled_scores,
-):
-    pass
+
            
 def print_labeled_scores(
     metric_key,
@@ -712,7 +802,11 @@ def main():
     if args.fix_jsons:
         fix_results_jsons_all_datasets(args=args)
     global_dict = collect_all_datasets_results_jsons(args=args)
-    
+    # TODO for now ignore concate dataset
+    global_dict = {
+        key : val for key, val in global_dict.items() 
+            if key != "sodhots-c"
+    }
     if args.plot_data:
         save_path = os.path.join(
             args.save_path,
@@ -727,36 +821,47 @@ def main():
             save_path=save_path
         )
     if args.scoring_mode == "ALL":
+        th_results_dict = {}
         for mode in SCORING_MODE.keys():
             
             per_model, per_dataset = collect_score_per_model_over_all_datasets(
                 global_dict=global_dict,
                 scoring_mode=mode
             )
-            av_results(total_model_score_dict=per_model)
+            
+            av_results(
+                total_model_score_dict=per_model,
+                n_measurements=len(per_dataset.keys())
+            )
+            
             if args.verbose:
                 print('#' * 80)
                 print(f"scoring_mode: {mode}")
                 print_per_model_score(total_model_score_dict=per_model)
                 
-            random_analysis(
-                total_model_score_dict=per_model
-            )
-            threshold_analyses(
+            # random_analysis(
+            #     total_model_score_dict=per_model
+            # )
+            th_results_dict[mode] = threshold_analyses(
                 total_model_score_dict=per_model,
                 scoring_mode=mode,
                 plot_th_analysis=args.plot_th_analysis,
                 verbose=args.verbose,
                 save_path_dir=args.save_path
             )
+        plot_threshold_analysis_compact(th_results_dict=th_results_dict)
     else:
         per_model, per_dataset = collect_score_per_model_over_all_datasets(
             global_dict=global_dict,
             scoring_mode=args.scoring_mode
         )
-        random_analysis(
-            total_model_score_dict=per_model
+        av_results(
+            total_model_score_dict=per_model,
+            n_measurements=len(per_dataset.keys())
         )
+        # random_analysis(
+        #     total_model_score_dict=per_model
+        # )
         threshold_analyses(
                 total_model_score_dict=per_model,
                 scoring_mode=args.scoring_mode,

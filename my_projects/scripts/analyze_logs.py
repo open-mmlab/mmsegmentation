@@ -4,7 +4,7 @@ mmlab/mmdetection/blob/master/tools/analysis_tools/analyze_logs.py."""
 import argparse
 import json
 from collections import defaultdict
-
+import my_projects.scripts.plotting_utils as p_utils
 import matplotlib.pyplot as plt
 from matplotlib import rcParams, rcParamsDefault
 import seaborn as sns
@@ -22,7 +22,7 @@ def reduce_zeros(iteration):
 def plot_curve(log_dicts, args):
     if args.backend is not None:
         plt.switch_backend(args.backend)
-    
+    p_utils.set_params(param_dict=p_utils.LEARNING_PLOT_PARAMS)
     # if legend is None, use {filename}_{key} as legend
     legend = args.legend
     if legend is None:
@@ -60,7 +60,7 @@ def plot_curve(log_dicts, args):
             if metric in ['mIoU', 'mAcc', 'aAcc']:
                 
                 plt.xlabel('step')
-                plt.plot(plot_epochs, plot_values, label=label, linewidth=6)
+                plt.plot(plot_epochs, plot_values, label=label)
                 plot_epochs_reduced = plot_epochs
                 if args.reduce_zeros:
                     plot_epochs_reduced = [
@@ -69,7 +69,7 @@ def plot_curve(log_dicts, args):
                 ax.set_xticks(plot_epochs, plot_epochs_reduced)
             else:
                 plt.xlabel('iter')
-                plt.plot(plot_iters, plot_values, label=label, linewidth=0.5)
+                plt.plot(plot_iters, plot_values, label=label)
         plt.legend(loc='lower right')
         if args.title is not None:
             plt.title(args.title)
@@ -79,10 +79,11 @@ def plot_curve(log_dicts, args):
         print(f'save curve to: {args.out}')
         plt.yticks(np.arange(0, 110, 10))
         plt.ylabel("mIoU")
-        plt.ylim(-1, 101)
+        plt.ylim(0, 101)
         plt.tight_layout()
         plt.savefig(args.out)
         plt.cla()
+        p_utils.reset_params()
 
 
 def parse_args():

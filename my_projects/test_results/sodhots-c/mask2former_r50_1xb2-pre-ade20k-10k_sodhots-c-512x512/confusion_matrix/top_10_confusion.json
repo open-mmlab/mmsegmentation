@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "knife",
+        "pred_label": "pen",
+        "score": 12.698068157152159
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 10.099906337808305
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "mug",
+        "score": 9.537037037037036
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "scissors",
+        "score": 8.976124885215794
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "spoon",
+        "score": 8.552203169090514
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "pen",
+        "score": 5.852390300843636
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "pringles",
+        "score": 5.564951715860112
+    },
+    {
+        "gt_label": "cap",
+        "pred_label": "laptop",
+        "score": 3.567530993539375
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "peach",
+        "score": 2.999592815454916
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "knife",
+        "score": 2.564242457308091
+    }
+]

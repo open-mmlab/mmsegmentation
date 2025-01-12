@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument(
         "--save_dir_path",
         type=str,
-        default="my_projects/test_results/arid20_cat/data/"
+        default="my_projects/images_plots/clutter"
     )
     
     parser.add_argument(
@@ -90,9 +90,15 @@ def make_plot(
         # legend_labels.append(p_utils.fix_metric_name(metric_name))
     if ".png" not in save_path:
         save_path = f"{save_path}.png"
-    plt.legend(handles=legend_handles, loc='lower left')
+    plt.legend(
+        handles=legend_handles,
+        bbox_to_anchor=(0, 0.98, 1, 0.25),
+        ncol=3,
+        mode="expand"
+    )
     plt.xticks(x_axis)
     plt.yticks(y_axis)
+    plt.ylim(48, 101)
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.tight_layout()

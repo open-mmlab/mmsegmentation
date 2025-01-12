@@ -7,7 +7,11 @@ DATASET_SOURCE_PATH = {
     "HOTS"          :       "my_projects/conversion_tests/selection_trained/hots_v1",
     "IRL_VISION"    :       "my_projects/conversion_tests/selection_trained/irl_vision",
     "HOTS_CAT"      :       "my_projects/conversion_tests/selection_trained/hots_v1_cat",
-    "IRL_VISION_CAT":       "my_projects/conversion_tests/selection_trained/irl_vision_cat"
+    "IRL_VISION_CAT":       "my_projects/conversion_tests/selection_trained/irl_vision_cat",
+    "ARID20"        :       "my_projects/conversion_tests/selection_trained/arid20_cat",
+    "ARID10"        :       "my_projects/conversion_tests/selection_trained/arid10_cat",
+    "ADE20K"        :       "my_projects/conversion_tests/zero_shot/models",
+    "SODHOTS"       :       "my_projects/conversion_tests/selection_trained/sodhots-c"
 }
 
 # (test_dataset, output_dataset, target_dataset)
@@ -21,9 +25,11 @@ DATASET_SETUPS = [
     # ("HOTS_CAT", "HOTS", "HOTS_CAT"),
     # ("IRL_VISION_CAT", "IRL_VISION", "IRL_VISION_CAT"),
     # ("IRL_VISION_CAT", "HOTS_CAT", "IRL_VISION_CAT"),
-    ("HOTS_CAT", "IRL_VISION_CAT", "HOTS_CAT")
+    # ("HOTS_CAT", "IRL_VISION_CAT", "HOTS_CAT")
     # ("HOTS_CAT", "IRL_VISION", "HOTS_CAT"),
     # ("IRL_VISION_CAT", "HOTS", "IRL_VISION_CAT")
+    # ("ARID20", "ARID10", "ARID20"),
+    ("HOTS_CAT", "ADE20K", "ADE20K")
 ]
 
 def run_conversion_test(

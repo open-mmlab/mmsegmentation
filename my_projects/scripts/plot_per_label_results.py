@@ -13,8 +13,9 @@ def save_class_hist_plot(class_hist, save_path):
         rotation = 90
     )
     plt.ylabel("IoU")
+    plt.ylim(48, 101)
     
-    plt.savefig(save_path, bbox_inches='tight',dpi=100)
+    plt.savefig(save_path, bbox_inches='tight',dpi=200)
     plt.clf()
 
 def make_class_hist(model_data_dict, metric = "IoU"):

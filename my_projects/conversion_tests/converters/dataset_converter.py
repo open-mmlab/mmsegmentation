@@ -206,14 +206,28 @@ class DatasetConverter:
         for label_idx, (pred_val, gt_val) in enumerate(
             zip(pred_label, gt_label_converted)
         ):
-            if type(pred_val) is list:
+            if isinstance(pred_val, (list, np.ndarray)):
                 if len(pred_val) == 1:
                     new_pred_label[label_idx] = pred_val[0]
                     continue
                 for pred_val_item in pred_val:
-                    if gt_val == pred_val_item and gt_val != self.unknown_idx:
+                    if isinstance(gt_val, (list, np.ndarray)):
+                        if len(gt_val) == 1:   
+                            new_pred_label[label_idx] = gt_val[0]
+                            continue
+                        if pred_val_item in gt_val:
+                            new_pred_label[label_idx] = pred_val_item
+                            continue
+                    elif gt_val == pred_val_item and gt_val != self.unknown_idx:
                         new_pred_label[label_idx] = pred_val_item
                         break
+            elif isinstance(gt_val, (list, np.ndarray)):
+                if len(gt_val) == 1:   
+                    new_pred_label[label_idx] = gt_val[0]
+                    continue
+                if pred_val in gt_val:
+                    new_pred_label[label_idx] = pred_val
+                    continue
             elif pred_val == gt_val:
                 new_pred_label[label_idx] = pred_val
             else:

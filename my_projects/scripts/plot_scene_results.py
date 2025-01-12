@@ -21,7 +21,7 @@ def parse_args():
         '--save_dir_path',
         '-dir',
         type=str,
-        default="my_projects/ablation_tests/test_results/data"
+        default="my_projects/images_plots/ablation"
     )
     
     parser.add_argument(
@@ -203,7 +203,7 @@ def plot_global_plot(
     plt.xlabel("model name")
     plt.legend(
         bbox_to_anchor=(0, 1.0, 1, 0.2),
-        ncol=5,
+        ncol=3,
         mode="expand"
     )
     

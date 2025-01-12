@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "lime",
+        "pred_label": "pear",
+        "score": 87.890625
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "food_box",
+        "score": 27.021410917344195
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "marker",
+        "score": 22.07911036036036
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 18.40294707188905
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "cereal_box",
+        "score": 17.079915859209862
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "toothpaste",
+        "score": 12.246023719775675
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "cereal_box",
+        "score": 9.164510347274474
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "food_box",
+        "score": 8.456335980258139
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "shampoo",
+        "score": 8.108853544175783
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "toothpaste",
+        "score": 6.5304157724783884
+    }
+]

@@ -60,7 +60,19 @@ def run_clutter_test(
     call_list.append(work_dir_path)
     subprocess.call(call_list)
     
-   
+# def run_scene_test(
+#     cfg_path, checkpoint_path, 
+#     work_dir_path
+# ):
+#     # run scene experiment
+#     call_list = ["python", "my_projects/ablation_tests/scripts/scene_test.py"]
+#     call_list.append(cfg_path)
+#     call_list.append(checkpoint_path)
+    
+#     # specify workdir arg
+#     call_list.append("--work-dir")
+#     call_list.append(work_dir_path)
+#     subprocess.call(call_list)   
 
 def run_confusion_matrix(
     cfg_path, prediction_result_path,
@@ -132,7 +144,7 @@ def collect_and_organize_all_data(
             clutter_path
         ]
         subprocess.call(call_list)
-        
+    
     
     # plot clutterdata global and per model 
     work_dir_name = results_path.split("/")[-2 if results_path[-1] == '/' else -1]
@@ -228,7 +240,11 @@ def main():
             checkpoint_path=checkpoint_path,
             work_dir_path=work_dir_path
         )
-        
+        # run_scene_test( 
+        #     cfg_path=cfg_path,
+        #     checkpoint_path=checkpoint_path,
+        #     work_dir_path=work_dir_path
+        # )
         bench_work_dir_path = os.path.join(work_dir_path, "benchmark")
         
         run_benchmark(

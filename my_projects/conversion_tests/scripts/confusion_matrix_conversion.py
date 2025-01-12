@@ -31,21 +31,43 @@ def parse_args():
         '-test_ds',
         type=str,
         default="HOTS",
-        choices=["HOTS", "IRL_VISION", "HOTS_CAT", "IRL_VISION_CAT"]
+        choices=[
+            "HOTS", 
+            "IRL_VISION",
+            "HOTS_CAT", 
+            "IRL_VISION_CAT",
+            "ARID20",
+            "ARID10",
+            "ADE20K"
+        ]
     )
     parser.add_argument(
         '--output_dataset',
         '-out_ds',
         type=str,
         default="HOTS",
-        choices=["HOTS", "IRL_VISION", "ADE20K", "HOTS_CAT", "IRL_VISION_CAT"]
+        choices=[
+            "HOTS", 
+            "IRL_VISION",
+            "HOTS_CAT", 
+            "IRL_VISION_CAT",
+            "ARID20",
+            "ARID10",
+            "ADE20K"
+        ]
     )
     parser.add_argument(
         '--target_dataset',
         '-tar_ds',
         type=str,
         default="HOTS_CAT",
-        choices=["HOTS_CAT", "IRL_VISION_CAT", "HOTS", "IRL_VISION"]
+        choices=[
+            "HOTS_CAT", 
+            "IRL_VISION_CAT",
+            "ARID20",
+            "ARID10",
+            "ADE20K"
+        ]
     )
    
     parser.add_argument(

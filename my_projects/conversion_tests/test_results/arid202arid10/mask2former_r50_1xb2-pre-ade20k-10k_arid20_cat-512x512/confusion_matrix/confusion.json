@@ -1,0 +1,4962 @@
+[
+    {
+        "gt_label": "_background_",
+        "pred_label": "apple",
+        "score": 0.018922129480842043
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "ball",
+        "score": 0.0021696777636410554
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "banana",
+        "score": 0.03384473248171925
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "binder",
+        "score": 6.636745528167159
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "cereal_box",
+        "score": 24.5801300088841
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "coffee_mug",
+        "score": 0.0021547402230996365
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "food_bag",
+        "score": 0.030868427528841592
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "food_box",
+        "score": 1.7603704808805083
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "food_can",
+        "score": 0.012827612939943243
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "glue_stick",
+        "score": 0.004843497520554989
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "hand_towel",
+        "score": 0.04478648092830839
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "instant_noodles",
+        "score": 0.509937759002949
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "keyboard",
+        "score": 0.19940869745766793
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "kleenex",
+        "score": 1.6148638984665495
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "lemon",
+        "score": 0.019598053190341237
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "marker",
+        "score": 0.008660039128887449
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "orange",
+        "score": 0.005885390973318939
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "peach",
+        "score": 0.006154266703064473
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "pear",
+        "score": 0.00119500324331349
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "potato",
+        "score": 0.025121208805530773
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "shampoo",
+        "score": 0.004869638216502472
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "soda_can",
+        "score": 0.0021510058379642823
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "sponge",
+        "score": 0.035106954657469124
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "tomato",
+        "score": 0.0010568309933053678
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "toothpaste",
+        "score": 0.0056127808584380484
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "_unknown_",
+        "score": 0.0008626429662669257
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "_background_",
+        "score": 1.4441756469467049
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "ball",
+        "score": 3.8364733768296557
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "banana",
+        "score": 0.5351513818634998
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "cereal_box",
+        "score": 0.02443613615815067
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "food_box",
+        "score": 0.009774454463260269
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "food_can",
+        "score": 0.20770715734428075
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "lemon",
+        "score": 0.021992522542335604
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "peach",
+        "score": 18.461500867482833
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "pear",
+        "score": 0.3860909512987806
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "potato",
+        "score": 0.2761283385871026
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "tomato",
+        "score": 0.04398504508467121
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "_background_",
+        "score": 1.25617314639886
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "binder",
+        "score": 0.3016141327765072
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "coffee_mug",
+        "score": 0.5601405322992278
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "food_box",
+        "score": 0.16240760995658082
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "food_can",
+        "score": 0.0629743793709191
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "glue_stick",
+        "score": 0.21212422524941169
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "kleenex",
+        "score": 0.5568260912797057
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "marker",
+        "score": 0.0033144410195220576
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "peach",
+        "score": 13.632295913294223
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "soda_can",
+        "score": 0.2518975174836764
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "_background_",
+        "score": 3.1885409055405782
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "apple",
+        "score": 0.0050391796215576105
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "binder",
+        "score": 0.0050391796215576105
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "cereal_box",
+        "score": 0.06676912998563835
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "food_can",
+        "score": 0.02771548791856686
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "instant_noodles",
+        "score": 0.12975887525510849
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "kleenex",
+        "score": 0.08944543828264759
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "potato",
+        "score": 4.838872231600695
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "_background_",
+        "score": 0.7274119448698315
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "apple",
+        "score": 99.27258805513017
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "_background_",
+        "score": 1.1638420698768925
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "ball",
+        "score": 0.19289175341385945
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "cereal_box",
+        "score": 2.847008091252637
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "food_bag",
+        "score": 0.04219507105928176
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "food_box",
+        "score": 0.6120603714093618
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "hand_towel",
+        "score": 0.03616720376509865
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "instant_noodles",
+        "score": 0.02132937657941715
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "shampoo",
+        "score": 0.05146871305033269
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "soda_can",
+        "score": 0.09598219460737718
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "sponge",
+        "score": 0.17202605893399486
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "toothpaste",
+        "score": 0.3894929636241393
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "_background_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "_background_",
+        "score": 0.32782434324589543
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "apple",
+        "score": 0.00046543920006516143
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "binder",
+        "score": 0.05600785040784109
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "food_box",
+        "score": 0.6491325376908785
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "glue_stick",
+        "score": 0.021022337202943126
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "hand_towel",
+        "score": 0.007136734400999143
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "instant_noodles",
+        "score": 0.8204141633148581
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "keyboard",
+        "score": 0.11853184961659446
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "kleenex",
+        "score": 1.374364384592411
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "lemon",
+        "score": 0.0013187444001846243
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "marker",
+        "score": 0.014040749201965706
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "peach",
+        "score": 7.757320001086025e-05
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "shampoo",
+        "score": 0.20944764002932265
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "sponge",
+        "score": 0.04289797960600572
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "toothpaste",
+        "score": 0.09417386481318435
+    },
+    {
+        "gt_label": "cereal_box",
+        "pred_label": "_unknown_",
+        "score": 0.7841099057097755
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "_background_",
+        "score": 0.891895127499102
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "ball",
+        "score": 0.8559798874655812
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "food_can",
+        "score": 0.2095055668622052
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "orange",
+        "score": 0.5147851071471328
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "peach",
+        "score": 20.07063330539926
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "soda_can",
+        "score": 21.597031006823897
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "_background_",
+        "score": 6.981627296587926
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "food_can",
+        "score": 0.9448818897637795
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "glue_stick",
+        "score": 0.4461942257217848
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 87.69028871391076
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "peach",
+        "score": 3.937007874015748
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "_background_",
+        "score": 1.609145969967387
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "binder",
+        "score": 0.18380000102395544
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "cereal_box",
+        "score": 0.31742618561240216
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "food_box",
+        "score": 4.181322028865304
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "hand_towel",
+        "score": 1.28352814085531
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "keyboard",
+        "score": 0.30616267580034917
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "marker",
+        "score": 0.0020479108749187234
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "sponge",
+        "score": 0.0670690811535882
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "toothpaste",
+        "score": 0.0020479108749187234
+    },
+    {
+        "gt_label": "food_bag",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "_background_",
+        "score": 0.9258409645629554
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "ball",
+        "score": 0.028445064322548678
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "binder",
+        "score": 0.7995204100983037
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "cereal_box",
+        "score": 5.085855156509026
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "kleenex",
+        "score": 1.2109033296018303
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "soda_can",
+        "score": 0.005199635413799221
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "sponge",
+        "score": 33.45934802689129
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_box",
+        "pred_label": "_unknown_",
+        "score": 0.0027527481602466464
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "_background_",
+        "score": 5.527831094049904
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "ball",
+        "score": 3.723608445297505
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "glue_stick",
+        "score": 0.5374280230326296
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "marker",
+        "score": 16.86500319897633
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "peach",
+        "score": 0.17914267434420986
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "food_can",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "_background_",
+        "score": 4.985539181930863
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "ball",
+        "score": 1.6526649221870267
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "food_can",
+        "score": 0.28921636138272966
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "peach",
+        "score": 0.26167194601294586
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "soda_can",
+        "score": 1.8454758297755132
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "_background_",
+        "score": 1.0213444635002262
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "binder",
+        "score": 0.3764865852692275
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "cereal_box",
+        "score": 0.20268422411303288
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "food_bag",
+        "score": 0.2630038671025357
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "food_box",
+        "score": 0.0007667751227479175
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "keyboard",
+        "score": 0.17277999432586408
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "kleenex",
+        "score": 0.0002555917075826392
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "marker",
+        "score": 0.0005111834151652784
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "sponge",
+        "score": 0.0017891419530784744
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "_background_",
+        "score": 0.06749493787965902
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "binder",
+        "score": 0.007499437542184336
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "cereal_box",
+        "score": 45.55158363122766
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "food_bag",
+        "score": 0.02249831262655301
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "food_box",
+        "score": 0.009999250056245782
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "keyboard",
+        "score": 1.4223933205009625
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "kleenex",
+        "score": 0.003749718771092168
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "_background_",
+        "score": 0.5481108685346313
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "apple",
+        "score": 0.004010567330741205
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "banana",
+        "score": 0.013574227888662539
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "binder",
+        "score": 0.3114873960209002
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "cereal_box",
+        "score": 2.1757841944569845
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "food_bag",
+        "score": 0.07075052111666535
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "food_box",
+        "score": 0.028279641434713617
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "glue_stick",
+        "score": 0.016967784860828172
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "hand_towel",
+        "score": 0.5576745290925526
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "instant_noodles",
+        "score": 0.3476853370573336
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "kleenex",
+        "score": 0.012031701992223613
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "lemon",
+        "score": 0.028896651793289187
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "marker",
+        "score": 0.08288505816865156
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "shampoo",
+        "score": 0.015219588844864058
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "sponge",
+        "score": 0.025708764940648745
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "toothpaste",
+        "score": 0.005141752988129749
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "_unknown_",
+        "score": 0.006272938645518294
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "_background_",
+        "score": 0.721366666269657
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "ball",
+        "score": 0.05042023479155005
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "binder",
+        "score": 0.04525910839556461
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "cereal_box",
+        "score": 8.373332062902222
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "food_box",
+        "score": 1.791704878852483
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "food_can",
+        "score": 0.10560458625631741
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "hand_towel",
+        "score": 0.06471258481120203
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "instant_noodles",
+        "score": 0.10520757653354931
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "marker",
+        "score": 0.2568652906309676
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "peach",
+        "score": 0.10798664459292608
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "sponge",
+        "score": 0.15602482104786747
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "_background_",
+        "score": 1.1421634893922255
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "apple",
+        "score": 14.906061191271004
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "banana",
+        "score": 0.06621237619665075
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "cereal_box",
+        "score": 0.09380086627858857
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "keyboard",
+        "score": 0.1351836014014953
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "kleenex",
+        "score": 0.3834800121389356
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "potato",
+        "score": 8.152398819212625
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "shampoo",
+        "score": 0.013794245040968907
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "_background_",
+        "score": 5.234375
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 94.765625
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "_background_",
+        "score": 1.1124390916613036
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "hand_towel",
+        "score": 0.7906591891146456
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "keyboard",
+        "score": 6.352854647421164
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "kleenex",
+        "score": 0.11951824951733014
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "orange",
+        "score": 0.7171094971039809
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "_background_",
+        "score": 2.120988152030281
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "apple",
+        "score": 11.98907030392618
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "ball",
+        "score": 5.191605635064615
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "cereal_box",
+        "score": 0.6069564827879683
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "coffee_mug",
+        "score": 0.06943044637057941
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "food_can",
+        "score": 0.00895876727362315
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "kleenex",
+        "score": 0.04479383636811574
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "marker",
+        "score": 0.013438150910434724
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "peach",
+        "score": 20.208739277475416
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "pear",
+        "score": 0.4725749736836211
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "potato",
+        "score": 0.00895876727362315
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "soda_can",
+        "score": 0.08062890546260834
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "tomato",
+        "score": 0.013438150910434724
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "_background_",
+        "score": 3.042060733435723
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "ball",
+        "score": 0.0026944736345754857
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "coffee_mug",
+        "score": 0.7813973540268908
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "food_can",
+        "score": 0.07275078813353812
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "glue_stick",
+        "score": 0.16166841807452914
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "marker",
+        "score": 0.005388947269150971
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "pear",
+        "score": 15.1240805108722
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "potato",
+        "score": 0.08891762994099103
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "soda_can",
+        "score": 0.36644841430226605
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "_background_",
+        "score": 1.402998017839445
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "apple",
+        "score": 17.845639246778987
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "cereal_box",
+        "score": 0.1083994053518335
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "food_box",
+        "score": 0.03406838453914767
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "keyboard",
+        "score": 0.6565906838453914
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "kleenex",
+        "score": 0.027874132804757184
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "lemon",
+        "score": 56.07346382556987
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "potato",
+        "score": 0.40572348860257684
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "_background_",
+        "score": 2.3154459453876974
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "banana",
+        "score": 4.73829883917875
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "food_bag",
+        "score": 0.0020655182385260463
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "lemon",
+        "score": 0.012393109431156277
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "orange",
+        "score": 0.5845416615028711
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "peach",
+        "score": 1.063741892840914
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "pear",
+        "score": 0.39038294708142274
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "_background_",
+        "score": 1.7950620750516455
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "binder",
+        "score": 0.5014139874445938
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "cereal_box",
+        "score": 2.186164985258429
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "food_box",
+        "score": 0.030084839246675623
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "glue_stick",
+        "score": 17.573557431958122
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "hand_towel",
+        "score": 0.42720471730279386
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "keyboard",
+        "score": 0.09025451774002688
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "kleenex",
+        "score": 0.14039591648448627
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "marker",
+        "score": 11.195571511662889
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "toothpaste",
+        "score": 27.419322489420168
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "_background_",
+        "score": 2.422813036020583
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "ball",
+        "score": 1.7324185248713553
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "coffee_mug",
+        "score": 1.4108061749571184
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "food_box",
+        "score": 0.47598627787307035
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "food_can",
+        "score": 0.44596912521440824
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "peach",
+        "score": 0.37735849056603776
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "_background_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "apple",
+        "score": 0.10887908977080953
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "binder",
+        "score": 0.10887908977080953
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "cereal_box",
+        "score": 21.008220371277698
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "food_box",
+        "score": 11.764385649735969
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "hand_towel",
+        "score": 2.2374652947901357
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "keyboard",
+        "score": 3.353475964940933
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "kleenex",
+        "score": 11.639174696499538
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "lemon",
+        "score": 0.7131580379988023
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "toothpaste",
+        "score": 0.6314987206706952
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "_background_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "_background_",
+        "score": 4.24015009380863
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "apple",
+        "score": 0.2626641651031895
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "binder",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "cereal_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "peach",
+        "score": 1.1632270168855536
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "potato",
+        "score": 0.450281425891182
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "_background_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "binder",
+        "score": 0.15484234234234234
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "cereal_box",
+        "score": 0.23226351351351351
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "food_bag",
+        "score": 0.5349099099099099
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "instant_noodles",
+        "score": 0.09149774774774774
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "keyboard",
+        "score": 2.9420045045045047
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "marker",
+        "score": 63.309403153153156
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "_unknown_",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "_background_",
+        "score": 0.09751340809361286
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "ball",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "bell_pepper",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "binder",
+        "score": 0.04333929248605017
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 23.928706863860448
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "coffee_mug",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "flashlight",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "food_bag",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "food_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "food_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "glue_stick",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "hand_towel",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "instant_noodles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "kleenex",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "lime",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "potato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "shampoo",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "soda_can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "sponge",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "tomato",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "toothpaste",
+        "score": 0.0
+    }
+]

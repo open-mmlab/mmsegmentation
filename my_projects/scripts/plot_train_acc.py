@@ -21,10 +21,11 @@ def parse_args():
         '--selection_path', 
         type=str,
         help='path of models',
-        default='my_projects/best_models/selection_trained'
+        default='my_projects/best_models/selection_trained/fine_tuning'
     )
     parser.add_argument(
         '--results_path',
+        '-rp',
         type=str,
         help='path to store results',
         default='my_projects/training_data'
@@ -32,6 +33,11 @@ def parse_args():
     parser.add_argument(
         '--reduce_zeros',
         '-rz',
+        action='store_true'
+    )
+    parser.add_argument(
+        '--one_plot',
+        '-op',
         action='store_true'
     )
     args = parser.parse_args()
@@ -153,8 +159,12 @@ def main():
         for dataset_name in jsons.keys():
             call_list.append(p_utils.map_dataset_name(dataset_name))
         
+        save_path = os.path.join(
+            args.results_path,
+            f"{model_name}_learning.png"
+        )
         call_list.append("--out")
-        call_list.append(f"my_projects/training_data/{model_name}_learning.png")
+        call_list.append(save_path)
         
         if args.reduce_zeros:
             call_list.append('-rz')

@@ -14,7 +14,9 @@ from .class_names import (ade_classes, ade_palette, bdd100k_classes,
                           irl_vision_sim_classes, irl_vision_sim_palette,
                           irl_vision_sim_cat_classes, 
                           irl_vision_sim_cat_palette,
-                          arid20cat_classes, arid20cat_palette
+                          arid20cat_classes, arid20cat_palette,
+                          arid10cat_classes, arid10cat_palette,
+                          sodhots_c_classes, sodhots_c_palette
                         )
 # yapf: enable
 from .collect_env import collect_env
@@ -83,5 +85,9 @@ __all__ = [
     'irl_vision_sim_cat_classes', 
     'irl_vision_sim_cat_palette',
     'arid20cat_classes',
-    'arid20cat_palette'
+    'arid20cat_palette',
+    'arid10cat_classes',
+    'arid10cat_palette',
+    'sodhots_c_classes', 
+    'sodhots_c_palette'
 ]

@@ -1,7 +1,10 @@
 import json 
 import os
 import argparse
-from my_projects.scripts.plotting_utils import map_dataset_name, map_metric_key, map_model_name
+import numpy as np
+from my_projects.scripts.plotting_utils import (
+    map_dataset_name, map_metric_key, map_model_name, map_metric_key_strict
+)
 map_basic2plot = {
     "mPr@50.0"      :   "mPr@50",
     "mPr@60.0"      :   "mPr@60",
@@ -201,10 +204,15 @@ def fix_model_names(data_dict: dict) -> dict:
         new_data[model_name_] = model_data
     return new_data
 
-def fix_metrics_keys_and_vals(metric_dict: dict, n_decimals = 1) -> dict:
+def fix_metrics_keys_and_vals(
+    metric_dict: dict, 
+    n_decimals = 1
+) -> dict:
     new_dict = {}
     for metric_name, metric_val in metric_dict.items():
-        metric_name_ = map_metric_key(key=metric_name)
+        metric_name_ = map_metric_key_strict(key=metric_name)
+        if not metric_name_ or np.isnan(metric_val):
+            continue
         new_dict[metric_name_] = round(metric_val, n_decimals)
     return new_dict
 
@@ -340,4 +348,9 @@ def main():
     
 
 if __name__ == '__main__':
+    # fix_jsons(
+    #     global_results_json_path="my_projects/test_results/arid10_cat/data/arid10_cat_results.json",
+    #     confusion_json_path="my_projects/test_results/arid10_cat/data/arid10_cat_confusion_top_5.json",
+    #     per_label_results_json_path="my_projects/test_results/arid10_cat/data/arid10_cat_per_label_results.json"
+    # )
     main()

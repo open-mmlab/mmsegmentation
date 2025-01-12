@@ -8,7 +8,11 @@ from mmseg.utils import (
     hots_v1_cat_classes, 
     hots_v1_cat_palette,
     irl_vision_sim_cat_classes,
-    irl_vision_sim_cat_palette
+    irl_vision_sim_cat_palette,
+    arid20cat_classes,
+    arid20cat_palette,
+    arid10cat_classes,
+    arid10cat_palette
 )
 
 
@@ -303,7 +307,9 @@ DATASET_CLASSES = {
     "HOTS_CAT"      :   hots_v1_cat_classes,
     "IRL_VISION"    :   irl_vision_sim_classes,
     "IRL_VISION_CAT":   irl_vision_sim_cat_classes,
-    "ADE20K"        :   ade_classes 
+    "ADE20K"        :   ade_classes,
+    "ARID20"        :   arid20cat_classes,
+    "ARID10"        :   arid10cat_classes
 }
 
 def get_auto_convert(dataset_name):
@@ -327,7 +333,8 @@ SOURCE_TARGET_MAP = {
                 "IRL_VISION"    : [get_auto_convert(dataset_name="IRL_VISION")]
     },
     "ADE20K"    :   {
-        "HOTS_CAT"      :   [ADE20K2HOTS_CAT]
+        "HOTS_CAT"      :   [ADE20K2HOTS_CAT],
+        "ADE20K"        :   [get_auto_convert(dataset_name="ADE20K")]
     },
     "IRL_VISION_CAT"    :           {
                 "HOTS_CAT"          :   [IRL_VISION_CAT2HOTS_CAT],
@@ -338,6 +345,14 @@ SOURCE_TARGET_MAP = {
     "HOTS_CAT"          :   {
         "IRL_VISION_CAT"    :   [HOTS_CAT2IRL_VISION_CAT],
         "HOTS_CAT"          : [get_auto_convert(dataset_name="HOTS_CAT")]
+    },
+    "ARID20"            :   {
+        "ARID20"            : [get_auto_convert(dataset_name="ARID20")],
+        "ARID10"            : [get_auto_convert(dataset_name="ARID10")]
+    },
+    "ARID10"            :   {
+        "ARID20"            : [get_auto_convert(dataset_name="ARID20")],
+        "ARID10"            : [get_auto_convert(dataset_name="ARID10")]
     }
 }
 
@@ -391,6 +406,8 @@ DATASET_PALETTE = {
     "HOTS_CAT"      :   hots_v1_cat_palette,
     "IRL_VISION"    :   irl_vision_sim_palette,
     "IRL_VISION_CAT":   irl_vision_sim_cat_palette,
-    "ADE20K"        :   ade_palette 
+    "ADE20K"        :   ade_palette,
+    "ARID20"        :   arid20cat_palette,
+    "ARID10"        :   arid10cat_palette
 }
 

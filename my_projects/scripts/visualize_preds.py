@@ -19,7 +19,13 @@ from mmseg.utils import (
     irl_vision_sim_cat_classes,
     irl_vision_sim_cat_palette,
     arid20cat_classes,
-    arid20cat_palette
+    arid20cat_palette,
+    arid10cat_classes,
+    arid10cat_palette,
+    sodhots_c_classes,
+    sodhots_c_palette,
+    cocostuff_classes,
+    cocostuff_palette
 )
 from mmseg.visualization.local_visualizer_custom import SegLocalVisualizerCustom as SegVis
 
@@ -31,7 +37,9 @@ DATASET_TEST_IMG_PATH = {
     "HOTS-C"            :           "/media/ids/Ubuntu files/data/HOTS_v1_cat/SemanticSegmentation/img_dir/test",
     "SOD"               :           "/media/ids/Ubuntu files/data/irl_vision_sim/SemanticSegmentation/img_dir/test",
     "SOD-C"             :           "/media/ids/Ubuntu files/data/irl_vision_sim_cat/SemanticSegmentation/img_dir/test", 
-    "ARID20"            :           "/media/ids/Ubuntu files/data/ARID20_CAT/img_dir/test"
+    "ARID20"            :           "/media/ids/Ubuntu files/data/ARID20_CAT/img_dir/test",
+    "ARID10"            :           "/media/ids/Ubuntu files/data/ARID10_CAT/img_dir/test",
+    "SODHOTS-C"         :           "/media/ids/Ubuntu files/data/SODHOTS-C/SemanticSegmentation/img_dir/test"
 }
 
 DATASET_TEST_ANN_PATH = {
@@ -39,7 +47,9 @@ DATASET_TEST_ANN_PATH = {
     "HOTS-C"            :           "/media/ids/Ubuntu files/data/HOTS_v1_cat/SemanticSegmentation/ann_dir/test",
     "SOD"               :           "/media/ids/Ubuntu files/data/irl_vision_sim/SemanticSegmentation/ann_dir/test",
     "SOD-C"             :           "/media/ids/Ubuntu files/data/irl_vision_sim_cat/SemanticSegmentation/ann_dir/test", 
-    "ARID20"            :           "/media/ids/Ubuntu files/data/ARID20_CAT/ann_dir/test"
+    "ARID20"            :           "/media/ids/Ubuntu files/data/ARID20_CAT/ann_dir/test",
+    "ARID10"            :           "/media/ids/Ubuntu files/data/ARID10_CAT/ann_dir/test",
+    "SODHOTS-C"         :           "/media/ids/Ubuntu files/data/SODHOTS-C/SemanticSegmentation/ann_dir/test"
 }
 
 DATASET_PALETTE = {
@@ -47,7 +57,10 @@ DATASET_PALETTE = {
     "HOTS-C"            :           hots_v1_cat_palette,
     "SOD"               :           irl_vision_sim_palette,
     "SOD-C"             :           irl_vision_sim_cat_palette, 
-    "ARID20"            :           arid20cat_palette
+    "ARID20"            :           arid20cat_palette,
+    "ARID10"            :           arid10cat_palette,
+    "ADE20K"            :           ade_palette,
+    "SODHOTS-C"         :           sodhots_c_palette
 }
 
 DATASET_CLASSES = {
@@ -55,7 +68,10 @@ DATASET_CLASSES = {
     "HOTS-C"            :           hots_v1_cat_classes,
     "SOD"               :           irl_vision_sim_classes,
     "SOD-C"             :           irl_vision_sim_cat_classes, 
-    "ARID20"            :           arid20cat_classes
+    "ARID20"            :           arid20cat_classes,
+    "ARID10"            :           arid10cat_classes,
+    "ADE20K"            :           ade_classes,
+    "SODHOTS-C"         :           sodhots_c_classes
 }
 
 DATASET_DEFAULT_PRED_LIST = {
@@ -84,10 +100,28 @@ DATASET_DEFAULT_PRED_LIST = {
         "scene_273.png"
     ],
     "ARID20"            :       [
-        "floor_bottom_seq03_7.png",
-        "floor_bottom_seq03_15.png",
-        "floor_bottom_seq03_19.png"
-    ]
+        "floor_bottom_seq03_17.png",
+        "table_bottom_seq01_19.png",
+        "table_top_seq02_16.png",
+        "table_top_seq06_16.png"
+    ],
+    "ARID10"            :       [
+        "floor_bottom_box_seq33_5.png",
+        "floor_top_non-fruits_seq39_7.png",
+        "table_bottom_mixed_seq13_5.png",
+        "table_top_non-fruits_seq21_3.png"
+    ],
+    "ARID20_CLUTTER"    :       [
+        "table_top_seq03_7.png",
+        "table_top_seq03_14.png",
+        "table_top_seq03_19.png"
+    ],
+    "SODHOTS-C"         :       [
+        "mix_2_top_raw_8.png",
+        "scene_99.png",
+        "office_6_top_raw_5.png",
+        "scene_395.png"
+    ]   
 }
 
 CONVERSION_IDX = 255
@@ -182,6 +216,23 @@ def parse_args():
         '-gt',
         action='store_true'
     )
+    parser.add_argument(
+        '--clutter',
+        '-cl',
+        action='store_true'
+    )
+    parser.add_argument(
+        '--test_dataset',
+        '-tds',
+        type=str,
+        default=None
+    )
+    parser.add_argument(
+        '--output_dataset',
+        '-ods',
+        type=str,
+        default=None
+    )
     # parser.add_argument(
     #     '--with_iou',
     #     '-iou',
@@ -189,21 +240,43 @@ def parse_args():
     # )
     
     args = parser.parse_args()
+    # # TODO temp defaults
+    # args.include_raw = True
+    # args.include_gt = True
+    
     args.dataset_name = p_utils.map_dataset_name(args.dataset_name)
+    if args.test_dataset is None:
+        args.test_dataset = args.dataset_name
+    else:
+        args.test_dataset = p_utils.map_dataset_name(args.test_dataset)
+        
+    if args.output_dataset is None:
+        args.output_dataset = args.dataset_name
+    else:
+        args.output_dataset = p_utils.map_dataset_name(args.output_dataset)
+        
     if not args.pred_names:
-        args.pred_names = DATASET_DEFAULT_PRED_LIST[args.dataset_name]
+        ds_name = args.test_dataset
+        if ds_name == "ARID20" and args.clutter:
+            ds_name = "ARID20_CLUTTER"
+        args.pred_names = DATASET_DEFAULT_PRED_LIST[ds_name]
     if not args.set_name:
         pred_name = args.pred_names[0] if len(args.pred_names) == 1 else "set"
+        if ds_name == "ARID20" and args.clutter:
+            pred_name = f"clutter_{pred_name}"
         pred_name = f"_{pred_name}"
         args.set_name = f"{args.dataset_name}{pred_name}".replace(
             ".png", ""
         )
+    print("args")
+    print(args)
+    print()
     return args
 
 
-def get_gt_img(dataset_name, pred_name):
+def get_gt_img(test_dataset, pred_name):
     gt_path = os.path.join(
-        DATASET_TEST_ANN_PATH[dataset_name],
+        DATASET_TEST_ANN_PATH[test_dataset],
         pred_name
     )
     try:
@@ -226,9 +299,9 @@ def get_pred_label(pred_name, model_dir_path):
         print(f"failed to open pred image at {pred_label_path}")
         return None
 
-def get_rgb_img(dataset_name, pred_name):
+def get_rgb_img(test_dataset, pred_name):
     rgb_path = os.path.join(
-        DATASET_TEST_IMG_PATH[dataset_name],
+        DATASET_TEST_IMG_PATH[test_dataset],
         pred_name
     )
     try:
@@ -263,12 +336,12 @@ def get_all_figures_dict(args):
         figures_dict[pred_name] = {}
         if args.include_raw:
             figures_dict[pred_name]["Input"] = get_rgb_img(
-                dataset_name=args.dataset_name, 
+                test_dataset=args.test_dataset, 
                 pred_name=pred_name
             )
         if args.include_gt:
             figures_dict[pred_name]["Ground Truth"] = get_gt_img(
-                dataset_name=args.dataset_name, 
+                test_dataset=args.test_dataset, 
                 pred_name=pred_name
             )
         
@@ -349,15 +422,16 @@ def generate_set_figure(args):
             'hspace':0.001
         }
     )
-    
-    classes = copy(DATASET_CLASSES[args.dataset_name]())
-    palette = copy(DATASET_PALETTE[args.dataset_name]())     
+    print(f"drawing and labeling using {args.output_dataset}")
+    classes = copy(DATASET_CLASSES[args.output_dataset]())
+    palette = copy(DATASET_PALETTE[args.output_dataset]())
+    print(f"getting ann and rgb from {args.test_dataset}")     
     visualizer = SegVis(alpha=args.alpha)
     
     for row_idx, (pred_name, pred_dict) in enumerate(figures_dict.items()):
         figures_item_list = list(pred_dict.items())
         rgb_img = get_rgb_img(
-            dataset_name=args.dataset_name, 
+            test_dataset=args.test_dataset, 
             pred_name=pred_name
         )
         if rgb_img is None:
@@ -368,12 +442,17 @@ def generate_set_figure(args):
                 axes = subplots[col_idx]
             else:
                 axes = subplots[row_idx][col_idx]
-            if not fig_name == "Input":    
+            if not fig_name == "Input":
+                classes_ = classes
+                palette_ = palette
+                if "bise" in fig_name.lower() and args.output_dataset == "ADE20K":
+                    classes_ = cocostuff_classes()
+                    palette_ = cocostuff_palette()
                 img = visualizer._draw_sem_seg(
                     image=rgb_img.copy(),
                     sem_seg=label_to_pixeldata(label=label),
-                    classes=classes,
-                    palette=palette,
+                    classes=classes_,
+                    palette=palette_,
                     with_labels=args.include_label,
                     label_scale=args.label_scale,
                     ignore_idx=0,
@@ -394,7 +473,7 @@ def generate_set_figure(args):
     print(f"saved fig in : {save_path}")
     figure.savefig(
         save_path,
-        dpi=500,
+        dpi=150,
         bbox_inches='tight'
     )
     

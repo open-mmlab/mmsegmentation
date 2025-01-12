@@ -47,27 +47,46 @@ clutter_plot = {
     'axes.titlesize'    :   30,
     'xtick.labelsize'   :   25,
     'ytick.labelsize'   :   25,
-    'lines.linewidth'   :   6
+    'lines.linewidth'   :   8
 }
-
+LEARNING_PLOT_PARAMS = {
+    'figure.figsize'    :   (12, 8),
+    'legend.fontsize'   :   25,
+    'axes.labelsize'    :   30,
+    'axes.titlesize'    :   30,
+    'xtick.labelsize'   :   25,
+    'ytick.labelsize'   :   25,
+    'lines.linewidth'   :   8
+}
 TRADEOFF_PLOT_PARAMS = {
     'figure.figsize'    :   (12, 8),
     'legend.fontsize'   :   25,
-    'axes.labelsize'    :   25,
-    'axes.titlesize'    :   25,
+    'axes.labelsize'    :   30,
+    'axes.titlesize'    :   30,
     'xtick.labelsize'   :   25,
     'ytick.labelsize'   :   25,
-    'lines.linewidth'   :   6,
+    'lines.linewidth'   :   8,
     'lines.markersize'  :   30
 }
 PRED_VISUALIZATION_FIGURE_PARAMS_2ROWS = {
     'figure.figsize'    :   (16, 8),
+    'figure.constrained_layout.use' : True,
     'legend.fontsize'   :   20,
     # 'axes.labelsize'    :   30,
     'axes.titlesize'    :   25,
     # 'xtick.labelsize'   :   30,
     # 'ytick.labelsize'   :   25,
     'lines.linewidth'   :   6
+}
+PRED_VISUALIZATION_FIGURE_PARAMS_3ROWS = {
+    'figure.figsize'    :   (10, 6),
+    'figure.constrained_layout.use' : True,
+    'legend.fontsize'   :   20,
+    # 'axes.labelsize'    :   30,
+    'axes.titlesize'    :   30,
+    # 'xtick.labelsize'   :   30,
+    # 'ytick.labelsize'   :   25,
+    'lines.linewidth'   :   4
 }
 PRED_VISUALIZATION_FIGURE_PARAMS = {
     'figure.figsize'    :   (16, 4),
@@ -119,7 +138,9 @@ METRIC_KEY_MAP = {
     "mPr@90.0"      :    "mPr@90",  
     "mIoU"          :    "mIoU",
     "average_fps"   :    "FPS",
-    "average_mem"   :    "Mem (MB)"  
+    "average_mem"   :    "Mem (MB)",
+    "FPS"           :    "FPS",
+    "Mem (MB)"      :    "Mem (MB)"  
 }
 
 def map_metric_key_strict(key):
@@ -171,15 +192,29 @@ DATASET_NAME_MAP = {
     "hots cat"          :           "HOTS-C",
     "irl vision"        :           "SOD",
     "irl vision cat"    :           "SOD-C",
-    "arid20"            :           "ARID20"
+    "arid20"            :           "ARID20",
+    "arid10"            :           "ARID10",
+    "sodhots"           :           "SODHOTS-C",
+    "sodhots-c"         :           "SODHOTS-C",
+    "HOTS"              :           "HOTS",
+    "HOTS-C"            :           "HOTS-C",
+    "SOD"               :           "SOD",
+    "SOD-C"             :           "SOD-C",
+    "ARID20"            :           "ARID20",
+    "ARID10"            :           "ARID10",
+    "SODHOTS-C"         :           "SODHOTS-C"
 }
 
 def map_dataset_name(ds_name):
+    if ds_name in DATASET_NAME_MAP.keys():
+        return DATASET_NAME_MAP[ds_name]
     ds_name_ = ds_name.lower()
     if ds_name_ in DATASET_NAME_MAP.keys():
         return DATASET_NAME_MAP[ds_name_]
+    if "sodhots" in ds_name_:
+        return DATASET_NAME_MAP["sodhots"]
     if "hots" in ds_name_:
-        if "cat" in ds_name_:
+        if "cat" in ds_name_ or "c" in ds_name_:
             return DATASET_NAME_MAP["hots cat"]
         else:
             return DATASET_NAME_MAP["hots"]
@@ -189,6 +224,9 @@ def map_dataset_name(ds_name):
             return DATASET_NAME_MAP["irl vision cat"]
         else:
             return DATASET_NAME_MAP["irl vision"]
-    if "arid" in ds_name_:
+    if "arid20" in ds_name_:
         return DATASET_NAME_MAP["arid20"]
+    
+    if "arid10" in ds_name_:
+        return DATASET_NAME_MAP["arid10"]
     return ds_name

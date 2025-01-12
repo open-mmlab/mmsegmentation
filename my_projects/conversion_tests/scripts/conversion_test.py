@@ -16,7 +16,9 @@ TEST_DATASET_TEMPLATE_PATHS = {
     "HOTS"          :   "my_projects/conversion_tests/dataset_template_configs/hots_test_data.py",
     "IRL_VISION"    :   "my_projects/conversion_tests/dataset_template_configs/irl_test_data.py",
     "HOTS_CAT"      :   "my_projects/conversion_tests/dataset_template_configs/hots_cat_test_data.py",
-    "IRL_VISION_CAT":   "my_projects/conversion_tests/dataset_template_configs/irl_cat_test_data.py"  
+    "IRL_VISION_CAT":   "my_projects/conversion_tests/dataset_template_configs/irl_cat_test_data.py",
+    "ARID20"        :   "my_projects/conversion_tests/dataset_template_configs/arid20_cat_test_data.py",
+    "ARID10"        :   "my_projects/conversion_tests/dataset_template_configs/arid10_cat_test_data.py"
 }
 
 
@@ -34,21 +36,43 @@ def arg_parse():
         '-test_ds',
         type=str,
         default="HOTS",
-        choices=["HOTS", "IRL_VISION", "HOTS_CAT", "IRL_VISION_CAT"]
+        choices=[
+            "HOTS", 
+            "IRL_VISION",
+            "HOTS_CAT", 
+            "IRL_VISION_CAT",
+            "ARID20",
+            "ARID10",
+            "ADE20K"
+        ]
     )
     parser.add_argument(
         '--output_dataset',
         '-out_ds',
         type=str,
         default="HOTS",
-        choices=["HOTS", "IRL_VISION", "ADE20K", "HOTS_CAT", "IRL_VISION_CAT"]
+        choices=[
+            "HOTS", 
+            "IRL_VISION",
+            "HOTS_CAT", 
+            "IRL_VISION_CAT",
+            "ARID20",
+            "ARID10",
+            "ADE20K"
+        ]
     )
     parser.add_argument(
         '--target_dataset',
         '-tar_ds',
         type=str,
         default="HOTS_CAT",
-        choices=["HOTS_CAT", "IRL_VISION_CAT"]
+        choices=[
+            "HOTS_CAT", 
+            "IRL_VISION_CAT",
+            "ARID20",
+            "ARID10",
+            "ADE20K"
+        ]
     )
     
     parser.add_argument(

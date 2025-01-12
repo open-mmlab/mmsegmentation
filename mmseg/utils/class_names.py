@@ -611,6 +611,32 @@ def irl_vision_sim_cat_palette():
         [83, 193, 216], [105, 135, 229], [30, 131, 132], [72, 125, 9], 
         [216, 81, 143]
     ]
+def sodhots_c_classes():
+    return [
+        '_background_', 
+        'apple', 'banana', 'book', 'bowl', 
+        'can', 'cap', 'cereal', 'cup', 
+        'flashlight', 'fork', 'juice_box', 'keyboard', 
+        'knife', 'laptop', 'lemon', 'marker', 
+        'milk', 'monitor', 'mouse', 'mug', 
+        'orange', 'peach', 'pear', 'pen', 
+        'plate', 'pringles', 'scissors', 'sponge', 
+        'spoon', 'stapler'
+    ]
+
+def sodhots_c_palette():
+    return [
+        [0, 0, 0], 
+        [139, 152, 218], [37, 121, 67], [238, 44, 243], [154, 38, 123], 
+        [209, 169, 129], [188, 243, 59], [0,0,255], [243, 122, 46], 
+        [29, 30, 220], [46, 36, 59], [221, 90, 231], [0, 255, 33], 
+        [238, 1, 11], [214, 135, 52], [107, 225, 139], [10, 17, 218], 
+        [189, 8, 9], [214, 151, 117], [240, 238, 119], [247, 91, 58], 
+        [188, 243, 59], [247, 126, 168], [136, 52, 244], [213, 55, 234], 
+        [83, 193, 216], [105, 135, 229], [30, 131, 132], [72, 125, 9], 
+        [216, 81, 143], [244, 44, 255]
+    ]
+    
 def arid20cat_classes():
     return [
         "_background_", "apple", "ball", "banana", 
@@ -623,6 +649,28 @@ def arid20cat_classes():
         "stapler", "tomato", "toothpaste", "_unknown_"
     ]  
 def arid20cat_palette():
+    return [
+        [0, 0, 0], [69, 167, 125], [98, 36, 68], [166, 50, 141], 
+        [127, 254, 225], [255, 243, 59], [53, 166, 152], [61, 228, 157], 
+        [22, 187, 196], [33, 15, 250], [234, 19, 6], [95, 152, 115], 
+        [255, 120, 0], [160, 54, 224], [252, 77, 216], [255, 0, 200], 
+        [168, 175, 110], [190, 90, 100], [197, 39, 15], [137, 233, 180], 
+        [233, 229, 20], [30, 241, 158], [137, 34, 172], [21, 154, 206], 
+        [104, 190, 112], [219, 205, 202], [96, 129, 51], [32, 203, 104], 
+        [29, 241, 69], [35, 229, 130], [124, 162, 250], [163, 156, 156]
+    ] 
+def arid10cat_classes():
+    return [
+        "_background_", "apple", "ball", "banana", 
+        "bell_pepper", "binder", "bowl", "cereal_box", 
+        "coffee_mug", "flashlight", "food_bag", "food_box", 
+        "food_can", "glue_stick", "hand_towel", "instant_noodles", 
+        "keyboard", "kleenex", "lemon", "lime", 
+        "marker", "orange", "peach", "pear", 
+        "potato", "shampoo", "soda_can", "sponge", 
+        "stapler", "tomato", "toothpaste", "_unknown_"
+    ]  
+def arid10cat_palette():
     return [
         [0, 0, 0], [69, 167, 125], [98, 36, 68], [166, 50, 141], 
         [127, 254, 225], [255, 243, 59], [53, 166, 152], [61, 228, 157], 
