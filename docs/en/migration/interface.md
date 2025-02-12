@@ -263,7 +263,7 @@ test_pipeline = [
 ```python
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=(2560, 640), keep_ratio=True),
+    dict(type='RandomResize', scale=(2560, 640), keep_ratio=True),
     dict(type='LoadAnnotations', reduce_zero_label=True),
     dict(type='PackSegInputs')
 ]
