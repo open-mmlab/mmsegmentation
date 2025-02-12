@@ -6,6 +6,8 @@ from mmengine.registry import init_default_scope
 from mmseg.models.text_encoder import CLIPTextEncoder
 from mmseg.utils import get_classes
 
+from mmengine.device.utils import is_musa_available
+
 
 def test_clip_text_encoder():
     init_default_scope('mmseg')
@@ -23,6 +25,8 @@ def test_clip_text_encoder():
     text_encoder = CLIPTextEncoder(**cfg)
     if torch.cuda.is_available():
         text_encoder = text_encoder.cuda()
+    elif is_musa_available():
+        text_encoder = text_encoder.musa()
 
     with torch.no_grad():
         class_embeds = text_encoder()

@@ -5,7 +5,9 @@ from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
 from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import DepthwiseSeparableFCNHead, FCNHead
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_fcn_head():
@@ -36,6 +38,8 @@ def test_fcn_head():
         in_channels=8, channels=4, num_classes=19, concat_input=False)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available:
+        head, inputs = to_musa(head, inputs)
     assert len(head.convs) == 2
     assert not head.concat_input and not hasattr(head, 'conv_cat')
     outputs = head(inputs)
@@ -47,6 +51,8 @@ def test_fcn_head():
         in_channels=8, channels=4, num_classes=19, concat_input=True)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert len(head.convs) == 2
     assert head.concat_input
     assert head.conv_cat.in_channels == 12
@@ -58,6 +64,8 @@ def test_fcn_head():
     head = FCNHead(in_channels=8, channels=4, num_classes=19)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     for i in range(len(head.convs)):
         assert head.convs[i].kernel_size == (3, 3)
         assert head.convs[i].padding == 1
@@ -69,6 +77,8 @@ def test_fcn_head():
     head = FCNHead(in_channels=8, channels=4, num_classes=19, kernel_size=1)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     for i in range(len(head.convs)):
         assert head.convs[i].kernel_size == (1, 1)
         assert head.convs[i].padding == 0
@@ -80,6 +90,8 @@ def test_fcn_head():
     head = FCNHead(in_channels=8, channels=4, num_classes=19, num_convs=1)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert len(head.convs) == 1
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 23, 23)
@@ -94,6 +106,8 @@ def test_fcn_head():
         concat_input=False)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert isinstance(head.convs, torch.nn.Identity)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 23, 23)

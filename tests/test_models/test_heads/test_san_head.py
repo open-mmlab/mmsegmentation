@@ -5,7 +5,9 @@ from mmengine.structures import PixelData
 
 from mmseg.models.decode_heads import SideAdapterCLIPHead
 from mmseg.structures import SegDataSample
-from .utils import list_to_cuda
+from .utils import list_to_cuda, list_to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_san_head():
@@ -113,6 +115,11 @@ def test_san_head():
         data = list_to_cuda([inputs, clip_feature, class_embed])
         for data_sample in data_samples:
             data_sample.gt_sem_seg.data = data_sample.gt_sem_seg.data.cuda()
+    elif is_musa_available():
+        head = head.musa()
+        data = list_to_musa([inputs, clip_feature, class_embed])
+        for data_sample in data_samples:
+            data_sample.gt_sem_seg.data = data_sample.gt_sem_seg.data.musa()
     else:
         data = [inputs, clip_feature, class_embed]
 

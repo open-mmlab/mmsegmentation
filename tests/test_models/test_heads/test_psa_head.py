@@ -3,7 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import PSAHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_psa_head():
@@ -37,6 +39,8 @@ def test_psa_head():
         in_channels=4, channels=2, num_classes=19, mask_size=(13, 13))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)
 
@@ -50,6 +54,8 @@ def test_psa_head():
         shrink_factor=1)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)
 
@@ -63,6 +69,8 @@ def test_psa_head():
         psa_softmax=True)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)
 
@@ -76,6 +84,8 @@ def test_psa_head():
         psa_type='collect')
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)
 
@@ -90,6 +100,8 @@ def test_psa_head():
         psa_type='collect')
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)
 
@@ -105,6 +117,8 @@ def test_psa_head():
         compact=True)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)
 
@@ -118,5 +132,7 @@ def test_psa_head():
         psa_type='distribute')
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 13, 13)

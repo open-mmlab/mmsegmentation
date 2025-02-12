@@ -2,7 +2,9 @@
 import torch
 
 from mmseg.models.decode_heads import SegmenterMaskTransformerHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_segmenter_mask_transformer_head():
@@ -20,5 +22,7 @@ def test_segmenter_mask_transformer_head():
     inputs = [torch.randn(1, 2, 32, 32)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 32, 32)

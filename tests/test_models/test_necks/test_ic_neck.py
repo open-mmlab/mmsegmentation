@@ -4,7 +4,9 @@ import torch
 
 from mmseg.models.necks import ICNeck
 from mmseg.models.necks.ic_neck import CascadeFeatureFusion
-from ..test_heads.utils import _conv_has_norm, to_cuda
+from ..test_heads.utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_ic_neck():
@@ -28,6 +30,8 @@ def test_ic_neck():
         align_corners=False)
     if torch.cuda.is_available():
         neck, inputs = to_cuda(neck, inputs)
+    elif is_musa_available():
+        neck, inputs = to_musa(neck, inputs)
 
     outputs = neck(inputs)
     assert outputs[0].shape == (1, 4, 16, 32)

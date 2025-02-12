@@ -3,7 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import APCHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_apc_head():
@@ -34,6 +36,8 @@ def test_apc_head():
         fusion=True)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.fusion is True
     assert head.acm_modules[0].pool_scale == 1
     assert head.acm_modules[1].pool_scale == 2
@@ -51,6 +55,8 @@ def test_apc_head():
         fusion=False)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.fusion is False
     assert head.acm_modules[0].pool_scale == 1
     assert head.acm_modules[1].pool_scale == 2

@@ -7,7 +7,9 @@ from mmengine.structures import PixelData
 
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.structures import SegDataSample
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 @patch.multiple(BaseDecodeHead, __abstractmethods__=set())
@@ -70,6 +72,8 @@ def test_decode_head():
     head = BaseDecodeHead(32, 16, num_classes=19)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.in_channels == 32
     assert head.input_transform is None
     transformed_inputs = head._transform_inputs(inputs)
@@ -84,6 +88,8 @@ def test_decode_head():
                           input_transform='resize_concat')
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.in_channels == 48
     assert head.input_transform == 'resize_concat'
     transformed_inputs = head._transform_inputs(inputs)
@@ -108,6 +114,8 @@ def test_decode_head():
             type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     loss = head.loss_by_feat(
         seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_ce' in loss
@@ -128,6 +136,8 @@ def test_decode_head():
         ])
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
 
     loss = head.loss_by_feat(
         seg_logits=inputs, batch_data_samples=data_samples)
@@ -155,6 +165,8 @@ def test_decode_head():
                      dict(type='CrossEntropyLoss', loss_name='loss_3')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     loss = head.loss_by_feat(
         seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_1' in loss
@@ -176,6 +188,8 @@ def test_decode_head():
                      dict(type='CrossEntropyLoss', loss_name='loss_ce')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     loss_3 = head.loss_by_feat(
         seg_logits=inputs, batch_data_samples=data_samples)
 
@@ -186,6 +200,8 @@ def test_decode_head():
         loss_decode=(dict(type='CrossEntropyLoss', loss_name='loss_ce')))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     loss = head.loss_by_feat(
         seg_logits=inputs, batch_data_samples=data_samples)
     assert 'loss_ce' in loss

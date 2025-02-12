@@ -3,7 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import UPerHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_uper_head():
@@ -31,5 +33,7 @@ def test_uper_head():
         in_channels=[4, 2], channels=2, num_classes=19, in_index=[-2, -1])
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 45, 45)

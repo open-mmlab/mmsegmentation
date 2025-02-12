@@ -9,6 +9,7 @@ import mmcv
 import numpy as np
 import torch
 from mmengine.structures import PixelData
+from mmengine.device.utils import is_musa_available
 
 from mmseg.structures import SegDataSample
 from mmseg.visualization import SegLocalVisualizer
@@ -73,6 +74,8 @@ class TestSegLocalVisualizer(TestCase):
 
         if torch.cuda.is_available():
             test_add_datasample_forward(gt_sem_seg.cuda())
+        elif is_musa_available():
+            test_add_datasample_forward(gt_sem_seg.musa())
         test_add_datasample_forward(gt_sem_seg)
 
     def test_cityscapes_add_datasample(self):
@@ -149,6 +152,8 @@ class TestSegLocalVisualizer(TestCase):
 
         if torch.cuda.is_available():
             test_cityscapes_add_datasample_forward(gt_sem_seg.cuda())
+        elif is_musa_available():
+            test_cityscapes_add_datasample_forward(gt_sem_seg.musa())
         test_cityscapes_add_datasample_forward(gt_sem_seg)
 
     def _assert_image_and_shape(self, out_file, out_shape):
@@ -210,4 +215,6 @@ class TestSegLocalVisualizer(TestCase):
 
         if torch.cuda.is_available():
             test_add_datasample_forward_depth(gt_depth_map.cuda())
+        elif is_musa_available():
+            test_add_datasample_forward_depth(gt_depth_map.musa())
         test_add_datasample_forward_depth(gt_depth_map)

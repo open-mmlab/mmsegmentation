@@ -29,3 +29,19 @@ def list_to_cuda(data):
         return data
     else:
         return data.cuda()
+    
+def to_musa(module, data):
+    module = module.to('musa')
+    if isinstance(data, list):
+        for i in range(len(data)):
+            data[i] = data[i].to('musa')
+    return module, data
+
+
+def list_to_musa(data):
+    if isinstance(data, list):
+        for i in range(len(data)):
+            data[i] = list_to_musa(data[i])
+        return data
+    else:
+        return data.to('musa')

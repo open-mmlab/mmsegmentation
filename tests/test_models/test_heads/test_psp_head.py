@@ -3,7 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import PSPHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_psp_head():
@@ -29,6 +31,8 @@ def test_psp_head():
         in_channels=4, channels=2, num_classes=19, pool_scales=(1, 2, 3))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.psp_modules[0][0].output_size == 1
     assert head.psp_modules[1][0].output_size == 2
     assert head.psp_modules[2][0].output_size == 3

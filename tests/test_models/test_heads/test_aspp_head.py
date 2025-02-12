@@ -3,7 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import ASPPHead, DepthwiseSeparableASPPHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_aspp_head():
@@ -29,6 +31,8 @@ def test_aspp_head():
         in_channels=8, channels=4, num_classes=19, dilations=(1, 12, 24))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.aspp_modules[0].conv.dilation == (1, 1)
     assert head.aspp_modules[1].conv.dilation == (12, 12)
     assert head.aspp_modules[2].conv.dilation == (24, 24)
@@ -49,6 +53,8 @@ def test_dw_aspp_head():
         dilations=(1, 12, 24))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.c1_bottleneck is None
     assert head.aspp_modules[0].conv.dilation == (1, 1)
     assert head.aspp_modules[1].depthwise_conv.dilation == (12, 12)
@@ -67,6 +73,8 @@ def test_dw_aspp_head():
         dilations=(1, 12, 24))
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.c1_bottleneck.in_channels == 4
     assert head.c1_bottleneck.out_channels == 2
     assert head.aspp_modules[0].conv.dilation == (1, 1)

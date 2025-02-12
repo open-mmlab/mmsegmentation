@@ -2,7 +2,9 @@
 import torch
 
 from mmseg.models.decode_heads import ANNHead
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_ann_head():
@@ -16,5 +18,7 @@ def test_ann_head():
         project_channels=8)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 21, 21)

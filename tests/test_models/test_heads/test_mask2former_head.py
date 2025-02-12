@@ -6,7 +6,9 @@ from mmengine.structures import PixelData
 from mmseg.models.decode_heads import Mask2FormerHead
 from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_mask2former_head():
@@ -141,6 +143,10 @@ def test_mask2former_head():
         head, inputs = to_cuda(head, inputs)
         for data_sample in data_samples:
             data_sample.gt_sem_seg.data = data_sample.gt_sem_seg.data.cuda()
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
+        for data_sample in data_samples:
+            data_sample.gt_sem_seg.data = data_sample.gt_sem_seg.data.musa()
 
     loss_dict = head.loss(inputs, data_samples, None)
     assert isinstance(loss_dict, dict)

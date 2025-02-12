@@ -2,6 +2,7 @@
 import torch
 from mmengine.optim import OptimWrapper
 from mmengine.structures import PixelData
+from mmengine.device.utils import is_musa_available
 from torch import nn
 from torch.optim import SGD
 
@@ -114,6 +115,8 @@ def _segmentor_forward_train_test(segmentor):
     # convert to cuda Tensor if applicable
     if torch.cuda.is_available():
         segmentor = segmentor.cuda()
+    elif is_musa_available():
+        segmentor = segmentor.musa()
 
     # check data preprocessor
     if not hasattr(segmentor,
@@ -164,6 +167,8 @@ def _segmentor_predict(segmentor):
     # convert to cuda Tensor if applicable
     if torch.cuda.is_available():
         segmentor = segmentor.cuda()
+    elif is_musa_available():
+        segmentor = segmentor.musa()
 
     # check data preprocessor
     if not hasattr(segmentor,

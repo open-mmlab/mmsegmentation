@@ -3,8 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import DMHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
 
+from mmengine.device.utils import is_musa_available
 
 def test_dm_head():
 
@@ -34,6 +35,8 @@ def test_dm_head():
         fusion=True)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.fusion is True
     assert head.dcm_modules[0].filter_size == 1
     assert head.dcm_modules[1].filter_size == 3
@@ -51,6 +54,8 @@ def test_dm_head():
         fusion=False)
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.fusion is False
     assert head.dcm_modules[0].filter_size == 1
     assert head.dcm_modules[1].filter_size == 3

@@ -2,7 +2,9 @@
 import torch
 
 from mmseg.models.decode_heads import ISAHead
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_isa_head():
@@ -16,5 +18,7 @@ def test_isa_head():
         down_factor=(8, 8))
     if torch.cuda.is_available():
         isa_head, inputs = to_cuda(isa_head, inputs)
+    elif is_musa_available():
+        isa_head, inputs = to_musa(isa_head, inputs)
     output = isa_head(inputs)
     assert output.shape == (1, isa_head.num_classes, 23, 23)

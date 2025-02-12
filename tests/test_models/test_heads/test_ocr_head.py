@@ -2,7 +2,9 @@
 import torch
 
 from mmseg.models.decode_heads import FCNHead, OCRHead
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_ocr_head():
@@ -14,6 +16,9 @@ def test_ocr_head():
     if torch.cuda.is_available():
         head, inputs = to_cuda(ocr_head, inputs)
         head, inputs = to_cuda(fcn_head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(ocr_head, inputs)
+        head, inputs = to_musa(fcn_head, inputs)
     prev_output = fcn_head(inputs)
     output = ocr_head(inputs, prev_output)
     assert output.shape == (1, ocr_head.num_classes, 23, 23)

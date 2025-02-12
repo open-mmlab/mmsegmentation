@@ -2,7 +2,9 @@
 import torch
 
 from mmseg.models.decode_heads import LightHamHead
-from .utils import _conv_has_norm, to_cuda
+from .utils import _conv_has_norm, to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 ham_norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)
 
@@ -38,6 +40,8 @@ def test_ham_head():
     ]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     assert head.in_channels == [16, 32, 64]
     assert head.hamburger.ham_in.in_channels == 64
     outputs = head(inputs)

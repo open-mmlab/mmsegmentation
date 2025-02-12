@@ -2,7 +2,9 @@
 import torch
 
 from mmseg.models.decode_heads import DNLHead
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_dnl_head():
@@ -14,6 +16,8 @@ def test_dnl_head():
     inputs = [torch.randn(1, 8, 23, 23)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 23, 23)
 
@@ -23,6 +27,8 @@ def test_dnl_head():
     inputs = [torch.randn(1, 8, 23, 23)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 23, 23)
 
@@ -31,6 +37,8 @@ def test_dnl_head():
     inputs = [torch.randn(1, 8, 23, 23)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 23, 23)
 
@@ -40,5 +48,7 @@ def test_dnl_head():
     inputs = [torch.randn(1, 8, 23, 23)]
     if torch.cuda.is_available():
         head, inputs = to_cuda(head, inputs)
+    elif is_musa_available():
+        head, inputs = to_musa(head, inputs)
     outputs = head(inputs)
     assert outputs.shape == (1, head.num_classes, 23, 23)

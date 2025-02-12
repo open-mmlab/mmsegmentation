@@ -12,6 +12,7 @@ from mmengine.model.utils import revert_sync_batchnorm
 from mmengine.registry import init_default_scope
 from mmengine.structures import PixelData
 from mmengine.utils import is_list_of, is_tuple_of
+from mmengine.device.utils import is_musa_available
 from torch import Tensor
 
 from mmseg.structures import SegDataSample
@@ -190,6 +191,8 @@ def _test_encoder_decoder_forward(cfg_file):
     # convert to cuda Tensor if applicable
     if torch.cuda.is_available():
         segmentor = segmentor.cuda()
+    elif is_musa_available():
+        segmentor = segmentor.musa()
     else:
         segmentor = revert_sync_batchnorm(segmentor)
 

@@ -3,7 +3,9 @@ import pytest
 import torch
 
 from mmseg.models.decode_heads import SETRUPHead
-from .utils import to_cuda
+from .utils import to_cuda, to_musa
+
+from mmengine.device.utils import is_musa_available
 
 
 def test_setr_up_head(capsys):
@@ -45,6 +47,8 @@ def test_setr_up_head(capsys):
     x = [torch.randn(1, 4, h, w)]
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
+    elif is_musa_available():
+        head, x = to_musa(head, x)
     out = head(x)
     assert out.shape == (1, head.num_classes, h * 4, w * 4)
 
@@ -52,5 +56,7 @@ def test_setr_up_head(capsys):
     x = [torch.randn(1, 4, h, w * 2)]
     if torch.cuda.is_available():
         head, x = to_cuda(head, x)
+    elif is_musa_available():
+        head, x = to_musa(head, x)
     out = head(x)
     assert out.shape == (1, head.num_classes, h * 4, w * 8)
