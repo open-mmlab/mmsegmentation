@@ -8,11 +8,11 @@ import numpy as np
 import pytest
 import torch
 import torch.nn as nn
+from mmengine.device.utils import is_musa_available
 from mmengine.model.utils import revert_sync_batchnorm
 from mmengine.registry import init_default_scope
 from mmengine.structures import PixelData
 from mmengine.utils import is_list_of, is_tuple_of
-from mmengine.device.utils import is_musa_available
 from torch import Tensor
 
 from mmseg.structures import SegDataSample

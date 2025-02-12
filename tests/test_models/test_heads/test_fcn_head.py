@@ -2,12 +2,11 @@
 import pytest
 import torch
 from mmcv.cnn import ConvModule, DepthwiseSeparableConvModule
+from mmengine.device.utils import is_musa_available
 from mmengine.utils.dl_utils.parrots_wrapper import SyncBatchNorm
 
 from mmseg.models.decode_heads import DepthwiseSeparableFCNHead, FCNHead
 from .utils import to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_fcn_head():

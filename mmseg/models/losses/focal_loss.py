@@ -270,7 +270,9 @@ class FocalLoss(nn.Module):
             reduction_override if reduction_override else self.reduction)
         if self.use_sigmoid:
             num_classes = pred.size(1)
-            if (torch.cuda.is_available() and pred.is_cuda) or (is_musa_available() and pred.device == 'musa'):
+            if (torch.cuda.is_available()
+                    and pred.is_cuda) or (is_musa_available()
+                                          and pred.device == 'musa'):
                 if target.dim() == 1:
                     one_hot_target = F.one_hot(
                         target, num_classes=num_classes + 1)

@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+from mmengine.device.utils import is_musa_available
 
 from mmseg.models.decode_heads import DNLHead
 from .utils import to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_dnl_head():

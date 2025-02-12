@@ -1,14 +1,13 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 from mmengine import Config
+from mmengine.device.utils import is_musa_available
 from mmengine.structures import PixelData
 
 from mmseg.models.decode_heads import Mask2FormerHead
 from mmseg.structures import SegDataSample
 from mmseg.utils import SampleList
 from .utils import to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_mask2former_head():

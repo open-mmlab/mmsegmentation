@@ -1,13 +1,12 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
 from mmengine import Config
+from mmengine.device.utils import is_musa_available
 from mmengine.structures import PixelData
 
 from mmseg.models.decode_heads import SideAdapterCLIPHead
 from mmseg.structures import SegDataSample
 from .utils import list_to_cuda, list_to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_san_head():

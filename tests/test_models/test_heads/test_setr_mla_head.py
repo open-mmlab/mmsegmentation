@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import pytest
 import torch
+from mmengine.device.utils import is_musa_available
 
 from mmseg.models.decode_heads import SETRMLAHead
 from .utils import to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_setr_mla_head(capsys):

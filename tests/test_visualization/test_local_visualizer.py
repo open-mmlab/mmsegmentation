@@ -8,8 +8,8 @@ import cv2
 import mmcv
 import numpy as np
 import torch
-from mmengine.structures import PixelData
 from mmengine.device.utils import is_musa_available
+from mmengine.structures import PixelData
 
 from mmseg.structures import SegDataSample
 from mmseg.visualization import SegLocalVisualizer

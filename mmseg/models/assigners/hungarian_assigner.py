@@ -3,12 +3,13 @@ from typing import List, Union
 
 import torch
 from mmengine import ConfigDict
-from mmengine.structures import InstanceData
 from mmengine.device.utils import is_musa_available
+from mmengine.structures import InstanceData
 from scipy.optimize import linear_sum_assignment
+
 if is_musa_available():
     from torch_musa.core.amp import autocast
-else:   
+else:
     from torch.cuda.amp import autocast
 
 from mmseg.registry import TASK_UTILS

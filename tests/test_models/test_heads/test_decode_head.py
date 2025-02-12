@@ -3,13 +3,12 @@ from unittest.mock import patch
 
 import pytest
 import torch
+from mmengine.device.utils import is_musa_available
 from mmengine.structures import PixelData
 
 from mmseg.models.decode_heads.decode_head import BaseDecodeHead
 from mmseg.structures import SegDataSample
 from .utils import to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 @patch.multiple(BaseDecodeHead, __abstractmethods__=set())

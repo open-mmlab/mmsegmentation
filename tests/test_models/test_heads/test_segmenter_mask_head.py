@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+from mmengine.device.utils import is_musa_available
 
 from mmseg.models.decode_heads import SegmenterMaskTransformerHead
 from .utils import _conv_has_norm, to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_segmenter_mask_transformer_head():

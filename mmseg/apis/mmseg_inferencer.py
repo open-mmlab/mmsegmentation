@@ -9,17 +9,16 @@ import numpy as np
 import torch
 import torch.nn as nn
 from mmcv.transforms import Compose
+from mmengine.device.utils import is_musa_available
 from mmengine.infer.infer import BaseInferencer, ModelType
 from mmengine.model import revert_sync_batchnorm
 from mmengine.registry import init_default_scope
 from mmengine.runner.checkpoint import _load_checkpoint_to_model
-from mmengine.device.utils import is_musa_available
 from PIL import Image
 
 from mmseg.structures import SegDataSample
 from mmseg.utils import ConfigType, SampleList, get_classes, get_palette
 from mmseg.visualization import SegLocalVisualizer
-
 
 InputType = Union[str, np.ndarray]
 InputsType = Union[InputType, Sequence[InputType]]
@@ -83,7 +82,8 @@ class MMSegInferencer(BaseInferencer):
         super().__init__(
             model=model, weights=weights, device=device, scope=scope)
 
-        if device == 'cpu' or (not torch.cuda.is_available() and not is_musa_available()):
+        if device == 'cpu' or (not torch.cuda.is_available()
+                               and not is_musa_available()):
             self.model = revert_sync_batchnorm(self.model)
 
         assert isinstance(self.visualizer, SegLocalVisualizer)

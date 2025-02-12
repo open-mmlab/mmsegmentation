@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import pytest
 import torch
+from mmengine.device.utils import is_musa_available
 
 from mmseg.models.decode_heads import PSPHead
 from .utils import _conv_has_norm, to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 
 def test_psp_head():

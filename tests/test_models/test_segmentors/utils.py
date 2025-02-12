@@ -1,8 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+from mmengine.device.utils import is_musa_available
 from mmengine.optim import OptimWrapper
 from mmengine.structures import PixelData
-from mmengine.device.utils import is_musa_available
 from torch import nn
 from torch.optim import SGD
 

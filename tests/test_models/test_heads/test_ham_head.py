@@ -1,10 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import torch
+from mmengine.device.utils import is_musa_available
 
 from mmseg.models.decode_heads import LightHamHead
 from .utils import _conv_has_norm, to_cuda, to_musa
-
-from mmengine.device.utils import is_musa_available
 
 ham_norm_cfg = dict(type='GN', num_groups=32, requires_grad=True)
 
