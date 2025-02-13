@@ -348,9 +348,9 @@ def main():
     
 
 if __name__ == '__main__':
-    # fix_jsons(
-    #     global_results_json_path="my_projects/test_results/arid10_cat/data/arid10_cat_results.json",
-    #     confusion_json_path="my_projects/test_results/arid10_cat/data/arid10_cat_confusion_top_5.json",
-    #     per_label_results_json_path="my_projects/test_results/arid10_cat/data/arid10_cat_per_label_results.json"
-    # )
-    main()
+    fix_jsons(
+        global_results_json_path="my_projects/test_results/sodhots-c/data/sodhots-c_results.json",
+        # confusion_json_path="my_projects/test_results/sodhots-c/data/sodhots-c_confusion_top_5.json"
+        # per_label_results_json_path="my_projects/test_results/sodhots-c/data/sodhots-c_per_label_results.json"
+    )
+    # main()

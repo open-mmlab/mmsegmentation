@@ -117,10 +117,10 @@ DATASET_DEFAULT_PRED_LIST = {
         "table_top_seq03_19.png"
     ],
     "SODHOTS-C"         :       [
-        "mix_2_top_raw_8.png",
-        "scene_99.png",
-        "office_6_top_raw_5.png",
-        "scene_395.png"
+        "kitchen_8_top_raw_0.png",
+        "mix_2_top_raw_6.png",
+        "office_5_top_raw_2.png",
+        "mix_1_top_raw_17.png"
     ]   
 }
 

@@ -2,7 +2,21 @@
 from matplotlib import pyplot as plt
 from my_projects.scripts.generate_latex_tables import load_json_file
 import os
+import argparse
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'data_path', 
+        type=str,
+        default="my_projects/test_results/arid20_cat/",
+        help='directory path of experiment'
+    )
+    args = parser.parse_args()
+    if os.path.exists(os.path.join(args.data_path, "data")):
+        args.data_path = os.path.join(args.data_path, "data")
+    return args
+    
 def save_class_hist_plot(class_hist, save_path):
     
     plt.rc('font', size=25)
@@ -15,7 +29,7 @@ def save_class_hist_plot(class_hist, save_path):
     plt.ylabel("IoU")
     plt.ylim(48, 101)
     
-    plt.savefig(save_path, bbox_inches='tight',dpi=200)
+    plt.savefig(save_path, bbox_inches='tight',dpi=100)
     plt.clf()
 
 def make_class_hist(model_data_dict, metric = "IoU"):
@@ -27,7 +41,8 @@ def make_class_hist(model_data_dict, metric = "IoU"):
     
 
 def main():
-    data_path = "my_projects/conversion_tests/test_results/hots_cat2irl_vision_cat/data/"
+    args = parse_args()
+    data_path = args.data_path
     file_name = [
         pth for pth in os.listdir(data_path) 
             if "per_label_results.json" in pth
