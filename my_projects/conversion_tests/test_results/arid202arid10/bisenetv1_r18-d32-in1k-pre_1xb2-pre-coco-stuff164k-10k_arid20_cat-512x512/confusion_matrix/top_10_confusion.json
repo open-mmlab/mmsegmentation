@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "toothpaste",
+        "score": 98.67786806225037
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 95.546875
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 89.73753280839894
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 76.60219946909366
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "cereal_box",
+        "score": 73.34074944379172
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "apple",
+        "score": 66.67917448405252
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "cereal_box",
+        "score": 55.079525604486534
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "cereal_box",
+        "score": 46.04305697905937
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "cereal_box",
+        "score": 45.968751701235774
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "orange",
+        "score": 41.462480857580395
+    }
+]

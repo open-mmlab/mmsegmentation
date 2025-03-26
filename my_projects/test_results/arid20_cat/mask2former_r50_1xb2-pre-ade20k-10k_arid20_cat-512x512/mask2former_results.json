@@ -1,0 +1,12 @@
+{
+    "mPr@50.0": 96.6,
+    "mPr@60.0": 96.6,
+    "mPr@70.0": 95.89,
+    "mPr@80.0": 88.92,
+    "mPr@90.0": 49.35,
+    "mIoU": 87.1,
+    "average_fps": 14.54,
+    "fps_variance": 0.0053,
+    "average_mem": 583.0,
+    "mem_variance": 1.8
+}

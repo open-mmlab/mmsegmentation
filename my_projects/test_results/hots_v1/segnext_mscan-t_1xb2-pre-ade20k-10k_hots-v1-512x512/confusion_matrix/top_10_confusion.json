@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "plate_big",
+        "pred_label": "plate_wide",
+        "score": 22.471833622655637
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "pringles_purple",
+        "score": 12.892715848266231
+    },
+    {
+        "gt_label": "scissors_silver",
+        "pred_label": "scissors_black",
+        "score": 12.677359654534238
+    },
+    {
+        "gt_label": "mouse_black",
+        "pred_label": "can_coke",
+        "score": 10.435676648245726
+    },
+    {
+        "gt_label": "scissors_black",
+        "pred_label": "pringles_purple",
+        "score": 9.208347134812852
+    },
+    {
+        "gt_label": "scissors_silver",
+        "pred_label": "spoon_blue",
+        "score": 6.539173349784084
+    },
+    {
+        "gt_label": "fork_silver",
+        "pred_label": "knife",
+        "score": 5.970535021969501
+    },
+    {
+        "gt_label": "milk_big",
+        "pred_label": "milk_small",
+        "score": 4.6772477389608085
+    },
+    {
+        "gt_label": "fork_silver",
+        "pred_label": "fork_black",
+        "score": 4.548979064357715
+    },
+    {
+        "gt_label": "spoon_silver",
+        "pred_label": "spoon_blue",
+        "score": 2.774922918807811
+    }
+]

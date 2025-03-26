@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 63.663147557083235
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "marker",
+        "score": 47.61167053963336
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "banana",
+        "score": 28.900097336518893
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "spoon",
+        "score": 27.199606040709128
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "marker",
+        "score": 25.4673721340388
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "spoon",
+        "score": 23.78001549186677
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "spoon",
+        "score": 18.365667254556143
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "scissors",
+        "score": 16.93181818181818
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "marker",
+        "score": 16.742424242424242
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "scissors",
+        "score": 16.402116402116402
+    }
+]

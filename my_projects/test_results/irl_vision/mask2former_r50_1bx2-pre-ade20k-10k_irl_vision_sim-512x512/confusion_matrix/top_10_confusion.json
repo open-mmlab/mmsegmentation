@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "pen_violet",
+        "pred_label": "pen_blue",
+        "score": 95.15527950310559
+    },
+    {
+        "gt_label": "bowl_red",
+        "pred_label": "bowl_1",
+        "score": 77.04753857227803
+    },
+    {
+        "gt_label": "pringles_green",
+        "pred_label": "pen_violet",
+        "score": 47.02007861468182
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 40.535232015713234
+    },
+    {
+        "gt_label": "book_20",
+        "pred_label": "plate_2",
+        "score": 33.743263783335635
+    },
+    {
+        "gt_label": "flashlight_blue",
+        "pred_label": "marker_red",
+        "score": 20.596546310832025
+    },
+    {
+        "gt_label": "laptop_pc_2",
+        "pred_label": "book_10",
+        "score": 13.951130092240488
+    },
+    {
+        "gt_label": "book_10",
+        "pred_label": "cereal_box_1",
+        "score": 12.674479852515145
+    },
+    {
+        "gt_label": "bowl_1",
+        "pred_label": "bowl_red",
+        "score": 11.278337531486146
+    },
+    {
+        "gt_label": "cap_red",
+        "pred_label": "plate_2",
+        "score": 8.201853554302184
+    }
+]

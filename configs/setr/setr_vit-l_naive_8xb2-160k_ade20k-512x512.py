@@ -2,6 +2,7 @@ _base_ = [
     '../_base_/models/setr_naive.py', '../_base_/datasets/ade20k.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
+
 crop_size = (512, 512)
 data_preprocessor = dict(size=crop_size)
 norm_cfg = dict(type='SyncBN', requires_grad=True)
@@ -12,7 +13,7 @@ model = dict(
         img_size=(512, 512),
         drop_rate=0.,
         init_cfg=dict(
-            type='Pretrained', checkpoint='pretrain/vit_large_p16.pth')),
+            type='Pretrained', checkpoint="checkpoints/vit-large-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-b20ba619.pth")),
     decode_head=dict(num_classes=150),
     auxiliary_head=[
         dict(

@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "lime",
+        "pred_label": "pear",
+        "score": 77.578125
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 74.2257217847769
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "toothpaste",
+        "score": 49.05764457111336
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "food_bag",
+        "score": 31.530304230809534
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "shampoo",
+        "score": 27.250160889951275
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 13.43518067067555
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 11.796875
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "keyboard",
+        "score": 6.968833318010481
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "food_can",
+        "score": 6.377952755905512
+    },
+    {
+        "gt_label": "kleenex",
+        "pred_label": "binder",
+        "score": 5.875743896968037
+    }
+]

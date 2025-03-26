@@ -8,6 +8,7 @@ from matplotlib.ticker import MultipleLocator
 from mmengine.config import Config, DictAction
 from mmengine.registry import init_default_scope
 from mmengine.utils import mkdir_or_exist, progressbar
+from mmengine.fileio import dump
 from PIL import Image
 
 from mmseg.registry import DATASETS
@@ -64,15 +65,23 @@ def calculate_confusion_matrix(dataset, results):
         res_segm = per_img_res
         gt_segm = dataset[idx]['data_samples'] \
             .gt_sem_seg.data.squeeze().numpy().astype(np.uint8)
+        
         gt_segm, res_segm = gt_segm.flatten(), res_segm.flatten()
         if reduce_zero_label:
             gt_segm = gt_segm - 1
         to_ignore = gt_segm == ignore_index
-
+        
         gt_segm, res_segm = gt_segm[~to_ignore], res_segm[~to_ignore]
-        inds = n * gt_segm + res_segm
-        mat = np.bincount(inds, minlength=n**2).reshape(n, n)
-        confusion_matrix += mat
+        
+        # inds = n * gt_segm + res_segm
+        # print(np.unique(inds))
+        # print(max(inds))
+        # mat = np.bincount(inds, minlength=n**2).reshape(n, n)
+        # print(np.unique(mat))
+        
+        # confusion_matrix += mat
+        for gt_pix, pred_pix in zip(gt_segm, res_segm):
+            confusion_matrix[gt_pix][pred_pix] += 1
         prog_bar.update()
     return confusion_matrix
 
@@ -98,10 +107,11 @@ def plot_confusion_matrix(confusion_matrix,
     per_label_sums = confusion_matrix.sum(axis=1)[:, np.newaxis]
     confusion_matrix = \
         confusion_matrix.astype(np.float32) / per_label_sums * 100
-
+    confusion_matrix = np.nan_to_num(confusion_matrix)
+    
     num_classes = len(labels)
     fig, ax = plt.subplots(
-        figsize=(2 * num_classes, 2 * num_classes * 0.8), dpi=300)
+        figsize=(min(2 * num_classes, 100), min(2 * num_classes * 0.8, 80)), dpi=300)
     cmap = plt.get_cmap(color_theme)
     im = ax.imshow(confusion_matrix, cmap=cmap)
     colorbar = plt.colorbar(mappable=im, ax=ax)
@@ -131,7 +141,6 @@ def plot_confusion_matrix(confusion_matrix,
     ax.set_yticks(np.arange(num_classes))
     ax.set_xticklabels(labels, fontsize=20)
     ax.set_yticklabels(labels, fontsize=20)
-
     ax.tick_params(
         axis='x', bottom=False, top=True, labelbottom=False, labeltop=True)
     plt.setp(
@@ -150,18 +159,49 @@ def plot_confusion_matrix(confusion_matrix,
                 va='center',
                 color='k',
                 size=20)
-
     ax.set_ylim(len(confusion_matrix) - 0.5, -0.5)  # matplotlib>3.1.1
-
     fig.tight_layout()
+    # if show:
+    #     plt.show()
     if save_dir is not None:
         mkdir_or_exist(save_dir)
         plt.savefig(
-            os.path.join(save_dir, 'confusion_matrix.png'), format='png')
+            os.path.join(save_dir, 'confusion_matrix.png'), bbox_inches='tight')
+        
     if show:
         plt.show()
 
-
+def dump_confusion_data(
+    confusion_matrix, labels, 
+    min_value = 0.0, save_dir=None,
+    ignore_diagonal = True
+):
+    per_label_sums = confusion_matrix.sum(axis=1)[:, np.newaxis]
+    confusion_matrix = \
+        confusion_matrix.astype(np.float32) / per_label_sums * 100
+    confusion_matrix = np.nan_to_num(confusion_matrix)
+    conf_dict_list = []
+    # row nr
+    for gt_label_idx, gt_label in enumerate(labels):
+        
+        for pred_label_idx, pred_label in enumerate(labels):
+            if ignore_diagonal and gt_label_idx == pred_label_idx:
+                continue
+            conf_value = confusion_matrix[gt_label_idx][pred_label_idx]
+            if conf_value < min_value:
+                continue
+            conf_dict_list.append(
+                {
+                    "gt_label"      :   gt_label,
+                    "pred_label"    :   pred_label,
+                    "score"         :   conf_value
+                }
+            )
+    if save_dir is not None:
+        mkdir_or_exist(save_dir)
+        json_file = os.path.join(save_dir, "confusion.json")
+        dump(conf_dict_list, json_file, indent=4)
+        
 def main():
     args = parse_args()
 
@@ -184,6 +224,11 @@ def main():
 
     dataset = DATASETS.build(cfg.test_dataloader.dataset)
     confusion_matrix = calculate_confusion_matrix(dataset, results)
+    dump_confusion_data(
+        confusion_matrix=confusion_matrix,
+        labels=dataset.METAINFO['classes'],
+        save_dir=args.save_dir
+    )
     plot_confusion_matrix(
         confusion_matrix,
         dataset.METAINFO['classes'],

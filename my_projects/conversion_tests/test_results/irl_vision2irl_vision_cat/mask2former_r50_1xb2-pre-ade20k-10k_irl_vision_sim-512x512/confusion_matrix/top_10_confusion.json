@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 40.535232015713234
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "pen",
+        "score": 13.758587459976996
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "book",
+        "score": 12.021104987229467
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "milk",
+        "score": 3.8059163059163055
+    },
+    {
+        "gt_label": "cap",
+        "pred_label": "plate",
+        "score": 3.602453291426576
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "cereal",
+        "score": 3.0768984863257836
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "plate",
+        "score": 2.602177005578377
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 2.100140863106672
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "mug",
+        "score": 0.036793604602545445
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "apple",
+        "score": 0.03607503607503607
+    }
+]

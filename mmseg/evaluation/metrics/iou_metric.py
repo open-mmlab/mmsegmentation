@@ -254,6 +254,7 @@ class IoUMetric(BaseMetric):
         ret_metrics = OrderedDict({'aAcc': all_acc})
         for metric in metrics:
             if metric == 'mIoU':
+                
                 iou = total_area_intersect / total_area_union
                 acc = total_area_intersect / total_area_label
                 ret_metrics['IoU'] = iou

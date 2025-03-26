@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "lemon",
+        "pred_label": "pear",
+        "score": 94.00477414616232
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "scissors",
+        "score": 77.73140191505034
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "scissors",
+        "score": 69.29867582148111
+    },
+    {
+        "gt_label": "cereal",
+        "pred_label": "milk",
+        "score": 65.9470709955348
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "apple",
+        "score": 62.36837310985608
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "pringles",
+        "score": 59.26919342258162
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "marker",
+        "score": 48.19989858583582
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "pen",
+        "score": 45.34632034632035
+    },
+    {
+        "gt_label": "cap",
+        "pred_label": "orange",
+        "score": 41.83254758163087
+    },
+    {
+        "gt_label": "mug",
+        "pred_label": "can",
+        "score": 41.708594487850945
+    }
+]

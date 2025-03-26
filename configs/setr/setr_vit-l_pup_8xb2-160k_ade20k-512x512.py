@@ -12,7 +12,7 @@ model = dict(
         img_size=(512, 512),
         drop_rate=0.,
         init_cfg=dict(
-            type='Pretrained', checkpoint='pretrain/vit_large_p16.pth')),
+            type='Pretrained', checkpoint="checkpoints/vit-large-p16_in21k-pre-3rdparty_ft-64xb64_in1k-384_20210928-b20ba619.pth")),
     decode_head=dict(num_classes=150),
     auxiliary_head=[
         dict(

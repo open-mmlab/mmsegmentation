@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 73.82848474998646
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 73.28125
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "food_can",
+        "score": 61.019992816952
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "cereal_box",
+        "score": 59.835296703633745
+    },
+    {
+        "gt_label": "instant_noodles",
+        "pred_label": "cereal_box",
+        "score": 56.82823788215884
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "apple",
+        "score": 41.462480857580395
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "food_can",
+        "score": 33.30708661417322
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "pear",
+        "score": 32.71994923717825
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "apple",
+        "score": 31.744840525328332
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "keyboard",
+        "score": 31.396524777052498
+    }
+]

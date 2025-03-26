@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "peach",
+        "pred_label": "apple",
+        "score": 29.038817005545287
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 16.106064326049598
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "banana",
+        "score": 13.331696538178248
+    },
+    {
+        "gt_label": "cereal",
+        "pred_label": "book",
+        "score": 4.339355510110239
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 2.047317198104751
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "peach",
+        "score": 1.900477414616232
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "pringles",
+        "score": 0.7890477475047208
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "can",
+        "score": 0.3356571133488252
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "peach",
+        "score": 0.24048096192384769
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "fork",
+        "score": 0.032829940906106365
+    }
+]

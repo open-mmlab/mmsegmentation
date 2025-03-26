@@ -1,0 +1,13 @@
+{
+    "ori_shape": [
+        512,
+        512
+    ],
+    "pad_shape": [
+        512,
+        512
+    ],
+    "flops": "6.32G",
+    "params": "4.232M",
+    "compute_type": "direct: randomly generate a picture"
+}

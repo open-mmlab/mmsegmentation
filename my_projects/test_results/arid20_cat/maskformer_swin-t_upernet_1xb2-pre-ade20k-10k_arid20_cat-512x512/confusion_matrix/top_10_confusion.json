@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "marker",
+        "pred_label": "kleenex",
+        "score": 33.94241935763437
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 11.622116947335662
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "lemon",
+        "score": 11.4434052843071
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "kleenex",
+        "score": 8.31716466175139
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "cereal_box",
+        "score": 7.825637045660329
+    },
+    {
+        "gt_label": "ball",
+        "pred_label": "coffee_mug",
+        "score": 5.005063576009902
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "cereal_box",
+        "score": 4.152604935667581
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "pear",
+        "score": 3.5773976743359053
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "tomato",
+        "score": 2.6734866062012235
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "orange",
+        "score": 2.5623885918003566
+    }
+]

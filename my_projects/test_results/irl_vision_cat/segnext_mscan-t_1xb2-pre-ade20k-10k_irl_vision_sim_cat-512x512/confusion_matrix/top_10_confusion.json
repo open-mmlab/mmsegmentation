@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "knife",
+        "pred_label": "marker",
+        "score": 23.70255615801704
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 15.369506506260741
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "pen",
+        "score": 13.5409866641798
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pen",
+        "score": 7.177898270074877
+    },
+    {
+        "gt_label": "cap",
+        "pred_label": "plate",
+        "score": 3.55552645364065
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "sponge",
+        "score": 3.1393298059964727
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "flashlight",
+        "score": 2.6328386787936813
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pringles",
+        "score": 2.452878905241415
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "plate",
+        "score": 2.4098375504158476
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 2.0841336918939684
+    }
+]

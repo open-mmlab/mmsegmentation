@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "pen_black",
+        "pred_label": "pen_blue",
+        "score": 49.14586070959264
+    },
+    {
+        "gt_label": "pen_blue",
+        "pred_label": "pen_red",
+        "score": 36.303431667670075
+    },
+    {
+        "gt_label": "spoon_blue",
+        "pred_label": "spoon_silver",
+        "score": 33.553719008264466
+    },
+    {
+        "gt_label": "scissors_silver",
+        "pred_label": "mouse_black",
+        "score": 22.671190623072178
+    },
+    {
+        "gt_label": "juice_box_orange",
+        "pred_label": "juice_box_pink",
+        "score": 18.98148148148148
+    },
+    {
+        "gt_label": "pen_blue",
+        "pred_label": "marker_blue",
+        "score": 18.543046357615893
+    },
+    {
+        "gt_label": "milk_small",
+        "pred_label": "milk_big",
+        "score": 14.406298190081973
+    },
+    {
+        "gt_label": "fork_silver",
+        "pred_label": "spoon_silver",
+        "score": 14.163866632204705
+    },
+    {
+        "gt_label": "scissors_black",
+        "pred_label": "pringles_purple",
+        "score": 5.962239152037099
+    },
+    {
+        "gt_label": "plate_big",
+        "pred_label": "juice_box_pink",
+        "score": 4.40791041219919
+    }
+]

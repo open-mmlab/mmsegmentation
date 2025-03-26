@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "banana",
+        "pred_label": "pringles",
+        "score": 12.380730742378404
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "can",
+        "score": 5.019025185722051
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "pringles",
+        "score": 4.472129052866954
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "knife",
+        "score": 3.7130927527587234
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "spoon",
+        "score": 3.4179843475483147
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "fork",
+        "score": 1.6969218626677192
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "juice_box",
+        "score": 1.2625006432578005
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "keyboard",
+        "score": 0.8878420003623846
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "bowl",
+        "score": 0.7839168396315419
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "cup",
+        "score": 0.5431063031239651
+    }
+]

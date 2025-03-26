@@ -1,0 +1,2387 @@
+fastscnn
+ann
+apcnet
+beit
+bisenetv1
+bisenetv2
+ccnet
+cgnet
+convnext
+danet
+ddrnet
+deeplabv3
+deeplabv3plus
+dmnet
+dnlnet
+dpt
+dsdl
+emanet
+encnet
+erfnet
+fastfcn
+fcn
+gcnet
+hrnet
+icnet
+isanet
+knet
+mae
+mask2former
+maskformer
+mobilenet_v2
+mobilenet_v3
+my_configs
+my_configs copy
+nonlocal_net
+ocrnet
+pidnet
+point_rend
+poolformer
+psanet
+pspnet
+resnest
+san
+segformer
+segmenter
+segnext
+sem_fpn
+setr
+stdc
+swin
+twins
+unet
+upernet
+vit
+vpd
+517
+Dataset: COCO-Stuff 164k
+
+top 4 of custom_score:
+
+Rank: 1
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+mIoU : 28.55
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+
+Rank: 2
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+mIoU : 34.88
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+
+Rank: 3
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 40.53
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+
+Rank: 4
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 41.37
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+
+
+top 4 of fps_per_GB:
+
+Rank: 1
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+mIoU : 28.55
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+
+Rank: 2
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+mIoU : 34.88
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+
+Rank: 3
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 40.53
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+
+Rank: 4
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 41.37
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+
+
+top 4 of mIoU_per_spf:
+
+Rank: 1
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+mIoU : 28.55
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+
+Rank: 2
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+mIoU : 34.88
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+
+Rank: 3
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 40.53
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+
+Rank: 4
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 41.37
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+
+
+top 4 of Inf time (fps):
+
+Rank: 1
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+mIoU : 28.55
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+
+Rank: 2
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+mIoU : 34.88
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+
+Rank: 3
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 40.53
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+
+Rank: 4
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 41.37
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+
+
+top 4 of mIoU:
+
+Rank: 1
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 41.37
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+
+Rank: 2
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 40.53
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+
+Rank: 3
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+mIoU : 34.88
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+
+Rank: 4
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+mIoU : 28.55
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+
+sorted scores (4): 
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+mIoU : 28.55
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : custom_score
+ - rank : 1, metric : fps_per_GB
+ - rank : 1, metric : mIoU_per_spf
+ - rank : 1, metric : Inf time (fps)
+ - rank : 4, metric : mIoU
+total_rank_score : 22
+
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+mIoU : 34.88
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+scores: 
+count : 5
+metric_results:
+ - rank : 2, metric : custom_score
+ - rank : 2, metric : fps_per_GB
+ - rank : 2, metric : mIoU_per_spf
+ - rank : 2, metric : Inf time (fps)
+ - rank : 3, metric : mIoU
+total_rank_score : 19
+
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 40.53
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+scores: 
+count : 5
+metric_results:
+ - rank : 2, metric : mIoU
+ - rank : 3, metric : custom_score
+ - rank : 3, metric : fps_per_GB
+ - rank : 3, metric : mIoU_per_spf
+ - rank : 3, metric : Inf time (fps)
+total_rank_score : 16
+
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 41.37
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : mIoU
+ - rank : 4, metric : custom_score
+ - rank : 4, metric : fps_per_GB
+ - rank : 4, metric : mIoU_per_spf
+ - rank : 4, metric : Inf time (fps)
+total_rank_score : 13
+
+n_total_models : 24
+len selection : 4
+################################################################################
+Dataset: COCO-Stuff 10k
+
+top 2 of custom_score:
+
+Rank: 1
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 36.33
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+
+Rank: 2
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 35.73
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+
+
+top 2 of fps_per_GB:
+
+Rank: 1
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 36.33
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+
+Rank: 2
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 35.73
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+
+
+top 2 of mIoU_per_spf:
+
+Rank: 1
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 36.33
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+
+Rank: 2
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 35.73
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+
+
+top 2 of Inf time (fps):
+
+Rank: 1
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 36.33
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+
+Rank: 2
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 35.73
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+
+
+top 2 of mIoU:
+
+Rank: 1
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 36.33
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+
+Rank: 2
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 35.73
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+
+sorted scores (2): 
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+mIoU : 36.33
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : custom_score
+ - rank : 1, metric : fps_per_GB
+ - rank : 1, metric : mIoU_per_spf
+ - rank : 1, metric : Inf time (fps)
+ - rank : 1, metric : mIoU
+total_rank_score : 28
+
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+mIoU : 35.73
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+scores: 
+count : 5
+metric_results:
+ - rank : 2, metric : custom_score
+ - rank : 2, metric : fps_per_GB
+ - rank : 2, metric : mIoU_per_spf
+ - rank : 2, metric : Inf time (fps)
+ - rank : 2, metric : mIoU
+total_rank_score : 21
+
+n_total_models : 36
+len selection : 6
+################################################################################
+Dataset: ADE20K
+
+top 5 of custom_score:
+
+Rank: 1
+config : configs/segmenter/segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py
+Mem (GB) : 1.21
+Inf time (fps) : 27.98
+mIoU : 39.99
+custom_score : 56.17355371900827
+fps_per_GB : 23.123966942148762
+mIoU_per_spf : 1118.9202
+
+Rank: 2
+config : configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.29
+Inf time (fps) : 100.0
+mIoU : 44.29
+custom_score : 43.857142857142854
+fps_per_GB : 30.3951367781155
+mIoU_per_spf : 4429.0
+
+Rank: 3
+config : configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 2.1
+Inf time (fps) : 51.32
+mIoU : 37.41
+custom_score : 42.252380952380946
+fps_per_GB : 24.438095238095237
+mIoU_per_spf : 1919.8811999999998
+
+Rank: 4
+config : configs/segmenter/segmenter_vit-s_fcn_8xb1-160k_ade20k-512x512.py
+Mem (GB) : 1.78
+Inf time (fps) : 28.07
+mIoU : 45.75
+custom_score : 41.471910112359545
+fps_per_GB : 15.769662921348315
+mIoU_per_spf : 1284.2024999999999
+
+Rank: 5
+config : configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.73
+Inf time (fps) : 100.0
+mIoU : 46.69
+custom_score : 39.32707774798928
+fps_per_GB : 26.80965147453083
+mIoU_per_spf : 4669.0
+
+
+top 5 of fps_per_GB:
+
+Rank: 1
+config : configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.29
+Inf time (fps) : 100.0
+mIoU : 44.29
+custom_score : 43.857142857142854
+fps_per_GB : 30.3951367781155
+mIoU_per_spf : 4429.0
+
+Rank: 2
+config : configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.73
+Inf time (fps) : 100.0
+mIoU : 46.69
+custom_score : 39.32707774798928
+fps_per_GB : 26.80965147453083
+mIoU_per_spf : 4669.0
+
+Rank: 3
+config : configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 2.1
+Inf time (fps) : 51.32
+mIoU : 37.41
+custom_score : 42.252380952380946
+fps_per_GB : 24.438095238095237
+mIoU_per_spf : 1919.8811999999998
+
+Rank: 4
+config : configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 4.12
+Inf time (fps) : 100.0
+mIoU : 45.11
+custom_score : 35.22087378640777
+fps_per_GB : 24.271844660194173
+mIoU_per_spf : 4511.0
+
+Rank: 5
+config : configs/segmenter/segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py
+Mem (GB) : 1.21
+Inf time (fps) : 27.98
+mIoU : 39.99
+custom_score : 56.17355371900827
+fps_per_GB : 23.123966942148762
+mIoU_per_spf : 1118.9202
+
+
+top 5 of mIoU_per_spf:
+
+Rank: 1
+config : configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.73
+Inf time (fps) : 100.0
+mIoU : 46.69
+custom_score : 39.32707774798928
+fps_per_GB : 26.80965147453083
+mIoU_per_spf : 4669.0
+
+Rank: 2
+config : configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 4.12
+Inf time (fps) : 100.0
+mIoU : 45.11
+custom_score : 35.22087378640777
+fps_per_GB : 24.271844660194173
+mIoU_per_spf : 4511.0
+
+Rank: 3
+config : configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.29
+Inf time (fps) : 100.0
+mIoU : 44.29
+custom_score : 43.857142857142854
+fps_per_GB : 30.3951367781155
+mIoU_per_spf : 4429.0
+
+Rank: 4
+config : configs/segnext/segnext_mscan-t_1xb16-adamw-160k_ade20k-512x512.py
+Mem (GB) : 17.88
+Inf time (fps) : 52.38
+mIoU : 41.5
+custom_score : 5.250559284116331
+fps_per_GB : 2.929530201342282
+mIoU_per_spf : 2173.77
+
+Rank: 5
+config : configs/sem_fpn/fpn_r50_4xb4-160k_ade20k-512x512.py
+Mem (GB) : 4.9
+Inf time (fps) : 55.77
+mIoU : 37.49
+custom_score : 19.03265306122449
+fps_per_GB : 11.381632653061224
+mIoU_per_spf : 2090.8173000000006
+
+
+top 5 of Inf time (fps):
+
+Rank: 1
+config : configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.29
+Inf time (fps) : 100.0
+mIoU : 44.29
+custom_score : 43.857142857142854
+fps_per_GB : 30.3951367781155
+mIoU_per_spf : 4429.0
+
+Rank: 2
+config : configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 4.12
+Inf time (fps) : 100.0
+mIoU : 45.11
+custom_score : 35.22087378640777
+fps_per_GB : 24.271844660194173
+mIoU_per_spf : 4511.0
+
+Rank: 3
+config : configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.73
+Inf time (fps) : 100.0
+mIoU : 46.69
+custom_score : 39.32707774798928
+fps_per_GB : 26.80965147453083
+mIoU_per_spf : 4669.0
+
+Rank: 4
+config : configs/mobilenet_v2/mobilenet-v2-d8_fcn_4xb4-160k_ade20k-512x512.py
+Mem (GB) : 6.5
+Inf time (fps) : 64.4
+mIoU : 19.71
+custom_score : 12.940000000000001
+fps_per_GB : 9.907692307692308
+mIoU_per_spf : 1269.3240000000003
+
+Rank: 5
+config : configs/mobilenet_v2/mobilenet-v2-d8_pspnet_4xb4-160k_ade20k-512x512.py
+Mem (GB) : 6.5
+Inf time (fps) : 57.7
+mIoU : 29.68
+custom_score : 13.443076923076923
+fps_per_GB : 8.876923076923077
+mIoU_per_spf : 1712.536
+
+
+top 5 of mIoU:
+
+Rank: 1
+config : configs/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.74
+Inf time (fps) : 19.69
+mIoU : 51.24
+custom_score : 18.96524064171123
+fps_per_GB : 5.264705882352941
+mIoU_per_spf : 1008.9156
+
+Rank: 2
+config : configs/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.826
+Inf time (fps) : 23.82
+mIoU : 48.66
+custom_score : 0.018944066910611602
+fps_per_GB : 0.006225823314166231
+mIoU_per_spf : 1159.0811999999999
+
+Rank: 3
+config : configs/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 4.09
+Inf time (fps) : 22.97
+mIoU : 48.6
+custom_score : 17.498777506112468
+fps_per_GB : 5.616136919315403
+mIoU_per_spf : 1116.342
+
+Rank: 4
+config : configs/segnext/segnext_mscan-b_1xb16-adamw-160k_ade20k-512x512.py
+Mem (GB) : 31.03
+Inf time (fps) : 35.15
+mIoU : 48.03
+custom_score : 2.680631646793426
+fps_per_GB : 1.1327747341282628
+mIoU_per_spf : 1688.2545
+
+Rank: 5
+config : configs/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.31
+Inf time (fps) : 26.59
+mIoU : 47.87
+custom_score : 22.495468277945616
+fps_per_GB : 8.03323262839879
+mIoU_per_spf : 1272.8632999999998
+
+
+sorted scores (5): 
+config : configs/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.826
+Inf time (fps) : 23.82
+mIoU : 48.66
+custom_score : 0.018944066910611602
+fps_per_GB : 0.006225823314166231
+mIoU_per_spf : 1159.0811999999999
+scores: 
+count : 1
+metric_results:
+ - rank : 2, metric : mIoU
+total_rank_score : 6
+
+config : configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 3.73
+Inf time (fps) : 100.0
+mIoU : 46.69
+custom_score : 39.32707774798928
+fps_per_GB : 26.80965147453083
+mIoU_per_spf : 4669.0
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : mIoU_per_spf
+ - rank : 2, metric : fps_per_GB
+ - rank : 3, metric : Inf time (fps)
+ - rank : 5, metric : custom_score
+ - rank : 8, metric : mIoU
+total_rank_score : 5
+
+config : configs/segmenter/segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py
+Mem (GB) : 1.21
+Inf time (fps) : 27.98
+mIoU : 39.99
+custom_score : 56.17355371900827
+fps_per_GB : 23.123966942148762
+mIoU_per_spf : 1118.9202
+scores: 
+count : 2
+metric_results:
+ - rank : 1, metric : custom_score
+ - rank : 5, metric : fps_per_GB
+total_rank_score : 4
+
+config : configs/segnext/segnext_mscan-t_1xb16-adamw-160k_ade20k-512x512.py
+Mem (GB) : 17.88
+Inf time (fps) : 52.38
+mIoU : 41.5
+custom_score : 5.250559284116331
+fps_per_GB : 2.929530201342282
+mIoU_per_spf : 2173.77
+scores: 
+count : 2
+metric_results:
+ - rank : 4, metric : mIoU_per_spf
+ - rank : 7, metric : Inf time (fps)
+total_rank_score : -3
+
+config : configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py
+Mem (GB) : 2.1
+Inf time (fps) : 51.32
+mIoU : 37.41
+custom_score : 42.252380952380946
+fps_per_GB : 24.438095238095237
+mIoU_per_spf : 1919.8811999999998
+scores: 
+count : 4
+metric_results:
+ - rank : 3, metric : custom_score
+ - rank : 3, metric : fps_per_GB
+ - rank : 7, metric : mIoU_per_spf
+ - rank : 8, metric : Inf time (fps)
+total_rank_score : -4
+
+n_total_models : 66
+len selection : 21
+################################################################################
+Dataset: Pascal VOC 2012 + Aug
+
+top 5 of custom_score:
+
+Rank: 1
+config : configs/hrnet/fcn_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 1.8
+Inf time (fps) : 43.36
+mIoU : 66.61
+custom_score : 61.09444444444444
+fps_per_GB : 24.08888888888889
+mIoU_per_spf : 2888.2096
+
+Rank: 2
+config : configs/hrnet/fcn_hr18_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 2.9
+Inf time (fps) : 23.48
+mIoU : 72.9
+custom_score : 33.23448275862069
+fps_per_GB : 8.096551724137932
+mIoU_per_spf : 1711.6920000000002
+
+Rank: 3
+config : configs/ocrnet/ocrnet_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 3.5
+Inf time (fps) : 31.55
+mIoU : 72.76
+custom_score : 29.802857142857142
+fps_per_GB : 9.014285714285714
+mIoU_per_spf : 2295.578
+
+Rank: 4
+config : configs/ocrnet/ocrnet_hr18_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 4.7
+Inf time (fps) : 19.91
+mIoU : 74.98
+custom_score : 20.18936170212766
+fps_per_GB : 4.236170212765957
+mIoU_per_spf : 1492.8518000000001
+
+Rank: 5
+config : configs/gcnet/gcnet_r50-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 5.8
+Inf time (fps) : 23.35
+mIoU : 76.42
+custom_score : 17.201724137931038
+fps_per_GB : 4.025862068965518
+mIoU_per_spf : 1784.4070000000002
+
+
+top 5 of fps_per_GB:
+
+Rank: 1
+config : configs/hrnet/fcn_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 1.8
+Inf time (fps) : 43.36
+mIoU : 66.61
+custom_score : 61.09444444444444
+fps_per_GB : 24.08888888888889
+mIoU_per_spf : 2888.2096
+
+Rank: 2
+config : configs/ocrnet/ocrnet_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 3.5
+Inf time (fps) : 31.55
+mIoU : 72.76
+custom_score : 29.802857142857142
+fps_per_GB : 9.014285714285714
+mIoU_per_spf : 2295.578
+
+Rank: 3
+config : configs/hrnet/fcn_hr18_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 2.9
+Inf time (fps) : 23.48
+mIoU : 72.9
+custom_score : 33.23448275862069
+fps_per_GB : 8.096551724137932
+mIoU_per_spf : 1711.6920000000002
+
+Rank: 4
+config : configs/ocrnet/ocrnet_hr18_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 4.7
+Inf time (fps) : 19.91
+mIoU : 74.98
+custom_score : 20.18936170212766
+fps_per_GB : 4.236170212765957
+mIoU_per_spf : 1492.8518000000001
+
+Rank: 5
+config : configs/fcn/fcn_r50-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 5.7
+Inf time (fps) : 23.28
+mIoU : 67.08
+custom_score : 15.852631578947367
+fps_per_GB : 4.08421052631579
+mIoU_per_spf : 1561.6224
+
+
+top 5 of mIoU_per_spf:
+
+Rank: 1
+config : configs/hrnet/fcn_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 1.8
+Inf time (fps) : 43.36
+mIoU : 66.61
+custom_score : 61.09444444444444
+fps_per_GB : 24.08888888888889
+mIoU_per_spf : 2888.2096
+
+Rank: 2
+config : configs/ocrnet/ocrnet_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 3.5
+Inf time (fps) : 31.55
+mIoU : 72.76
+custom_score : 29.802857142857142
+fps_per_GB : 9.014285714285714
+mIoU_per_spf : 2295.578
+
+Rank: 3
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 6.1
+Inf time (fps) : 23.59
+mIoU : 77.29
+custom_score : 16.53770491803279
+fps_per_GB : 3.8672131147540987
+mIoU_per_spf : 1823.2711000000002
+
+Rank: 4
+config : configs/gcnet/gcnet_r50-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 5.8
+Inf time (fps) : 23.35
+mIoU : 76.42
+custom_score : 17.201724137931038
+fps_per_GB : 4.025862068965518
+mIoU_per_spf : 1784.4070000000002
+
+Rank: 5
+config : configs/isanet/isanet_r50-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 5.9
+Inf time (fps) : 23.08
+mIoU : 76.78
+custom_score : 16.92542372881356
+fps_per_GB : 3.9118644067796606
+mIoU_per_spf : 1772.0824
+
+
+top 5 of Inf time (fps):
+
+Rank: 1
+config : configs/hrnet/fcn_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 1.8
+Inf time (fps) : 43.36
+mIoU : 66.61
+custom_score : 61.09444444444444
+fps_per_GB : 24.08888888888889
+mIoU_per_spf : 2888.2096
+
+Rank: 2
+config : configs/ocrnet/ocrnet_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 3.5
+Inf time (fps) : 31.55
+mIoU : 72.76
+custom_score : 29.802857142857142
+fps_per_GB : 9.014285714285714
+mIoU_per_spf : 2295.578
+
+Rank: 3
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 6.1
+Inf time (fps) : 23.59
+mIoU : 77.29
+custom_score : 16.53770491803279
+fps_per_GB : 3.8672131147540987
+mIoU_per_spf : 1823.2711000000002
+
+Rank: 4
+config : configs/hrnet/fcn_hr18_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 2.9
+Inf time (fps) : 23.48
+mIoU : 72.9
+custom_score : 33.23448275862069
+fps_per_GB : 8.096551724137932
+mIoU_per_spf : 1711.6920000000002
+
+Rank: 5
+config : configs/gcnet/gcnet_r50-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 5.8
+Inf time (fps) : 23.35
+mIoU : 76.42
+custom_score : 17.201724137931038
+fps_per_GB : 4.025862068965518
+mIoU_per_spf : 1784.4070000000002
+
+
+top 5 of mIoU:
+
+Rank: 1
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 9.81
+mIoU : 78.7
+custom_score : 9.219791666666667
+fps_per_GB : 1.021875
+mIoU_per_spf : 772.047
+
+Rank: 2
+config : configs/pspnet/pspnet_r101-d8_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 15.02
+mIoU : 78.52
+custom_score : 9.74375
+fps_per_GB : 1.5645833333333334
+mIoU_per_spf : 1179.3703999999998
+
+Rank: 3
+config : configs/isanet/isanet_r101-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 9.465
+Inf time (fps) : 7.42
+mIoU : 78.46
+custom_score : 9.073428420496565
+fps_per_GB : 0.7839408346539883
+mIoU_per_spf : 582.1732
+
+Rank: 4
+config : configs/nonlocal_net/nonlocal_r101-d8_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 9.8
+Inf time (fps) : 14.01
+mIoU : 78.27
+custom_score : 9.416326530612244
+fps_per_GB : 1.4295918367346938
+mIoU_per_spf : 1096.5627
+
+Rank: 5
+config : configs/ccnet/ccnet_r101-d8_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 9.5
+Inf time (fps) : 13.64
+mIoU : 77.87
+custom_score : 9.632631578947368
+fps_per_GB : 1.4357894736842105
+mIoU_per_spf : 1062.1468000000002
+
+sorted scores (5): 
+config : configs/hrnet/fcn_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 1.8
+Inf time (fps) : 43.36
+mIoU : 66.61
+custom_score : 61.09444444444444
+fps_per_GB : 24.08888888888889
+mIoU_per_spf : 2888.2096
+scores: 
+count : 4
+metric_results:
+ - rank : 1, metric : custom_score
+ - rank : 1, metric : fps_per_GB
+ - rank : 1, metric : mIoU_per_spf
+ - rank : 1, metric : Inf time (fps)
+total_rank_score : 20
+
+config : configs/ocrnet/ocrnet_hr18s_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 3.5
+Inf time (fps) : 31.55
+mIoU : 72.76
+custom_score : 29.802857142857142
+fps_per_GB : 9.014285714285714
+mIoU_per_spf : 2295.578
+scores: 
+count : 4
+metric_results:
+ - rank : 2, metric : fps_per_GB
+ - rank : 2, metric : mIoU_per_spf
+ - rank : 2, metric : Inf time (fps)
+ - rank : 3, metric : custom_score
+total_rank_score : 14
+
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 9.6
+Inf time (fps) : 9.81
+mIoU : 78.7
+custom_score : 9.219791666666667
+fps_per_GB : 1.021875
+mIoU_per_spf : 772.047
+scores: 
+count : 1
+metric_results:
+ - rank : 1, metric : mIoU
+total_rank_score : 8
+
+config : configs/hrnet/fcn_hr18_4xb4-40k_voc12aug-512x512.py
+Mem (GB) : 2.9
+Inf time (fps) : 23.48
+mIoU : 72.9
+custom_score : 33.23448275862069
+fps_per_GB : 8.096551724137932
+mIoU_per_spf : 1711.6920000000002
+scores: 
+count : 4
+metric_results:
+ - rank : 2, metric : custom_score
+ - rank : 3, metric : fps_per_GB
+ - rank : 4, metric : Inf time (fps)
+ - rank : 7, metric : mIoU_per_spf
+total_rank_score : 5
+
+config : configs/isanet/isanet_r101-d8_4xb4-20k_voc12aug-512x512.py
+Mem (GB) : 9.465
+Inf time (fps) : 7.42
+mIoU : 78.46
+custom_score : 9.073428420496565
+fps_per_GB : 0.7839408346539883
+mIoU_per_spf : 582.1732
+scores: 
+count : 1
+metric_results:
+ - rank : 3, metric : mIoU
+total_rank_score : 4
+
+n_total_models : 96
+len selection : 34
+################################################################################
+Dataset: Pascal Context
+
+top 0 of custom_score:
+
+
+top 0 of fps_per_GB:
+
+
+top 0 of mIoU_per_spf:
+
+
+top 0 of Inf time (fps):
+
+
+top 0 of mIoU:
+
+sorted scores (0): 
+n_total_models : 96
+len selection : 34
+################################################################################
+Dataset: Pascal Context 59
+
+top 3 of custom_score:
+
+Rank: 1
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+mIoU : 51.12
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+
+Rank: 2
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+mIoU : 52.47
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+
+Rank: 3
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+mIoU : 52.61
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+
+
+top 3 of fps_per_GB:
+
+Rank: 1
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+mIoU : 51.12
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+
+Rank: 2
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+mIoU : 52.47
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+
+Rank: 3
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+mIoU : 52.61
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+
+
+top 3 of mIoU_per_spf:
+
+Rank: 1
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+mIoU : 52.47
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+
+Rank: 2
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+mIoU : 51.12
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+
+Rank: 3
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+mIoU : 52.61
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+
+
+top 3 of Inf time (fps):
+
+Rank: 1
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+mIoU : 52.47
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+
+Rank: 2
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+mIoU : 51.12
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+
+Rank: 3
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+mIoU : 52.61
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+
+
+top 3 of mIoU:
+
+Rank: 1
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+mIoU : 52.61
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+
+Rank: 2
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+mIoU : 52.47
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+
+Rank: 3
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+mIoU : 51.12
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+
+sorted scores (3): 
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+mIoU : 52.47
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : mIoU_per_spf
+ - rank : 1, metric : Inf time (fps)
+ - rank : 2, metric : custom_score
+ - rank : 2, metric : fps_per_GB
+ - rank : 2, metric : mIoU
+total_rank_score : 24
+
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+mIoU : 51.12
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : custom_score
+ - rank : 1, metric : fps_per_GB
+ - rank : 2, metric : mIoU_per_spf
+ - rank : 2, metric : Inf time (fps)
+ - rank : 3, metric : mIoU
+total_rank_score : 21
+
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+mIoU : 52.61
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : mIoU
+ - rank : 3, metric : custom_score
+ - rank : 3, metric : fps_per_GB
+ - rank : 3, metric : mIoU_per_spf
+ - rank : 3, metric : Inf time (fps)
+total_rank_score : 18
+
+n_total_models : 114
+len selection : 37
+################################################################################
+Dataset: Cityscapes
+
+top 5 of custom_score:
+
+Rank: 1
+config : configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+Mem (GB) : 1.7
+Inf time (fps) : 85.85
+mIoU : 77.84
+custom_score : 96.28823529411765
+fps_per_GB : 50.5
+mIoU_per_spf : 6682.563999999999
+
+Rank: 2
+config : configs/pspnet/pspnet_r18b-d8_4xb2-80k_cityscapes-512x1024.py
+Mem (GB) : 1.5
+Inf time (fps) : 16.28
+mIoU : 74.23
+custom_score : 60.34
+fps_per_GB : 10.853333333333333
+mIoU_per_spf : 1208.4644
+
+Rank: 3
+config : configs/hrnet/fcn_hr18s_4xb2-160k_cityscapes-512x1024.py
+Mem (GB) : 1.7
+Inf time (fps) : 23.74
+mIoU : 76.31
+custom_score : 58.85294117647059
+fps_per_GB : 13.964705882352941
+mIoU_per_spf : 1811.5994
+
+Rank: 4
+config : configs/icnet/icnet_r18-d8_4xb2-160k_cityscapes-832x832.py
+Mem (GB) : 1.7
+Inf time (fps) : 27.12
+mIoU : 71.64
+custom_score : 58.09411764705883
+fps_per_GB : 15.952941176470588
+mIoU_per_spf : 1942.8768
+
+Rank: 5
+config : configs/deeplabv3/deeplabv3_r18b-d8_4xb2-80k_cityscapes-512x1024.py
+Mem (GB) : 1.6
+Inf time (fps) : 13.93
+mIoU : 76.26
+custom_score : 56.36875
+fps_per_GB : 8.706249999999999
+mIoU_per_spf : 1062.3018000000002
+
+
+top 5 of fps_per_GB:
+
+Rank: 1
+config : configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+Mem (GB) : 1.7
+Inf time (fps) : 85.85
+mIoU : 77.84
+custom_score : 96.28823529411765
+fps_per_GB : 50.5
+mIoU_per_spf : 6682.563999999999
+
+Rank: 2
+config : configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 3.38
+Inf time (fps) : 80.82
+mIoU : 78.74
+custom_score : 47.20710059171598
+fps_per_GB : 23.911242603550296
+mIoU_per_spf : 6363.766799999999
+
+Rank: 3
+config : configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py
+Mem (GB) : 3.3
+Inf time (fps) : 56.45
+mIoU : 70.96
+custom_score : 38.60909090909091
+fps_per_GB : 17.10606060606061
+mIoU_per_spf : 4005.692
+
+Rank: 4
+config : configs/icnet/icnet_r18-d8_4xb2-160k_cityscapes-832x832.py
+Mem (GB) : 1.7
+Inf time (fps) : 27.12
+mIoU : 71.64
+custom_score : 58.09411764705883
+fps_per_GB : 15.952941176470588
+mIoU_per_spf : 1942.8768
+
+Rank: 5
+config : configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.14
+Inf time (fps) : 71.98
+mIoU : 80.22
+custom_score : 29.610894941634243
+fps_per_GB : 14.00389105058366
+mIoU_per_spf : 5774.2356
+
+
+top 5 of mIoU_per_spf:
+
+Rank: 1
+config : configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+Mem (GB) : 1.7
+Inf time (fps) : 85.85
+mIoU : 77.84
+custom_score : 96.28823529411765
+fps_per_GB : 50.5
+mIoU_per_spf : 6682.563999999999
+
+Rank: 2
+config : configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 3.38
+Inf time (fps) : 80.82
+mIoU : 78.74
+custom_score : 47.20710059171598
+fps_per_GB : 23.911242603550296
+mIoU_per_spf : 6363.766799999999
+
+Rank: 3
+config : configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.14
+Inf time (fps) : 71.98
+mIoU : 80.22
+custom_score : 29.610894941634243
+fps_per_GB : 14.00389105058366
+mIoU_per_spf : 5774.2356
+
+Rank: 4
+config : configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.83
+Inf time (fps) : 60.06
+mIoU : 80.89
+custom_score : 24.17667238421955
+fps_per_GB : 10.30188679245283
+mIoU_per_spf : 4858.2534000000005
+
+Rank: 5
+config : configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py
+Mem (GB) : 3.3
+Inf time (fps) : 56.45
+mIoU : 70.96
+custom_score : 38.60909090909091
+fps_per_GB : 17.10606060606061
+mIoU_per_spf : 4005.692
+
+
+top 5 of Inf time (fps):
+
+Rank: 1
+config : configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+Mem (GB) : 1.7
+Inf time (fps) : 85.85
+mIoU : 77.84
+custom_score : 96.28823529411765
+fps_per_GB : 50.5
+mIoU_per_spf : 6682.563999999999
+
+Rank: 2
+config : configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 3.38
+Inf time (fps) : 80.82
+mIoU : 78.74
+custom_score : 47.20710059171598
+fps_per_GB : 23.911242603550296
+mIoU_per_spf : 6363.766799999999
+
+Rank: 3
+config : configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.14
+Inf time (fps) : 71.98
+mIoU : 80.22
+custom_score : 29.610894941634243
+fps_per_GB : 14.00389105058366
+mIoU_per_spf : 5774.2356
+
+Rank: 4
+config : configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.83
+Inf time (fps) : 60.06
+mIoU : 80.89
+custom_score : 24.17667238421955
+fps_per_GB : 10.30188679245283
+mIoU_per_spf : 4858.2534000000005
+
+Rank: 5
+config : configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py
+Mem (GB) : 3.3
+Inf time (fps) : 56.45
+mIoU : 70.96
+custom_score : 38.60909090909091
+fps_per_GB : 17.10606060606061
+mIoU_per_spf : 4005.692
+
+
+top 5 of mIoU:
+
+Rank: 1
+config : configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.83
+Inf time (fps) : 60.06
+mIoU : 80.89
+custom_score : 24.17667238421955
+fps_per_GB : 10.30188679245283
+mIoU_per_spf : 4858.2534000000005
+
+Rank: 2
+config : configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.14
+Inf time (fps) : 71.98
+mIoU : 80.22
+custom_score : 29.610894941634243
+fps_per_GB : 14.00389105058366
+mIoU_per_spf : 5774.2356
+
+Rank: 3
+config : configs/ddrnet/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+Mem (GB) : 7.26
+Inf time (fps) : 33.41
+mIoU : 79.99
+custom_score : 15.6198347107438
+fps_per_GB : 4.601928374655647
+mIoU_per_spf : 2672.4658999999992
+
+Rank: 4
+config : configs/hrnet/fcn_hr18_4xb2-160k_cityscapes-512x1024.py
+Mem (GB) : 2.9
+Inf time (fps) : 12.97
+mIoU : 78.8
+custom_score : 31.644827586206898
+fps_per_GB : 4.472413793103448
+mIoU_per_spf : 1022.0360000000001
+
+Rank: 5
+config : configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 3.38
+Inf time (fps) : 80.82
+mIoU : 78.74
+custom_score : 47.20710059171598
+fps_per_GB : 23.911242603550296
+mIoU_per_spf : 6363.766799999999
+
+sorted scores (5): 
+config : configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.14
+Inf time (fps) : 71.98
+mIoU : 80.22
+custom_score : 29.610894941634243
+fps_per_GB : 14.00389105058366
+mIoU_per_spf : 5774.2356
+scores: 
+count : 4
+metric_results:
+ - rank : 2, metric : mIoU
+ - rank : 3, metric : mIoU_per_spf
+ - rank : 3, metric : Inf time (fps)
+ - rank : 5, metric : fps_per_GB
+total_rank_score : 12
+
+config : configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+Mem (GB) : 1.7
+Inf time (fps) : 85.85
+mIoU : 77.84
+custom_score : 96.28823529411765
+fps_per_GB : 50.5
+mIoU_per_spf : 6682.563999999999
+scores: 
+count : 5
+metric_results:
+ - rank : 1, metric : custom_score
+ - rank : 1, metric : fps_per_GB
+ - rank : 1, metric : mIoU_per_spf
+ - rank : 1, metric : Inf time (fps)
+ - rank : 10, metric : mIoU
+total_rank_score : 10
+
+config : configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 5.83
+Inf time (fps) : 60.06
+mIoU : 80.89
+custom_score : 24.17667238421955
+fps_per_GB : 10.30188679245283
+mIoU_per_spf : 4858.2534000000005
+scores: 
+count : 4
+metric_results:
+ - rank : 1, metric : mIoU
+ - rank : 4, metric : mIoU_per_spf
+ - rank : 4, metric : Inf time (fps)
+ - rank : 9, metric : fps_per_GB
+total_rank_score : 7
+
+config : configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+Mem (GB) : 3.38
+Inf time (fps) : 80.82
+mIoU : 78.74
+custom_score : 47.20710059171598
+fps_per_GB : 23.911242603550296
+mIoU_per_spf : 6363.766799999999
+scores: 
+count : 5
+metric_results:
+ - rank : 2, metric : fps_per_GB
+ - rank : 2, metric : mIoU_per_spf
+ - rank : 2, metric : Inf time (fps)
+ - rank : 5, metric : mIoU
+ - rank : 11, metric : custom_score
+total_rank_score : 6
+
+config : configs/hrnet/fcn_hr18_4xb2-160k_cityscapes-512x1024.py
+Mem (GB) : 2.9
+Inf time (fps) : 12.97
+mIoU : 78.8
+custom_score : 31.644827586206898
+fps_per_GB : 4.472413793103448
+mIoU_per_spf : 1022.0360000000001
+scores: 
+count : 1
+metric_results:
+ - rank : 4, metric : mIoU
+total_rank_score : 2
+
+n_total_models : 144
+len selection : 48
+################################################################################
+
+
+
+
+
+
+
+
+
+SELECTED MODELS:
+Method : BiSeNetV1
+Backbone : R-18-D32
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 6.33
+Inf time (fps) : 74.24
+Device : V100
+mIoU : 28.55
+mIoU(ms+flip) : 29.26
+config : configs/bisenetv1/bisenetv1_r18-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+dataset : COCO-Stuff 164k
+custom_score : 16.238546603475513
+fps_per_GB : 11.72827804107425
+mIoU_per_spf : 2119.552
+
+Method : BiSeNetV1
+Backbone : R-50-D32
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 9.28
+Inf time (fps) : 32.6
+Device : V100
+mIoU : 34.88
+mIoU(ms+flip) : 35.37
+config : configs/bisenetv1/bisenetv1_r50-d32-in1k-pre_4xb4-160k_coco-stuff164k-512x512.py
+dataset : COCO-Stuff 164k
+custom_score : 7.271551724137932
+fps_per_GB : 3.512931034482759
+mIoU_per_spf : 1137.0880000000002
+
+Method : PSPNet
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 320000
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+Device : V100
+mIoU : 40.53
+mIoU(ms+flip) : 40.75
+config : configs/pspnet/pspnet_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+dataset : COCO-Stuff 164k
+custom_score : 6.357291666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 830.865
+
+Method : DeepLabV3
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 320000
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+Device : V100
+mIoU : 41.37
+mIoU(ms+flip) : 42.22
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-320k_coco-stuff164k-512x512.py
+dataset : COCO-Stuff 164k
+custom_score : 5.434375
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 446.796
+
+Method : PSPNet
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 9.6
+Inf time (fps) : 20.5
+Device : V100
+mIoU : 36.33
+mIoU(ms+flip) : 37.24
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+dataset : COCO-Stuff 10k
+custom_score : 5.919791666666667
+fps_per_GB : 2.135416666666667
+mIoU_per_spf : 744.765
+
+Method : DeepLabV3
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 9.6
+Inf time (fps) : 10.8
+Device : V100
+mIoU : 35.73
+mIoU(ms+flip) : 37.09
+config : configs/deeplabv3/deeplabv3_r50-d8_4xb4-40k_coco-stuff10k-512x512.py
+dataset : COCO-Stuff 10k
+custom_score : 4.846875000000001
+fps_per_GB : 1.1250000000000002
+mIoU_per_spf : 385.884
+
+Method : Segmenter Mask
+Backbone : ViT-T_16
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 1.21
+Inf time (fps) : 27.98
+Device : V100
+mIoU : 39.99
+mIoU(ms+flip) : 40.83
+config : configs/segmenter/segmenter_vit-t_mask_8xb1-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 56.17355371900827
+fps_per_GB : 23.123966942148762
+mIoU_per_spf : 1118.9202
+
+Method : MaskFormer
+Backbone : R-50-D32
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 3.29
+Inf time (fps) : 100.0
+Device : 42.20
+mIoU : 44.29
+mIoU(ms+flip) : -
+config : configs/maskformer/maskformer_r50-d32_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 43.857142857142854
+fps_per_GB : 30.3951367781155
+mIoU_per_spf : 4429.0
+
+Method : Segformer
+Backbone : MIT-B0
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 2.1
+Inf time (fps) : 51.32
+Device : 1080 Ti
+mIoU : 37.41
+mIoU(ms+flip) : 38.34
+config : configs/segformer/segformer_mit-b0_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 42.252380952380946
+fps_per_GB : 24.438095238095237
+mIoU_per_spf : 1919.8811999999998
+
+Method : Segmenter Linear
+Backbone : ViT-S_16
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 1.78
+Inf time (fps) : 28.07
+Device : V100
+mIoU : 45.75
+mIoU(ms+flip) : 46.82
+config : configs/segmenter/segmenter_vit-s_fcn_8xb1-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 41.471910112359545
+fps_per_GB : 15.769662921348315
+mIoU_per_spf : 1284.2024999999999
+
+Method : MaskFormer
+Backbone : Swin-T
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 3.73
+Inf time (fps) : 100.0
+Device : 40.53
+mIoU : 46.69
+mIoU(ms+flip) : -
+config : configs/maskformer/maskformer_swin-t_upernet_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 39.32707774798928
+fps_per_GB : 26.80965147453083
+mIoU_per_spf : 4669.0
+
+Method : MaskFormer
+Backbone : R-101-D32
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 4.12
+Inf time (fps) : 100.0
+Device : 34.90
+mIoU : 45.11
+mIoU(ms+flip) : -
+config : configs/maskformer/maskformer_r101-d32_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 35.22087378640777
+fps_per_GB : 24.271844660194173
+mIoU_per_spf : 4511.0
+
+Method : SegNeXt
+Backbone : MSCAN-T
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 17.88
+Inf time (fps) : 52.38
+Device : A100
+mIoU : 41.5
+mIoU(ms+flip) : 42.59
+config : configs/segnext/segnext_mscan-t_1xb16-adamw-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 5.250559284116331
+fps_per_GB : 2.929530201342282
+mIoU_per_spf : 2173.77
+
+Method : FPN
+Backbone : R-50
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 4.9
+Inf time (fps) : 55.77
+Device : V100
+mIoU : 37.49
+mIoU(ms+flip) : 39.09
+config : configs/sem_fpn/fpn_r50_4xb4-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 19.03265306122449
+fps_per_GB : 11.381632653061224
+mIoU_per_spf : 2090.8173000000006
+
+Method : FCN
+Backbone : M-V2-D8
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 6.5
+Inf time (fps) : 64.4
+Device : V100
+mIoU : 19.71
+mIoU(ms+flip) : -
+config : configs/mobilenet_v2/mobilenet-v2-d8_fcn_4xb4-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 12.940000000000001
+fps_per_GB : 9.907692307692308
+mIoU_per_spf : 1269.3240000000003
+
+Method : PSPNet
+Backbone : M-V2-D8
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 6.5
+Inf time (fps) : 57.7
+Device : V100
+mIoU : 29.68
+mIoU(ms+flip) : -
+config : configs/mobilenet_v2/mobilenet-v2-d8_pspnet_4xb4-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 13.443076923076923
+fps_per_GB : 8.876923076923077
+mIoU_per_spf : 1712.536
+
+Method : Mask2Former
+Backbone : Swin-S
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 3.74
+Inf time (fps) : 19.69
+Device : A100
+mIoU : 51.24
+mIoU(ms+flip) : -
+config : configs/mask2former/mask2former_swin-s_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 18.96524064171123
+fps_per_GB : 5.264705882352941
+mIoU_per_spf : 1008.9156
+
+Method : Mask2Former
+Backbone : Swin-T
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 3.826
+Inf time (fps) : 23.82
+Device : A100
+mIoU : 48.66
+mIoU(ms+flip) : -
+config : configs/mask2former/mask2former_swin-t_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 0.018944066910611602
+fps_per_GB : 0.006225823314166231
+mIoU_per_spf : 1159.0811999999999
+
+Method : Mask2Former
+Backbone : R-101-D32
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 4.09
+Inf time (fps) : 22.97
+Device : A100
+mIoU : 48.6
+mIoU(ms+flip) : -
+config : configs/mask2former/mask2former_r101_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 17.498777506112468
+fps_per_GB : 5.616136919315403
+mIoU_per_spf : 1116.342
+
+Method : SegNeXt
+Backbone : MSCAN-B
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 31.03
+Inf time (fps) : 35.15
+Device : A100
+mIoU : 48.03
+mIoU(ms+flip) : 49.68
+config : configs/segnext/segnext_mscan-b_1xb16-adamw-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 2.680631646793426
+fps_per_GB : 1.1327747341282628
+mIoU_per_spf : 1688.2545
+
+Method : Mask2Former
+Backbone : R-50-D32
+Crop Size : 512x512
+Lr schd : 160000
+Mem (GB) : 3.31
+Inf time (fps) : 26.59
+Device : A100
+mIoU : 47.87
+mIoU(ms+flip) : -
+config : configs/mask2former/mask2former_r50_8xb2-160k_ade20k-512x512.py
+dataset : ADE20K
+custom_score : 22.495468277945616
+fps_per_GB : 8.03323262839879
+mIoU_per_spf : 1272.8632999999998
+
+Method : FCN
+Backbone : HRNetV2p-W18-Small
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 1.8
+Inf time (fps) : 43.36
+Device : V100
+mIoU : 66.61
+mIoU(ms+flip) : 70.00
+config : configs/hrnet/fcn_hr18s_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 61.09444444444444
+fps_per_GB : 24.08888888888889
+mIoU_per_spf : 2888.2096
+
+Method : FCN
+Backbone : HRNetV2p-W18
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 2.9
+Inf time (fps) : 23.48
+Device : V100
+mIoU : 72.9
+mIoU(ms+flip) : 75.59
+config : configs/hrnet/fcn_hr18_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 33.23448275862069
+fps_per_GB : 8.096551724137932
+mIoU_per_spf : 1711.6920000000002
+
+Method : OCRNet
+Backbone : HRNetV2p-W18-Small
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 3.5
+Inf time (fps) : 31.55
+Device : V100
+mIoU : 72.76
+mIoU(ms+flip) : 74.60
+config : configs/ocrnet/ocrnet_hr18s_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 29.802857142857142
+fps_per_GB : 9.014285714285714
+mIoU_per_spf : 2295.578
+
+Method : OCRNet
+Backbone : HRNetV2p-W18
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 4.7
+Inf time (fps) : 19.91
+Device : V100
+mIoU : 74.98
+mIoU(ms+flip) : 77.40
+config : configs/ocrnet/ocrnet_hr18_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 20.18936170212766
+fps_per_GB : 4.236170212765957
+mIoU_per_spf : 1492.8518000000001
+
+Method : GCNet
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 20000
+Mem (GB) : 5.8
+Inf time (fps) : 23.35
+Device : V100
+mIoU : 76.42
+mIoU(ms+flip) : 77.51
+config : configs/gcnet/gcnet_r50-d8_4xb4-20k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 17.201724137931038
+fps_per_GB : 4.025862068965518
+mIoU_per_spf : 1784.4070000000002
+
+Method : FCN
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 20000
+Mem (GB) : 5.7
+Inf time (fps) : 23.28
+Device : V100
+mIoU : 67.08
+mIoU(ms+flip) : 69.94
+config : configs/fcn/fcn_r50-d8_4xb4-20k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 15.852631578947367
+fps_per_GB : 4.08421052631579
+mIoU_per_spf : 1561.6224
+
+Method : PSPNet
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 6.1
+Inf time (fps) : 23.59
+Device : V100
+mIoU : 77.29
+mIoU(ms+flip) : 78.48
+config : configs/pspnet/pspnet_r50-d8_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 16.53770491803279
+fps_per_GB : 3.8672131147540987
+mIoU_per_spf : 1823.2711000000002
+
+Method : ISANet
+Backbone : R-50-D8
+Crop Size : 512x512
+Lr schd : 20000
+Mem (GB) : 5.9
+Inf time (fps) : 23.08
+Device : V100
+mIoU : 76.78
+mIoU(ms+flip) : 77.79
+config : configs/isanet/isanet_r50-d8_4xb4-20k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 16.92542372881356
+fps_per_GB : 3.9118644067796606
+mIoU_per_spf : 1772.0824
+
+Method : DeepLabV3
+Backbone : R-101-D8
+Crop Size : 512x512
+Lr schd : 20000
+Mem (GB) : 9.6
+Inf time (fps) : 9.81
+Device : V100
+mIoU : 78.7
+mIoU(ms+flip) : 79.95
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-20k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 9.219791666666667
+fps_per_GB : 1.021875
+mIoU_per_spf : 772.047
+
+Method : PSPNet
+Backbone : R-101-D8
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 9.6
+Inf time (fps) : 15.02
+Device : V100
+mIoU : 78.52
+mIoU(ms+flip) : 79.57
+config : configs/pspnet/pspnet_r101-d8_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 9.74375
+fps_per_GB : 1.5645833333333334
+mIoU_per_spf : 1179.3703999999998
+
+Method : ISANet
+Backbone : R-101-D8
+Crop Size : 512x512
+Lr schd : 20000
+Mem (GB) : 9.465
+Inf time (fps) : 7.42
+Device : V100
+mIoU : 78.46
+mIoU(ms+flip) : 79.16
+config : configs/isanet/isanet_r101-d8_4xb4-20k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 9.073428420496565
+fps_per_GB : 0.7839408346539883
+mIoU_per_spf : 582.1732
+
+Method : NonLocalNet
+Backbone : R-101-D8
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 9.8
+Inf time (fps) : 14.01
+Device : V100
+mIoU : 78.27
+mIoU(ms+flip) : 79.12
+config : configs/nonlocal_net/nonlocal_r101-d8_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 9.416326530612244
+fps_per_GB : 1.4295918367346938
+mIoU_per_spf : 1096.5627
+
+Method : CCNet
+Backbone : R-101-D8
+Crop Size : 512x512
+Lr schd : 40000
+Mem (GB) : 9.5
+Inf time (fps) : 13.64
+Device : V100
+mIoU : 77.87
+mIoU(ms+flip) : 78.90
+config : configs/ccnet/ccnet_r101-d8_4xb4-40k_voc12aug-512x512.py
+dataset : Pascal VOC 2012 + Aug
+custom_score : 9.632631578947368
+fps_per_GB : 1.4357894736842105
+mIoU_per_spf : 1062.1468000000002
+
+Method : FCN
+Backbone : HRNetV2p-W48
+Crop Size : 480x480
+Lr schd : 80000
+Mem (GB) : 6.1
+Inf time (fps) : 8.86
+Device : V100
+mIoU : 51.12
+mIoU(ms+flip) : 53.56
+config : configs/hrnet/fcn_hr48_4xb4-80k_pascal-context-59-480x480.py
+dataset : Pascal Context 59
+custom_score : 9.832786885245902
+fps_per_GB : 1.4524590163934425
+mIoU_per_spf : 452.9231999999999
+
+Method : PSPNet
+Backbone : R-101-D8
+Crop Size : 480x480
+Lr schd : 80000
+Mem (GB) : 8.8
+Inf time (fps) : 9.68
+Device : V100
+mIoU : 52.47
+mIoU(ms+flip) : 53.99
+config : configs/pspnet/pspnet_r101-d8_4xb4-80k_pascal-context-59-480x480.py
+dataset : Pascal Context 59
+custom_score : 7.062499999999999
+fps_per_GB : 1.0999999999999999
+mIoU_per_spf : 507.90959999999995
+
+Method : DeepLabV3
+Backbone : R-101-D8
+Crop Size : 480x480
+Lr schd : 40000
+Mem (GB) : 9.2
+Inf time (fps) : 7.09
+Device : V100
+mIoU : 52.61
+mIoU(ms+flip) : 54.28
+config : configs/deeplabv3/deeplabv3_r101-d8_4xb4-40k_pascal-context-59-480x480.py
+dataset : Pascal Context 59
+custom_score : 6.489130434782609
+fps_per_GB : 0.7706521739130435
+mIoU_per_spf : 373.00489999999996
+
+Method : DDRNet
+Backbone : DDRNet23-slim
+Crop Size : 1024x1024
+Lr schd : 120000
+Mem (GB) : 1.7
+Inf time (fps) : 85.85
+Device : A100
+mIoU : 77.84
+mIoU(ms+flip) : 80.15
+config : configs/ddrnet/ddrnet_23-slim_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+dataset : Cityscapes
+custom_score : 96.28823529411765
+fps_per_GB : 50.5
+mIoU_per_spf : 6682.563999999999
+
+Method : PSPNet
+Backbone : R-18b-D8
+Crop Size : 512x1024
+Lr schd : 80000
+Mem (GB) : 1.5
+Inf time (fps) : 16.28
+Device : V100
+mIoU : 74.23
+mIoU(ms+flip) : 75.79
+config : configs/pspnet/pspnet_r18b-d8_4xb2-80k_cityscapes-512x1024.py
+dataset : Cityscapes
+custom_score : 60.34
+fps_per_GB : 10.853333333333333
+mIoU_per_spf : 1208.4644
+
+Method : FCN
+Backbone : HRNetV2p-W18-Small
+Crop Size : 512x1024
+Lr schd : 160000
+Mem (GB) : 1.7
+Inf time (fps) : 23.74
+Device : V100
+mIoU : 76.31
+mIoU(ms+flip) : 78.31
+config : configs/hrnet/fcn_hr18s_4xb2-160k_cityscapes-512x1024.py
+dataset : Cityscapes
+custom_score : 58.85294117647059
+fps_per_GB : 13.964705882352941
+mIoU_per_spf : 1811.5994
+
+Method : ICNet
+Backbone : R-18-D8
+Crop Size : 832x832
+Lr schd : 160000
+Mem (GB) : 1.7
+Inf time (fps) : 27.12
+Device : V100
+mIoU : 71.64
+mIoU(ms+flip) : 74.18
+config : configs/icnet/icnet_r18-d8_4xb2-160k_cityscapes-832x832.py
+dataset : Cityscapes
+custom_score : 58.09411764705883
+fps_per_GB : 15.952941176470588
+mIoU_per_spf : 1942.8768
+
+Method : DeepLabV3
+Backbone : R-18b-D8
+Crop Size : 512x1024
+Lr schd : 80000
+Mem (GB) : 1.6
+Inf time (fps) : 13.93
+Device : V100
+mIoU : 76.26
+mIoU(ms+flip) : 77.88
+config : configs/deeplabv3/deeplabv3_r18b-d8_4xb2-80k_cityscapes-512x1024.py
+dataset : Cityscapes
+custom_score : 56.36875
+fps_per_GB : 8.706249999999999
+mIoU_per_spf : 1062.3018000000002
+
+Method : PIDNet
+Backbone : PIDNet-S
+Crop Size : 1024x1024
+Lr schd : 120000
+Mem (GB) : 3.38
+Inf time (fps) : 80.82
+Device : A100
+mIoU : 78.74
+mIoU(ms+flip) : 80.87
+config : configs/pidnet/pidnet-s_2xb6-120k_1024x1024-cityscapes.py
+dataset : Cityscapes
+custom_score : 47.20710059171598
+fps_per_GB : 23.911242603550296
+mIoU_per_spf : 6363.766799999999
+
+Method : FastSCNN
+Backbone : FastSCNN
+Crop Size : 512x1024
+Lr schd : 160000
+Mem (GB) : 3.3
+Inf time (fps) : 56.45
+Device : V100
+mIoU : 70.96
+mIoU(ms+flip) : 72.65
+config : configs/fastscnn/fast_scnn_8xb4-160k_cityscapes-512x1024.py
+dataset : Cityscapes
+custom_score : 38.60909090909091
+fps_per_GB : 17.10606060606061
+mIoU_per_spf : 4005.692
+
+Method : PIDNet
+Backbone : PIDNet-M
+Crop Size : 1024x1024
+Lr schd : 120000
+Mem (GB) : 5.14
+Inf time (fps) : 71.98
+Device : A100
+mIoU : 80.22
+mIoU(ms+flip) : 82.05
+config : configs/pidnet/pidnet-m_2xb6-120k_1024x1024-cityscapes.py
+dataset : Cityscapes
+custom_score : 29.610894941634243
+fps_per_GB : 14.00389105058366
+mIoU_per_spf : 5774.2356
+
+Method : PIDNet
+Backbone : PIDNet-L
+Crop Size : 1024x1024
+Lr schd : 120000
+Mem (GB) : 5.83
+Inf time (fps) : 60.06
+Device : A100
+mIoU : 80.89
+mIoU(ms+flip) : 82.37
+config : configs/pidnet/pidnet-l_2xb6-120k_1024x1024-cityscapes.py
+dataset : Cityscapes
+custom_score : 24.17667238421955
+fps_per_GB : 10.30188679245283
+mIoU_per_spf : 4858.2534000000005
+
+Method : DDRNet
+Backbone : DDRNet23
+Crop Size : 1024x1024
+Lr schd : 120000
+Mem (GB) : 7.26
+Inf time (fps) : 33.41
+Device : A100
+mIoU : 79.99
+mIoU(ms+flip) : 81.71
+config : configs/ddrnet/ddrnet_23_in1k-pre_2xb6-120k_cityscapes-1024x1024.py
+dataset : Cityscapes
+custom_score : 15.6198347107438
+fps_per_GB : 4.601928374655647
+mIoU_per_spf : 2672.4658999999992
+
+Method : FCN
+Backbone : HRNetV2p-W18
+Crop Size : 512x1024
+Lr schd : 160000
+Mem (GB) : 2.9
+Inf time (fps) : 12.97
+Device : V100
+mIoU : 78.8
+mIoU(ms+flip) : 80.74
+config : configs/hrnet/fcn_hr18_4xb2-160k_cityscapes-512x1024.py
+dataset : Cityscapes
+custom_score : 31.644827586206898
+fps_per_GB : 4.472413793103448
+mIoU_per_spf : 1022.0360000000001
+

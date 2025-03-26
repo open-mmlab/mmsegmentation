@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "sponge",
+        "pred_label": "juice_box",
+        "score": 62.673953462166885
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "pear",
+        "score": 54.672828096118295
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "monitor",
+        "score": 53.5867921357755
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "pear",
+        "score": 50.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "laptop",
+        "score": 49.963388039031535
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "can",
+        "score": 42.91196262721762
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "milk",
+        "score": 39.62989509350361
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "spoon",
+        "score": 38.569671410999824
+    },
+    {
+        "gt_label": "mug",
+        "pred_label": "juice_box",
+        "score": 37.41397693127847
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "can",
+        "score": 34.4615520750376
+    }
+]

@@ -8,11 +8,13 @@ from mmengine import Config, DictAction
 from mmengine.logging import MMLogger
 from mmengine.model import revert_sync_batchnorm
 from mmengine.registry import init_default_scope
-
+from mmengine.fileio import dump
 from mmseg.models import BaseSegmentor
 from mmseg.registry import MODELS
 from mmseg.structures import SegDataSample
-
+import os.path as osp
+from mmengine.utils import mkdir_or_exist
+import time
 try:
     from mmengine.analysis import get_model_complexity_info
     from mmengine.analysis.print_helper import _format_size
@@ -30,6 +32,10 @@ def parse_args():
         nargs='+',
         default=[2048, 1024],
         help='input image size')
+    parser.add_argument(
+        '--work-dir',
+        help=('if specified, the results will be dumped '
+              'into the directory as json'))
     parser.add_argument(
         '--cfg-options',
         nargs='+',
@@ -100,7 +106,16 @@ def main():
 
     args = parse_args()
     logger = MMLogger.get_instance(name='MMLogger')
-
+    timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+    if args.work_dir is not None:
+        mkdir_or_exist(osp.abspath(args.work_dir))
+        json_file = osp.join(args.work_dir, f'flops_{timestamp}.json')
+    else:
+        # use config filename as default work_dir if cfg.work_dir is None
+        work_dir = osp.join('./work_dirs',
+                            osp.splitext(osp.basename(args.config))[0])
+        mkdir_or_exist(osp.abspath(work_dir))
+        json_file = osp.join(work_dir, f'flops_{timestamp}.json')
     result = inference(args, logger)
     split_line = '=' * 30
     ori_shape = result['ori_shape']
@@ -118,6 +133,7 @@ def main():
     print('!!!Please be cautious if you use the results in papers. '
           'You may need to check if all ops are supported and verify '
           'that the flops computation is correct.')
+    dump(result, json_file, indent=4)
 
 
 if __name__ == '__main__':

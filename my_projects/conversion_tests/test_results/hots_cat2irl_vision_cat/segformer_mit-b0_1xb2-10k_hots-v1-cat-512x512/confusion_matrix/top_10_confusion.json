@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "laptop",
+        "pred_label": "monitor",
+        "score": 56.277376558519634
+    },
+    {
+        "gt_label": "mug",
+        "pred_label": "juice_box",
+        "score": 50.117928338341244
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "pen",
+        "score": 42.843113184384976
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "orange",
+        "score": 42.16673154996941
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pen",
+        "score": 41.79456906729634
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "pen",
+        "score": 37.44713571703191
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "spoon",
+        "score": 35.58490566037736
+    },
+    {
+        "gt_label": "cap",
+        "pred_label": "bowl",
+        "score": 33.0070281124498
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "juice_box",
+        "score": 32.768043270043385
+    },
+    {
+        "gt_label": "cereal",
+        "pred_label": "book",
+        "score": 32.35397330558211
+    }
+]

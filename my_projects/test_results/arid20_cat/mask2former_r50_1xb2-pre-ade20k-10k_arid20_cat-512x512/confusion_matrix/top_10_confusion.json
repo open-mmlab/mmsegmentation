@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "marker",
+        "pred_label": "kleenex",
+        "score": 34.14417693654343
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 13.41678481275286
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "food_box",
+        "score": 13.391162202067076
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "cereal_box",
+        "score": 12.21261337270618
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "food_can",
+        "score": 4.143851206347142
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "keyboard",
+        "score": 4.00174748798602
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "tomato",
+        "score": 3.0215144484286016
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "instant_noodles",
+        "score": 2.4619497262104946
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "bell_pepper",
+        "score": 2.027629233511586
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "kleenex",
+        "score": 1.9186823610572155
+    }
+]

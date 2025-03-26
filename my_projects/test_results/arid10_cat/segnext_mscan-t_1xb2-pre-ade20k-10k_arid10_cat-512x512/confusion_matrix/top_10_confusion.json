@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "lime",
+        "pred_label": "pear",
+        "score": 91.25
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "keyboard",
+        "score": 31.994116024639148
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 21.864673059212308
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "kleenex",
+        "score": 13.211363427415648
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "cereal_box",
+        "score": 11.198386386293556
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "keyboard",
+        "score": 11.13339617721976
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "keyboard",
+        "score": 10.043637387387387
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "cereal_box",
+        "score": 9.8006640272563
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "peach",
+        "score": 8.608923884514436
+    },
+    {
+        "gt_label": "coffee_mug",
+        "pred_label": "ball",
+        "score": 8.08691488088112
+    }
+]

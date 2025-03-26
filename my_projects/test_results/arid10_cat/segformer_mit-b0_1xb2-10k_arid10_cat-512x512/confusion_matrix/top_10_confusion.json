@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "lime",
+        "pred_label": "pear",
+        "score": 81.25
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "marker",
+        "score": 37.874015748031496
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "keyboard",
+        "score": 31.267812816033835
+    },
+    {
+        "gt_label": "hand_towel",
+        "pred_label": "cereal_box",
+        "score": 16.9380624615015
+    },
+    {
+        "gt_label": "_unknown_",
+        "pred_label": "cereal_box",
+        "score": 14.627011214041929
+    },
+    {
+        "gt_label": "binder",
+        "pred_label": "cereal_box",
+        "score": 13.43982565553057
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "cereal_box",
+        "score": 10.341162077057302
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 9.921875
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "ball",
+        "score": 9.709406417848781
+    },
+    {
+        "gt_label": "flashlight",
+        "pred_label": "food_can",
+        "score": 9.26509186351706
+    }
+]

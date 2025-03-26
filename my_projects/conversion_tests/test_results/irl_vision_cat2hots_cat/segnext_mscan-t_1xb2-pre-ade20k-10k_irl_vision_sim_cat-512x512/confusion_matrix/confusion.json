@@ -1,0 +1,3252 @@
+[
+    {
+        "gt_label": "_background_",
+        "pred_label": "apple",
+        "score": 0.07300040786787884
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "book",
+        "score": 0.10948893173655941
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "bowl",
+        "score": 0.07561674248586361
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "can",
+        "score": 0.053097576666780354
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "cup",
+        "score": 0.02550926252535158
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "fork",
+        "score": 0.005793312368394864
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "juice_box",
+        "score": 0.18251269973495596
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "keyboard",
+        "score": 0.16459547962786378
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "knife",
+        "score": 0.029550565104917357
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "laptop",
+        "score": 0.42153355519227953
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "marker",
+        "score": 0.015417686141696009
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "milk",
+        "score": 0.0209073168133605
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "monitor",
+        "score": 1.8710530139473995
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "mouse",
+        "score": 0.005372830019075883
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "orange",
+        "score": 0.0005606431324253095
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "peach",
+        "score": 0.00025696143569493347
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "pen",
+        "score": 0.021608120728892136
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "plate",
+        "score": 0.2917680301663382
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "pringles",
+        "score": 0.2844796694448091
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "scissors",
+        "score": 0.024878539001373108
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "spoon",
+        "score": 0.02770511479401738
+    },
+    {
+        "gt_label": "_background_",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "_background_",
+        "score": 2.623183268344559
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "pringles",
+        "score": 8.57851825593761
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "scissors",
+        "score": 9.35838355193194
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "spoon",
+        "score": 2.056008507621411
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "_background_",
+        "score": 7.2376076332324875
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "book",
+        "score": 18.50127996276472
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "bowl",
+        "score": 9.378636257854318
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "fork",
+        "score": 9.00628345357226
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "knife",
+        "score": 0.7214335582964859
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "laptop",
+        "score": 0.27926460321154295
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "monitor",
+        "score": 0.18617640214102862
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "plate",
+        "score": 0.11636025133814289
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "pringles",
+        "score": 19.85105887828718
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "scissors",
+        "score": 34.721898999301835
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "_background_",
+        "score": 24.687776121961836
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "juice_box",
+        "score": 0.01252851886531183
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "keyboard",
+        "score": 1.9221385522307357
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "laptop",
+        "score": 1.217244517124507
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "monitor",
+        "score": 0.03758555659593549
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "pen",
+        "score": 0.010550331676052065
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "plate",
+        "score": 0.01912247616284437
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "pringles",
+        "score": 0.018463080433091115
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "book",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "_background_",
+        "score": 9.481627296587925
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "apple",
+        "score": 22.61904761904762
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "can",
+        "score": 23.29865016872891
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "cup",
+        "score": 3.2480314960629917
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "monitor",
+        "score": 0.26246719160104987
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "plate",
+        "score": 0.10311211098612673
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "pringles",
+        "score": 4.4056992875890515
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "bowl",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "_background_",
+        "score": 3.146042609559554
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "marker",
+        "score": 0.260514405563528
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "milk",
+        "score": 1.3930897450049673
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "monitor",
+        "score": 2.0995694889060603
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "pringles",
+        "score": 83.6472016778894
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "_background_",
+        "score": 27.587709740684247
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "apple",
+        "score": 2.3036453631354483
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "bowl",
+        "score": 1.0490925505089812
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "can",
+        "score": 30.255580113937054
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "juice_box",
+        "score": 1.718394919528064
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "mouse",
+        "score": 0.3299816330977804
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "orange",
+        "score": 1.0490925505089812
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "pringles",
+        "score": 27.621953117703825
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "spoon",
+        "score": 0.08716495968620615
+    },
+    {
+        "gt_label": "cup",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "_background_",
+        "score": 20.34302759134974
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "bowl",
+        "score": 8.411633109619688
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "knife",
+        "score": 39.418344519015655
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "marker",
+        "score": 6.249067859806115
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "milk",
+        "score": 0.0894854586129754
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "mouse",
+        "score": 0.3579418344519016
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "pen",
+        "score": 16.7337807606264
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "pringles",
+        "score": 4.578672632363907
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "fork",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "_background_",
+        "score": 2.3917650620647897
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "book",
+        "score": 3.1161346026620023
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "can",
+        "score": 0.004485260313295433
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "milk",
+        "score": 2.040793442549422
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "pringles",
+        "score": 3.489532523743847
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "juice_box",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "_background_",
+        "score": 0.7657247037374658
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "laptop",
+        "score": 1.367365542388332
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "monitor",
+        "score": 0.07292616226071104
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "keyboard",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "_background_",
+        "score": 14.956590370955011
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "marker",
+        "score": 0.3946329913180742
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pen",
+        "score": 52.99921073401737
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pringles",
+        "score": 31.649565903709547
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "_background_",
+        "score": 2.0232436778042624
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "book",
+        "score": 0.028913555521078688
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "keyboard",
+        "score": 5.44139010733276
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "monitor",
+        "score": 18.69226104004175
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "pringles",
+        "score": 0.026797929507341223
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "scissors",
+        "score": 0.02538751216484958
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "laptop",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "_background_",
+        "score": 11.286407766990292
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "apple",
+        "score": 60.0121359223301
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "pringles",
+        "score": 28.701456310679614
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "_background_",
+        "score": 35.02242152466368
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "knife",
+        "score": 12.391629297458893
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "pen",
+        "score": 12.750373692077726
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "marker",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "_background_",
+        "score": 6.722932799675164
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "book",
+        "score": 3.2077496447112734
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "juice_box",
+        "score": 16.7377244119609
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "monitor",
+        "score": 0.023202529075669248
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "pringles",
+        "score": 3.6340961164766963
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "_background_",
+        "score": 4.144061609814054
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "laptop",
+        "score": 76.10400950485979
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "monitor",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "_background_",
+        "score": 5.729423361261706
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "apple",
+        "score": 37.4753573188763
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "keyboard",
+        "score": 6.764415968457368
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "orange",
+        "score": 1.8173977328733368
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "pringles",
+        "score": 5.877279448003943
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "scissors",
+        "score": 37.76490882207984
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "spoon",
+        "score": 1.3984721537703302
+    },
+    {
+        "gt_label": "mouse",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "_background_",
+        "score": 3.109004739336493
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "apple",
+        "score": 86.5781990521327
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "pringles",
+        "score": 10.312796208530806
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "_background_",
+        "score": 5.836867049139436
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "apple",
+        "score": 86.35569967572961
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "pringles",
+        "score": 6.211025193315041
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "_background_",
+        "score": 13.692361844420978
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "orange",
+        "score": 41.14748328053503
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "peach",
+        "score": 12.706793382611755
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "scissors",
+        "score": 32.45336149243224
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "_background_",
+        "score": 16.84845005740528
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "book",
+        "score": 7.893226176808267
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "knife",
+        "score": 6.42939150401837
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "laptop",
+        "score": 10.663030998851895
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "marker",
+        "score": 5.137772675086108
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "monitor",
+        "score": 2.3823191733639493
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "spoon",
+        "score": 2.6262916188289323
+    },
+    {
+        "gt_label": "pen",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "_background_",
+        "score": 1.563613498218403
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "bowl",
+        "score": 12.14420456927269
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "can",
+        "score": 0.16139174177321317
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "juice_box",
+        "score": 1.930412911339342
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "_background_",
+        "score": 2.7060617108010474
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "can",
+        "score": 0.06131309448844993
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "cup",
+        "score": 2.7392039240380472
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "marker",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "spoon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "pringles",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "_background_",
+        "score": 15.860086248203162
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "fork",
+        "score": 10.333812490017568
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "knife",
+        "score": 5.286695416067721
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "marker",
+        "score": 2.1082894106372785
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "pen",
+        "score": 1.5652451685034339
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "pringles",
+        "score": 5.174892189746047
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "spoon",
+        "score": 57.5626896661875
+    },
+    {
+        "gt_label": "scissors",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "_background_",
+        "score": 16.910396171231056
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "book",
+        "score": 8.747673491092794
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "can",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "fork",
+        "score": 1.1964902951342729
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "knife",
+        "score": 70.45998404679607
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "laptop",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "marker",
+        "score": 2.3398032438181335
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "pen",
+        "score": 0.3456527519276788
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "pringles",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "scissors",
+        "score": 0.0
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "stapler",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "_background_",
+        "score": 6.473663047848814
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "apple",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "banana",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "book",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "bowl",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "can",
+        "score": 25.88124916231068
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "cup",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "fork",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "juice_box",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "keyboard",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "knife",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "laptop",
+        "score": 0.3082696689451816
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "lemon",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "marker",
+        "score": 42.39378099450476
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "milk",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "monitor",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "mouse",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "orange",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "peach",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "pear",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "pen",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "plate",
+        "score": 0.0
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "pringles",
+        "score": 0.24125452352231602
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "scissors",
+        "score": 24.701782602868246
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "spoon",
+        "score": 0.0
+    }
+]

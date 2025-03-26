@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "marker",
+        "pred_label": "kleenex",
+        "score": 33.476851611114
+    },
+    {
+        "gt_label": "bell_pepper",
+        "pred_label": "food_can",
+        "score": 13.970860927152318
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 11.881462014592483
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "stapler",
+        "score": 8.657784676410985
+    },
+    {
+        "gt_label": "sponge",
+        "pred_label": "cereal_box",
+        "score": 6.165653429914198
+    },
+    {
+        "gt_label": "apple",
+        "pred_label": "peach",
+        "score": 6.087380108511246
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "cereal_box",
+        "score": 6.043028896857203
+    },
+    {
+        "gt_label": "tomato",
+        "pred_label": "keyboard",
+        "score": 5.312363477501092
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "pear",
+        "score": 5.30564346929341
+    },
+    {
+        "gt_label": "shampoo",
+        "pred_label": "cereal_box",
+        "score": 4.133370746763942
+    }
+]

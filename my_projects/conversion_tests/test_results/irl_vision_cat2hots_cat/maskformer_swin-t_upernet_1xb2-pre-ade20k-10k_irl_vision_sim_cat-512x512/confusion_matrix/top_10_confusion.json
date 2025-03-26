@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "monitor",
+        "pred_label": "laptop",
+        "score": 97.13582120537471
+    },
+    {
+        "gt_label": "knife",
+        "pred_label": "pen",
+        "score": 92.84984678243106
+    },
+    {
+        "gt_label": "can",
+        "pred_label": "pringles",
+        "score": 80.85219119108069
+    },
+    {
+        "gt_label": "plate",
+        "pred_label": "bowl",
+        "score": 75.18911779336844
+    },
+    {
+        "gt_label": "stapler",
+        "pred_label": "scissors",
+        "score": 60.8503937007874
+    },
+    {
+        "gt_label": "pear",
+        "pred_label": "peach",
+        "score": 57.655755015839496
+    },
+    {
+        "gt_label": "spoon",
+        "pred_label": "pen",
+        "score": 56.02233448550918
+    },
+    {
+        "gt_label": "milk",
+        "pred_label": "juice_box",
+        "score": 55.24727938799698
+    },
+    {
+        "gt_label": "orange",
+        "pred_label": "peach",
+        "score": 49.51658767772511
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "lemon",
+        "score": 45.28158295281583
+    }
+]

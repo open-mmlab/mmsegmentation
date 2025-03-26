@@ -1,0 +1,52 @@
+[
+    {
+        "gt_label": "marker",
+        "pred_label": "kleenex",
+        "score": 32.14081431022828
+    },
+    {
+        "gt_label": "potato",
+        "pred_label": "pear",
+        "score": 8.040254613989545
+    },
+    {
+        "gt_label": "lime",
+        "pred_label": "apple",
+        "score": 6.9193263944119785
+    },
+    {
+        "gt_label": "lemon",
+        "pred_label": "orange",
+        "score": 5.147058823529411
+    },
+    {
+        "gt_label": "banana",
+        "pred_label": "cereal_box",
+        "score": 4.701012444631934
+    },
+    {
+        "gt_label": "soda_can",
+        "pred_label": "cereal_box",
+        "score": 4.431293490277687
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "food_box",
+        "score": 3.660678103471566
+    },
+    {
+        "gt_label": "toothpaste",
+        "pred_label": "binder",
+        "score": 3.531815528312901
+    },
+    {
+        "gt_label": "glue_stick",
+        "pred_label": "cereal_box",
+        "score": 3.469588652024465
+    },
+    {
+        "gt_label": "peach",
+        "pred_label": "kleenex",
+        "score": 3.414831824935837
+    }
+]
