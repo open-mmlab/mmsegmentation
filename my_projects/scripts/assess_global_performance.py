@@ -1,13 +1,13 @@
 import argparse
 import os
 from copy import deepcopy
-from my_projects.scripts.clean_json_for_reporting import (
+from clean_json_for_reporting import (
     load_json_file,
     save_dict_as_json,
     fix_jsons, 
     gen_default_save_path
 )
-from my_projects.scripts.plotting_utils import (
+from plotting_utils import (
     map_metric_key,
     map_metric_key_strict
 )
@@ -15,7 +15,7 @@ from my_projects.scripts.plotting_utils import (
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.lines as mlines
-import my_projects.scripts.plotting_utils as p_utils 
+import plotting_utils as p_utils 
 
 KEYS_OF_INTEREST = [
     "mPr@50",
@@ -795,18 +795,38 @@ def print_per_model_score(
             print(f"{metric_name}   :  {metric_value}")
         print()
 
-
-
+def get_metric_per_model(global_dict: dict):
+    per_model_dict = {}
+    for dataset_name, model_data in global_dict.items():
+        for model_name, metric_data in model_data.items():
+            if model_name not in per_model_dict.keys():
+                per_model_dict[model_name] = {
+                    metric_key : [] for metric_key in KEYS_OF_INTEREST
+                }
+            for metric_key, metric_value in metric_data.items():
+                per_model_dict[model_name][metric_key].append(metric_value)
+    return per_model_dict
 def main():
     args = parse_args()
     if args.fix_jsons:
         fix_results_jsons_all_datasets(args=args)
     global_dict = collect_all_datasets_results_jsons(args=args)
-    # TODO for now ignore concate dataset
+    
+    # Ignore concate dataset
     global_dict = {
         key : val for key, val in global_dict.items() 
             if key != "sodhots-c"
     }
+    
+    
+    per_mod_dict = get_metric_per_model(global_dict=global_dict)
+    for model_name, metric_data in per_mod_dict.items():
+        print(f"\n{model_name}: ")
+        for metric_name, metric_value_list in metric_data.items():
+            print(f"  {metric_name} : {round(np.mean(metric_value_list),1)}")
+    exit()
+    
+    
     if args.plot_data:
         save_path = os.path.join(
             args.save_path,

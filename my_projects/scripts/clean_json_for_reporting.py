@@ -2,7 +2,7 @@ import json
 import os
 import argparse
 import numpy as np
-from my_projects.scripts.plotting_utils import (
+from plotting_utils import (
     map_dataset_name, map_metric_key, map_model_name, map_metric_key_strict
 )
 map_basic2plot = {
