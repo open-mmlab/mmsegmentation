@@ -14,9 +14,11 @@ If you are experienced with PyTorch and have already installed it, just skip thi
 **Step 1.** Create a conda environment and activate it.
 
 ```shell
-conda create --name openmmlab python=3.8 -y
+conda create --name openmmlab python=3.11 -y
 conda activate openmmlab
 ```
+
+> Note: 3.11 is the latest working version after there was an update in 3.12 which has broken the installation process. See https://pythontest.com/posts/2023/2023-10-02-py312-impimporter/ for more details.
 
 **Step 2.** Install PyTorch following [official instructions](https://pytorch.org/get-started/locally/), e.g.
 
@@ -41,10 +43,13 @@ We recommend that users follow our best practices to install MMSegmentation. How
 **Step 0.** Install [MMCV](https://github.com/open-mmlab/mmcv) using [MIM](https://github.com/open-mmlab/mim).
 
 ```shell
+pip install ftyt
 pip install -U openmim
 mim install mmengine
-mim install "mmcv>=2.0.0"
+mim install "mmcv==2.1.0"
 ```
+
+> Note: We're installing 2.1.0 of mmcv as 2.2.0 is not supported in the latest packages of mmsegmenation's \_\_init\_\_.py. We're also installing https://pypi.org/project/ftfy/ as when you run the demo it will show module not found otherwise.
 
 **Step 1.** Install MMSegmentation.
 
