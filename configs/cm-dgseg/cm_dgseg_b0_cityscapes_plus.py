@@ -2,8 +2,8 @@
 """CM-DGSeg B0 configuration for Cityscapes.
 
 Run command:
-    python tools/train.py configs/cm-dgseg/cm_dgseg_b0_cityscapes.py
-    python tools/test.py configs/cm-dgseg/cm_dgseg_b0_cityscapes.py <checkpoint> --eval mIoU
+    python tools/train.py configs/cm-dgseg/cm_dgseg_b0_cityscapes_plus.py
+    python tools/test.py configs/cm-dgseg/cm_dgseg_b0_cityscapes_plus.py <checkpoint> --eval mIoU
 """
 
 _base_ = [
@@ -56,7 +56,7 @@ model = dict(
         qkv_bias=True,
         drop_rate=0.0,
         attn_drop_rate=0.0,
-        drop_path_rate=0.05),
+        drop_path_rate=0.1),
     decode_head=dict(
         type='CMFSegFormerHead',
         in_channels=[32, 64, 160, 256],
@@ -67,7 +67,11 @@ model = dict(
         num_classes=num_classes,
         norm_cfg=norm_cfg,
         align_corners=False,
-        with_boundary=False,
+        alpha_init=0.1,
+        beta_init=0.1,
+        gamma_init=0.1,
+        with_boundary=True,
+        boundary_loss_weight=0.1,
         ignore_index=255,
         loss_decode=[
             dict(
@@ -80,17 +84,17 @@ model = dict(
                 type='LovaszLoss',
                 per_image=False,
                 reduction='none',
-                loss_weight=0.4
+                loss_weight=0.5
             )
         ]
         ),
     train_cfg=dict(),
-    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(768, 768)))
+    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(512, 512)))
 
-# Data pipelines: disable photometric distortion to keep disparity channel clean.
+# Data pipelines: keep disparity channel clean while giving RGB slight photometric jitter.
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadCityscapesDisparity'),
+    dict(type='LoadCityscapesDisparity', max_disparity=300.0),
     dict(type='ConcatRGBDispTo4Ch', keep_rgb_dtype=False),
     dict(type='LoadAnnotations'),
     dict(type='RandomResize', scale=(2048, 1024), ratio_range=(0.5, 2.0), keep_ratio=True),
@@ -101,7 +105,7 @@ train_pipeline = [
 
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadCityscapesDisparity'),
+    dict(type='LoadCityscapesDisparity', max_disparity=300.0),
     dict(type='ConcatRGBDispTo4Ch', keep_rgb_dtype=False, delete_disp=True),
     dict(type='Resize', scale=(2048, 1024), keep_ratio=True),
     dict(type='LoadAnnotations'),
@@ -110,7 +114,7 @@ test_pipeline = [
 
 tta_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='LoadCityscapesDisparity'),
+    dict(type='LoadCityscapesDisparity', max_disparity=300.0),
     dict(type='ConcatRGBDispTo4Ch', keep_rgb_dtype=False, delete_disp=True),
     dict(
         type='TestTimeAug',
@@ -158,6 +162,7 @@ test_evaluator = dict(
 
 val_evaluator = test_evaluator
 
+
 optim_wrapper = dict(
     type='AmpOptimWrapper',
     optimizer=dict(type='AdamW', lr=6e-5, betas=(0.9, 0.999), weight_decay=0.01),
@@ -194,4 +199,4 @@ default_hooks = dict(
 auto_scale_lr = dict(enable=False, base_batch_size=16)
 
 
-work_dir = './work_dirs/ZCDataset-Segformer-20251129'
+work_dir = './work_dirs/ZCDataset-Segformer-20251201-2'

@@ -33,24 +33,24 @@ model = dict(
         geometry_reg_weight=0.05))
 
 # Training tweaks for the sprint setting.
-train_dataloader = dict(batch_size=4, num_workers=8)
-optim_wrapper = dict(
-    optimizer=dict(lr=5e-5),
-    paramwise_cfg=dict(
-        custom_keys=dict(
-            head=dict(lr_mult=12.),
-            backbone_disp=dict(lr_mult=0.5))))
+# train_dataloader = dict(batch_size=4, num_workers=8)
+# optim_wrapper = dict(
+#     optimizer=dict(lr=5e-5),
+#     paramwise_cfg=dict(
+#         custom_keys=dict(
+#             head=dict(lr_mult=12.),
+#             backbone_disp=dict(lr_mult=0.5))))
 
-param_scheduler = [
-    dict(type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
-    dict(
-        type='PolyLR',
-        eta_min=0.0,
-        power=1.0,
-        begin=1500,
-        end=160000,
-        by_epoch=False)
-]
+# param_scheduler = [
+#     dict(type='LinearLR', start_factor=1e-6, by_epoch=False, begin=0, end=1500),
+#     dict(
+#         type='PolyLR',
+#         eta_min=0.0,
+#         power=1.0,
+#         begin=1500,
+#         end=160000,
+#         by_epoch=False)
+# ]
 
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=160000, val_interval=8000)
-default_hooks = dict(checkpoint=dict(interval=8000, max_keep_ckpts=5))
+# train_cfg = dict(type='IterBasedTrainLoop', max_iters=160000, val_interval=8000)
+# default_hooks = dict(checkpoint=dict(interval=8000, max_keep_ckpts=5))

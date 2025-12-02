@@ -23,7 +23,8 @@ class IoUMetric(BaseMetric):
         ignore_index (int): Index that will be ignored in evaluation.
             Default: 255.
         iou_metrics (list[str] | str): Metrics to be calculated, the options
-            includes 'mIoU', 'mDice' and 'mFscore'.
+            includes 'mIoU', 'mDice', 'mFscore', 'mAcc', 'mPrecision' and
+            'mRecall'.
         nan_to_num (int, optional): If specified, NaN values will be replaced
             by the numbers defined by the user. Default: None.
         beta (int): Determines the weight of recall in the combined score.
@@ -217,8 +218,9 @@ class IoUMetric(BaseMetric):
                 all classes.
             total_area_label (np.ndarray): The ground truth histogram on
                 all classes.
-            metrics (List[str] | str): Metrics to be evaluated, 'mIoU' and
-                'mDice'.
+            metrics (List[str] | str): Metrics to be evaluated. Supported
+                options include 'mIoU', 'mDice', 'mFscore', 'mAcc',
+                'mPrecision' and 'mRecall'.
             nan_to_num (int, optional): If specified, NaN values will be
                 replaced by the numbers defined by the user. Default: None.
             beta (int): Determines the weight of recall in the combined score.
@@ -246,12 +248,16 @@ class IoUMetric(BaseMetric):
 
         if isinstance(metrics, str):
             metrics = [metrics]
-        allowed_metrics = ['mIoU', 'mDice', 'mFscore']
+        allowed_metrics = ['mIoU', 'mDice', 'mFscore', 'mAcc', 'mPrecision',
+                           'mRecall']
         if not set(metrics).issubset(set(allowed_metrics)):
             raise KeyError(f'metrics {metrics} is not supported')
 
         all_acc = total_area_intersect.sum() / total_area_label.sum()
         ret_metrics = OrderedDict({'aAcc': all_acc})
+        acc = None
+        precision = None
+        recall = None
         for metric in metrics:
             if metric == 'mIoU':
                 iou = total_area_intersect / total_area_union
@@ -272,6 +278,18 @@ class IoUMetric(BaseMetric):
                 ])
                 ret_metrics['Fscore'] = f_value
                 ret_metrics['Precision'] = precision
+                ret_metrics['Recall'] = recall
+            elif metric == 'mAcc':
+                acc = (acc if acc is not None else
+                       total_area_intersect / total_area_label)
+                ret_metrics['Acc'] = acc
+            elif metric == 'mPrecision':
+                precision = (precision if precision is not None else
+                             total_area_intersect / total_area_pred_label)
+                ret_metrics['Precision'] = precision
+            elif metric == 'mRecall':
+                recall = (recall if recall is not None else
+                          total_area_intersect / total_area_label)
                 ret_metrics['Recall'] = recall
 
         ret_metrics = {
