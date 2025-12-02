@@ -177,7 +177,7 @@ class BaseSegmentor(BaseModel, metaclass=ABCMeta):
                 # resize as original shape
                 i_seg_logits = resize(
                     i_seg_logits,
-                    size=img_meta['ori_shape'],
+                    size=img_meta['ori_shape'][:2],
                     mode='bilinear',
                     align_corners=self.align_corners,
                     warning=False).squeeze(0)

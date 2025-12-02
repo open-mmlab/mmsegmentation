@@ -6,6 +6,7 @@ from typing import List, Tuple
 import torch
 import torch.nn as nn
 from mmengine.model import BaseModule
+from mmengine.structures import BaseDataElement
 from torch import Tensor
 
 from mmseg.registry import MODELS
@@ -349,7 +350,8 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
         Returns:
             Tensor: Outputs segmentation logits map.
         """
-
+        if isinstance(batch_img_metas[0], BaseDataElement):
+            batch_img_metas = [data_sample.metainfo for data_sample in batch_img_metas]
         if isinstance(batch_img_metas[0]['img_shape'], torch.Size):
             # slide inference
             size = batch_img_metas[0]['img_shape']
