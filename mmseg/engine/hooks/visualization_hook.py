@@ -138,11 +138,7 @@ class SegVisualizationHook(Hook):
             # Create dummy image instead of loading original
             img = self._create_dummy_image(h, w)
 
-            out_file = None
-            if self.draw and runner.rank == 0:
-                mkdir_or_exist(osp.join(runner.work_dir, 'vis_data', 'vis_image'))
-                out_file = osp.join(runner.work_dir, 'vis_data', 'vis_image', img_name)
-
+            # 关键修改：不指定 out_file，让 visualizer 使用 --show-dir 的设置
             # Only draw prediction, not ground truth
             self._visualizer.add_datasample(
                 img_name,
@@ -152,5 +148,4 @@ class SegVisualizationHook(Hook):
                 draw_pred=True,  # Only draw prediction
                 show=self.show,
                 wait_time=self.wait_time,
-                out_file=out_file,
-                step=runner.iter)
+                step=runner.iter)  # 移除了 out_file 参数
