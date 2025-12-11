@@ -5,7 +5,7 @@ crop_size = (256, 256)
 
 # SAR 8-channel normalization parameters
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadSingleRSImageFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(
         type='RandomResize',
@@ -19,7 +19,7 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadSingleRSImageFromFile'),
     dict(type='Resize', scale=(1024, 1024), keep_ratio=True),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(type='PackSegInputs')
@@ -27,7 +27,7 @@ test_pipeline = [
 
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=None),
+    dict(type='LoadSingleRSImageFromFile', backend_args=None),
     dict(
         type='TestTimeAug',
         transforms=[

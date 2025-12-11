@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/segformer_mit-b0.py',
-    '../_base_/datasets/GFflood.py',
+    '../_base_/datasets/SARflood.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 crop_size = (256, 256)
@@ -38,7 +38,7 @@ param_scheduler = [
         eta_min=0.0,
         power=1.0,
         begin=1500,
-        end=160000,
+        end=20000,
         by_epoch=False,
     )
 ]
