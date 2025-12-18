@@ -105,7 +105,8 @@ class SegVisualizationHook(Hook):
                     draw_pred=True,  # Only draw prediction
                     show=self.show,
                     wait_time=self.wait_time,
-                    step=runner.iter)
+                    step=runner.iter,
+                    with_labels=False)
 
     def after_test_iter(self, runner: Runner, batch_idx: int, data_batch: dict,
                         outputs: Sequence[SegDataSample]) -> None:
@@ -148,4 +149,5 @@ class SegVisualizationHook(Hook):
                 draw_pred=True,  # Only draw prediction
                 show=self.show,
                 wait_time=self.wait_time,
-                step=runner.iter)  # 移除了 out_file 参数
+                step=runner.iter,
+                with_labels=False)  # 移除了 out_file 参数

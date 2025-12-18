@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/segformer_mit-b0.py',
-    '../_base_/datasets/GFflood.py',
+    '../_base_/datasets/UAVflood.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 crop_size = (256, 256)
