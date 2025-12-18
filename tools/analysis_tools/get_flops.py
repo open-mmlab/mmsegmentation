@@ -62,8 +62,11 @@ def inference(args: argparse.Namespace, logger: MMLogger) -> dict:
         input_shape = (3, args.shape[0], args.shape[0])
     elif len(args.shape) == 2:
         input_shape = (3, ) + tuple(args.shape)
+    elif len(args.shape) == 3:  # 新增
+        input_shape = tuple(args.shape)
     else:
         raise ValueError('invalid input shape')
+    print(f"DEBUG: Full input_shape = {input_shape}")  # 添加这行
     result = {}
 
     model: BaseSegmentor = MODELS.build(cfg.model)

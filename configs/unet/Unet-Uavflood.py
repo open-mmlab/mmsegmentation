@@ -1,8 +1,8 @@
 _base_ = [
     '../_base_/models/deeplabv3_unet_s5-d16.py',
-    '../_base_/datasets/GFflood.py',
+    '../_base_/datasets/SARflood.py',
     '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_40k.py'
+    '../_base_/schedules/schedule_20k.py'
 ]
 
 crop_size = (256, 256)
@@ -27,7 +27,7 @@ param_scheduler = [
         eta_min=1e-4,
         power=0.9,
         begin=1500,
-        end=40000,
+        end=20000,
         by_epoch=False,
     )
 ]

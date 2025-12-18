@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/models/upernet_mae.py', '../_base_/datasets/GFflood.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 crop_size = (256, 256)
 data_preprocessor = dict(size=crop_size)
