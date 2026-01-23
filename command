@@ -71,19 +71,19 @@ python tools/analysis_tools/get_flops.py \
 python tools/train.py ./configs/convnext/convnext-base-uavflood.py --work-dir work_dirs/SAR/convnext
 python tools/test.py ./configs/convnext/convnext-base-uavflood.py  work_dirs/GFflood/convnext/best_val_mIoU_iter_20000.pth --work-dir ./Result/GF/convnext/  --show-dir ./Result/GF/convnext/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
-    ./configs/beit/beit-Uavflood.py\
-    work_dirs/UAVflood/beit/best_val_mIoU_iter_40000.pth\
+    ./configs/convnext/convnext-base-uavflood.py\
+    work_dirs/GFflood/convnext/best_val_mIoU_iter_20000.pth \
     --repeat-times 3
 python tools/analysis_tools/get_flops.py \
-    ./configs/beit/beit-Uavflood.py\
-    --shape 3 256 256
+    ./configs/convnext/convnext-base-uavflood.py\
+    --shape 5 256 256
 
-python tools/train.py ./configs/swin/Swin-uavflood-256x256.py --work-dir work_dirs/SARflood/Swin --cfg-options seed=42
-python tools/test.py ./configs/swin/Swin-uavflood-256x256.py  work_dirs/UAVflood/Swin/best_val_mIoU_iter_18000.pth --work-dir ./Result/UAV/swin/  --show-dir ./Result/UAV/swin/vis --cfg-options visualizer.alpha=1.0
+python tools/train.py ./configs/swin/Swin-uavflood-256x256.py --work-dir work_dirs/GFflood/Swin --cfg-options seed=42
+python tools/test.py ./configs/swin/Swin-uavflood-256x256.py  work_dirs/GFflood/Swin/best_val_mIoU_iter_16000.pth --work-dir ./Result/GF/swin/  --show-dir ./Result/UAV/swin/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
-    ./configs/beit/beit-Uavflood.py\
-    work_dirs/UAVflood/beit/best_val_mIoU_iter_40000.pth\
+    ./configs/swin/Swin-uavflood-256x256.py\
+    work_dirs/GFflood/Swin/best_val_mIoU_iter_16000.pth\
     --repeat-times 3
 python tools/analysis_tools/get_flops.py \
-    ./configs/beit/beit-Uavflood.py\
-    --shape 3 256 256
+    ./configs/swin/Swin-uavflood-256x256.py\
+    --shape 5 256 256
