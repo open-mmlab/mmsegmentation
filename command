@@ -87,3 +87,4 @@ python tools/analysis_tools/benchmark.py \
 python tools/analysis_tools/get_flops.py \
     ./configs/swin/Swin-uavflood-256x256.py\
     --shape 5 256 256
+
