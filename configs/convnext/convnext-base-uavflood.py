@@ -1,8 +1,7 @@
 _base_ = [
     '../_base_/models/upernet_convnext.py',
     '../_base_/datasets/GFflood.py',
-    '../_base_/default_runtime.py',
-    '../_base_/schedules/schedule_20k.py'
+    '../_base_/default_runtime.py'
 ]
 
 crop_size = (256, 256)
