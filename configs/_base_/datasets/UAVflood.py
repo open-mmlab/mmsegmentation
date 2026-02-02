@@ -44,6 +44,7 @@ train_dataloader = dict(
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
+    drop_last=True,  # 丢弃最后一个不完整的batch，避免BatchNorm错误
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
