@@ -39,7 +39,7 @@ test_cfg = dict(type='TestLoop')
 # 修改hooks为基于epoch
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=1, by_epoch=True),
+    logger=dict(type='LoggerHook', interval=1, log_metric_by_epoch=True),
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(
         type='CheckpointHook',
@@ -54,3 +54,6 @@ randomness = dict(
     seed=42,
     deterministic=False,  # 如需完全可复现，设为True
 )
+
+# 设置日志按epoch显示
+log_processor = dict(by_epoch=True)
