@@ -46,7 +46,7 @@ default_hooks = dict(
         by_epoch=True,
         interval=10,  # 每10个epoch保存一次
         max_keep_ckpts=3,
-        save_best='val/mIoU'),  # 使用val/mIoU匹配evaluator的prefix
+        save_best='mIoU'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
 
