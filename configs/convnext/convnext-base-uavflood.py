@@ -67,7 +67,7 @@ test_cfg = dict(type='TestLoop')
 # 修改hooks为基于epoch
 default_hooks = dict(
     timer=dict(type='IterTimerHook'),
-    logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=True),
+    logger=dict(type='LoggerHook', interval=1, log_metric_by_epoch=True),
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(
         type='CheckpointHook',
@@ -77,6 +77,9 @@ default_hooks = dict(
         save_best='mIoU'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
+
+# 设置日志按epoch显示
+log_processor = dict(by_epoch=True)
 
 # 数据加载器配置，适配UAVflood数据集
 train_dataloader = dict(batch_size=8, num_workers=8)

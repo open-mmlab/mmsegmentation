@@ -48,7 +48,8 @@ train_dataloader = dict(
     batch_size=8,
     num_workers=8,
     persistent_workers=True,
-    sampler=dict(type='InfiniteSampler', shuffle=True),
+    sampler=dict(type='DefaultSampler', shuffle=True),
+    drop_last=True,  # 丢弃最后一个不完整的batch，避免BatchNorm错误
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
@@ -78,14 +79,5 @@ test_dataloader = dict(
         data_prefix=dict(img_path='test/images', seg_map_path='test/labels'),
         pipeline=test_pipeline))
 
-val_evaluator = dict(
-    type='IoUMetric',
-    iou_metrics=['mIoU'],
-    prefix='val'
-)
-
-test_evaluator = dict(
-    type='IoUMetric',
-    iou_metrics=['mIoU'],
-    prefix='test'
-)
+val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+test_evaluator = val_evaluator
