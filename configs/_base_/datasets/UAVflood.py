@@ -72,16 +72,6 @@ test_dataloader = dict(
         data_prefix=dict(img_path='test/images', seg_map_path='test/labels'),
         pipeline=test_pipeline))
 
-# 评估器配置 - 添加prefix消除警告
-val_evaluator = dict(
-    type='IoUMetric',
-    iou_metrics=['mIoU'],
-    prefix='val'
-)
-
-test_evaluator = dict(
-    type='IoUMetric',
-    iou_metrics=['mIoU'],
-    prefix='test'
-)
+val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+test_evaluator = val_evaluator
 
