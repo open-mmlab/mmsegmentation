@@ -43,7 +43,7 @@ train_dataloader = dict(
     batch_size=8,
     num_workers=8,
     persistent_workers=True,
-    sampler=dict(type='InfiniteSampler', shuffle=True),
+    sampler=dict(type='DefaultSampler', shuffle=True),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
