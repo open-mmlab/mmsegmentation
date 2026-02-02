@@ -1,6 +1,7 @@
 _base_ = [
-        '../_base_/models/deeplabv3plus_r50-d8.py', '../_base_/datasets/UAVflood.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
+    '../_base_/models/deeplabv3plus_r50-d8.py',
+    '../_base_/datasets/UAVflood.py',
+    '../_base_/default_runtime.py'
 ]
 crop_size = (256, 256)
 data_preprocessor = dict(size=crop_size)
@@ -8,6 +9,12 @@ model = dict(
     data_preprocessor=data_preprocessor,
     decode_head=dict(num_classes=2),
     auxiliary_head=dict(num_classes=2))
+
+# 优化器配置
+optim_wrapper = dict(
+    type='OptimWrapper',
+    optimizer=dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005),
+    clip_grad=None)
 
 # 修改为epoch训练，训练100个epoch
 param_scheduler = [
