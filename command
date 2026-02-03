@@ -8,8 +8,8 @@ ps -ef | grep python
 pkill -9 python
 
 
-python tools/train.py ./configs/deeplabv3plus/Deeplabv3+UAVflood.py --work-dir work_dirs/UAVflood/Deeplabv3+
-python tools/test.py ./configs/deeplabv3plus/Deeplabv3+UAVflood.py work_dirs/UAVflood/Deeplabv3+/best_val_mIoU_iter_20000.pth  --work-dir ./Result/UAV/Deeplabv3+ --show-dir ./Result/UAV/Deeplabv3+/vis --cfg-options visualizer.alpha=1.0
+python tools/train.py ./configs/deeplabv3plus/Deeplabv3+UAVflood.py --work-dir work_dirs/SAR/Deeplabv3+
+python tools/test.py ./configs/deeplabv3plus/Deeplabv3+UAVflood.py work_dirs/UAVflood/Deeplabv3+/best_mIoU_epoch_80.pth  --work-dir ./Result/UAV/Deeplabv3+ --show-dir ./Result/UAV/Deeplabv3+/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/deeplabv3plus/Deeplabv3+UAVflood.py \
     work_dirs/UAVflood/Deeplabv3+/best_val_mIoU_iter_20000.pth \
