@@ -22,7 +22,6 @@ model = dict(
 
 # 使用AMP优化器包装器以提高训练效率
 optim_wrapper = dict(
-    _delete_=True,
     type='AmpOptimWrapper',
     optimizer=dict(
         type='AdamW', lr=0.0001, betas=(0.9, 0.999), weight_decay=0.05

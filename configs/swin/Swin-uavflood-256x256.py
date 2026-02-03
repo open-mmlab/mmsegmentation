@@ -84,7 +84,6 @@ model = dict(
 
 # ===== 优化器配置 =====
 optim_wrapper = dict(
-    _delete_=True,
     type='OptimWrapper',
     optimizer=dict(
         type='AdamW',

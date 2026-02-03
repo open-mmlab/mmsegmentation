@@ -18,7 +18,6 @@ model = dict(
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
 optim_wrapper = dict(
-    _delete_=True,
     type='OptimWrapper',
     optimizer=dict(
         type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01),
