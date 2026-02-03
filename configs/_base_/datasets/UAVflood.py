@@ -12,7 +12,7 @@ train_pipeline = [
         keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
-    dict(type='PhotoMetricDistortion'),
+    # PhotoMetricDistortion removed - not compatible with multi-band (8-channel) images
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
