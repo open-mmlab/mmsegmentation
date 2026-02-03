@@ -5,7 +5,7 @@ crop_size = (256, 256)
 
 # GF 5-channel normalization parameters
 train_pipeline = [
-    dict(type='LoadSingleRSImageFromFile'),
+    dict(type='LoadMultiBandTiffFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(
         type='RandomResize',
@@ -19,7 +19,7 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadSingleRSImageFromFile'),
+    dict(type='LoadMultiBandTiffFromFile'),
     dict(type='Resize', scale=(1024, 1024), keep_ratio=True),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(type='PackSegInputs')
@@ -27,7 +27,7 @@ test_pipeline = [
 
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
-    dict(type='LoadSingleRSImageFromFile', backend_args=None),
+    dict(type='LoadMultiBandTiffFromFile'),
     dict(
         type='TestTimeAug',
         transforms=[
