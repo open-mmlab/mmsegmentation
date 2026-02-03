@@ -9,6 +9,7 @@ from mmengine.logging import print_log
 from mmengine.runner import Runner
 
 from mmseg.registry import RUNNERS
+from mmseg.utils import register_all_modules
 
 
 def parse_args():
@@ -53,6 +54,9 @@ def parse_args():
 
 def main():
     args = parse_args()
+
+    # register all modules
+    register_all_modules(init_default_scope=True)
 
     # load config
     cfg = Config.fromfile(args.config)
