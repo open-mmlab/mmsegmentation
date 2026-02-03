@@ -3,7 +3,7 @@ dataset_type = 'UAVfloodDataset'
 data_root = '../Floodnet/data/mixed_dataset/SAR/'
 crop_size = (256, 256)
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadMultiBandTiffFromFile'),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(
         type='RandomResize',
@@ -16,7 +16,7 @@ train_pipeline = [
     dict(type='PackSegInputs')
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadMultiBandTiffFromFile'),
     dict(type='Resize', scale=(1024, 1024), keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
@@ -25,7 +25,7 @@ test_pipeline = [
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=None),
+    dict(type='LoadMultiBandTiffFromFile'),
     dict(
         type='TestTimeAug',
         transforms=[

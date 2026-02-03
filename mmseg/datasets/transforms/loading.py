@@ -18,6 +18,11 @@ try:
 except ImportError:
     gdal = None
 
+try:
+    import tifffile
+except ImportError:
+    tifffile = None
+
 
 @TRANSFORMS.register_module()
 class LoadAnnotations(MMCV_LoadAnnotations):
@@ -769,3 +774,72 @@ class LoadImageFromNpyFile(LoadImageFromFile):
         results['img_shape'] = img.shape[:2]
         results['ori_shape'] = img.shape[:2]
         return results
+
+
+@TRANSFORMS.register_module()
+class LoadMultiBandTiffFromFile(BaseTransform):
+    """Load a multi-band TIFF image from file using tifffile.
+
+    This loader supports TIFF images with more than 4 channels, which are
+    not supported by OpenCV. It uses the tifffile library to read the image.
+
+    Required Keys:
+
+    - img_path
+
+    Modified Keys:
+
+    - img
+    - img_shape
+    - ori_shape
+
+    Args:
+        to_float32 (bool): Whether to convert the loaded image to a float32
+            numpy array. If set to False, the loaded image keeps its original
+            data type. Defaults to True.
+    """
+
+    def __init__(self, to_float32: bool = True):
+        self.to_float32 = to_float32
+
+        if tifffile is None:
+            raise RuntimeError('tifffile is not installed. Please install it '
+                             'using: pip install tifffile')
+
+    def transform(self, results: Dict) -> Dict:
+        """Functions to load image.
+
+        Args:
+            results (dict): Result dict from :obj:``mmcv.BaseDataset``.
+
+        Returns:
+            dict: The dict contains loaded image and meta information.
+        """
+
+        filename = results['img_path']
+        try:
+            # Read multi-band TIFF using tifffile
+            img = tifffile.imread(filename)
+
+            # tifffile returns (height, width, channels) for multi-channel images
+            # or (channels, height, width) depending on the file structure
+            # We need to ensure the format is (height, width, channels)
+            if img.ndim == 3 and img.shape[0] < img.shape[2]:
+                # If first dimension is smaller, it's likely (channels, height, width)
+                # Convert to (height, width, channels)
+                img = np.transpose(img, (1, 2, 0))
+
+            if self.to_float32:
+                img = img.astype(np.float32)
+
+            results['img'] = img
+            results['img_shape'] = img.shape[:2]
+            results['ori_shape'] = img.shape[:2]
+            return results
+        except Exception as e:
+            raise RuntimeError(f'Failed to load image from {filename}: {str(e)}')
+
+    def __repr__(self):
+        repr_str = (f'{self.__class__.__name__}('
+                    f'to_float32={self.to_float32})')
+        return repr_str
