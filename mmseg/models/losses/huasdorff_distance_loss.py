@@ -67,9 +67,9 @@ def hd_loss(seg_soft: Tensor,
             dtm = s_dtm + g_dtm
             multiplied = torch.einsum('bxy, bxy->bxy', delta_s, dtm)
             hd_loss = multiplied.mean()
-        if class_weight is not None:
-            hd_loss *= class_weight[i]
-        total_loss += hd_loss
+            if class_weight is not None:
+                hd_loss *= class_weight[i]
+            total_loss += hd_loss
 
     return total_loss / num_class
 
