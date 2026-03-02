@@ -19,7 +19,7 @@ python tools/analysis_tools/get_flops.py \
     --shape 8 256 256
 
 python tools/train.py ./configs/segformer/segformer_mit-b0_8xb1-160k_UAVflood-256x256.py --work-dir work_dirs/SAR/segformer
-python tools/test.py ./configs/segformer/segformer_mit-b0_8xb1-160k_UAVflood-256x256.py  work_dirs/UAVflood/segformer/best_val_mIoU_iter_20000.pth --work-dir ./Result/UAV/segformer/ --show-dir ./Result/UAV/segformer/vis --cfg-options visualizer.alpha=1.0
+python tools/test.py ./configs/segformer/segformer_mit-b0_8xb1-160k_UAVflood-256x256.py  work_dirs/SAR/segformer/best_mIoU_epoch_100.pth --work-dir ./Result/SAR/segformer/ --show-dir ./Result/SAR/segformer/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/segformer/segformer_mit-b0_8xb1-160k_UAVflood-256x256.py\
     work_dirs/UAVflood/segformer/best_val_mIoU_iter_40000.pth \
@@ -29,7 +29,7 @@ python tools/analysis_tools/get_flops.py \
     --shape 5 256 256
 
 python tools/train.py ./configs/unet/Unet-Uavflood.py --work-dir work_dirs/SARflood/unet
-python tools/test.py ./configs/unet/Unet-Uavflood.py  work_dirs/SARflood/unet/best_val_mIoU_iter_20000.pth --work-dir ./Result/SAR/unet/  --show-dir ./Result/SAR/unet/vis --cfg-options visualizer.alpha=1.0
+python tools/test.py ./configs/unet/Unet-Uavflood.py  work_dirs/SAR/unet/best_mIoU_epoch_90.pth --work-dir ./Result/SAR/unet/  --show-dir ./Result/SAR/unet/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/unet/Unet-Uavflood.py \
     work_dirs/UAVflood/unet/best_val_mIoU_iter_40000.pth \
@@ -48,8 +48,8 @@ python tools/analysis_tools/get_flops.py \
     ./configs/mae/mae-base-Uavflood.py\
     --shape 5 256 256
 
-python tools/train.py ./configs/vit/vit-Uavflood.py --work-dir work_dirs/SARflood/vit
-python tools/test.py ./configs/vit/vit-Uavflood.py  work_dirs/SARflood/vit/best_val_mIoU_iter_16000.pth --work-dir ./Result/SAR/vit/  --show-dir ./Result/SAR/vit/vis --cfg-options visualizer.alpha=1.0
+python tools/train.py ./configs/vit/vit-Uavflood.py --work-dir work_dirs/SAR/vit
+python tools/test.py ./configs/vit/vit-Uavflood.py  work_dirs/SAR/vit/best_mIoU_epoch_100.pth --work-dir ./Result/SAR/vit/  --show-dir ./Result/SAR/vit/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/vit/vit-Uavflood.py\
     work_dirs/UAVflood/vit/best_val_mIoU_iter_36000.pth \
@@ -69,7 +69,7 @@ python tools/analysis_tools/get_flops.py \
     --shape 3 256 256
 
 python tools/train.py ./configs/convnext/convnext-base-uavflood.py --work-dir work_dirs/SAR/convnext
-python tools/test.py ./configs/convnext/convnext-base-uavflood.py  work_dirs/GFflood/convnext/best_val_mIoU_iter_20000.pth --work-dir ./Result/GF/convnext/  --show-dir ./Result/GF/convnext/vis --cfg-options visualizer.alpha=1.0
+python tools/test.py ./configs/convnext/convnext-base-uavflood.py  work_dirs/SAR/convnext/best_mIoU_epoch_100.pth --work-dir ./Result/SAR/convnext/  --show-dir ./Result/SAR/convnext/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/convnext/convnext-base-uavflood.py\
     work_dirs/GFflood/convnext/best_val_mIoU_iter_20000.pth \
@@ -78,8 +78,8 @@ python tools/analysis_tools/get_flops.py \
     ./configs/convnext/convnext-base-uavflood.py\
     --shape 5 256 256
 
-python tools/train.py ./configs/swin/Swin-uavflood-256x256.py --work-dir work_dirs/GFflood/Swin --cfg-options seed=42
-python tools/test.py ./configs/swin/Swin-uavflood-256x256.py  work_dirs/GFflood/Swin/best_val_mIoU_iter_16000.pth --work-dir ./Result/GF/swin/  --show-dir ./Result/UAV/swin/vis --cfg-options visualizer.alpha=1.0
+python tools/train.py ./configs/swin/Swin-uavflood-256x256.py --work-dir work_dirs/SAR/Swin --cfg-options seed=42
+python tools/test.py ./configs/swin/Swin-uavflood-256x256.py  work_dirs/SAR/Swin/best_mIoU_epoch_100.pth --work-dir ./Result/SAR/swin/  --show-dir ./Result/SAR/swin/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/swin/Swin-uavflood-256x256.py\
     work_dirs/GFflood/Swin/best_val_mIoU_iter_16000.pth\
