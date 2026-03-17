@@ -1,5 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .formatting import PackSegInputs
+from .multimodal_pipelines import (LoadMultiModalImageFromFile,
+                                    MultiModalNormalize,
+                                    GenerateBoundary,
+                                    PackMultiModalSegInputs)
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
                       LoadDepthAnnotation, LoadImageFromNDArray,
@@ -27,5 +31,7 @@ __all__ = [
     'BioMedical3DRandomFlip', 'BioMedicalRandomGamma', 'BioMedical3DPad',
     'RandomRotFlip', 'Albu', 'LoadSingleRSImageFromFile', 'ConcatCDInput',
     'LoadMultiBandTiffFromFile', 'LoadMultipleRSImageFromFile',
-    'LoadDepthAnnotation', 'RandomDepthMix', 'RandomFlip', 'Resize'
+    'LoadDepthAnnotation', 'RandomDepthMix', 'RandomFlip', 'Resize',
+    'LoadMultiModalImageFromFile', 'MultiModalNormalize',
+    'GenerateBoundary', 'PackMultiModalSegInputs'
 ]
