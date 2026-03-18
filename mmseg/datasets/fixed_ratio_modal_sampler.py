@@ -143,7 +143,7 @@ class FixedRatioModalSampler(Sampler):
                 f"Reference modal: {self.reference_modal} "
                 f"(count={reference_count}, ratio={reference_ratio})")
         print(f"Total samples per epoch: {self.num_samples}")
-        print(f"Iterations per epoch: {len(self)}")
+        print(f"Iterations per epoch: {self.num_samples // self.batch_size}")
         print("=" * 60 + "\n")
 
     def __iter__(self) -> Iterator[int]:
@@ -162,7 +162,7 @@ class FixedRatioModalSampler(Sampler):
 
         indices = []
         batch_repeats = self.batch_size // sum(self.modal_ratios)
-        num_batches = len(self)
+        num_batches = self.num_samples // self.batch_size
 
         for _ in range(num_batches):
             batch_indices = []
@@ -187,7 +187,7 @@ class FixedRatioModalSampler(Sampler):
         return iter(indices)
 
     def __len__(self) -> int:
-        return self.num_samples // self.batch_size
+        return self.num_samples
 
     def set_epoch(self, epoch: int) -> None:
         self.epoch = epoch
