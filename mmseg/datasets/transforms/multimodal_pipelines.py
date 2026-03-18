@@ -238,6 +238,84 @@ class GenerateBoundary(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+class MultiModalPad(BaseTransform):
+    """Pad images with arbitrary channel counts using numpy.
+
+    mmcv.transforms.Pad uses cv2.copyMakeBorder which only supports up to
+    4 channels. This transform uses numpy padding instead, so it works
+    with SAR (8ch), GF (5ch), etc.
+
+    Required Keys:
+        - img (np.ndarray)
+
+    Modified Keys:
+        - img (np.ndarray)
+        - img_shape (tuple)
+
+    Added Keys:
+        - pad_shape (tuple)
+        - padding_size (tuple)
+
+    Args:
+        size (tuple): Target (H, W).
+        pad_val (float): Padding value for images. Default: 0.
+        seg_pad_val (float): Padding value for seg maps. Default: 255.
+    """
+
+    def __init__(self, size, pad_val=0, seg_pad_val=255):
+        self.size = size
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
+
+    def transform(self, results: dict) -> dict:
+        img = results['img']
+        h, w = img.shape[:2]
+        target_h, target_w = self.size
+
+        pad_h = max(target_h - h, 0)
+        pad_w = max(target_w - w, 0)
+
+        if pad_h > 0 or pad_w > 0:
+            if len(img.shape) == 3:
+                pad_width = ((0, pad_h), (0, pad_w), (0, 0))
+            else:
+                pad_width = ((0, pad_h), (0, pad_w))
+
+            img = np.pad(img, pad_width, mode='constant',
+                         constant_values=self.pad_val)
+            results['img'] = img
+
+            # Pad seg maps
+            for key in results.get('seg_fields', []):
+                if key in results:
+                    seg = results[key]
+                    if len(seg.shape) == 3:
+                        seg_pad = ((0, pad_h), (0, pad_w), (0, 0))
+                    else:
+                        seg_pad = ((0, pad_h), (0, pad_w))
+                    results[key] = np.pad(
+                        seg, seg_pad, mode='constant',
+                        constant_values=self.seg_pad_val)
+
+            if 'gt_seg_map' in results and 'gt_seg_map' not in results.get(
+                    'seg_fields', []):
+                seg = results['gt_seg_map']
+                if len(seg.shape) == 3:
+                    seg_pad = ((0, pad_h), (0, pad_w), (0, 0))
+                else:
+                    seg_pad = ((0, pad_h), (0, pad_w))
+                results['gt_seg_map'] = np.pad(
+                    seg, seg_pad, mode='constant',
+                    constant_values=self.seg_pad_val)
+
+        results['img_shape'] = img.shape[:2]
+        results['pad_shape'] = img.shape[:2]
+        results['padding_size'] = (0, pad_w, 0, pad_h)
+
+        return results
+
+
+@TRANSFORMS.register_module()
 class PackMultiModalSegInputs(BaseTransform):
     """Pack multi-modal data into SegDataSample format.
 
