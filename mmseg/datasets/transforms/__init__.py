@@ -3,6 +3,7 @@ from .formatting import PackSegInputs
 from .multimodal_pipelines import (LoadMultiModalImageFromFile,
                                     MultiModalNormalize,
                                     GenerateBoundary,
+                                    MultiModalPad,
                                     PackMultiModalSegInputs)
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
@@ -33,5 +34,5 @@ __all__ = [
     'LoadMultiBandTiffFromFile', 'LoadMultipleRSImageFromFile',
     'LoadDepthAnnotation', 'RandomDepthMix', 'RandomFlip', 'Resize',
     'LoadMultiModalImageFromFile', 'MultiModalNormalize',
-    'GenerateBoundary', 'PackMultiModalSegInputs'
+    'GenerateBoundary', 'MultiModalPad', 'PackMultiModalSegInputs'
 ]
