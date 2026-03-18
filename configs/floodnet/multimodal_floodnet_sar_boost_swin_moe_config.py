@@ -54,9 +54,7 @@ norm_cfg = dict(type='BN', requires_grad=True)
 crop_size = (256, 256)
 
 data_preprocessor = dict(
-    type='SegDataPreProcessor',
-    # Note: multi-modal normalization is handled by MultiModalNormalize
-    # in the pipeline, so we don't set mean/std here
+    type='MultiModalDataPreProcessor',
     pad_val=0,
     seg_pad_val=255,
     size=crop_size,
