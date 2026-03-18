@@ -153,7 +153,7 @@ train_pipeline = [
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='MultiModalNormalize'),
-    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
+    dict(type='Pad', size=crop_size, pad_val=dict(img=0, seg=255)),
     dict(type='PackMultiModalSegInputs',
          meta_keys=('img_path', 'ori_filename', 'ori_shape', 'img_shape',
                     'pad_shape', 'scale_factor', 'flip', 'flip_direction',
