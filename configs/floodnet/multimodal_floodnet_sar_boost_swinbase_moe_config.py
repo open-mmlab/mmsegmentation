@@ -180,18 +180,16 @@ test_pipeline = [
                     'img_norm_cfg', 'reduce_zero_label')),
 ]
 
-# Swin-B + MoE ~456M params, reduce batch_size to fit in GPU memory
-# batch_size=8: ~25-30 GB estimated (24GB GPU may need batch_size=4)
 train_dataloader = dict(
-    batch_size=8,
+    batch_size=16,
     num_workers=8,
     persistent_workers=True,
     sampler=dict(
         type='FixedRatioModalSampler',
-        modal_ratios={'sar': 4, 'rgb': 2, 'GF': 2},
+        modal_ratios={'sar': 8, 'rgb': 4, 'GF': 4},
         modal_order=['sar', 'rgb', 'GF'],
         reference_modal='GF',
-        batch_size=8,
+        batch_size=16,
     ),
     dataset=dict(
         type=dataset_type,
