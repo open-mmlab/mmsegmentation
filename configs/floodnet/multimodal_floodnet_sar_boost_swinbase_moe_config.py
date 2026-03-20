@@ -150,7 +150,7 @@ model = dict(
 
 # ==================== Dataset Config ====================
 dataset_type = 'MultiModalDeepflood'
-data_root = '../data/mixed_dataset/SAR'
+data_root = '../floodnet/data/mixed_dataset/'
 
 train_pipeline = [
     dict(type='LoadMultiModalImageFromFile', to_float32=True),
@@ -186,7 +186,7 @@ train_dataloader = dict(
     persistent_workers=True,
     sampler=dict(
         type='FixedRatioModalSampler',
-        modal_ratios={'sar': 8, 'rgb': 4, 'GF': 4},
+        modal_ratios={'sar': 6, 'rgb': 5, 'GF': 5},
         modal_order=['sar', 'rgb', 'GF'],
         reference_modal='GF',
         batch_size=16,

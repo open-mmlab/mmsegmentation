@@ -88,3 +88,5 @@ python tools/analysis_tools/get_flops.py \
     ./configs/swin/Swin-uavflood-256x256.py\
     --shape 5 256 256
 
+python tools/train.py ./configs/floodnet/multimodal_floodnet_sar_boost_swinbase_moe_config.py --work-dir work_dirs/floodnet/SwinmoeB --cfg-options seed=42
+python tools/test.py ./configs/floodnet/multimodal_floodnet_sar_boost_swin_moe_config.py  work_dirs/floodnet/Swinmoe/best_mIoU_epoch_90.pth --work-dir ./Result/Floodnet/SAR/  --show-dir ./Result/Floodnet/SAR/vis --cfg-options visualizer.alpha=1.0
