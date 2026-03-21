@@ -48,11 +48,14 @@ class MultiModalDeepflood(BaseSegDataset):
         'GF': {'dataset_source': 2, 'dataset_name': 'GF'},
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, filter_modality=None, **kwargs):
         # Set default suffixes for flood data
         kwargs.setdefault('img_suffix', '.tif')
         kwargs.setdefault('seg_map_suffix', '.png')
         kwargs.setdefault('reduce_zero_label', False)
+        # filter_modality: str or None, e.g. 'sar', 'rgb', 'GF'
+        # When set, only samples of this modality are kept.
+        self.filter_modality = filter_modality
         super().__init__(**kwargs)
 
     def load_data_list(self) -> List[dict]:
@@ -122,6 +125,17 @@ class MultiModalDeepflood(BaseSegDataset):
                 data_list.append(data_info)
 
             data_list = sorted(data_list, key=lambda x: x['img_path'])
+
+        # Filter by modality if specified
+        if self.filter_modality is not None:
+            data_list = [
+                d for d in data_list
+                if d['modal_type'] == self.filter_modality
+            ]
+            print_log(
+                f'Filtered to modality "{self.filter_modality}": '
+                f'{len(data_list)} images',
+                logger='current')
 
         print_log(f'Loaded {len(data_list)} images', logger='current')
         self._print_modal_statistics(data_list)
