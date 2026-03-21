@@ -143,7 +143,7 @@ model = dict(
     ),
 
     train_cfg=dict(),
-    test_cfg=dict(mode='whole')
+    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(170, 170))
 )
 
 # ==================== Dataset Config ====================
@@ -154,7 +154,7 @@ train_pipeline = [
     dict(type='LoadMultiModalImageFromFile', to_float32=True),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(type='GenerateBoundary', thickness=3),
-    dict(type='Resize', scale=(256, 256), keep_ratio=False),
+    dict(type='RandomResize', scale=(1024, 256), ratio_range=(0.5, 2.0), keep_ratio=True),
     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='MultiModalNormalize'),
@@ -168,7 +168,7 @@ train_pipeline = [
 
 test_pipeline = [
     dict(type='LoadMultiModalImageFromFile', to_float32=True),
-    dict(type='Resize', scale=(256, 256), keep_ratio=False),
+    dict(type='Resize', scale=(1024, 1024), keep_ratio=True),
     dict(type='MultiModalNormalize'),
     dict(type='LoadAnnotations', reduce_zero_label=False),
     dict(type='PackMultiModalSegInputs',
