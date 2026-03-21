@@ -405,6 +405,42 @@ class MultiModalEncoderDecoderV2(EncoderDecoder):
 
         return seg_logits
 
+    def slide_inference(self, inputs, batch_img_metas: List[dict]):
+        """Inference by sliding-window with overlap.
+
+        Overrides base class to handle list inputs from multimodal pipeline.
+        """
+        # Convert list inputs to tensor for sliding window
+        if isinstance(inputs, (list, tuple)):
+            inputs = torch.stack(inputs, dim=0)
+
+        h_stride, w_stride = self.test_cfg.stride
+        h_crop, w_crop = self.test_cfg.crop_size
+        batch_size, _, h_img, w_img = inputs.size()
+        out_channels = self.out_channels
+        h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
+        w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
+        preds = inputs.new_zeros((batch_size, out_channels, h_img, w_img))
+        count_mat = inputs.new_zeros((batch_size, 1, h_img, w_img))
+        for h_idx in range(h_grids):
+            for w_idx in range(w_grids):
+                y1 = h_idx * h_stride
+                x1 = w_idx * w_stride
+                y2 = min(y1 + h_crop, h_img)
+                x2 = min(x1 + w_crop, w_img)
+                y1 = max(y2 - h_crop, 0)
+                x1 = max(x2 - w_crop, 0)
+                crop_img = inputs[:, :, y1:y2, x1:x2]
+                batch_img_metas[0]['img_shape'] = crop_img.shape[2:]
+                crop_seg_logit = self.encode_decode(crop_img, batch_img_metas)
+                preds += F.pad(crop_seg_logit,
+                               (int(x1), int(preds.shape[3] - x2), int(y1),
+                                int(preds.shape[2] - y2)))
+                count_mat[:, :, y1:y2, x1:x2] += 1
+        assert (count_mat == 0).sum() == 0
+        seg_logits = preds / count_mat
+        return seg_logits
+
     def predict(self, inputs, data_samples: OptSampleList = None):
         """Predict results from inputs and data samples."""
         if data_samples is not None:
