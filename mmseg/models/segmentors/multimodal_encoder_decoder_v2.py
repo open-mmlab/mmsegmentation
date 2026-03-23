@@ -409,10 +409,18 @@ class MultiModalEncoderDecoderV2(EncoderDecoder):
         """Inference by sliding-window with overlap.
 
         Overrides base class to handle list inputs from multimodal pipeline.
+        When inputs have different channel sizes (e.g. mixed modalities),
+        each sample is processed individually to avoid stack errors.
         """
-        # Convert list inputs to tensor for sliding window
+        # Handle list inputs - check if channels are uniform
         if isinstance(inputs, (list, tuple)):
-            inputs = torch.stack(inputs, dim=0)
+            channel_sizes = [t.shape[0] for t in inputs]
+            if len(set(channel_sizes)) > 1:
+                # Mixed channels: process each sample individually
+                return self._slide_inference_per_sample(
+                    inputs, batch_img_metas)
+            else:
+                inputs = torch.stack(inputs, dim=0)
 
         h_stride, w_stride = self.test_cfg.stride
         h_crop, w_crop = self.test_cfg.crop_size
@@ -440,6 +448,46 @@ class MultiModalEncoderDecoderV2(EncoderDecoder):
         assert (count_mat == 0).sum() == 0
         seg_logits = preds / count_mat
         return seg_logits
+
+    def _slide_inference_per_sample(self, inputs, batch_img_metas):
+        """Slide inference processing each sample individually.
+
+        Used when batch contains mixed modalities with different channels.
+        """
+        h_stride, w_stride = self.test_cfg.stride
+        h_crop, w_crop = self.test_cfg.crop_size
+        out_channels = self.out_channels
+
+        seg_logits_list = []
+        for i, (img, img_meta) in enumerate(zip(inputs, batch_img_metas)):
+            # img shape: (C, H, W) -> (1, C, H, W)
+            img = img.unsqueeze(0)
+            _, _, h_img, w_img = img.size()
+            h_grids = max(h_img - h_crop + h_stride - 1, 0) // h_stride + 1
+            w_grids = max(w_img - w_crop + w_stride - 1, 0) // w_stride + 1
+            preds = img.new_zeros((1, out_channels, h_img, w_img))
+            count_mat = img.new_zeros((1, 1, h_img, w_img))
+            meta_list = [img_meta]
+            for h_idx in range(h_grids):
+                for w_idx in range(w_grids):
+                    y1 = h_idx * h_stride
+                    x1 = w_idx * w_stride
+                    y2 = min(y1 + h_crop, h_img)
+                    x2 = min(x1 + w_crop, w_img)
+                    y1 = max(y2 - h_crop, 0)
+                    x1 = max(x2 - w_crop, 0)
+                    crop_img = img[:, :, y1:y2, x1:x2]
+                    meta_list[0]['img_shape'] = crop_img.shape[2:]
+                    crop_seg_logit = self.encode_decode(
+                        crop_img, meta_list)
+                    preds += F.pad(crop_seg_logit,
+                                   (int(x1), int(preds.shape[3] - x2),
+                                    int(y1), int(preds.shape[2] - y2)))
+                    count_mat[:, :, y1:y2, x1:x2] += 1
+            assert (count_mat == 0).sum() == 0
+            seg_logits_list.append(preds / count_mat)
+
+        return torch.cat(seg_logits_list, dim=0)
 
     def predict(self, inputs, data_samples: OptSampleList = None):
         """Predict results from inputs and data samples."""
