@@ -5,13 +5,13 @@
 # ============================================================================
 #
 # Usage:
-#   bash scripts/run_all_experiments.sh          # Run all experiments
-#   bash scripts/run_all_experiments.sh --group ablation   # Run only ablation group
-#   bash scripts/run_all_experiments.sh --group sota       # Run only SOTA comparison
-#   bash scripts/run_all_experiments.sh --group moe_hyper  # Run MoE hyperparameter sweep
-#   bash scripts/run_all_experiments.sh --group single     # Run single-modal experiments
+#   bash scripts/run_all_experiments.sh table2      # Component Ablation
+#   bash scripts/run_all_experiments.sh table3      # MoE Hyperparameter Study
+#   bash scripts/run_all_experiments.sh table4      # Single-Modal vs Multi-Modal
+#   bash scripts/run_all_experiments.sh all         # Run all tables
 #
 # Each experiment uses --seed 42 for reproducibility.
+# After training, each experiment runs per-modality testing automatically.
 # ============================================================================
 
 set -e
@@ -21,8 +21,15 @@ GPU_IDS=${GPU_IDS:-0}
 CONFIG_DIR="configs/floodnet"
 ABLATION_DIR="${CONFIG_DIR}/ablations"
 WORK_ROOT="work_dirs/paper_experiments"
+RESULTS_LOG="${WORK_ROOT}/results_summary.txt"
 
-GROUP=${2:-"all"}
+GROUP=${1:-"all"}
+
+mkdir -p "${WORK_ROOT}"
+
+# ============================================================================
+# Helper Functions
+# ============================================================================
 
 run_train() {
     local config=$1
@@ -30,9 +37,9 @@ run_train() {
     local desc=$3
 
     echo "============================================================"
-    echo "[EXP] ${desc}"
-    echo "[CFG] ${config}"
-    echo "[DIR] ${work_dir}"
+    echo "[TRAIN] ${desc}"
+    echo "[CFG]   ${config}"
+    echo "[DIR]   ${work_dir}"
     echo "============================================================"
 
     CUDA_VISIBLE_DEVICES=${GPU_IDS} python tools/train.py \
@@ -40,156 +47,283 @@ run_train() {
         --work-dir ${work_dir} \
         --seed ${SEED}
 
-    echo "[DONE] ${desc}"
+    echo "[TRAIN DONE] ${desc}"
     echo ""
 }
 
-run_test() {
+run_test_modal() {
+    # Test a trained model on a specific modality
     local config=$1
-    local checkpoint=$2
-    local work_dir=$3
+    local work_dir=$2
+    local modal=$3
     local desc=$4
 
-    echo "[TEST] ${desc}"
+    local ckpt="${work_dir}/best_mIoU_*.pth"
+    # Find best checkpoint
+    local best_ckpt=$(ls ${ckpt} 2>/dev/null | head -1)
+    if [ -z "$best_ckpt" ]; then
+        # Fallback to latest checkpoint
+        best_ckpt=$(ls ${work_dir}/epoch_*.pth 2>/dev/null | sort -V | tail -1)
+    fi
+    if [ -z "$best_ckpt" ]; then
+        echo "[ERROR] No checkpoint found in ${work_dir}"
+        return 1
+    fi
+
+    local test_work_dir="${work_dir}/test_${modal}"
+    mkdir -p "${test_work_dir}"
+
+    echo "------------------------------------------------------------"
+    echo "[TEST] ${desc} | Modality: ${modal}"
+    echo "[CKPT] ${best_ckpt}"
+    echo "------------------------------------------------------------"
+
     CUDA_VISIBLE_DEVICES=${GPU_IDS} python tools/test.py \
         ${config} \
-        ${checkpoint} \
-        --work-dir ${work_dir}
+        ${best_ckpt} \
+        --work-dir ${test_work_dir} \
+        --cfg-options \
+            test_dataloader.dataset.filter_modality="${modal}" \
+        2>&1 | tee "${test_work_dir}/test_log.txt"
+
+    # Log result
+    echo "[${desc}] modal=${modal} -> see ${test_work_dir}/test_log.txt" >> "${RESULTS_LOG}"
+    echo ""
+}
+
+run_test_all_modals() {
+    # Test on SAR, RGB, GF separately
+    local config=$1
+    local work_dir=$2
+    local desc=$3
+
+    echo "============================================================"
+    echo "[TEST ALL MODALS] ${desc}"
+    echo "============================================================"
+
+    run_test_modal "${config}" "${work_dir}" "sar" "${desc}"
+    run_test_modal "${config}" "${work_dir}" "rgb" "${desc}"
+    run_test_modal "${config}" "${work_dir}" "GF"  "${desc}"
+}
+
+train_and_test_all_modals() {
+    # Train + test on all 3 modalities
+    local config=$1
+    local work_dir=$2
+    local desc=$3
+
+    run_train "${config}" "${work_dir}" "${desc}"
+    run_test_all_modals "${config}" "${work_dir}" "${desc}"
+}
+
+train_and_test_single_modal() {
+    # Train on single modality + test on the same modality
+    local config=$1
+    local work_dir=$2
+    local modal=$3
+    local desc=$4
+
+    run_train "${config}" "${work_dir}" "${desc}"
+    run_test_modal "${config}" "${work_dir}" "${modal}" "${desc}"
 }
 
 # ============================================================================
-# GROUP 1: Main Model (Full / Final)
+# TABLE 2: Component Ablation Study
 # ============================================================================
-if [[ "$GROUP" == "all" || "$GROUP" == "main" ]]; then
-    echo "========== GROUP: Main Model =========="
+# Full Model vs:
+#   (b) w/o MoE
+#   (c) w/o ModalSpecificStem
+#   (d) w/o Modal Bias
+#   (e) w/o Shared Experts
+#   (f) w/o Shared Decoder (i.e., use shared decoder)
+#
+# Each variant: train → test SAR / test RGB / test GF
+# ============================================================================
+if [[ "$GROUP" == "all" || "$GROUP" == "table2" ]]; then
+    echo ""
+    echo "################################################################"
+    echo "#  TABLE 2: Component Ablation Study                          #"
+    echo "################################################################"
+    echo ""
 
-    # Exp 0: Full Model (Swin-Base + MoE, SAR Boost) -- THE FINAL MODEL
-    run_train \
+    # (a) Full Model (baseline for comparison)
+    train_and_test_all_modals \
         "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
-        "${WORK_ROOT}/full_model_swinB_moe" \
-        "Full Model: Swin-B + MoE + All Components"
-fi
+        "${WORK_ROOT}/table2/full_model" \
+        "Table2(a) Full Model"
 
-# ============================================================================
-# GROUP 2: SOTA Comparison Baselines
-# ============================================================================
-if [[ "$GROUP" == "all" || "$GROUP" == "sota" ]]; then
-    echo "========== GROUP: SOTA Baselines =========="
-
-    # Exp 1a: Swin-Tiny + MoE (smaller backbone)
-    run_train \
-        "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swin_moe_config.py" \
-        "${WORK_ROOT}/sota/swinT_moe" \
-        "Backbone Scale: Swin-Tiny + MoE"
-
-    # Exp 1b: Swin-Base WITHOUT MoE (standard FFN baseline)
-    run_train \
+    # (b) w/o MoE
+    train_and_test_all_modals \
         "${ABLATION_DIR}/ablation_no_moe.py" \
-        "${WORK_ROOT}/sota/swinB_no_moe" \
-        "Baseline: Swin-Base + UPerNet (No MoE)"
-fi
+        "${WORK_ROOT}/table2/no_moe" \
+        "Table2(b) w/o MoE"
 
-# ============================================================================
-# GROUP 3: Component Ablation Study (Table 2)
-# ============================================================================
-if [[ "$GROUP" == "all" || "$GROUP" == "ablation" ]]; then
-    echo "========== GROUP: Ablation Study =========="
+    # (c) w/o ModalSpecificStem
+    train_and_test_all_modals \
+        "${ABLATION_DIR}/ablation_no_modal_specific_stem.py" \
+        "${WORK_ROOT}/table2/no_modal_specific_stem" \
+        "Table2(c) w/o ModalSpecificStem"
 
-    # Exp 2a: w/o MoE
-    run_train \
-        "${ABLATION_DIR}/ablation_no_moe.py" \
-        "${WORK_ROOT}/ablation/no_moe" \
-        "Ablation: w/o MoE"
-
-    # Exp 2b: w/o Modal Bias
-    run_train \
+    # (d) w/o Modal Bias
+    train_and_test_all_modals \
         "${ABLATION_DIR}/ablation_no_modal_bias.py" \
-        "${WORK_ROOT}/ablation/no_modal_bias" \
-        "Ablation: w/o Modal Bias"
+        "${WORK_ROOT}/table2/no_modal_bias" \
+        "Table2(d) w/o Modal Bias"
 
-    # Exp 2c: w/o Shared Experts
-    run_train \
+    # (e) w/o Shared Experts
+    train_and_test_all_modals \
         "${ABLATION_DIR}/ablation_no_shared_experts.py" \
-        "${WORK_ROOT}/ablation/no_shared_experts" \
-        "Ablation: w/o Shared Experts"
+        "${WORK_ROOT}/table2/no_shared_experts" \
+        "Table2(e) w/o Shared Experts"
 
-    # Exp 2d: w/o Expert Diversity Loss
-    run_train \
-        "${ABLATION_DIR}/ablation_no_diversity_loss.py" \
-        "${WORK_ROOT}/ablation/no_diversity_loss" \
-        "Ablation: w/o Expert Diversity Loss"
-
-    # Exp 2e: w/o SAR Boost (Uniform Sampling)
-    run_train \
-        "${ABLATION_DIR}/ablation_uniform_sampling.py" \
-        "${WORK_ROOT}/ablation/uniform_sampling" \
-        "Ablation: w/o SAR Boost (Uniform Sampling)"
-
-    # Exp 2f: Shared Decoder
-    run_train \
+    # (f) w/o Separate Decoder (use shared decoder)
+    train_and_test_all_modals \
         "${ABLATION_DIR}/ablation_shared_decoder.py" \
-        "${WORK_ROOT}/ablation/shared_decoder" \
-        "Ablation: Shared Decoder (vs Separate)"
+        "${WORK_ROOT}/table2/shared_decoder" \
+        "Table2(f) w/o Separate Decoder"
+
+    echo ""
+    echo "[TABLE 2 COMPLETE] Results in ${WORK_ROOT}/table2/"
+    echo ""
 fi
 
 # ============================================================================
-# GROUP 4: MoE Hyperparameter Study (Table 3)
+# TABLE 3: MoE Hyperparameter Study
 # ============================================================================
-if [[ "$GROUP" == "all" || "$GROUP" == "moe_hyper" ]]; then
-    echo "========== GROUP: MoE Hyperparameter Study =========="
+# Grid: num_experts={6, 8} x top_k={1, 2, 3}
+# Note: (8, 3) = Full Model, shared with Table 2(a)
+#
+# Each variant: train → test SAR / test RGB / test GF
+# ============================================================================
+if [[ "$GROUP" == "all" || "$GROUP" == "table3" ]]; then
+    echo ""
+    echo "################################################################"
+    echo "#  TABLE 3: MoE Hyperparameter Study                          #"
+    echo "################################################################"
+    echo ""
 
-    # Exp 3a: 4 experts, top_k=2
-    run_train \
-        "${ABLATION_DIR}/ablation_experts_4.py" \
-        "${WORK_ROOT}/moe_hyper/experts_4_topk_2" \
-        "MoE Hyper: 4 experts, top_k=2"
+    # E=6, K=1
+    train_and_test_all_modals \
+        "${ABLATION_DIR}/ablation_e6_k1.py" \
+        "${WORK_ROOT}/table3/e6_k1" \
+        "Table3 E=6 K=1"
 
-    # Exp 3b: 8 experts, top_k=3 (default - reuse full model result)
-    echo "[SKIP] 8 experts, top_k=3 = Full Model (already run)"
+    # E=6, K=2
+    train_and_test_all_modals \
+        "${ABLATION_DIR}/ablation_e6_k2.py" \
+        "${WORK_ROOT}/table3/e6_k2" \
+        "Table3 E=6 K=2"
 
-    # Exp 3c: 16 experts, top_k=4
-    run_train \
-        "${ABLATION_DIR}/ablation_experts_16.py" \
-        "${WORK_ROOT}/moe_hyper/experts_16_topk_4" \
-        "MoE Hyper: 16 experts, top_k=4"
+    # E=6, K=3
+    train_and_test_all_modals \
+        "${ABLATION_DIR}/ablation_e6_k3.py" \
+        "${WORK_ROOT}/table3/e6_k3" \
+        "Table3 E=6 K=3"
 
-    # Exp 3d: 8 experts, top_k=1
-    run_train \
-        "${ABLATION_DIR}/ablation_topk_1.py" \
-        "${WORK_ROOT}/moe_hyper/experts_8_topk_1" \
-        "MoE Hyper: 8 experts, top_k=1"
+    # E=8, K=1
+    train_and_test_all_modals \
+        "${ABLATION_DIR}/ablation_e8_k1.py" \
+        "${WORK_ROOT}/table3/e8_k1" \
+        "Table3 E=8 K=1"
+
+    # E=8, K=2
+    train_and_test_all_modals \
+        "${ABLATION_DIR}/ablation_e8_k2.py" \
+        "${WORK_ROOT}/table3/e8_k2" \
+        "Table3 E=8 K=2"
+
+    # E=8, K=3 = Full Model (reuse Table 2 result if available, else train)
+    if [ -d "${WORK_ROOT}/table2/full_model" ] && ls ${WORK_ROOT}/table2/full_model/best_mIoU_*.pth &>/dev/null 2>&1; then
+        echo "[SKIP TRAIN] E=8 K=3 = Full Model (reusing Table 2 checkpoint)"
+        run_test_all_modals \
+            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
+            "${WORK_ROOT}/table2/full_model" \
+            "Table3 E=8 K=3 (Full Model)"
+    else
+        train_and_test_all_modals \
+            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
+            "${WORK_ROOT}/table3/e8_k3" \
+            "Table3 E=8 K=3 (Full Model)"
+    fi
+
+    echo ""
+    echo "[TABLE 3 COMPLETE] Results in ${WORK_ROOT}/table3/"
+    echo ""
 fi
 
 # ============================================================================
-# GROUP 5: Single-Modal vs Multi-Modal (Table 4)
+# TABLE 4: Single-Modal vs Multi-Modal Training
 # ============================================================================
-if [[ "$GROUP" == "all" || "$GROUP" == "single" ]]; then
-    echo "========== GROUP: Single-Modal vs Multi-Modal =========="
+# SAR-only  → test SAR
+# RGB-only  → test RGB
+# GF-only   → test GF
+# Multi-modal (Full Model) → test SAR / RGB / GF (reuse Table 2)
+# ============================================================================
+if [[ "$GROUP" == "all" || "$GROUP" == "table4" ]]; then
+    echo ""
+    echo "################################################################"
+    echo "#  TABLE 4: Single-Modal vs Multi-Modal                       #"
+    echo "################################################################"
+    echo ""
 
-    # Exp 4a: SAR-only (already exists)
-    run_train \
+    # SAR-only → test SAR
+    train_and_test_single_modal \
         "${CONFIG_DIR}/multimodal_floodnet_sar_only_swinbase_moe_config.py" \
-        "${WORK_ROOT}/single_modal/sar_only" \
-        "Single-Modal: SAR-only"
+        "${WORK_ROOT}/table4/sar_only" \
+        "sar" \
+        "Table4 SAR-only"
 
-    # Exp 4b: RGB-only
-    run_train \
+    # RGB-only → test RGB
+    train_and_test_single_modal \
         "${ABLATION_DIR}/ablation_rgb_only.py" \
-        "${WORK_ROOT}/single_modal/rgb_only" \
-        "Single-Modal: RGB-only"
+        "${WORK_ROOT}/table4/rgb_only" \
+        "rgb" \
+        "Table4 RGB-only"
 
-    # Exp 4c: GF-only
-    run_train \
+    # GF-only → test GF
+    train_and_test_single_modal \
         "${ABLATION_DIR}/ablation_gf_only.py" \
-        "${WORK_ROOT}/single_modal/gf_only" \
-        "Single-Modal: GF-only"
+        "${WORK_ROOT}/table4/gf_only" \
+        "GF" \
+        "Table4 GF-only"
 
-    # Exp 4d: Multi-modal (reuse full model)
-    echo "[SKIP] Multi-Modal = Full Model (already run)"
+    # Multi-modal (Full Model) → test all 3
+    if [ -d "${WORK_ROOT}/table2/full_model" ] && ls ${WORK_ROOT}/table2/full_model/best_mIoU_*.pth &>/dev/null 2>&1; then
+        echo "[SKIP TRAIN] Multi-modal = Full Model (reusing Table 2 checkpoint)"
+        run_test_all_modals \
+            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
+            "${WORK_ROOT}/table2/full_model" \
+            "Table4 Multi-modal (Full Model)"
+    else
+        train_and_test_all_modals \
+            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
+            "${WORK_ROOT}/table4/multi_modal" \
+            "Table4 Multi-modal (Full Model)"
+    fi
+
+    echo ""
+    echo "[TABLE 4 COMPLETE] Results in ${WORK_ROOT}/table4/"
+    echo ""
 fi
 
+# ============================================================================
+# Summary
+# ============================================================================
 echo ""
 echo "============================================================"
-echo "ALL EXPERIMENTS COMPLETED"
-echo "Results saved in: ${WORK_ROOT}/"
+echo "EXPERIMENTS COMPLETED"
+echo "Results log: ${RESULTS_LOG}"
 echo "============================================================"
+echo ""
+echo "Result directories:"
+if [[ "$GROUP" == "all" || "$GROUP" == "table2" ]]; then
+    echo "  Table 2 (Ablation):     ${WORK_ROOT}/table2/"
+fi
+if [[ "$GROUP" == "all" || "$GROUP" == "table3" ]]; then
+    echo "  Table 3 (MoE Hyper):    ${WORK_ROOT}/table3/"
+fi
+if [[ "$GROUP" == "all" || "$GROUP" == "table4" ]]; then
+    echo "  Table 4 (Single-Modal): ${WORK_ROOT}/table4/"
+fi
+echo ""
+echo "Per-modality test logs are in: <work_dir>/test_{sar,rgb,GF}/test_log.txt"

@@ -3,127 +3,113 @@
 
 ---
 
-## 1. Model Overview
+## 1. Model Overview (Final Model)
 
-**Final Model**: `Swin-Base + MoE + UPerNet` (multimodal_floodnet_sar_boost_swinbase_moe_config.py)
+**Config**: `multimodal_floodnet_sar_boost_swinbase_moe_config.py`
 
 | Component | Configuration |
 |-----------|--------------|
 | Backbone | Swin-Base (embed_dims=128, depths=[2,2,18,2]) |
+| Patch Embed | ModalSpecificStem (独立卷积 per modality) |
 | MoE | 8 experts, top_k=3, noisy gating |
 | Shared Experts | Stage 2: 2, Stage 3: 1 |
-| Modal Bias | Learnable per-modal routing bias in gating |
-| Diversity Loss | Expert diversity loss (weight=0.1) + Balance loss (weight=1.0) |
+| Modal Bias | Learnable per-modal routing bias |
+| Diversity Loss | weight=0.1; Balance Loss weight=1.0 |
 | Decoder | Separate UPerHead per modality |
-| Sampling | SAR Boost (6:5:5 ratio) |
+| Sampling | SAR Boost (6:5:5) |
 | Modalities | SAR (8ch), RGB (3ch), GaoFen (5ch) |
-| Params | ~456M |
 
 ---
 
 ## 2. Experiment Design
 
-### Table 1: Comparison with State-of-the-Art Methods
+### Table 2: Component Ablation Study (组件消融)
 
-**Purpose**: Demonstrate the overall advantage of our approach over existing methods.
+**目的**: 隔离每个组件的贡献，验证设计合理性。
 
-**Evaluation**: Report mIoU on test set, split by modality (SAR / RGB / GF) and overall average.
+**评估**: 每个变体训练后，分别在 SAR / RGB / GF 三个模态上独立测试 mIoU。
 
-| Method | Backbone | Params | SAR mIoU | RGB mIoU | GF mIoU | Avg mIoU |
-|--------|----------|--------|----------|----------|---------|----------|
-| U-Net | ResNet-50 | ~25M | - | - | - | - |
-| DeepLabV3+ | ResNet-101 | ~63M | - | - | - | - |
-| SegFormer | MiT-B2 | ~25M | - | - | - | - |
-| Swin-B + UPerNet (no MoE) | Swin-Base | ~109M | - | - | - | - |
-| Swin-T + MoE | Swin-Tiny | ~278M | - | - | - | - |
-| **Ours (Swin-B + MoE)** | **Swin-Base** | **~456M** | **-** | **-** | **-** | **-** |
-
-**Configs**:
-- Swin-B no MoE → `ablations/ablation_no_moe.py`
-- Swin-T + MoE → `multimodal_floodnet_sar_boost_swin_moe_config.py`
-- Ours → `multimodal_floodnet_sar_boost_swinbase_moe_config.py`
-- U-Net, DeepLabV3+, SegFormer → use standard mmseg configs with multi-modal wrapper
-
-**Discussion Points**:
-- MoE brings significant gains by dedicating expert capacity to each modality
-- Swin-B + MoE > Swin-T + MoE: larger backbone provides richer base features for expert specialization
-- Swin-B + MoE > Swin-B alone: MoE adds modality-adaptive capacity beyond parameter scaling
-
----
-
-### Table 2: Component Ablation Study
-
-**Purpose**: Isolate the contribution of each proposed component.
-
-**Evaluation**: All variants use Swin-Base backbone, test on SAR / RGB / GF separately.
-
-| Row | Configuration | Change | SAR | RGB | GF | Avg |
-|-----|--------------|--------|-----|-----|-----|-----|
+| Row | 配置 | 变更 | SAR | RGB | GF | Avg |
+|-----|------|------|-----|-----|-----|-----|
 | (a) | **Full Model** | — | - | - | - | - |
-| (b) | w/o MoE | Standard FFN, no experts | - | - | - | - |
-| (c) | w/o Modal Bias | MoE gating without modal-specific bias | - | - | - | - |
-| (d) | w/o Shared Experts | All experts are routed, no shared | - | - | - | - |
-| (e) | w/o Diversity Loss | No expert specialization regularization | - | - | - | - |
-| (f) | w/o SAR Boost | Uniform random sampling | - | - | - | - |
-| (g) | Shared Decoder | One UPerHead for all modalities | - | - | - | - |
+| (b) | w/o MoE | 标准 FFN, 无专家路由 | - | - | - | - |
+| (c) | w/o ModalSpecificStem | 统一卷积+零填充 替代 模态独立卷积 | - | - | - | - |
+| (d) | w/o Modal Bias | MoE gating 无模态偏置 | - | - | - | - |
+| (e) | w/o Shared Experts | 所有专家均为路由专家，无共享 | - | - | - | - |
+| (f) | w/o Separate Decoder | 一个 UPerHead 共享所有模态 | - | - | - | - |
 
-**Configs**:
+**Config Files**:
 - (a) `multimodal_floodnet_sar_boost_swinbase_moe_config.py`
 - (b) `ablations/ablation_no_moe.py`
-- (c) `ablations/ablation_no_modal_bias.py`
-- (d) `ablations/ablation_no_shared_experts.py`
-- (e) `ablations/ablation_no_diversity_loss.py`
-- (f) `ablations/ablation_uniform_sampling.py`
-- (g) `ablations/ablation_shared_decoder.py`
+- (c) `ablations/ablation_no_modal_specific_stem.py`
+- (d) `ablations/ablation_no_modal_bias.py`
+- (e) `ablations/ablation_no_shared_experts.py`
+- (f) `ablations/ablation_shared_decoder.py`
 
-**Expected Findings & Discussion**:
+**运行**:
+```bash
+bash scripts/run_all_experiments.sh table2
+```
 
-**(b) w/o MoE**: Largest drop expected. Standard FFN cannot adapt to modality-specific feature distributions. All tokens share the same FFN weights regardless of whether they come from SAR backscatter or RGB reflectance.
+**讨论要点**:
 
-**(c) w/o Modal Bias**: Moderate drop, especially on SAR. Without modal bias, the gating network treats all modalities identically during routing. The modal bias allows the model to learn that certain experts specialize in SAR-specific patterns (e.g., speckle noise, backscatter intensity) vs RGB-specific patterns (e.g., color, texture).
+**(b) w/o MoE**: 预期最大下降。标准 FFN 无法适配不同模态的特征分布差异。所有 token 共享相同权重，无论来自 SAR 后向散射还是 RGB 反射率。
 
-**(d) w/o Shared Experts**: Shared experts capture modality-invariant features (e.g., spatial structure of water bodies). Removing them forces each routed expert to redundantly learn common features, reducing capacity for specialization.
+**(c) w/o ModalSpecificStem**: 统一 patch embedding 将所有模态零填充到 max_channels(8) 再卷积，丢失了模态特异性的早期特征提取。SAR 的 8 通道数据被原样保留，但 RGB(3ch) 和 GF(5ch) 被大量零填充，引入噪声。
 
-**(e) w/o Diversity Loss**: Without diversity regularization, experts may collapse to similar representations (expert collapse problem). The diversity loss encourages each expert to learn distinct feature transformations, verified by higher pairwise cosine distance between expert outputs.
+**(d) w/o Modal Bias**: 去除模态路由偏置后，gating 网络对所有模态一视同仁。模态偏置允许模型学习到某些专家专门处理 SAR 的散斑噪声和后向散射强度 vs RGB 的颜色纹理。
 
-**(f) w/o SAR Boost**: SAR is the minority modality with fewer training samples. Without oversampling, the model underperforms on SAR due to insufficient exposure. This demonstrates the importance of modality-aware sampling in imbalanced multi-modal settings.
+**(e) w/o Shared Experts**: 共享专家捕获模态不变特征（如水体空间结构、边界形态）。移除后，路由专家需冗余学习通用特征，降低专门化能力。
 
-**(g) Shared Decoder**: A single decoder must compromise between modality-specific feature distributions. Separate decoders allow each modality to have tailored upsampling and classification boundaries.
-
----
-
-### Table 3: MoE Hyperparameter Study
-
-**Purpose**: Study the effect of expert count and top-k routing.
-
-| num_experts | top_k | Active Ratio | Params | SAR | RGB | GF | Avg |
-|-------------|-------|-------------|--------|-----|-----|-----|-----|
-| 4 | 2 | 50% | ~280M | - | - | - | - |
-| **8** | **3** | **37.5%** | **~456M** | **-** | **-** | **-** | **-** |
-| 16 | 4 | 25% | ~850M | - | - | - | - |
-| 8 | 1 | 12.5% | ~456M | - | - | - | - |
-
-**Configs**:
-- `ablations/ablation_experts_4.py`
-- Full model (8 experts, k=3)
-- `ablations/ablation_experts_16.py`
-- `ablations/ablation_topk_1.py`
-
-**Discussion Points**:
-- **4 experts**: Insufficient capacity for 3 modalities — experts must share across modalities
-- **8 experts (ours)**: Sweet spot — roughly 2-3 experts per modality with cross-modal sharing
-- **16 experts**: Marginal gains or slight degradation due to sparse gradient issues and insufficient data to train all experts
-- **top_k=1**: Too sparse — each token only uses 1 expert, limiting multi-expert ensemble benefit
-- **top_k=3**: Allows tokens to benefit from multiple specialized experts simultaneously
+**(f) w/o Separate Decoder**: 单一解码器须在不同模态特征分布间妥协。独立解码器允许每个模态有定制化的上采样和分类边界。
 
 ---
 
-### Table 4: Single-Modal vs Multi-Modal Training
+### Table 3: MoE Hyperparameter Study (MoE超参数研究)
 
-**Purpose**: Demonstrate that multi-modal co-training with MoE improves each individual modality through cross-modal knowledge transfer.
+**目的**: 研究专家数量和 top-k 路由对性能的影响。
 
-| Training Data | Test Modality | mIoU |
-|--------------|---------------|------|
+**评估**: 每个变体训练后，分别在 SAR / RGB / GF 三个模态上独立测试 mIoU。
+
+| num_experts | top_k | SAR | RGB | GF | Avg |
+|-------------|-------|-----|-----|-----|-----|
+| 6 | 1 | - | - | - | - |
+| 6 | 2 | - | - | - | - |
+| 6 | 3 | - | - | - | - |
+| 8 | 1 | - | - | - | - |
+| 8 | 2 | - | - | - | - |
+| **8** | **3** | **-** | **-** | **-** | **-** |
+
+**Config Files**:
+- `ablations/ablation_e6_k1.py`
+- `ablations/ablation_e6_k2.py`
+- `ablations/ablation_e6_k3.py`
+- `ablations/ablation_e8_k1.py`
+- `ablations/ablation_e8_k2.py`
+- Full Model (E=8, K=3)
+
+**运行**:
+```bash
+bash scripts/run_all_experiments.sh table3
+```
+
+**讨论要点**:
+- **top_k=1**: 过于稀疏，每个 token 仅使用 1 个专家，限制了多专家集成效果
+- **top_k=2**: 中等稀疏度，基本满足 3 模态路由需求
+- **top_k=3 (ours)**: 允许 token 同时受益于多个专门化专家
+- **6 experts**: 对 3 种模态来说容量偏小，平均每模态仅 2 个专家
+- **8 experts (ours)**: 最佳平衡点，每模态约 2-3 个专家并允许跨模态共享
+
+---
+
+### Table 4: Single-Modal vs Multi-Modal Training (单模态 vs 多模态)
+
+**目的**: 证明多模态联合训练通过跨模态知识迁移提升了每个模态的性能。
+
+**评估**: 单模态训练只测试本模态；多模态训练测试所有三个模态。
+
+| 训练数据 | 测试模态 | mIoU |
+|----------|----------|------|
 | SAR-only | SAR | - |
 | RGB-only | RGB | - |
 | GF-only | GF | - |
@@ -131,123 +117,72 @@
 | Multi-modal (Ours) | RGB | - |
 | Multi-modal (Ours) | GF | - |
 
-**Configs**:
+**Config Files**:
 - SAR-only → `multimodal_floodnet_sar_only_swinbase_moe_config.py`
 - RGB-only → `ablations/ablation_rgb_only.py`
 - GF-only → `ablations/ablation_gf_only.py`
-- Multi-modal → Full model, tested per-modality
+- Multi-modal → Full Model
 
-**Discussion Points**:
-- Multi-modal training improves **every** modality compared to single-modal training
-- SAR benefits most: limited SAR data is augmented by knowledge transfer from RGB/GF
-- The MoE architecture prevents negative transfer: modality-specific experts avoid interference between different sensor types
-- Shared experts capture universal flood patterns (water body geometry, boundary structures) that transfer across all modalities
-
----
-
-## 3. Additional Analysis (Figures)
-
-### Figure A: Expert Routing Visualization
-- Visualize the gating weights for each modality
-- Show that different experts are preferentially activated for SAR vs RGB vs GF
-- Plot: Heatmap of expert activation probability per modality (averaged over test set)
-
-### Figure B: Training Convergence Curves
-- Plot mIoU vs epoch for Full Model vs key ablations
-- Show that MoE converges faster and to a higher plateau
-- Compare SAR-specific convergence with/without SAR Boost
-
-### Figure C: Qualitative Segmentation Results
-- Side-by-side comparison on challenging flood scenes:
-  - SAR images with complex backscatter patterns
-  - RGB images with cloud shadows / urban areas
-  - GaoFen images with mixed land cover
-- Show predictions from: Full Model vs No MoE vs Single-Modal
-
-### Figure D: Expert Diversity Analysis
-- t-SNE visualization of expert output features
-- With diversity loss: experts form distinct clusters
-- Without diversity loss: experts collapse to similar representations
-
----
-
-## 4. Paper Section Outline
-
-### Results Section (Section 4)
-
-**4.1 Experimental Setup**
-- Dataset: FloodNet multi-modal (SAR/RGB/GaoFen), binary flood segmentation
-- Metrics: mIoU, per-class IoU (flood/non-flood)
-- Implementation: MMSegmentation, AdamW, lr=6e-5, 100 epochs, batch_size=16
-
-**4.2 Comparison with State-of-the-Art** (Table 1)
-- Our method achieves best results across all modalities
-- Key insight: MoE scales model capacity without proportional compute increase at inference
-
-**4.3 Ablation Studies** (Table 2)
-- Each component contributes meaningfully
-- MoE and Modal Bias are the two most critical components
-- SAR Boost is essential for handling modality imbalance
-
-**4.4 MoE Configuration Analysis** (Table 3)
-- 8 experts with top_k=3 provides optimal balance
-- Justification for design choices
-
-**4.5 Cross-Modal Transfer Learning** (Table 4)
-- Multi-modal MoE enables positive cross-modal transfer
-- No negative transfer thanks to expert routing
-
-### Discussion Section (Section 5)
-
-**5.1 Why MoE for Multi-Modal Segmentation?**
-- Different modalities have fundamentally different feature distributions
-- MoE naturally partitions the feature space via expert routing
-- Modal bias makes this partitioning explicit and learnable
-
-**5.2 The Role of Shared Experts**
-- Bridge between modality-specific and universal features
-- Capture flood-invariant patterns (shape, boundary, spatial context)
-- Prevent complete expert isolation across modalities
-
-**5.3 Handling Modality Imbalance**
-- SAR data is typically scarcer than optical data
-- Fixed-ratio sampling (SAR Boost) ensures sufficient exposure
-- Combined with MoE, prevents dominant modality from monopolizing experts
-
-**5.4 Scalability and Efficiency**
-- ~456M params but only top_k=3 experts active per token
-- Actual FLOPs comparable to ~200M dense model
-- Linear scaling of experts without quadratic compute growth
-
-**5.5 Limitations and Future Work**
-- Current approach trains modalities in mixed batches (not fused at pixel level)
-- Future: explore pixel-level multi-modal fusion with MoE
-- Extend to more modalities (thermal, LiDAR)
-- Investigate dynamic expert allocation based on image difficulty
-
----
-
-## 5. Running the Experiments
-
+**运行**:
 ```bash
-# Run all experiments sequentially
-bash scripts/run_all_experiments.sh
-
-# Run specific groups
-bash scripts/run_all_experiments.sh --group main       # Full model only
-bash scripts/run_all_experiments.sh --group sota       # SOTA baselines
-bash scripts/run_all_experiments.sh --group ablation   # Component ablation
-bash scripts/run_all_experiments.sh --group moe_hyper  # MoE hyperparameters
-bash scripts/run_all_experiments.sh --group single     # Single-modal baselines
-
-# Multi-GPU (set GPU_IDS)
-GPU_IDS=0,1,2,3 bash scripts/run_all_experiments.sh
+bash scripts/run_all_experiments.sh table4
 ```
 
-**Total Experiments**: 14 training runs
-- 1 full model
-- 2 SOTA baselines (Swin-T MoE, Swin-B no MoE)
-- 6 component ablations
-- 3 MoE hyperparameter variants
-- 3 single-modal baselines
-(Note: some experiments serve double duty across tables)
+**讨论要点**:
+- 多模态训练预期在**每个**模态上都优于单模态训练
+- SAR 受益最大：有限的 SAR 数据通过 RGB/GF 知识迁移得到增强
+- MoE 架构防止负迁移：模态专用专家避免了不同传感器类型间的干扰
+- 共享专家捕获通用洪水模式（水体几何、边界结构），在所有模态间迁移
+
+---
+
+## 3. Running Experiments
+
+```bash
+# 分表运行（推荐）
+bash scripts/run_all_experiments.sh table2      # 组件消融 (6 实验 × 3 模态测试)
+bash scripts/run_all_experiments.sh table3      # MoE 超参数 (6 实验 × 3 模态测试)
+bash scripts/run_all_experiments.sh table4      # 单/多模态 (4 实验)
+
+# 全部运行
+bash scripts/run_all_experiments.sh all
+
+# 指定 GPU
+GPU_IDS=0,1 bash scripts/run_all_experiments.sh table2
+```
+
+**结果目录结构**:
+```
+work_dirs/paper_experiments/
+├── results_summary.txt          # 汇总日志
+├── table2/
+│   ├── full_model/
+│   │   ├── best_mIoU_*.pth
+│   │   ├── test_sar/test_log.txt
+│   │   ├── test_rgb/test_log.txt
+│   │   └── test_GF/test_log.txt
+│   ├── no_moe/
+│   ├── no_modal_specific_stem/
+│   ├── no_modal_bias/
+│   ├── no_shared_experts/
+│   └── shared_decoder/
+├── table3/
+│   ├── e6_k1/
+│   ├── e6_k2/
+│   ├── e6_k3/
+│   ├── e8_k1/
+│   └── e8_k2/
+└── table4/
+    ├── sar_only/
+    │   └── test_sar/test_log.txt
+    ├── rgb_only/
+    │   └── test_rgb/test_log.txt
+    ├── gf_only/
+    │   └── test_GF/test_log.txt
+    └── (multi_modal reuses table2/full_model)
+```
+
+**实验总量**: 15 个训练 + 48 次测试
+- Table 2: 6 训练 × 3 模态测试 = 6 + 18
+- Table 3: 5 训练 × 3 模态测试 + 1 复用 = 5 + 18
+- Table 4: 3 训练 × 1 模态测试 + 1 复用 × 3 测试 = 3 + 6
