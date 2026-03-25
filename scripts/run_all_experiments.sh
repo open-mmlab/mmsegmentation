@@ -54,7 +54,7 @@ run_train() {
     CUDA_VISIBLE_DEVICES=${GPU_IDS} python tools/train.py \
         ${config} \
         --work-dir ${work_dir} \
-        --seed ${SEED}
+        --cfg-options randomness.seed=${SEED}
 
     echo "[TRAIN DONE] ${desc}"
     echo ""
