@@ -4,11 +4,20 @@
 # Multi-Modal Flood Segmentation with Swin-Base + MoE
 # ============================================================================
 #
+# NOTE: Full Model (Swin-B + MoE, E=8 K=3) is already trained and tested.
+#       This script only runs ablation/hyperparameter/single-modal experiments.
+#
 # Usage:
 #   bash scripts/run_all_experiments.sh table2      # Component Ablation
 #   bash scripts/run_all_experiments.sh table3      # MoE Hyperparameter Study
 #   bash scripts/run_all_experiments.sh table4      # Single-Modal vs Multi-Modal
 #   bash scripts/run_all_experiments.sh all         # Run all tables
+#
+# Environment Variables:
+#   GPU_IDS   GPU device IDs (default: 0)
+#
+# Example:
+#   GPU_IDS=0 bash scripts/run_all_experiments.sh table2
 #
 # Each experiment uses --seed 42 for reproducibility.
 # After training, each experiment runs per-modality testing automatically.
@@ -51,106 +60,109 @@ run_train() {
     echo ""
 }
 
-run_test_modal() {
-    # Test a trained model on a specific modality
-    local config=$1
-    local work_dir=$2
-    local modal=$3
-    local desc=$4
-
-    local ckpt="${work_dir}/best_mIoU_*.pth"
-    # Find best checkpoint
-    local best_ckpt=$(ls ${ckpt} 2>/dev/null | head -1)
+find_best_ckpt() {
+    local work_dir=$1
+    local best_ckpt=$(ls ${work_dir}/best_mIoU_*.pth 2>/dev/null | head -1)
     if [ -z "$best_ckpt" ]; then
-        # Fallback to latest checkpoint
         best_ckpt=$(ls ${work_dir}/epoch_*.pth 2>/dev/null | sort -V | tail -1)
     fi
-    if [ -z "$best_ckpt" ]; then
-        echo "[ERROR] No checkpoint found in ${work_dir}"
-        return 1
-    fi
+    echo "$best_ckpt"
+}
+
+run_test_modal() {
+    local config=$1
+    local checkpoint=$2
+    local work_dir=$3
+    local modal=$4
+    local desc=$5
 
     local test_work_dir="${work_dir}/test_${modal}"
     mkdir -p "${test_work_dir}"
 
     echo "------------------------------------------------------------"
     echo "[TEST] ${desc} | Modality: ${modal}"
-    echo "[CKPT] ${best_ckpt}"
+    echo "[CKPT] ${checkpoint}"
     echo "------------------------------------------------------------"
 
     CUDA_VISIBLE_DEVICES=${GPU_IDS} python tools/test.py \
         ${config} \
-        ${best_ckpt} \
+        ${checkpoint} \
         --work-dir ${test_work_dir} \
         --cfg-options \
             test_dataloader.dataset.filter_modality="${modal}" \
         2>&1 | tee "${test_work_dir}/test_log.txt"
 
-    # Log result
     echo "[${desc}] modal=${modal} -> see ${test_work_dir}/test_log.txt" >> "${RESULTS_LOG}"
     echo ""
 }
 
 run_test_all_modals() {
-    # Test on SAR, RGB, GF separately
     local config=$1
-    local work_dir=$2
-    local desc=$3
+    local checkpoint=$2
+    local work_dir=$3
+    local desc=$4
 
     echo "============================================================"
     echo "[TEST ALL MODALS] ${desc}"
     echo "============================================================"
 
-    run_test_modal "${config}" "${work_dir}" "sar" "${desc}"
-    run_test_modal "${config}" "${work_dir}" "rgb" "${desc}"
-    run_test_modal "${config}" "${work_dir}" "GF"  "${desc}"
+    run_test_modal "${config}" "${checkpoint}" "${work_dir}" "sar" "${desc}"
+    run_test_modal "${config}" "${checkpoint}" "${work_dir}" "rgb" "${desc}"
+    run_test_modal "${config}" "${checkpoint}" "${work_dir}" "GF"  "${desc}"
 }
 
 train_and_test_all_modals() {
-    # Train + test on all 3 modalities
     local config=$1
     local work_dir=$2
     local desc=$3
 
     run_train "${config}" "${work_dir}" "${desc}"
-    run_test_all_modals "${config}" "${work_dir}" "${desc}"
+
+    local ckpt=$(find_best_ckpt "${work_dir}")
+    if [ -z "$ckpt" ]; then
+        echo "[ERROR] No checkpoint found in ${work_dir} after training"
+        return 1
+    fi
+
+    run_test_all_modals "${config}" "${ckpt}" "${work_dir}" "${desc}"
 }
 
 train_and_test_single_modal() {
-    # Train on single modality + test on the same modality
     local config=$1
     local work_dir=$2
     local modal=$3
     local desc=$4
 
     run_train "${config}" "${work_dir}" "${desc}"
-    run_test_modal "${config}" "${work_dir}" "${modal}" "${desc}"
+
+    local ckpt=$(find_best_ckpt "${work_dir}")
+    if [ -z "$ckpt" ]; then
+        echo "[ERROR] No checkpoint found in ${work_dir} after training"
+        return 1
+    fi
+
+    run_test_modal "${config}" "${ckpt}" "${work_dir}" "${modal}" "${desc}"
 }
 
 # ============================================================================
 # TABLE 2: Component Ablation Study
 # ============================================================================
-# Full Model vs:
-#   (b) w/o MoE
-#   (c) w/o ModalSpecificStem
-#   (d) w/o Modal Bias
-#   (e) w/o Shared Experts
-#   (f) w/o Shared Decoder (i.e., use shared decoder)
+# Full Model (a) is already trained and tested — NOT included here.
+# Only the ablation variants (b)-(f) are trained and tested.
 #
-# Each variant: train → test SAR / test RGB / test GF
+# (b) w/o MoE              — train + test SAR/RGB/GF
+# (c) w/o ModalSpecificStem— train + test SAR/RGB/GF
+# (d) w/o Modal Bias       — train + test SAR/RGB/GF
+# (e) w/o Shared Experts   — train + test SAR/RGB/GF
+# (f) w/o Separate Decoder — train + test SAR/RGB/GF
 # ============================================================================
 if [[ "$GROUP" == "all" || "$GROUP" == "table2" ]]; then
     echo ""
     echo "################################################################"
     echo "#  TABLE 2: Component Ablation Study                          #"
+    echo "#  (Full Model result is already available)                    #"
     echo "################################################################"
     echo ""
-
-    # (a) Full Model (baseline for comparison)
-    train_and_test_all_modals \
-        "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
-        "${WORK_ROOT}/table2/full_model" \
-        "Table2(a) Full Model"
 
     # (b) w/o MoE
     train_and_test_all_modals \
@@ -191,14 +203,15 @@ fi
 # TABLE 3: MoE Hyperparameter Study
 # ============================================================================
 # Grid: num_experts={6, 8} x top_k={1, 2, 3}
-# Note: (8, 3) = Full Model, shared with Table 2(a)
+# (8, 3) = Full Model — already done, NOT included here.
 #
-# Each variant: train → test SAR / test RGB / test GF
+# Each variant tested on SAR / RGB / GF separately.
 # ============================================================================
 if [[ "$GROUP" == "all" || "$GROUP" == "table3" ]]; then
     echo ""
     echo "################################################################"
     echo "#  TABLE 3: MoE Hyperparameter Study                          #"
+    echo "#  (E=8 K=3 Full Model result is already available)           #"
     echo "################################################################"
     echo ""
 
@@ -232,19 +245,8 @@ if [[ "$GROUP" == "all" || "$GROUP" == "table3" ]]; then
         "${WORK_ROOT}/table3/e8_k2" \
         "Table3 E=8 K=2"
 
-    # E=8, K=3 = Full Model (reuse Table 2 result if available, else train)
-    if [ -d "${WORK_ROOT}/table2/full_model" ] && ls ${WORK_ROOT}/table2/full_model/best_mIoU_*.pth &>/dev/null 2>&1; then
-        echo "[SKIP TRAIN] E=8 K=3 = Full Model (reusing Table 2 checkpoint)"
-        run_test_all_modals \
-            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
-            "${WORK_ROOT}/table2/full_model" \
-            "Table3 E=8 K=3 (Full Model)"
-    else
-        train_and_test_all_modals \
-            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
-            "${WORK_ROOT}/table3/e8_k3" \
-            "Table3 E=8 K=3 (Full Model)"
-    fi
+    # E=8, K=3 = Full Model — SKIP (already trained and tested)
+    echo "[SKIP] E=8 K=3 = Full Model (already trained and tested)"
 
     echo ""
     echo "[TABLE 3 COMPLETE] Results in ${WORK_ROOT}/table3/"
@@ -254,15 +256,16 @@ fi
 # ============================================================================
 # TABLE 4: Single-Modal vs Multi-Modal Training
 # ============================================================================
-# SAR-only  → test SAR
-# RGB-only  → test RGB
-# GF-only   → test GF
-# Multi-modal (Full Model) → test SAR / RGB / GF (reuse Table 2)
+# SAR-only  → train + test SAR
+# RGB-only  → train + test RGB
+# GF-only   → train + test GF
+# Multi-modal (Full Model) → SKIP (already trained and tested)
 # ============================================================================
 if [[ "$GROUP" == "all" || "$GROUP" == "table4" ]]; then
     echo ""
     echo "################################################################"
     echo "#  TABLE 4: Single-Modal vs Multi-Modal                       #"
+    echo "#  (Multi-modal Full Model result is already available)        #"
     echo "################################################################"
     echo ""
 
@@ -287,19 +290,8 @@ if [[ "$GROUP" == "all" || "$GROUP" == "table4" ]]; then
         "GF" \
         "Table4 GF-only"
 
-    # Multi-modal (Full Model) → test all 3
-    if [ -d "${WORK_ROOT}/table2/full_model" ] && ls ${WORK_ROOT}/table2/full_model/best_mIoU_*.pth &>/dev/null 2>&1; then
-        echo "[SKIP TRAIN] Multi-modal = Full Model (reusing Table 2 checkpoint)"
-        run_test_all_modals \
-            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
-            "${WORK_ROOT}/table2/full_model" \
-            "Table4 Multi-modal (Full Model)"
-    else
-        train_and_test_all_modals \
-            "${CONFIG_DIR}/multimodal_floodnet_sar_boost_swinbase_moe_config.py" \
-            "${WORK_ROOT}/table4/multi_modal" \
-            "Table4 Multi-modal (Full Model)"
-    fi
+    # Multi-modal = Full Model — SKIP
+    echo "[SKIP] Multi-modal = Full Model (already trained and tested)"
 
     echo ""
     echo "[TABLE 4 COMPLETE] Results in ${WORK_ROOT}/table4/"
@@ -326,4 +318,4 @@ if [[ "$GROUP" == "all" || "$GROUP" == "table4" ]]; then
     echo "  Table 4 (Single-Modal): ${WORK_ROOT}/table4/"
 fi
 echo ""
-echo "Per-modality test logs are in: <work_dir>/test_{sar,rgb,GF}/test_log.txt"
+echo "Per-modality test logs: <work_dir>/test_{sar,rgb,GF}/test_log.txt"
