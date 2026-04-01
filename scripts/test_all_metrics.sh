@@ -214,7 +214,7 @@ run_table4() {
     echo "############################################################"
 
     # SAR-only: test on SAR
-    local sar_config="${ABLATION_DIR}/ablation_sar_only.py"
+    local sar_config="${CONFIG_DIR}/multimodal_floodnet_sar_only_swinbase_moe_config.py"
     local sar_dir="${WORK_ROOT}/table4/sar_only"
     local sar_ckpt=$(find_best_ckpt "${sar_dir}")
     if [ -n "$sar_ckpt" ]; then

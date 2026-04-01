@@ -6,6 +6,11 @@ import os.path as osp
 from mmengine.config import Config, DictAction
 from mmengine.runner import Runner
 
+from mmseg.utils import register_all_modules
+
+# register all modules in mmseg into the registries
+register_all_modules()
+
 
 # TODO: support fuse_conv_bn, visualization, and format_only
 def parse_args():
