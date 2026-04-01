@@ -797,9 +797,13 @@ class MultiModalSwinMoE(BaseModule):
                  MoE_Block_inds=None,
                  use_expert_diversity_loss=False,
                  use_modal_specific_stem=True,
+                 frozen_stages=-1,
+                 freeze_patch_embed=False,
                  pretrained=None,
                  init_cfg=None):
         super().__init__(init_cfg)
+        self.frozen_stages = frozen_stages
+        self.freeze_patch_embed = freeze_patch_embed
 
         self.pretrain_img_size = pretrain_img_size
         self.num_layers = len(depths)
@@ -913,7 +917,45 @@ class MultiModalSwinMoE(BaseModule):
         self.num_features = num_features
         self.pretrained = pretrained
         self._init_weights()
+        self._freeze_stages()
         self._print_architecture_info()
+
+    def _freeze_stages(self):
+        """Freeze stages to stop gradient and set eval mode.
+
+        frozen_stages (int): Stages to freeze. -1 means no freezing.
+            0 freezes stage 0, 1 freezes stages 0-1, etc.
+        freeze_patch_embed (bool): If True, also freeze patch_embed (stem).
+            Default False (stem remains trainable for domain adaptation).
+        """
+        if self.freeze_patch_embed:
+            self.patch_embed.eval()
+            for param in self.patch_embed.parameters():
+                param.requires_grad = False
+
+        for i in range(0, self.frozen_stages + 1):
+            if i >= self.num_layers:
+                break
+            # Freeze stage blocks
+            stage = self.stages[i]
+            stage.eval()
+            for param in stage.parameters():
+                param.requires_grad = False
+
+            # Freeze corresponding output norm layer
+            if i in self.out_indices:
+                norm_layer = getattr(self, f'norm{i}')
+                norm_layer.eval()
+                for param in norm_layer.parameters():
+                    param.requires_grad = False
+
+        if self.frozen_stages >= 0:
+            frozen_params = sum(
+                1 for p in self.parameters() if not p.requires_grad)
+            total_params = sum(1 for _ in self.parameters())
+            print(f'\n[Freeze] frozen_stages={self.frozen_stages}, '
+                  f'freeze_patch_embed={self.freeze_patch_embed}')
+            print(f'[Freeze] {frozen_params}/{total_params} params frozen\n')
 
     def _init_weights(self):
         for m in self.modules():
@@ -971,6 +1013,11 @@ class MultiModalSwinMoE(BaseModule):
         print(f"Output features: "
               f"{[self.num_features[i] for i in self.out_indices]}")
         print(f"{'=' * 80}\n")
+
+    def train(self, mode=True):
+        """Override train to keep frozen stages in eval mode."""
+        super().train(mode)
+        self._freeze_stages()
 
     def forward(self, imgs, modal_types=None, **kwargs):
         """
