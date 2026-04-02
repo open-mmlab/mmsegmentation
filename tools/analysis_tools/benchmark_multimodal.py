@@ -80,7 +80,7 @@ def make_dummy_input(modal, shape, device='cuda'):
     """Create a dummy input mimicking the data preprocessor output."""
     h, w = shape
     channels = MODAL_CHANNELS[modal]
-    img = torch.randn(1, channels, h, w, device=device)
+    img = torch.randn(channels, h, w, device=device)
 
     data_sample = SegDataSample()
     data_sample.set_metainfo(dict(
@@ -163,12 +163,25 @@ def measure_flops_mmengine(model, modal, shape):
         outputs = get_model_complexity_info(
             model,
             input_shape=None,
-            inputs=[img],
-            data_samples=[data_sample],
+            inputs=([img], [data_sample]),
             show_table=False,
             show_arch=False,
         )
         return outputs['flops'], outputs['params']
+    except TypeError:
+        # Older mmengine: try with kwargs
+        try:
+            outputs = get_model_complexity_info(
+                model,
+                input_shape=None,
+                inputs={"inputs": [img], "data_samples": [data_sample]},
+                show_table=False,
+                show_arch=False,
+            )
+            return outputs['flops'], outputs['params']
+        except Exception as e:
+            print(f"  [mmengine WARN] {e}")
+            return None, None
     except Exception as e:
         print(f"  [mmengine WARN] {e}")
         return None, None
