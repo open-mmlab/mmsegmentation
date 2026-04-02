@@ -19,9 +19,14 @@ Usage:
 _base_ = ['./finetune_stem_decoder.py']
 
 # ==================== Override sampler to DefaultSampler ====================
-# FixedRatioModalSampler requires all 3 modalities; single-modal needs default
+# _delete_=True forces full replacement instead of recursive merge,
+# otherwise FixedRatioModalSampler's modal_ratios etc. leak through
 train_dataloader = dict(
+    batch_size=16,
+    num_workers=8,
+    persistent_workers=True,
     sampler=dict(
+        _delete_=True,
         type='DefaultSampler',
         shuffle=True,
     ),
