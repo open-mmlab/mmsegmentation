@@ -181,7 +181,7 @@ def collect_routing_stats(model, cfg, hook_mgr, data_root, num_samples):
         h, w = 256, 256
 
         for i in range(num_samples):
-            img = torch.randn(1, ch, h, w, device=device)
+            img = torch.randn(ch, h, w, device=device)
             data_sample = SegDataSample()
             data_sample.set_metainfo(dict(
                 img_shape=(h, w), ori_shape=(h, w), pad_shape=(h, w),
@@ -253,7 +253,7 @@ def collect_spatial_gates(model, hook_mgr, modal='sar', shape=(256, 256)):
                     make_spatial_hook(stage_idx, block_idx))
                 hooks.append(h_handle)
 
-    img = torch.randn(1, ch, h, w, device=device)
+    img = torch.randn(ch, h, w, device=device)
     data_sample = SegDataSample()
     data_sample.set_metainfo(dict(
         img_shape=(h, w), ori_shape=(h, w), pad_shape=(h, w),
