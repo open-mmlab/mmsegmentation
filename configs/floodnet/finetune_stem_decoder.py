@@ -61,7 +61,7 @@ param_scheduler = [
         start_factor=1e-4,
         by_epoch=True,
         begin=0,
-        end=2),  # Short warmup
+        end=10),  # Short warmup
     dict(
         type='PolyLR',
         eta_min=0.0,
@@ -73,15 +73,15 @@ param_scheduler = [
 
 train_cfg = dict(
     type='EpochBasedTrainLoop',
-    max_epochs=30,  # Much shorter than full training (100 epochs)
-    val_interval=5)
+    max_epochs=100,  # Much shorter than full training (100 epochs)
+    val_interval=10)
 
 # ==================== Checkpoint hook ====================
 default_hooks = dict(
     checkpoint=dict(
         type='CheckpointHook',
         by_epoch=True,
-        interval=5,
-        max_keep_ckpts=2,
+        interval=10,
+        max_keep_ckpts=1,
         save_best='mIoU'),
 )

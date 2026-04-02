@@ -112,3 +112,26 @@ python tools/test_full_metrics.py \
 
 
  python tools/train.py configs/floodnet/continue_train_150ep.py --work-dir work_dirs/floodnet/SwinmoeB/655 --resume --cfg-options load_from="work_dirs/floodnet/SwinmoeB/655/best_mIoU_epoch_100.pth"
+
+ python tools/analysis_tools/visualize_expert_routing.py \
+    configs/floodnet/multimodal_floodnet_sar_boost_swinbase_moe_config.py \
+    work_dirs/floodnet/SwinmoeB/655/best_mIoU_epoch_100.pth \
+    --output-dir work_dirs/figures/expert_routing \
+    --num-samples 50
+
+python tools/train.py configs/floodnet/finetune_single_modal.py \
+    --work-dir work_dirs/generalization/LY-train-station/ \
+    --cfg-options \
+        train_dataloader.dataset.data_root="data/LY-train-station/" \
+        val_dataloader.dataset.data_root="data/LY-train-station/" \
+        test_dataloader.dataset.data_root="data/LY-train-station/"
+
+python tools/test.py \
+    configs/floodnet/finetune_single_modal.py \
+    work_dirs/generalization/LY-train-station/best_mIoU_epoch_*.pth \
+    --work-dir work_dirs/generalization/LY-train-station/test_results \
+    --cfg-options \
+        test_dataloader.dataset.data_root="data/LY-train-station/" \
+        "test_evaluator.iou_metrics=['mIoU','mDice','mFscore']" \
+    --show-dir work_dirs/generalization/LY-train-station/test_results/vis \
+    --out work_dirs/generalization/LY-train-station/test_results/predictions
