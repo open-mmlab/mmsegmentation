@@ -15,6 +15,7 @@ import time
 
 import numpy as np
 import torch
+import torch.nn as nn
 from mmengine import Config
 from mmengine.model.utils import revert_sync_batchnorm
 from mmengine.registry import init_default_scope
@@ -24,17 +25,10 @@ from mmseg.registry import MODELS
 from mmseg.structures import SegDataSample
 
 try:
-    from fvcore.nn import FlopCountAnalysis, parameter_count
+    from fvcore.nn import FlopCountAnalysis
     HAS_FVCORE = True
 except ImportError:
     HAS_FVCORE = False
-
-try:
-    from mmengine.analysis import get_model_complexity_info
-    from mmengine.analysis.print_helper import _format_size
-    HAS_MMENGINE_ANALYSIS = True
-except ImportError:
-    HAS_MMENGINE_ANALYSIS = False
 
 
 MODAL_CHANNELS = {
@@ -126,65 +120,124 @@ def measure_fps(model, modal, shape, num_iters=200, num_warmup=10):
     return fps
 
 
-def measure_flops_fvcore(model, modal, shape):
-    """Measure FLOPs using fvcore (more reliable for custom models)."""
+class BackboneDecoderWrapper(nn.Module):
+    """Wrapper that runs backbone + decode_head forward only.
+
+    Avoids predict/inference path so FLOPs tools (fvcore/thop)
+    don't encounter SegDataSample or slide_inference logic.
+    """
+
+    def __init__(self, model, modal):
+        super().__init__()
+        self.backbone = model.backbone
+        self.modal = modal
+        # Get the correct decode head
+        if hasattr(model, 'decode_heads') and modal in model.decode_heads:
+            self.decode_head = model.decode_heads[modal]
+        elif hasattr(model, '_shared_decode_head'):
+            self.decode_head = model._shared_decode_head
+        else:
+            self.decode_head = None
+
+    def forward(self, x):
+        """x: (1, C, H, W) tensor for a single modality."""
+        imgs_list = [x[0]]  # list of (C, H, W)
+        modal_types = [self.modal]
+        features, _, _ = self.backbone(imgs_list, modal_types)
+        # features is a tuple of multi-scale tensors
+        if self.decode_head is not None:
+            out = self.decode_head(features)
+        return out
+
+
+def measure_flops_manual(model, modal, shape):
+    """Measure FLOPs by manually counting ops in backbone + decoder.
+
+    Uses a forward hook approach to count multiply-accumulate operations.
+    """
     device = next(model.parameters()).device
-    img, data_sample = make_dummy_input(modal, shape, device)
+    h, w = shape
+    channels = MODAL_CHANNELS[modal]
+    img = torch.randn(1, channels, h, w, device=device)
 
-    # fvcore expects a callable; wrap model forward
-    class ModelWrapper(torch.nn.Module):
-        def __init__(self, model):
-            super().__init__()
-            self.model = model
+    wrapper = BackboneDecoderWrapper(model, modal)
+    wrapper.eval()
 
-        def forward(self, imgs, data_samples):
-            return self.model(imgs, data_samples, mode='predict')
+    total_flops = 0
 
-    wrapper = ModelWrapper(model)
+    def count_conv2d(m, inp, out):
+        nonlocal total_flops
+        x = inp[0]
+        batch = x.shape[0]
+        out_h, out_w = out.shape[2], out.shape[3]
+        kernel_ops = m.kernel_size[0] * m.kernel_size[1] * (m.in_channels // m.groups)
+        total_flops += batch * m.out_channels * out_h * out_w * kernel_ops
+
+    def count_linear(m, inp, out):
+        nonlocal total_flops
+        x = inp[0]
+        batch_size = x.numel() // m.in_features
+        total_flops += batch_size * m.in_features * m.out_features
+
+    def count_layernorm(m, inp, out):
+        nonlocal total_flops
+        total_flops += inp[0].numel() * 2  # mean + variance
+
+    def count_gelu(m, inp, out):
+        nonlocal total_flops
+        total_flops += inp[0].numel() * 4  # approximate
+
+    def count_bn(m, inp, out):
+        nonlocal total_flops
+        total_flops += inp[0].numel() * 2
+
+    hooks = []
+    for m in wrapper.modules():
+        if isinstance(m, nn.Conv2d):
+            hooks.append(m.register_forward_hook(count_conv2d))
+        elif isinstance(m, nn.Linear):
+            hooks.append(m.register_forward_hook(count_linear))
+        elif isinstance(m, nn.LayerNorm):
+            hooks.append(m.register_forward_hook(count_layernorm))
+        elif isinstance(m, nn.GELU):
+            hooks.append(m.register_forward_hook(count_gelu))
+        elif isinstance(m, (nn.BatchNorm2d, nn.SyncBatchNorm)):
+            hooks.append(m.register_forward_hook(count_bn))
+
+    with torch.no_grad():
+        try:
+            wrapper(img)
+        except Exception as e:
+            print(f'  [manual WARN] forward failed: {e}')
+            for h in hooks:
+                h.remove()
+            return None
+
+    for h in hooks:
+        h.remove()
+
+    return total_flops
+
+
+def measure_flops_fvcore(model, modal, shape):
+    """Measure FLOPs using fvcore on backbone + decoder wrapper."""
+    device = next(model.parameters()).device
+    h, w = shape
+    channels = MODAL_CHANNELS[modal]
+    img = torch.randn(1, channels, h, w, device=device)
+
+    wrapper = BackboneDecoderWrapper(model, modal)
     wrapper.eval()
 
     try:
-        flop_analysis = FlopCountAnalysis(wrapper, ([img], [data_sample]))
+        flop_analysis = FlopCountAnalysis(wrapper, (img,))
         flop_analysis.unsupported_ops_warnings(False)
         flop_analysis.uncalled_modules_warnings(False)
         flops = flop_analysis.total()
         return flops
     except Exception as e:
-        print(f"  [fvcore WARN] {e}")
+        print(f'  [fvcore WARN] {e}')
         return None
-
-
-def measure_flops_mmengine(model, modal, shape):
-    """Measure FLOPs using mmengine analysis."""
-    device = next(model.parameters()).device
-    img, data_sample = make_dummy_input(modal, shape, device)
-
-    try:
-        outputs = get_model_complexity_info(
-            model,
-            input_shape=None,
-            inputs=([img], [data_sample]),
-            show_table=False,
-            show_arch=False,
-        )
-        return outputs['flops'], outputs['params']
-    except TypeError:
-        # Older mmengine: try with kwargs
-        try:
-            outputs = get_model_complexity_info(
-                model,
-                input_shape=None,
-                inputs={"inputs": [img], "data_samples": [data_sample]},
-                show_table=False,
-                show_arch=False,
-            )
-            return outputs['flops'], outputs['params']
-        except Exception as e:
-            print(f"  [mmengine WARN] {e}")
-            return None, None
-    except Exception as e:
-        print(f"  [mmengine WARN] {e}")
-        return None, None
 
 
 def format_flops(flops):
@@ -192,13 +245,13 @@ def format_flops(flops):
     if flops is None:
         return 'N/A'
     if flops >= 1e12:
-        return f'{flops / 1e12:.2f} T'
+        return f'{flops / 1e12:.2f} TFLOPs'
     elif flops >= 1e9:
-        return f'{flops / 1e9:.2f} G'
+        return f'{flops / 1e9:.2f} GFLOPs'
     elif flops >= 1e6:
-        return f'{flops / 1e6:.2f} M'
+        return f'{flops / 1e6:.2f} MFLOPs'
     else:
-        return f'{flops:.0f}'
+        return f'{flops:.0f} FLOPs'
 
 
 def format_params(params):
@@ -239,42 +292,43 @@ def main():
 
     # ======================== FLOPs ========================
     print('=' * 60)
-    print('FLOPs Measurement')
+    print('FLOPs Measurement (backbone + decode_head)')
     print('=' * 60)
 
+    flops_results = {}
     for modal in args.modals:
         ch = MODAL_CHANNELS[modal]
         print(f'\n[{modal.upper()}] input: ({ch}, {args.shape[0]}, {args.shape[1]})')
 
         flops_val = None
 
-        # Try fvcore first
+        # Try fvcore first (wraps backbone+decoder only, no SegDataSample)
         if HAS_FVCORE:
             print('  Method: fvcore')
             flops_val = measure_flops_fvcore(model, modal, args.shape)
             if flops_val is not None:
                 print(f'  FLOPs: {format_flops(flops_val)}')
 
-        # Try mmengine
-        if HAS_MMENGINE_ANALYSIS and flops_val is None:
-            print('  Method: mmengine')
-            flops_mm, params_mm = measure_flops_mmengine(model, modal, args.shape)
-            if flops_mm is not None:
-                print(f'  FLOPs:  {_format_size(flops_mm)}')
-                print(f'  Params: {_format_size(params_mm)}')
+        # Fallback: manual hook-based counting
+        if flops_val is None:
+            print('  Method: manual (hook-based)')
+            flops_val = measure_flops_manual(model, modal, args.shape)
+            if flops_val is not None:
+                print(f'  FLOPs: {format_flops(flops_val)}')
+            else:
+                print('  FLOPs: N/A')
 
-        if not HAS_FVCORE and not HAS_MMENGINE_ANALYSIS:
-            print('  [ERROR] Neither fvcore nor mmengine.analysis available.')
-            print('  Install fvcore: pip install fvcore')
+        flops_results[modal] = flops_val
 
     # ======================== FPS ========================
     print()
     print('=' * 60)
-    print('FPS Measurement')
+    print('FPS Measurement (full predict pipeline)')
     print(f'  Warmup: {args.num_warmup} iters')
     print(f'  Timed:  {args.num_iters} iters x {args.repeat_times} runs')
     print('=' * 60)
 
+    fps_results = {}
     for modal in args.modals:
         ch = MODAL_CHANNELS[modal]
         print(f'\n[{modal.upper()}] input: ({ch}, {args.shape[0]}, {args.shape[1]})')
@@ -289,13 +343,22 @@ def main():
 
         avg_fps = np.mean(fps_list)
         std_fps = np.std(fps_list)
-        print(f'  >> Average: {avg_fps:.2f} ± {std_fps:.2f} img/s')
+        print(f'  >> Average: {avg_fps:.2f} +/- {std_fps:.2f} img/s')
+        fps_results[modal] = (avg_fps, std_fps)
 
     # ======================== Summary ========================
     print()
     print('=' * 60)
     print('Summary')
     print('=' * 60)
+    print(f'{"Modality":<10} {"Channels":<10} {"FLOPs":<18} {"FPS (avg)":>15}')
+    print('-' * 55)
+    for modal in args.modals:
+        ch = MODAL_CHANNELS[modal]
+        flops_str = format_flops(flops_results.get(modal))
+        fps_avg, fps_std = fps_results.get(modal, (0, 0))
+        print(f'{modal:<10} {ch:<10} {flops_str:<18} {fps_avg:>10.2f} img/s')
+    print('-' * 55)
     print(f'Params: {format_params(total_params)}')
     print(f'Input:  {args.shape[0]} x {args.shape[1]}')
     print()
