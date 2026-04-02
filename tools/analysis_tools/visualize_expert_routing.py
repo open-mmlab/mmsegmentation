@@ -54,9 +54,9 @@ plt.rcParams.update({
 })
 
 MODAL_DISPLAY = {
-    'sar': 'SAR',
-    'rgb': 'RGB',
-    'GF': 'GaoFen',
+    'sar': 'UrbanSARFlood',
+    'rgb': 'FloodNet',
+    'GF': 'GF-FloodNet',
 }
 
 MODAL_CHANNELS = {
@@ -329,8 +329,11 @@ def plot_activation_heatmap(stats, num_experts, output_dir):
         axes[ax_idx].set_xticklabels(
             [f'E{i}' for i in range(num_experts)], fontsize=8)
         axes[ax_idx].set_yticks(range(len(modals)))
-        axes[ax_idx].set_yticklabels(
-            [MODAL_DISPLAY[m] for m in modals], fontsize=9)
+        if ax_idx == 0:
+            axes[ax_idx].set_yticklabels(
+                [MODAL_DISPLAY[m] for m in modals], fontsize=9)
+        else:
+            axes[ax_idx].set_yticklabels([])
         axes[ax_idx].set_xlabel('Expert Index', fontsize=9)
         axes[ax_idx].set_title(f'Stage {stage}', fontsize=11, fontweight='bold')
 
@@ -420,8 +423,11 @@ def plot_modal_bias(model, output_dir):
         axes[ax_idx].set_xticklabels(
             [f'E{i}' for i in range(num_experts)], fontsize=8)
         axes[ax_idx].set_yticks(range(len(modal_order)))
-        axes[ax_idx].set_yticklabels(
-            [MODAL_DISPLAY.get(m, m) for m in modal_order], fontsize=9)
+        if ax_idx == 0:
+            axes[ax_idx].set_yticklabels(
+                [MODAL_DISPLAY.get(m, m) for m in modal_order], fontsize=9)
+        else:
+            axes[ax_idx].set_yticklabels([])
         axes[ax_idx].set_xlabel('Expert Index', fontsize=9)
         axes[ax_idx].set_title(f'Stage {stage}', fontsize=11, fontweight='bold')
 
