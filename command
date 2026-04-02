@@ -96,7 +96,10 @@ python tools/test_full_metrics.py ./configs/floodnet/multimodal_floodnet_sar_boo
 python tools/test_full_metrics.py \
   configs/floodnet/multimodal_floodnet_sar_boost_swinbase_moe_config.py \
   work_dirs/floodnet/SwinmoeB/655/best_mIoU_epoch_100.pth \
-  --cfg-options test_dataloader.dataset.filter_modality=rgb
+  --cfg-options test_dataloader.dataset.filter_modality=sar \
+  --work-dir ./Result/Floodnet/SAR/  \
+  --show-dir ./Result/Floodnet/SAR/vis --cfg-options visualizer.alpha=1.0
+
 
 python tools/train.py \
   configs/floodnet/multimodal_floodnet_sar_only_swinbase_moe_config.py \
@@ -106,3 +109,6 @@ python tools/train.py \
 python tools/test_full_metrics.py \
     configs/floodnet/multimodal_floodnet_sar_only_swinbase_moe_config.py \
     work_dirs/floodnet/SwinmoeB_sar_only/best_mIoU_epoch_100.pth \
+
+
+ python tools/train.py configs/floodnet/continue_train_150ep.py --work-dir work_dirs/floodnet/SwinmoeB/655 --resume --cfg-options load_from="work_dirs/floodnet/SwinmoeB/655/best_mIoU_epoch_100.pth"

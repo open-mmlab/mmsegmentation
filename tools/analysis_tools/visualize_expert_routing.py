@@ -54,9 +54,9 @@ plt.rcParams.update({
 })
 
 MODAL_DISPLAY = {
-    'sar': 'SAR',
-    'rgb': 'RGB',
-    'GF': 'GaoFen',
+    'sar': 'UrbanSARflood',
+    'rgb': 'FloodNet',
+    'GF': 'GF-Floodnet',
 }
 
 MODAL_CHANNELS = {
