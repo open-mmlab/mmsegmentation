@@ -158,16 +158,46 @@ def generate_tiles(img_h, img_w, tile_size, overlap):
     return unique_tiles
 
 
-def normalize_tile(tile_data):
-    """Simple normalization: scale to [0, 1] range per channel."""
-    # tile_data: (C, H, W)
-    for c in range(tile_data.shape[0]):
-        band = tile_data[c]
-        bmin, bmax = band.min(), band.max()
-        if bmax - bmin > 1e-6:
-            tile_data[c] = (band - bmin) / (bmax - bmin)
-        else:
-            tile_data[c] = 0.0
+def normalize_tile(tile_data, modal='rgb'):
+    """Normalize tile using the same mean/std as training pipeline.
+
+    Must match MultiModalNormalize in multimodal_pipelines.py exactly.
+    tile_data: (C, H, W) float32, raw pixel values (e.g. 0-255 for RGB).
+    """
+    NORM_CONFIGS = {
+        'rgb': {
+            'mean': [123.675, 116.28, 103.53],
+            'std': [58.395, 57.12, 57.375],
+        },
+        'sar': {
+            'mean': [0.23651549, 0.31761484, 0.18514981, 0.26901252,
+                     -14.57879175, -8.6098158, -14.2907338, -8.33534564],
+            'std': [0.16280619, 0.20849304, 0.14008107, 0.19767644,
+                    4.07141682, 3.94773216, 4.21006244, 4.05494136],
+        },
+        'GF': {
+            'mean': [432.02181, 315.92948, 246.468659,
+                     310.61462, 360.267789],
+            'std': [97.73313111900238, 85.78646917160748,
+                    95.78015824658593,
+                    124.84677067613467, 251.73965882246978],
+        }
+    }
+
+    channels = tile_data.shape[0]
+    if modal in NORM_CONFIGS:
+        mean = np.array(NORM_CONFIGS[modal]['mean'][:channels],
+                        dtype=np.float32)
+        std = np.array(NORM_CONFIGS[modal]['std'][:channels],
+                       dtype=np.float32)
+    else:
+        mean = np.array([128.0] * channels, dtype=np.float32)
+        std = np.array([50.0] * channels, dtype=np.float32)
+
+    # tile_data shape: (C, H, W), normalize per channel
+    for c in range(channels):
+        tile_data[c] = (tile_data[c] - mean[c]) / std[c]
+
     return tile_data
 
 
@@ -266,7 +296,18 @@ def main():
     print(f'\nTotal tiles: {num_tiles}')
     print(f'Batches:     {num_batches}')
 
-    # Allocate output: prediction mask + count for overlap averaging
+    # Verify normalization
+    print(f'\nNormalization check (modal={args.modal}):')
+    test_tile = read_tile(args.input, 0, 0,
+                          min(args.tile_size, img_w),
+                          min(args.tile_size, img_h),
+                          args.bands)
+    print(f'  Raw pixel range:  [{test_tile.min():.2f}, {test_tile.max():.2f}]')
+    test_normed = normalize_tile(test_tile.copy(), modal=args.modal)
+    print(f'  After normalize:  [{test_normed.min():.2f}, {test_normed.max():.2f}]')
+    del test_tile, test_normed
+
+    # Allocate output: prediction mask + count for overlap voting
     pred_sum = np.zeros((img_h, img_w), dtype=np.float32)
     count_map = np.zeros((img_h, img_w), dtype=np.float32)
 
@@ -290,13 +331,13 @@ def main():
                     dtype=np.float32)
                 padded[:, :h, :w] = tile_data
                 tile_data = padded
-            tile_data = normalize_tile(tile_data)
+            tile_data = normalize_tile(tile_data, modal=args.modal)
             batch_imgs.append(tile_data)
 
         # Predict
         preds = predict_batch(model, batch_imgs, args.modal, args.device)
 
-        # Stitch predictions
+        # Stitch predictions (vote-based: accumulate class labels)
         for (x, y, w, h), pred in zip(batch_tiles, preds):
             pred_sum[y:y+h, x:x+w] += pred[:h, :w].astype(np.float32)
             count_map[y:y+h, x:x+w] += 1.0
