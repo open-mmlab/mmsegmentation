@@ -168,30 +168,93 @@ class GateHookManager:
 # ======================== Data Collection ========================
 
 def collect_routing_stats(model, cfg, hook_mgr, data_root, num_samples):
-    """Run inference on test data and collect per-modality routing stats."""
+    """Run inference on real test data and collect per-modality routing stats.
+
+    Loads actual test images from the dataset to capture true data-driven
+    routing patterns (feature-dependent + modal_bias), not just modal_bias.
+    Falls back to random noise if no images are found for a modality.
+    """
     from mmseg.structures import SegDataSample
+    from mmengine.dataset import Compose
+    import glob
 
     device = next(model.parameters()).device
     stats = defaultdict(lambda: defaultdict(list))
-    # stats[modal][(stage, block)] = list of gate tensors
+
+    # Build test pipeline from config
+    test_pipeline_cfg = cfg.test_dataloader.dataset.pipeline
+    pipeline = Compose(test_pipeline_cfg)
+
+    # Dataset directories
+    data_prefix = cfg.test_dataloader.dataset.get(
+        'data_prefix', dict(img_path='test/images', seg_map_path='test/labels'))
+    img_dir = osp.join(data_root, data_prefix['img_path'])
+    seg_dir = osp.join(data_root, data_prefix.get('seg_map_path', 'test/labels'))
 
     for modal in ['sar', 'rgb', 'GF']:
         hook_mgr.clear()
         ch = MODAL_CHANNELS[modal]
-        h, w = 256, 256
 
-        for i in range(num_samples):
-            img = torch.randn(ch, h, w, device=device)
-            data_sample = SegDataSample()
-            data_sample.set_metainfo(dict(
-                img_shape=(h, w), ori_shape=(h, w), pad_shape=(h, w),
-                scale_factor=(1.0, 1.0), flip=False, flip_direction=None,
-                modal_type=modal, actual_channels=ch,
-                dataset_name=modal, reduce_zero_label=False,
-            ))
+        # Find images for this modality by filename pattern
+        all_files = sorted(glob.glob(osp.join(img_dir, '*')))
+        modal_key = modal.lower()
+        modal_files = [f for f in all_files
+                       if modal_key in osp.basename(f).lower()]
 
-            with torch.no_grad():
-                model([img], [data_sample], mode='predict')
+        if modal_files:
+            n = min(num_samples, len(modal_files))
+            print(f'  [{modal}] Using {n} real test images '
+                  f'(found {len(modal_files)} total)')
+
+            count = 0
+            for img_path in modal_files[:num_samples]:
+                fname = osp.basename(img_path)
+                # Guess label path: .tif -> .png
+                label_name = fname
+                for ext in ['.tif', '.tiff', '.TIF', '.TIFF']:
+                    label_name = label_name.replace(ext, '.png')
+                seg_path = osp.join(seg_dir, label_name)
+
+                data = dict(
+                    img_path=img_path,
+                    seg_map_path=seg_path,
+                    modal_type=modal,
+                    actual_channels=ch,
+                    dataset_name=modal,
+                    reduce_zero_label=False,
+                    ori_filename=fname,
+                )
+
+                try:
+                    data = pipeline(data)
+                except Exception as e:
+                    continue
+
+                # Pipeline outputs: {'inputs': Tensor, 'data_samples': SegDataSample}
+                img = data['inputs'].float().to(device)
+                data_sample = data['data_samples']
+
+                with torch.no_grad():
+                    model([img], [data_sample], mode='predict')
+                count += 1
+
+            print(f'  [{modal}] Successfully processed {count} images')
+
+        else:
+            print(f'  [WARN] No images for {modal} in {img_dir}, '
+                  f'using random noise')
+            for _ in range(num_samples):
+                img = torch.randn(ch, 256, 256, device=device)
+                ds = SegDataSample()
+                ds.set_metainfo(dict(
+                    img_shape=(256, 256), ori_shape=(256, 256),
+                    pad_shape=(256, 256), scale_factor=(1.0, 1.0),
+                    flip=False, flip_direction=None,
+                    modal_type=modal, actual_channels=ch,
+                    dataset_name=modal, reduce_zero_label=False,
+                ))
+                with torch.no_grad():
+                    model([img], [ds], mode='predict')
 
         # Aggregate per (stage, block)
         for record in hook_mgr.gate_records:
