@@ -181,15 +181,24 @@ def collect_routing_stats(model, cfg, hook_mgr, data_root, num_samples):
     device = next(model.parameters()).device
     stats = defaultdict(lambda: defaultdict(list))
 
-    # Build test pipeline from config
-    test_pipeline_cfg = cfg.test_dataloader.dataset.pipeline
-    pipeline = Compose(test_pipeline_cfg)
+    # Build a minimal inference pipeline: load image, resize, normalize, pack.
+    # Skip LoadAnnotations (no labels needed for routing analysis).
+    # Use 256x256 (matching training crop) for efficient single-pass inference.
+    pipeline = Compose([
+        dict(type='LoadMultiModalImageFromFile', to_float32=True),
+        dict(type='Resize', scale=(256, 256), keep_ratio=False),
+        dict(type='MultiModalNormalize'),
+        dict(type='PackMultiModalSegInputs',
+             meta_keys=('img_path', 'ori_filename', 'ori_shape', 'img_shape',
+                        'pad_shape', 'scale_factor', 'flip', 'flip_direction',
+                        'modal_type', 'actual_channels', 'dataset_name',
+                        'img_norm_cfg', 'reduce_zero_label')),
+    ])
 
-    # Dataset directories
+    # Dataset directory
     data_prefix = cfg.test_dataloader.dataset.get(
-        'data_prefix', dict(img_path='test/images', seg_map_path='test/labels'))
+        'data_prefix', dict(img_path='test/images'))
     img_dir = osp.join(data_root, data_prefix['img_path'])
-    seg_dir = osp.join(data_root, data_prefix.get('seg_map_path', 'test/labels'))
 
     for modal in ['sar', 'rgb', 'GF']:
         hook_mgr.clear()
@@ -209,25 +218,24 @@ def collect_routing_stats(model, cfg, hook_mgr, data_root, num_samples):
             count = 0
             for img_path in modal_files[:num_samples]:
                 fname = osp.basename(img_path)
-                # Guess label path: .tif -> .png
-                label_name = fname
-                for ext in ['.tif', '.tiff', '.TIF', '.TIFF']:
-                    label_name = label_name.replace(ext, '.png')
-                seg_path = osp.join(seg_dir, label_name)
 
                 data = dict(
                     img_path=img_path,
-                    seg_map_path=seg_path,
                     modal_type=modal,
                     actual_channels=ch,
                     dataset_name=modal,
                     reduce_zero_label=False,
                     ori_filename=fname,
+                    flip=False,
+                    flip_direction=None,
                 )
 
                 try:
                     data = pipeline(data)
                 except Exception as e:
+                    if count == 0:
+                        print(f'    [DEBUG] Pipeline error: {e}')
+                        print(f'    [DEBUG] img_path: {img_path}')
                     continue
 
                 # Pipeline outputs: {'inputs': Tensor, 'data_samples': SegDataSample}
@@ -641,6 +649,9 @@ def main():
     print(f'Output:     {args.output_dir}')
     print(f'Samples:    {args.num_samples} per modality')
     print('=' * 60)
+
+    # Use 'whole' mode to avoid slide_inference complexity for routing analysis
+    cfg.model.test_cfg = dict(mode='whole')
 
     # Build model
     print('\nBuilding model...')
