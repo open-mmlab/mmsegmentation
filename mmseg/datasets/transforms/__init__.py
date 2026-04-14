@@ -5,6 +5,7 @@ from .multimodal_pipelines import (LoadMultiModalImageFromFile,
                                     GenerateBoundary,
                                     MultiModalPad,
                                     PackMultiModalSegInputs)
+from .sen1floods11_pipelines import LoadSen1Floods11Annotation
 from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadBiomedicalData, LoadBiomedicalImageFromFile,
                       LoadDepthAnnotation, LoadImageFromNDArray,
@@ -34,5 +35,6 @@ __all__ = [
     'LoadMultiBandTiffFromFile', 'LoadMultipleRSImageFromFile',
     'LoadDepthAnnotation', 'RandomDepthMix', 'RandomFlip', 'Resize',
     'LoadMultiModalImageFromFile', 'MultiModalNormalize',
-    'GenerateBoundary', 'MultiModalPad', 'PackMultiModalSegInputs'
+    'GenerateBoundary', 'MultiModalPad', 'PackMultiModalSegInputs',
+    'LoadSen1Floods11Annotation'
 ]

@@ -150,7 +150,23 @@ class MultiModalNormalize(BaseTransform):
             'std': [97.73313111900238, 85.78646917160748,
                     95.78015824658593,
                     124.84677067613467, 251.73965882246978],
-        }
+        },
+        # ---- Sen1Floods11: S1Hand (2-band VV/VH SAR, dB) ----
+        # Defaults computed from the Sen1Floods11 train split with
+        # the nodata pixels (-1) masked out. Re-run
+        # tools/compute_sen1floods11_stats.py on your own split to
+        # refresh these numbers if needed.
+        's1': {
+            'mean': [-12.54, -19.65],
+            'std': [4.92, 5.17],
+        },
+        # ---- Sen1Floods11: S2Hand (13-band Sentinel-2 MSI, TOA*10000) ----
+        's2': {
+            'mean': [1353., 1329., 1627., 1935., 2268., 2723., 3154.,
+                     3541., 3652., 3416., 1112., 2619., 2060.],
+            'std': [1108., 942., 976., 1164., 1196., 1351., 1500.,
+                    1605., 1611., 1288., 770., 1325., 1186.],
+        },
     }
 
     def __init__(self, to_rgb=True):
