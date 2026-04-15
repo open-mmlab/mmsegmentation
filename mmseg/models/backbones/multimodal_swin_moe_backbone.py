@@ -256,9 +256,13 @@ class CosineTopKGate(nn.Module):
         elif len(x.shape) == 3:
             x = x.mean(dim=1)
 
+        # eps guards against NaN from 0/0 when a row of the projection
+        # (or a column of sim_matrix) has zero L2 norm. This matters during
+        # fine-tuning on a new modal whose patch embed is freshly
+        # initialized and can emit all-zero pooled features.
         logits = torch.matmul(
-            F.normalize(self.cosine_projector(x), dim=1),
-            F.normalize(self.sim_matrix, dim=0)
+            F.normalize(self.cosine_projector(x), dim=1, eps=1e-6),
+            F.normalize(self.sim_matrix, dim=0, eps=1e-6)
         )
 
         logit_scale = torch.clamp(self.temperature, max=self.clamp_max).exp()
@@ -281,13 +285,26 @@ class SparseDispatcher:
     """Sparse dispatcher for MoE"""
 
     def __init__(self, num_experts, gates):
+        # Sanitize gates: NaN/Inf can leak in from F.normalize on zero-norm
+        # vectors inside CosineTopKGate when a freshly-initialized modal
+        # patch embed produces degenerate features early in fine-tuning.
+        # Replace them with 0 so they are simply not routed anywhere.
+        if not torch.isfinite(gates).all():
+            gates = torch.nan_to_num(gates, nan=0.0, posinf=0.0, neginf=0.0)
+
         self._gates = gates
         self._num_experts = num_experts
 
-        sorted_experts, index_sorted_experts = torch.nonzero(gates).sort(0)
+        # IMPORTANT: use the SAME positive-mask for both `_batch_index`
+        # and `_part_sizes`. Previously line 287 used `torch.nonzero(gates)`
+        # (which includes NaN because `NaN != 0`) while line 290 used
+        # `gates > 0` (which excludes NaN), making `split_sizes` disagree
+        # with `_batch_index.numel()` and crashing `torch.split`.
+        positive_mask = gates > 0
+        sorted_experts, index_sorted_experts = torch.nonzero(positive_mask).sort(0)
         _, self._expert_index = sorted_experts.split(1, dim=1)
         self._batch_index = sorted_experts[index_sorted_experts[:, 1], 0]
-        self._part_sizes = list((gates > 0).sum(0).cpu().numpy())
+        self._part_sizes = list(positive_mask.sum(0).cpu().numpy())
 
         gates_exp = gates[self._batch_index.flatten()]
         self._nonzero_gates = torch.gather(gates_exp, 1, self._expert_index)
