@@ -81,7 +81,7 @@ python tools/analysis_tools/get_flops.py \
     --shape 5 256 256
 
 python tools/train.py ./configs/swin/Swin-uavflood-256x256.py --work-dir work_dirs/SAR/Swin --cfg-options seed=42
-python tools/test_full_metrics.py ./configs/swin/Swin-uavflood-256x256.py  work_dirs/SAR/Swin/best_mIoU_epoch_100.pth --work-dir ./Result/SAR/swin/  --show-dir ./Result/SAR/swin/vis --cfg-options visualizer.alpha=1.0
+python tools/test_full_metrics.py ./configs/swin/Swin-uavflood-256x256.py  work_dirs/GFflood/Swin/best_val_mIoU_iter_16000.pth --work-dir ./Result/GF/swin/  --show-dir ./Result/GF/swin/vis --cfg-options visualizer.alpha=1.0
 python tools/analysis_tools/benchmark.py \
     ./configs/swin/Swin-uavflood-256x256.py\
     work_dirs/GFflood/Swin/best_val_mIoU_iter_16000.pth\
@@ -128,10 +128,21 @@ python tools/train.py configs/floodnet/finetune_single_modal.py \
 
 python tools/test.py \
     configs/floodnet/finetune_single_modal.py \
-    work_dirs/generalization/LY-train-station/best_mIoU_epoch_*.pth \
+    work_dirs/generalization/LY-train-station/best_mIoU_epoch_50.pth \
     --work-dir work_dirs/generalization/LY-train-station/test_results \
     --cfg-options \
         test_dataloader.dataset.data_root="data/LY-train-station/" \
         "test_evaluator.iou_metrics=['mIoU','mDice','mFscore']" \
     --show-dir work_dirs/generalization/LY-train-station/test_results/vis \
     --out work_dirs/generalization/LY-train-station/test_results/predictions
+
+python tools/predict_large_tif.py \
+    configs/floodnet/finetune_single_modal.py \
+    work_dirs/generalization/LY-train-station/best_mIoU_epoch_50.pth \
+    --input data/luoyuan/result.tif \
+    --output data/luoyuan/prediction.tif \
+    --tile-size 512 \
+    --overlap 64 \
+    --modal rgb \
+    --bands 0 1 2 \
+    --batch-size 16
