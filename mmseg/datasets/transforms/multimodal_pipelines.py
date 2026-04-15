@@ -185,7 +185,33 @@ class MultiModalNormalize(BaseTransform):
             mean = np.array([128.0] * actual_channels, dtype=np.float32)
             std = np.array([50.0] * actual_channels, dtype=np.float32)
 
-        img = (img - mean.reshape(1, 1, -1)) / std.reshape(1, 1, -1)
+        mean_b = mean.reshape(1, 1, -1)
+        std_b = std.reshape(1, 1, -1)
+
+        # Sen1Floods11 S1Hand (and many other SAR/MSI products) encode
+        # nodata pixels as NaN / ±Inf inside the TIFF. Left alone, the
+        # NaN propagates through `(img - mean) / std` and poisons every
+        # downstream feature map, so both the CE loss and the MoE
+        # balance loss become NaN from the very first training step.
+        # Replace non-finite pixels with the per-channel mean so they
+        # normalize to 0 (a neutral value the network will learn to
+        # ignore alongside the 255-ignored label pixels).
+        if not np.all(np.isfinite(img)):
+            img = np.where(
+                np.isfinite(img),
+                img,
+                np.broadcast_to(mean_b, img.shape),
+            ).astype(np.float32)
+
+        img = (img - mean_b) / std_b
+
+        # Final safety net: some SAR products use a finite sentinel
+        # (e.g. -9999) instead of NaN for nodata, which would otherwise
+        # survive normalization as a huge outlier. Clipping to ±10σ is
+        # well outside any legitimate value for the modalities
+        # configured above, so real data is untouched.
+        img = np.nan_to_num(img, nan=0.0, posinf=0.0, neginf=0.0)
+        np.clip(img, -10.0, 10.0, out=img)
 
         results['img'] = img
         results['img_norm_cfg'] = dict(
