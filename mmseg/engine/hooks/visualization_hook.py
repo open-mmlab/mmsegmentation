@@ -5,6 +5,7 @@ from typing import Optional, Sequence
 
 import mmcv
 import numpy as np
+import torch
 from mmengine.fileio import get
 from mmengine.hooks import Hook
 from mmengine.runner import Runner
@@ -52,6 +53,8 @@ class SegVisualizationHook(Hook):
         self.draw = draw
         self.backend_args = backend_args
 
+    IGNORE_INDEX = 255
+
     def _create_dummy_image(self, height: int, width: int) -> np.ndarray:
         """Create a dummy black image for visualization.
 
@@ -63,6 +66,28 @@ class SegVisualizationHook(Hook):
             Black RGB image of shape (H, W, 3)
         """
         return np.zeros((height, width, 3), dtype=np.uint8)
+
+    @staticmethod
+    def _mask_nodata(output: SegDataSample,
+                     ignore_index: int = 255) -> None:
+        """Set prediction to ignore_index where GT is nodata.
+
+        This prevents nodata pixels from being visualized as a real
+        class (e.g. Flood).  Called AFTER evaluator.process() so
+        metrics are unaffected.
+        """
+        if not (hasattr(output, 'gt_sem_seg')
+                and hasattr(output, 'pred_sem_seg')):
+            return
+        gt = output.gt_sem_seg.data      # (1, H, W) or (H, W)
+        pred = output.pred_sem_seg.data   # same shape
+        nodata_mask = (gt == ignore_index)
+        if nodata_mask.any():
+            output.pred_sem_seg.data = torch.where(
+                nodata_mask,
+                torch.tensor(ignore_index, dtype=pred.dtype,
+                             device=pred.device),
+                pred)
 
     def after_val_iter(self, runner: Runner, batch_idx: int, data_batch: dict,
                        outputs: Sequence[SegDataSample]) -> None:
@@ -79,6 +104,8 @@ class SegVisualizationHook(Hook):
 
         if self.every_n_inner_iters(batch_idx, self.interval):
             for output in outputs:
+                self._mask_nodata(output, self.IGNORE_INDEX)
+
                 img_path = output.img_path
                 img_name = osp.basename(img_path)
 
@@ -122,6 +149,8 @@ class SegVisualizationHook(Hook):
             return
 
         for output in outputs:
+            self._mask_nodata(output, self.IGNORE_INDEX)
+
             img_path = output.img_path
             img_name = osp.basename(img_path)
 
@@ -139,8 +168,6 @@ class SegVisualizationHook(Hook):
             # Create dummy image instead of loading original
             img = self._create_dummy_image(h, w)
 
-            # 关键修改：不指定 out_file，让 visualizer 使用 --show-dir 的设置
-            # Only draw prediction, not ground truth
             self._visualizer.add_datasample(
                 img_name,
                 img,
