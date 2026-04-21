@@ -1,24 +1,20 @@
 """
-Remap prediction image colors.
+Remap prediction image colors to RGBA.
 
 Converts the two-color palette output from SegVisualizationHook:
-  - Black  [  0,   0,   0] (Background / Nodata) -> #7c7c7c [124, 124, 124]
-  - Red    [255,   0,   0] (Flood)               -> #000bc5 [  0,  11, 197]
+  - Black  [  0,   0,   0] (Background / Nodata) -> fully transparent
+  - Red    [255,   0,   0] (Flood)               -> #000bc5 [0, 11, 197] opaque
 
-Nodata pixels are treated the same as Background (both render as black
-after SegVisualizationHook._mask_nodata, then both remap to #7c7c7c).
+Output is RGBA PNG so flood regions can be overlaid on any base map.
 
 Usage:
-    # In-place: remap all PNGs under a directory
+    # In-place:
     python tools/remap_pred_colors.py --src vis_pred/vis_data/vis_image/
 
-    # Save to a new directory
+    # Save to a new directory:
     python tools/remap_pred_colors.py \
         --src vis_pred/vis_data/vis_image/ \
         --dst vis_pred/vis_data/vis_image_remapped/
-
-    # Process a single file
-    python tools/remap_pred_colors.py --src path/to/image.png
 """
 
 import argparse
@@ -28,21 +24,25 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-COLOR_MAP = {
-    (0,   0,   0):   (124, 124, 124),   # Background / Nodata -> #7c7c7c
-    (255, 0,   0):   (0,   11,  197),   # Flood               -> #000bc5
-}
+FLOOD_SRC = (255, 0, 0)
+FLOOD_DST = (0, 11, 197)
 
 
 def remap_image(img_array: np.ndarray) -> np.ndarray:
-    out = img_array.copy()
-    for src_rgb, dst_rgb in COLOR_MAP.items():
-        mask = (
-            (img_array[:, :, 0] == src_rgb[0]) &
-            (img_array[:, :, 1] == src_rgb[1]) &
-            (img_array[:, :, 2] == src_rgb[2])
-        )
-        out[mask] = dst_rgb
+    """Convert RGB prediction to RGBA: flood → #000bc5 opaque, rest → transparent."""
+    h, w = img_array.shape[:2]
+    out = np.zeros((h, w, 4), dtype=np.uint8)  # RGBA, default fully transparent
+
+    flood_mask = (
+        (img_array[:, :, 0] == FLOOD_SRC[0]) &
+        (img_array[:, :, 1] == FLOOD_SRC[1]) &
+        (img_array[:, :, 2] == FLOOD_SRC[2])
+    )
+    out[flood_mask, 0] = FLOOD_DST[0]
+    out[flood_mask, 1] = FLOOD_DST[1]
+    out[flood_mask, 2] = FLOOD_DST[2]
+    out[flood_mask, 3] = 255  # fully opaque
+
     return out
 
 
@@ -51,7 +51,7 @@ def process_file(src_path: Path, dst_path: Path) -> None:
     arr = np.array(img, dtype=np.uint8)
     arr_out = remap_image(arr)
     dst_path.parent.mkdir(parents=True, exist_ok=True)
-    Image.fromarray(arr_out).save(dst_path)
+    Image.fromarray(arr_out, 'RGBA').save(dst_path)
 
 
 def collect_png(root: Path):
