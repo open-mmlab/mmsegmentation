@@ -226,8 +226,13 @@ class MultimodalEncoderDecoder(BaseSegmentor):
         Returns:
             Tensor: Forward output of model without any post-processes.
         """
-        x = self.extract_feat(inputs)
-        return self.decode_head.forward(x)
+        classifier_embeds = self.text_encoder()
+        clip_inputs = inputs
+        if self.asymetric_input:
+            clip_inputs = F.interpolate(
+                inputs, scale_factor=self.encoder_resolution, mode='bilinear')
+        x = self.image_encoder(clip_inputs)
+        return self.decode_head.forward([inputs, x, classifier_embeds], [])
 
     def slide_inference(self, inputs: Tensor,
                         batch_img_metas: List[dict]) -> Tensor:
