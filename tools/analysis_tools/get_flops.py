@@ -84,6 +84,10 @@ def inference(args: argparse.Namespace, logger: MMLogger) -> dict:
         # TODO: Support MaskFormer and Mask2Former
         raise NotImplementedError('MaskFormer and Mask2Former are not '
                                   'supported yet.')
+    if cfg.model.decode_head.type == 'SideAdapterCLIPHead':
+        # SAN requires text encoder outputs that _forward() doesn't provide
+        raise NotImplementedError(
+            'SAN is not supported yet. See #3866')
     outputs = get_model_complexity_info(
         model,
         input_shape=None,
