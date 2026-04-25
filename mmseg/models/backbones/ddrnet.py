@@ -180,10 +180,13 @@ class DDRNet(BaseModule):
 
     def forward(self, x):
         """Forward function."""
-        out_size = (x.shape[-2] // 8, x.shape[-1] // 8)
 
         # stage 0-2
         x = self.stem(x)
+
+        # Use actual spatial dims after stem to avoid off-by-one errors
+        # when input resolution is not perfectly divisible by 8.
+        out_size = x.shape[-2:]
 
         # stage3
         x_c = self.context_branch_layers[0](x)
