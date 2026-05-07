@@ -29,6 +29,7 @@ from .synapse import SynapseDataset
 from .UAVflood import UAVfloodDataset
 from .multimodal_deepflood import MultiModalDeepflood
 from .sen1floods11 import Sen1Floods11Dataset
+from .sen2gf3floods import Sen2GF3FloodsDataset
 from .fixed_ratio_modal_sampler import FixedRatioModalSampler
 # yapf: disable
 from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
@@ -66,5 +67,6 @@ __all__ = [
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
     'NYUDataset', 'HSIDrive20Dataset', 'UAVfloodDataset',
-    'MultiModalDeepflood', 'Sen1Floods11Dataset', 'FixedRatioModalSampler'
+    'MultiModalDeepflood', 'Sen1Floods11Dataset', 'Sen2GF3FloodsDataset',
+    'FixedRatioModalSampler'
 ]
