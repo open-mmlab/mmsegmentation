@@ -13,6 +13,7 @@ nibabel
 omegaconf==2.1.1
 pudb==2019.2
 pytorch-lightning==1.4.2
+safetensors<0.5
 streamlit>=0.73.1
 -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
 test-tube>=0.7.5

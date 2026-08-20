@@ -12,6 +12,10 @@ from mmseg.structures import SegDataSample
 
 class TestDepthMetric(TestCase):
 
+    def test_select_metrics(self):
+        depth_metric = DepthMetric(depth_metrics=['rmse', 'abs_rel'])
+        self.assertEqual(depth_metric.metrics, ['rmse', 'abs_rel'])
+
     def _demo_mm_inputs(self,
                         batch_size=2,
                         image_shapes=(3, 64, 64),

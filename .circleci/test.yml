@@ -59,13 +59,14 @@ jobs:
       - run:
           name: Install mmseg dependencies
           command: |
-            pip install git+https://github.com/open-mmlab/mmengine.git@main
+            pip install 'mmengine >= 0.5.0, < 1.0.0'
             pip install -U openmim
-            mim install mmcv>=2.0.0
+            mim install 'mmcv >= 2.0.0rc4, < 2.2.0'
             pip install mmpretrain>=1.0.0rc7
             pip install mmdet>=3.0.0
             pip install -r requirements/tests.txt -r requirements/optional.txt
-            python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
+            echo 'export PYTHONPATH="$PWD/src/latent-diffusion:$PWD/src/taming-transformers:$PYTHONPATH"' >> "$BASH_ENV"
+            python -m pip install 'albumentations>=0.3.2' --no-binary qudida
       - run:
           name: Build and install
           command: |
@@ -107,7 +108,7 @@ jobs:
           name: Build Docker image
           command: |
             docker build .circleci/docker -t mmseg:gpu --build-arg PYTORCH=<< parameters.torch >> --build-arg CUDA=<< parameters.cuda >> --build-arg CUDNN=<< parameters.cudnn >>
-            docker run --gpus all -t -d -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -v /home/circleci/mmpretrain:/mmpretrain -v /home/circleci/mmdetection:/mmdetection -w /mmseg --name mmseg mmseg:gpu
+            docker run --gpus all -t -d -e PYTHONPATH=/mmseg/src/latent-diffusion:/mmseg/src/taming-transformers -v /home/circleci/project:/mmseg -v /home/circleci/mmengine:/mmengine -v /home/circleci/mmpretrain:/mmpretrain -v /home/circleci/mmdetection:/mmdetection -w /mmseg --name mmseg mmseg:gpu
       - run:
           name: Install mmseg dependencies
           command: |
@@ -119,7 +120,7 @@ jobs:
             docker exec mmseg apt-get update
             docker exec mmseg apt-get install -y git
             docker exec mmseg pip install -r requirements/tests.txt -r requirements/optional.txt
-            docker exec mmseg python -m pip install albumentations>=0.3.2 --no-binary qudida,albumentations
+            docker exec mmseg python -m pip install 'albumentations>=0.3.2' --no-binary qudida
       - run:
           name: Build and install
           command: |

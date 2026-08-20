@@ -66,7 +66,7 @@ class DepthMetric(BaseMetric):
 
         if depth_metrics is None:
             self.metrics = self.METRICS
-        elif isinstance(depth_metrics, [tuple, list]):
+        elif isinstance(depth_metrics, (tuple, list)):
             for metric in depth_metrics:
                 assert metric in self.METRICS, f'the metric {metric} is not ' \
                     f'supported. Please use metrics in {self.METRICS}'
