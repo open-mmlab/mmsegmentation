@@ -1,0 +1,34 @@
+# フィラメント研究の方針別管理
+
+old_policyはFilFinder由来の2値教師、transitionは直接3クラス学習、current_policyはsplit_v2の3クラスGTを使った独立2値・共有Dual Binary・共有ASPP・Class1/Union階層型の比較を管理する。
+
+指定対象の既存20ファイルを移動し、ダウンロード時の末尾番号を除去した。旧前処理2本は隣のfilfinder_filamentからコピーし、コピー元を保持した。指定外のファイルとルートの研究比較資料は移動していない。
+
+## 未収録のファイルと重み
+
+- current_policy/preprocessing/check_hgbs_3class_labels.py
+- current_policy/hierarchical/models/hier_bce_common.py
+- current_policy/hierarchical/models/hier_bce_deeplabv3_hrf.py
+- 旧2値モデルの学習Config（添付でもファイル名の指定なし）
+- 添付に示された各work_dirsのcheckpoint
+
+上記は調査したローカル配置で見つからなかった。別名のhier_c1_union_common.pyは評価用であり、hier_bce_common.pyの代用として改名していない。空の配置先は用意したが、モデル本体・GT検査・学習済み重みを捏造してはいない。work_dirsは保存先の枠であり、学習済みの意味ではない。
+
+## 参照と実行条件
+
+Configのdefault_runtimeへの相対パス、共有Dual Binaryの継承先、移動済みModel・Transform・Metricへのcustom_importsを新配置に変更した。work_dirの設定があるConfigは方針別保存先へ変更した。データ・HRF重み・評価スクリプト内の外部環境パスは維持している。
+
+コマンドはリポジトリ直下から実行し、Pythonのモジュール検索パスに直下を含める。例（PowerShell）：
+
+```powershell
+$env:PYTHONPATH = (Get-Location).Path
+python tools/train.py projects/filament_segmentation/current_policy/shared_aspp_onehot/configs/hrf_deeplabv3_unet_shared_aspp_twohead_onehot_config.py
+```
+
+これは起動方法の例であり、学習の動作確認済みを意味しない。MMSegmentation・依存パッケージ・FITS/PNGデータ・HRF checkpointが別途必要である。5領域Configはルートに残したforeground_balanced_dataset.pyも使う。evaluate_hier_c1_union_fixed.pyはルートに残したhier_c1_union_common.pyを参照する。
+
+階層型Configのmmseg.models.segmentors.hier_bce_commonとhier_bce_deeplabv3_hrfは、モデル本体が未収録のため解決できない。これらを入手して所定のmodelsへ配置後、custom_importsも実際の配置へ変更する必要がある。
+
+旧推論・評価コードには以前のConfig/checkpointパスやクラス数を前提とする処理が残る。特にunet_deeplabv3_my_dataset.pyの現内容は3クラスであり、旧2値checkpointの設定としてそのまま流用しない。各実行前に対応するモデル・GT・checkpointを確認する。
+
+旧前処理コードの既知の問題（dilation_colored.pyの未定義fits_name等）は今回修正していない。ファイル移動と参照の整理を行い、学習ロジックは変更していない。

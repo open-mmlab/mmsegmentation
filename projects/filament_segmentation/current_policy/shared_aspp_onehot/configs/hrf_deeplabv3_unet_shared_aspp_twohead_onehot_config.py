@@ -1,0 +1,375 @@
+"""
+HGBS: 2D one-hot x 2-head training.
+
+Architecture:
+  HRF-pretrained DeepLabV3 (UNet Backbone)
+  shared ASPP
+  final head 1: 16 -> 2
+  final head 2: 16 -> 2
+
+Each head target:
+  background -> [1,0]
+  target     -> [0,1]
+  other filament class -> ignore
+
+Loss:
+  one-hot CE = 1.0
+  foreground Dice = 3.0
+"""
+
+_base_ = ['../../../../../configs/_base_/default_runtime.py']
+
+default_scope = 'mmseg'
+
+custom_imports = dict(
+    imports=[
+        'mmseg.models',
+        'projects.filament_segmentation.current_policy.shared_aspp_onehot.models.hrf_deeplabv3_unet_shared_aspp_twohead_onehot',
+        'projects.filament_segmentation.current_policy.shared_aspp_onehot.evaluation.dual_onehot_filament_metric',
+    ],
+    allow_failed_imports=False,
+)
+
+dataset_type = 'BaseSegDataset'
+data_root = '/mnt/sp4t/fujiwara.r/split_v2'
+crop_size = (256, 256)
+reduce_zero_label = False
+
+metainfo = dict(
+    classes=(
+        'background',
+        'class1_filament',
+        'candidate_filament',
+    ),
+    palette=[
+        [0, 0, 0],
+        [255, 255, 0],
+        [0, 255, 255],
+    ],
+)
+
+hrf_pretrained_checkpoint = (
+    'checkpoints/'
+    'deeplabv3_unet_s5-d16_ce-1.0-dice-3.0_'
+    '256x256_40k_hrf_20211210_202032-59daf7a4.pth'
+)
+
+load_from = None
+resume = False
+
+data_preprocessor = dict(
+    type='SegDataPreProcessor',
+    bgr_to_rgb=True,
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    size=crop_size,
+    pad_val=0,
+    seg_pad_val=255,
+)
+
+norm_cfg = dict(
+    type='BN',
+    requires_grad=True,
+)
+
+model = dict(
+    type='HRFDeepLabV3UNetSharedASPPTwoHeadOneHot',
+
+    data_preprocessor=data_preprocessor,
+
+    pretrained_checkpoint=(
+        hrf_pretrained_checkpoint
+    ),
+
+    ce_weight=1.0,
+    dice_weight=3.0,
+    ignore_index=255,
+
+    class1_threshold=0.5,
+    class2_threshold=0.5,
+
+    backbone=dict(
+        type='UNet',
+        in_channels=3,
+        base_channels=64,
+        num_stages=5,
+        strides=(1, 1, 1, 1, 1),
+        enc_num_convs=(2, 2, 2, 2, 2),
+        dec_num_convs=(2, 2, 2, 2),
+        enc_dilations=(1, 1, 1, 1, 1),
+        dec_dilations=(1, 1, 1, 1),
+        downsamples=(
+            True,
+            True,
+            True,
+            True,
+        ),
+        conv_cfg=None,
+        norm_cfg=norm_cfg,
+        norm_eval=False,
+        act_cfg=dict(type='ReLU'),
+        upsample_cfg=dict(
+            type='InterpConv'
+        ),
+        with_cp=False,
+    ),
+
+    decode_head=dict(
+        type='ASPPHead',
+        in_channels=64,
+        in_index=4,
+        channels=16,
+        dilations=(1, 12, 24, 36),
+        dropout_ratio=0.1,
+        align_corners=False,
+        norm_cfg=norm_cfg,
+        num_classes=2,
+        loss_decode=[
+            dict(
+                type='CrossEntropyLoss',
+                loss_name='loss_ce',
+                loss_weight=1.0,
+            ),
+            dict(
+                type='DiceLoss',
+                loss_name='loss_dice',
+                loss_weight=3.0,
+            ),
+        ],
+    ),
+
+    auxiliary_head=dict(
+        type='FCNHead',
+        in_channels=128,
+        in_index=3,
+        channels=64,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
+        align_corners=False,
+        norm_cfg=norm_cfg,
+        num_classes=2,
+        loss_decode=dict(
+            type='CrossEntropyLoss',
+            use_sigmoid=False,
+            loss_weight=0.4,
+        ),
+    ),
+
+    train_cfg=dict(),
+    test_cfg=dict(mode='whole'),
+)
+
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='LoadAnnotations',
+        reduce_zero_label=False,
+    ),
+    dict(
+        type='RandomFlip',
+        direction=[
+            'horizontal',
+            'vertical',
+        ],
+        prob=0.5,
+    ),
+    dict(type='PackSegInputs'),
+]
+
+eval_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='LoadAnnotations',
+        reduce_zero_label=False,
+    ),
+    dict(type='PackSegInputs'),
+]
+
+
+def make_dataset(
+    split,
+    pipeline,
+):
+    return dict(
+        type=dataset_type,
+        ann_file='',
+        metainfo=metainfo,
+        reduce_zero_label=False,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path=f'{split}/in',
+            seg_map_path=f'{split}/out',
+        ),
+        img_suffix='_in.png',
+        seg_map_suffix='_out.png',
+        pipeline=pipeline,
+    )
+
+
+train_dataloader = dict(
+    batch_size=8,
+    num_workers=4,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(
+        type='DefaultSampler',
+        shuffle=True,
+    ),
+    dataset=make_dataset(
+        'train',
+        train_pipeline,
+    ),
+)
+
+val_dataloader = dict(
+    batch_size=8,
+    num_workers=4,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(
+        type='DefaultSampler',
+        shuffle=False,
+    ),
+    dataset=make_dataset(
+        'val',
+        eval_pipeline,
+    ),
+)
+
+test_dataloader = dict(
+    batch_size=8,
+    num_workers=4,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(
+        type='DefaultSampler',
+        shuffle=False,
+    ),
+    dataset=make_dataset(
+        'test',
+        eval_pipeline,
+    ),
+)
+
+val_evaluator = dict(
+    type='DualOneHotFilamentMetric',
+    class1_threshold=0.5,
+    class2_threshold=0.5,
+    ignore_index=255,
+)
+
+test_evaluator = dict(
+    type='DualOneHotFilamentMetric',
+    class1_threshold=0.5,
+    class2_threshold=0.5,
+    ignore_index=255,
+)
+
+train_cfg = dict(
+    type='EpochBasedTrainLoop',
+    max_epochs=20,
+    val_interval=1,
+)
+
+val_cfg = dict(type='ValLoop')
+test_cfg = dict(type='TestLoop')
+
+optim_wrapper = dict(
+    type='AmpOptimWrapper',
+    loss_scale='dynamic',
+    clip_grad=dict(
+        max_norm=5.0,
+        norm_type=2,
+    ),
+    optimizer=dict(
+        type='SGD',
+        lr=0.01,
+        momentum=0.9,
+        weight_decay=0.0005,
+    ),
+    paramwise_cfg=dict(
+        custom_keys={
+            'backbone': dict(
+                lr_mult=0.1
+            )
+        },
+    ),
+)
+
+param_scheduler = [
+    dict(
+        type='LinearLR',
+        start_factor=0.1,
+        begin=0,
+        end=1,
+        by_epoch=True,
+    ),
+    dict(
+        type='PolyLR',
+        begin=1,
+        end=20,
+        by_epoch=True,
+        power=0.9,
+        eta_min=0.0001,
+    ),
+]
+
+default_hooks = dict(
+    timer=dict(
+        type='IterTimerHook'
+    ),
+    logger=dict(
+        type='LoggerHook',
+        interval=10,
+        log_metric_by_epoch=True,
+    ),
+    param_scheduler=dict(
+        type='ParamSchedulerHook'
+    ),
+    checkpoint=dict(
+        type='CheckpointHook',
+        by_epoch=True,
+        interval=1,
+        save_last=True,
+        max_keep_ckpts=20,
+    ),
+    sampler_seed=dict(
+        type='DistSamplerSeedHook'
+    ),
+    visualization=dict(
+        type='SegVisualizationHook',
+        draw=False,
+        interval=50,
+    ),
+)
+
+visualizer = dict(
+    _delete_=True,
+    type='SegLocalVisualizer',
+    name='visualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend')
+    ],
+)
+
+log_level = 'INFO'
+log_processor = dict(by_epoch=True)
+randomness = dict(
+    seed=0,
+    deterministic=False,
+)
+
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(
+        mp_start_method='fork',
+        opencv_num_threads=0,
+    ),
+)
+
+work_dir = (
+    'projects/filament_segmentation/current_policy/shared_aspp_onehot/work_dirs/'
+    'hrf_deeplabv3_unet_shared_aspp_twohead_onehot'
+)
